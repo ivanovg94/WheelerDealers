@@ -1,0 +1,43 @@
+----[Dealership]----
+- car table
+   - id pk
+   - brand fk
+   - model string
+   - horsePower int
+   - engineCapacity int
+   - fuelType fk
+   - gearbox fk
+   - color fk
+   - chasis fk
+   - isSold bool
+   - price decimal
+   - prod. date datetime
+   
+
+---[Tables]----
+ - brand table
+	- id 
+	- name
+ - fuel table
+	- id 
+	- type	
+ - gearbox table
+	- id 
+	- type
+ - color table 
+	- id
+	- colorName string
+	- colorNumber int
+	- paintType fk
+ - paint type table
+	- id
+	- type string
+ - chasis type table
+	- id
+	- type
+ - extra table
+	- id
+	- name
+ - car extras table
+	- carId pk
+	- extraId pk
