@@ -1,6 +1,6 @@
 # Dealership
 
-Team name: ViknelWare <br />
+Team name: WheelerDealers <br />
 Team members: <br />
 (Team Leader)[Viktor Doninski](https://gitlab.com/vicktor)<br />
 [Georgi Ivanov](https://gitlab.com/ivanovg94)<br />
