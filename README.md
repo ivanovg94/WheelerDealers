@@ -1,7 +1,7 @@
 # Dealership
 
 Team name: ViknelWare <br />
-Team members: 
+Team members: <br />
 (Team Leader)[Viktor Doninski](https://gitlab.com/vicktor)<br />
 [Georgi Ivanov](https://gitlab.com/ivanovg94)<br />
 [Martin Kaerski](https://gitlab.com/MartinKaerski)<br />
