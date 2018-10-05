@@ -21,6 +21,8 @@ namespace Dealership.Data.Context
 
         public DbSet<Gearbox> Gearboxes { get; set; }
 
+        
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
