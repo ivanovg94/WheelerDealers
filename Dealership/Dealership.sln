@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2047
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dealership.Client", "Dealership\Dealership.Client.csproj", "{BA9746F5-2064-4308-9068-A41F9FA14441}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dealership.Data", "Dealership.Data\Dealership.Data.csproj", "{A89351F5-46DE-41C4-B6E9-CEE72B08B075}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BA9746F5-2064-4308-9068-A41F9FA14441}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA9746F5-2064-4308-9068-A41F9FA14441}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA9746F5-2064-4308-9068-A41F9FA14441}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA9746F5-2064-4308-9068-A41F9FA14441}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A89351F5-46DE-41C4-B6E9-CEE72B08B075}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A89351F5-46DE-41C4-B6E9-CEE72B08B075}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A89351F5-46DE-41C4-B6E9-CEE72B08B075}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A89351F5-46DE-41C4-B6E9-CEE72B08B075}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8C63EB0C-15B5-47AC-A604-564063FC07AE}
+	EndGlobalSection
+EndGlobal
