@@ -17,12 +17,12 @@ namespace Dealership.Data.Models
         public int BrandId { get; set; }
         public Brand Brand { get; set; }
         public int ChasisId { get; set; }
-        public Chasis Chasis { get; set; }
+        public Chassis Chasis { get; set; }
         public int ColorId { get; set; }
         public Color Color { get; set; }
         public int FuelTypeId { get; set; }
         public FuelType FuelType { get; set; }
         public int GearBoxId { get; set; }
-        public GearBox GearBox { get; set; }
+        public Gearbox GearBox { get; set; }
     }
 }

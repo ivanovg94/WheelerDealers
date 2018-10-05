@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Dealership.Data.Models
 {
-   public class Chasis
+   public class Chassis
     {
         public int Id { get; set; }
         public int Name { get; set; }

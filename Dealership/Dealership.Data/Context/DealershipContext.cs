@@ -1,21 +1,33 @@
 ﻿using Dealership.Data.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Dealership.Data.Context
 {
-    public class DealershipContext : DbContext
+    public class DealershipContext : DbContext, IDealershipContext
     {
-       
+        public DbSet<Brand> Brands { get; set; }
+
+        public DbSet<Car> Cars { get; set; }
+
+        public DbSet<CarsExtras> CarsExtras { get; set; }
+
+        public DbSet<Chassis> Chassis { get; set; }
+
+        public DbSet<Color> Colors { get; set; }
+
+        public DbSet<Extra> Extras { get; set; }
+
+        public DbSet<FuelType> FuelTypes { get; set; }
+
+        public DbSet<Gearbox> Gearboxes { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder
-                //    .UseLoggerFactory(loggerFactory)
-                    .UseSqlServer("Server=.;Database=Dealership;Trusted_Connection=True;");
+                    //.UseLoggerFactory(loggerFactory)
+                    .UseSqlServer(Configuration.ConnectionString);
             }
         }
 
@@ -23,8 +35,6 @@ namespace Dealership.Data.Context
         {
             modelBuilder.Entity<CarsExtras>()
                 .HasKey(ce => new { ce.CarId, ce.ExtraId });
-
-
 
             base.OnModelCreating(modelBuilder);
         }
