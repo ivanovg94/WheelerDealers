@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Autofac;
 using Dealership.Client.Commands;
+using Dealership.Client.Contracts;
 using Dealership.Client.Core;
 using Dealership.Client.Core.Abstract;
 
