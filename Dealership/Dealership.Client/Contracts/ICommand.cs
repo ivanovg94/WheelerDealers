@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Dealership.Client.Core.Abstract
+namespace Dealership.Client.Contracts
 {
     public interface ICommand
     {

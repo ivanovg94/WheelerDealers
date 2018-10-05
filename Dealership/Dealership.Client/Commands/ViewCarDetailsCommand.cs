@@ -5,7 +5,7 @@ using Dealership.Data.Context;
 
 namespace Dealership.Client.Commands
 {
-    class ViewCarDetailsCommand : PrimeCommand
+    public class ViewCarDetailsCommand : PrimeCommand
     {
         public ViewCarDetailsCommand(IDealershipContext context) : base(context)
         {

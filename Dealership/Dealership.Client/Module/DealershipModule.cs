@@ -16,6 +16,12 @@ namespace Dealership.Client.Module
             builder.RegisterType<AddCommand>().Named<ICommand>("create");
             builder.RegisterType<RemoveCommand>().Named<ICommand>("remove");
             builder.RegisterType<ListCommand>().Named<ICommand>("list");
+            builder.RegisterType<EditCommand>().Named<ICommand>("edit");
+            builder.RegisterType<ExportCommand>().Named<ICommand>("export");
+            builder.RegisterType<ImportCommand>().Named<ICommand>("import");
+            builder.RegisterType<FilterCommand>().Named<ICommand>("filter");
+            builder.RegisterType<ViewCarDetailsCommand>().Named<ICommand>("view");
+
 
             base.Load(builder);
         }

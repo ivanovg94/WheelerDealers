@@ -20,9 +20,7 @@ namespace Dealership.Data.Context
         public DbSet<FuelType> FuelTypes { get; set; }
 
         public DbSet<Gearbox> Gearboxes { get; set; }
-
         
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

@@ -1,4 +1,4 @@
-﻿using Dealership.Client.Core.Abstract;
+﻿using Dealership.Client.Contracts;
 using Dealership.Data.Context;
 using System;
 using System.Collections.Generic;
