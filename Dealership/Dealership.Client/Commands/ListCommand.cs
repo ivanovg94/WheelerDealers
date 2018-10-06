@@ -12,6 +12,7 @@ namespace Dealership.Client.Commands
         {
         }
 
+        //list null/sold 
         public override string Execute(string[] parameters)
         {
             throw new NotImplementedException();
