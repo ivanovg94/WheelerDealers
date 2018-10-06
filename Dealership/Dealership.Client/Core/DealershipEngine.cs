@@ -19,6 +19,7 @@ namespace Dealership.Client.Core
         }
         public void Run()
         {
+
             while ((input = Console.ReadLine()) != "exit")
             {
                 var inputParams = input.Split();
