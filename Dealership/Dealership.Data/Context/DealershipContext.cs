@@ -1,4 +1,5 @@
-﻿using Dealership.Data.Models;
+﻿using System;
+using Dealership.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dealership.Data.Context
@@ -20,7 +21,10 @@ namespace Dealership.Data.Context
         public DbSet<FuelType> FuelTypes { get; set; }
 
         public DbSet<Gearbox> Gearboxes { get; set; }
-        
+        public DbSet<GearType> GearTypes { get; set; }
+        public DbSet<ColorType> ColorTypes { get; set; }
+
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -37,6 +41,14 @@ namespace Dealership.Data.Context
                 .HasKey(ce => new { ce.CarId, ce.ExtraId });
 
             base.OnModelCreating(modelBuilder);
+
+            //  Seed();
         }
+
+        //private void Seed()
+        //{
+
+
+        //}
     }
 }

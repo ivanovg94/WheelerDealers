@@ -25,7 +25,7 @@ namespace Dealership.Client.Core
                 var command = this.CommandParser(inputParams[0]);
                 //commands not implemented yet !
                 //commandResult returns message according to operation result (successful or not)
-                var commandResult = command.ProcessCommand(inputParams.Skip(1).ToArray());
+                var commandResult = command.Execute(inputParams.Skip(1).ToArray());
 
                 Console.WriteLine(commandResult);
             }

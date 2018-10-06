@@ -7,11 +7,11 @@ namespace Dealership.Client.Commands
 {
     public class ViewCarDetailsCommand : PrimeCommand
     {
-        public ViewCarDetailsCommand(IDealershipContext context) : base(context)
+        public ViewCarDetailsCommand()
         {
         }
 
-        public override string ProcessCommand(string[] parameters)
+        public override string Execute(string[] parameters)
         {
             throw new NotImplementedException();
         }

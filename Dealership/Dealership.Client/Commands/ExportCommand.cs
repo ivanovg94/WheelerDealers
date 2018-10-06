@@ -8,12 +8,11 @@ namespace Dealership.Client.Commands
 {
     public class ExportCommand : PrimeCommand
     {
-        public ExportCommand(IDealershipContext context) : base(context)
+        public ExportCommand()
         {
-
         }
 
-        public override string ProcessCommand(string[] parameters)
+        public override string Execute(string[] parameters)
         {
             throw new NotImplementedException();
         }
