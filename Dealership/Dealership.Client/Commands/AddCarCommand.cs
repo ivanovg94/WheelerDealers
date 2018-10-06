@@ -10,11 +10,6 @@ namespace Dealership.Client.Commands
 {
     public class AddCarCommand : PrimeCommand
     {
-        public AddCarCommand()
-        {
-        }
-
-
         //add brand, model, hp, engCap, prod.date,price, chasis, nDoors, colorName,ColorType,ColorCode, fuelType, gearbox, nGears
         public override string Execute(string[] parameters)
         {
