@@ -8,7 +8,7 @@ namespace Dealership.Data.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int NumberOfDoors { get; set; }
+        public byte NumberOfDoors { get; set; }
 
         public ICollection<Car> Cars { get; set; }
     }

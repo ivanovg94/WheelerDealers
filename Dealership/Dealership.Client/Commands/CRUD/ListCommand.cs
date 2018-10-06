@@ -1,5 +1,6 @@
 ﻿using Dealership.Client.Commands.Abstract;
 using Dealership.Client.Core.Abstract;
+using Dealership.Client.ViewModels;
 using Dealership.Data.Context;
 using System;
 using System.Collections.Generic;
@@ -13,41 +14,37 @@ namespace Dealership.Client.Commands.CRUD
         public ListCommand()
         {
         }
-
-        //list | null/sold direction
+        
+        // null/sold direction
         public override string Execute(string[] parameters)
         {
-            ////Projection Loading
-            //var querry = this.ShopContext.Products
-            //    .Select(p => new
-            //    {
-            //        Name = p.ProductName,
-            //        Price = p.Price,
-            //        CategoryName = p.Category.CategoryName,
-            //        TagNames = p.ProductsTags.Select(pt => pt.Tag.TagName).ToList()
-            //    });
+            bool isSold = false;
+            if (parameters.Length == 2) { isSold = true; }
 
-            //    bool isSold = false;
-            //    if (parameters.Length == 2) { isSold = false; }
-
-            //    //BMW 330 258 2998 2005-01-01 14999 coupe Black Metalic Gasoline Manual 6
-            //    base.Context.Cars.Where(c => c.IsSold == isSold)
-            //                     .Select(c => new
-            //                     {
-            //                         Brand = c.Brand.Name,
-            //                         Model = c.Model,
-            //                         EngineCap = c.EngineCapacity,
-            //                         ProductionDate = c.ProductionDate,
-            //                         Price = c.Price,
-            //                         Chasis = c.Chasis.Name,
-            //                         Color = c.Color.Name,
-            //                         ColorType = c.Color.ColorType.Type,
-            //                         Fuel = c.FuelType.Type,
-            //                         Gearbox = c.GearBox.GearType.Type,
-            //                         NumberOfGears = c.GearBox.NumberOfGears,
-            //                         Extras = c.CarsExtras.Select(ce => ce.Extra.Name).ToList()
-            //                     })
-            return "";
+            var querry = base.Context.Cars.Where(c => c.IsSold == isSold)
+                                .Select(c => new CarVM
+                                {
+                                    Id = c.Id,
+                                    BrandName = c.Brand.Name,
+                                    Model = c.Model,
+                                    EngineCap = c.EngineCapacity,
+                                    HorsePower = c.HorsePower,
+                                    ProductionDate = c.ProductionDate,
+                                    Price = c.Price,
+                                    Chassis = c.Chasis.Name,
+                                    NDoors = c.Chasis.NumberOfDoors,
+                                    Color = c.Color.Name,
+                                    ColorType = c.Color.ColorType.Type,
+                                    Fuel = c.FuelType.Type,
+                                    Gearbox = c.GearBox.GearType.Type,
+                                    NumberOfGears = c.GearBox.NumberOfGears,
+                                    Extras = c.CarsExtras.Select(ce => ce.Extra.Name).ToList()
+                                });
+            var data = new List<CarVM>();
+            if (parameters.Last() == "ASC") { data=querry.OrderBy(c => c.Id).ToList(); }
+            else if (parameters.Last() == "DESC") { data=querry.OrderByDescending(c => c.Id).ToList(); }
+           
+            return string.Join($"{new string('-', 151)}\r\n", data);
         }
     }
 }
