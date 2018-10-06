@@ -21,6 +21,10 @@ namespace Dealership.Data.Context
 
         DbSet<Gearbox> Gearboxes { get; set; }
 
+        DbSet<ColorType> ColorTypes { get; set; }
+
+        DbSet<GearType> GearTypes { get; set; }
+
         int SaveChanges();
     }
 }
