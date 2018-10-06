@@ -17,7 +17,7 @@ namespace Dealership.Client.Module
             builder.RegisterType<DealershipEngine>().As<IEngine>().SingleInstance();
             builder.RegisterType<DealershipContext>().As<IDealershipContext>().SingleInstance();
 
-            builder.RegisterType<AddCarCommand>().Named<ICommand>("create").PropertiesAutowired();
+            builder.RegisterType<AddCarCommand>().Named<ICommand>("add").PropertiesAutowired();
             builder.RegisterType<RemoveCommand>().Named<ICommand>("remove").PropertiesAutowired();
             builder.RegisterType<ListCommand>().Named<ICommand>("list").PropertiesAutowired();
             builder.RegisterType<EditCommand>().Named<ICommand>("edit").PropertiesAutowired();

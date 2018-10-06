@@ -14,7 +14,9 @@ namespace Dealership.Data.Context
         public DbSet<Extra> Extras { get; set; }
         public DbSet<FuelType> FuelTypes { get; set; }
         public DbSet<Gearbox> Gearboxes { get; set; }
+
         public DbSet<GearType> GearTypes { get; set; }
+
         public DbSet<ColorType> ColorTypes { get; set; }
 
 
@@ -33,13 +35,48 @@ namespace Dealership.Data.Context
             modelBuilder.Entity<CarsExtras>()
                 .HasKey(ce => new { ce.CarId, ce.ExtraId });
 
+<<<<<<< HEAD
             SeedData(modelBuilder);
 
+=======
+            modelBuilder.Entity<Chassis>().HasData(new Chassis { Id = 1, Name = "Sedan", NumberOfDoors = 4 });
+            modelBuilder.Entity<Chassis>().HasData(new Chassis { Id = 2, Name = "Coupe", NumberOfDoors = 2 });
+            modelBuilder.Entity<Chassis>().HasData(new Chassis { Id = 3, Name = "Cabrio", NumberOfDoors = 2 });
+            modelBuilder.Entity<Chassis>().HasData(new Chassis { Id = 4, Name = "Touring", NumberOfDoors = 4 });
+            modelBuilder.Entity<Chassis>().HasData(new Chassis { Id = 5, Name = "Suv", NumberOfDoors = 5 });
+            modelBuilder.Entity<Chassis>().HasData(new Chassis { Id = 6, Name = "Hatchback", NumberOfDoors = 5 });
+
+            modelBuilder.Entity<GearType>().HasData(new GearType { Id = 1, Type = "Automatic" });
+            modelBuilder.Entity<GearType>().HasData(new GearType { Id = 2, Type = "Manual" });
+
+            modelBuilder.Entity<Gearbox>().HasData(new Gearbox { Id = 1, GearTypeId = 1, NumberOfGears = 3 });
+            modelBuilder.Entity<Gearbox>().HasData(new Gearbox { Id = 2, GearTypeId = 1, NumberOfGears = 4 });
+            modelBuilder.Entity<Gearbox>().HasData(new Gearbox { Id = 3, GearTypeId = 1, NumberOfGears = 5 });
+            modelBuilder.Entity<Gearbox>().HasData(new Gearbox { Id = 4, GearTypeId = 1, NumberOfGears = 6 });
+            modelBuilder.Entity<Gearbox>().HasData(new Gearbox { Id = 5, GearTypeId = 1, NumberOfGears = 7 });
+            modelBuilder.Entity<Gearbox>().HasData(new Gearbox { Id = 6, GearTypeId = 1, NumberOfGears = 8 });
+            modelBuilder.Entity<Gearbox>().HasData(new Gearbox { Id = 7, GearTypeId = 2, NumberOfGears = 4 });
+            modelBuilder.Entity<Gearbox>().HasData(new Gearbox { Id = 8, GearTypeId = 2, NumberOfGears = 5 });
+            modelBuilder.Entity<Gearbox>().HasData(new Gearbox { Id = 9, GearTypeId = 2, NumberOfGears = 6 });
+
+            modelBuilder.Entity<FuelType>().HasData(new FuelType { Id = 1, Type = "Diesel" });
+            modelBuilder.Entity<FuelType>().HasData(new FuelType { Id = 2, Type = "Gasoline" });
+            modelBuilder.Entity<FuelType>().HasData(new FuelType { Id = 3, Type = "LPG" });
+            modelBuilder.Entity<FuelType>().HasData(new FuelType { Id = 4, Type = "Hybrid" });
+            modelBuilder.Entity<FuelType>().HasData(new FuelType { Id = 5, Type = "Electic" });
+
+            modelBuilder.Entity<ColorType>().HasData(new ColorType { Id = 1, Type = "Acrylic" });
+            modelBuilder.Entity<ColorType>().HasData(new ColorType { Id = 2, Type = "Metalic" });
+            modelBuilder.Entity<ColorType>().HasData(new ColorType { Id = 3, Type = "Pearlescent" });
+            modelBuilder.Entity<ColorType>().HasData(new ColorType { Id = 4, Type = "Matte" });
+            modelBuilder.Entity<ColorType>().HasData(new ColorType { Id = 5, Type = "Xirallic" });
+>>>>>>> c93582e8dd3e7607db29706109856633cc87415e
 
             base.OnModelCreating(modelBuilder);
 
         }
 
+<<<<<<< HEAD
         private void SeedData(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Chassis>().HasData(new Chassis { Id = 1, Name = "Sedan", NumberOfDoors = 4 });
@@ -74,5 +111,8 @@ namespace Dealership.Data.Context
             modelBuilder.Entity<ColorType>().HasData(new ColorType { Id = 4, Type = "Matte" });
             modelBuilder.Entity<ColorType>().HasData(new ColorType { Id = 5, Type = "Xirallic" });
         }
+=======
+
+>>>>>>> c93582e8dd3e7607db29706109856633cc87415e
     }
 }

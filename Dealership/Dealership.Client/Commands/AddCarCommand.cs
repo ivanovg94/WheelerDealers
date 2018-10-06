@@ -18,24 +18,70 @@ namespace Dealership.Client.Commands
         //add brand, model, hp, engCap, prod.date,price, chasis, nDoors, colorName,ColorType,ColorCode, fuelType, gearbox, nGears
         public override string Execute(string[] parameters)
         {
-            //var brand = parameters[0];
-            //var model = parameters[0];
-            //var prodDate = parameters[0];
-            //var price = parameters[0];
-            //var chasis = parameters[0];
-            //var nDoors = parameters[0];
-            //var colorName = parameters[0];
-            //var colorType = parameters[0];
-            //var colorCode = parameters[0];
-            //var fuelType = parameters[0];
-            //var gearbox = parameters[0];
-            //var nNumberOfGears = parameters[0];
+            var paramBrand = parameters[0];
+            var paramModel = parameters[1];
+            var paramHp = short.Parse(parameters[2]);
+            var paramEngCapacity = short.Parse(parameters[3]);
+            var paramProdDate = DateTime.Parse(parameters[4]);
+            var paramPrice = decimal.Parse(parameters[5]);
+            var paramChasis = parameters[6];
+            var paramColorName = parameters[7];
+            var paramColorType = parameters[8];
+            var paramFuelType = parameters[9];
+            var paramGearbox = parameters[10];
+            var paramNumberOfGears = byte.Parse(parameters[11]);
 
-        var test=    base.Context.Brands.FirstOrDefault();
+            Brand newBrand = null;
+            Chassis newChassis = base.Context.Chassis.First(ch => ch.Name == paramChasis);
+            Color newColor = null;
+            FuelType newFuelType = base.Context.FuelTypes.First(ft => ft.Type == paramFuelType);
+            Gearbox newGearbox = base.Context.Gearboxes.Where(gb => gb.GearType.Type == paramGearbox).First(g => g.NumberOfGears == paramNumberOfGears);
+
+            if (!base.Context.Brands.Any(b => b.Name == paramBrand))
+            {
+                base.Context.Brands.Add(new Brand() { Name = "BMW" });
+                newBrand = new Brand() { Name = "BMW" };
+            }
+            else
+            {
+                newBrand = base.Context.Brands.First(b => b.Name == paramBrand);
+
+            }
+
+            if (!base.Context.Colors.Where(c => c.Name == paramColorName).Any(ct => ct.Name == paramColorType))
+            {
+                newColor = new Color()
+                {
+                    Name = paramColorName,
+                    ColorType = base.Context.ColorTypes.First(ct => ct.Type == paramColorType)
+                };
+            }
+            else
+            {
+                newColor = base.Context.Colors.Where(c => c.Name == paramColorName)
+                                              .First(ct => ct.ColorType.Type == paramColorType);
+            }
 
 
-            return "";
-         //   base.context.Cars.
+            var newCar = new Car()
+            {
+                Brand = newBrand,
+                Model = paramModel,
+                HorsePower = paramHp,
+                EngineCapacity = paramEngCapacity,
+                ProductionDate = paramProdDate,
+                Price = paramPrice,
+                Chasis = newChassis,
+                Color = newColor,
+                FuelType = newFuelType,
+                GearBox = newGearbox,
+            };
+
+            base.Context.Cars.Add(newCar);
+
+            base.Context.SaveChanges();
+
+            return $"{newCar.Brand.Name}, {newCar.Model} with ID:{newCar.Id} was added successful!";
         }
     }
 }
