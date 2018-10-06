@@ -20,7 +20,7 @@ namespace Dealership.Client.Module
             builder.RegisterType<DealershipContext>().As<IDealershipContext>().SingleInstance();
 
             builder.RegisterType<AddCarCommand>().Named<ICommand>("add").PropertiesAutowired();
-            builder.RegisterType<RemoveCommand>().Named<ICommand>("remove").PropertiesAutowired();
+            builder.RegisterType<RemoveCarCommand>().Named<ICommand>("remove").PropertiesAutowired();
             builder.RegisterType<ListCommand>().Named<ICommand>("list").PropertiesAutowired();
             builder.RegisterType<EditCommand>().Named<ICommand>("edit").PropertiesAutowired();
             builder.RegisterType<ExportCommand>().Named<ICommand>("export").PropertiesAutowired();

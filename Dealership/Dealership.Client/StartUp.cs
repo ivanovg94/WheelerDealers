@@ -11,7 +11,7 @@ namespace Dealership.Client
         {
             Console.WriteLine("Supported commands:");
             Console.WriteLine("add {brand} {model} {horse power} {engine capacity} {production date} {price} {chasis} {color} {color type} {fuel type} {gearbox} {number of gears}");
-            Console.WriteLine("remove - not supported yet");
+            Console.WriteLine("remove {carId}");
             Console.WriteLine("list  - list ASC/DESC and list sold ASC/DESC");
             Console.WriteLine("filter  - not supported yet");
             Console.WriteLine("view  - not supported yet");
