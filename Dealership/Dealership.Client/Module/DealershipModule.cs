@@ -25,7 +25,7 @@ namespace Dealership.Client.Module
             builder.RegisterType<EditCommand>().Named<ICommand>("edit").PropertiesAutowired();
             builder.RegisterType<ExportCommand>().Named<ICommand>("export").PropertiesAutowired();
             builder.RegisterType<ImportCommand>().Named<ICommand>("import").PropertiesAutowired();
-            builder.RegisterType<FilterCommand>().Named<ICommand>("filter").PropertiesAutowired();
+            builder.RegisterType<FilterByBrandCommand>().Named<ICommand>("filterBrand").PropertiesAutowired();
             builder.RegisterType<ViewCarDetailsCommand>().Named<ICommand>("view").PropertiesAutowired();
 
 
