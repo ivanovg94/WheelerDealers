@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Dealership.Client.Contracts;
+using Dealership.Client.Contracts.Abstract;
 using Dealership.Client.Core.Abstract;
 using System;
 using System.Collections.Generic;
