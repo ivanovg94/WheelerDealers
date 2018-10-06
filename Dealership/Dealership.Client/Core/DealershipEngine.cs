@@ -23,13 +23,20 @@ namespace Dealership.Client.Core
 
             while ((input = Console.ReadLine()) != "exit")
             {
-                var inputParams = input.Split();
-                var command = this.CommandParser(inputParams[0]);
-                //commands not implemented yet !
-                //commandResult returns message according to operation result (successful or not)
-                var commandResult = command.Execute(inputParams.Skip(1).ToArray());
+                try
+                {
+                    var inputParams = input.Split();
+                    var command = this.CommandParser(inputParams[0]);
+                    //commands not implemented yet !
+                    //commandResult returns message according to operation result (successful or not)
+                    var commandResult = command.Execute(inputParams.Skip(1).ToArray());
 
-                Console.WriteLine(commandResult);
+                    Console.WriteLine(commandResult);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }               
             }
         }
 

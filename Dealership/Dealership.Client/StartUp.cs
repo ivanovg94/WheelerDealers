@@ -11,16 +11,14 @@ namespace Dealership.Client
         {
             Console.WriteLine("Supported commands:");
             Console.WriteLine("add {brand} {model} {horse power} {engine capacity} {production date} {price} {chasis} {color} {color type} {fuel type} {gearbox} {number of gears}");
-            Console.WriteLine("remove - not supported yet");
+            Console.WriteLine("remove {carId}");
             Console.WriteLine("list  - not supported yet");
             Console.WriteLine("filter  - not supported yet");
             Console.WriteLine("view  - not supported yet");
             Console.WriteLine("edit  - not supported yet");
             Console.WriteLine("export - not supported yet");
             Console.WriteLine("import - not supported yet");
-
-
-
+                       
             var builder = new ContainerBuilder();
             builder.RegisterAssemblyModules(Assembly.GetExecutingAssembly());
             var container = builder.Build();
