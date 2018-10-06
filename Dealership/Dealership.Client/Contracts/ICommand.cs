@@ -6,6 +6,6 @@ namespace Dealership.Client.Contracts
 {
     public interface ICommand
     {
-        string ProcessCommand(string[] parameters);
+        string Execute(string[] parameters);
     }
 }

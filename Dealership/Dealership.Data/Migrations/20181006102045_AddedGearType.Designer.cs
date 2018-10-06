@@ -4,14 +4,16 @@ using Dealership.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Dealership.Data.Migrations
 {
     [DbContext(typeof(DealershipContext))]
-    partial class DealershipContextModelSnapshot : ModelSnapshot
+    [Migration("20181006102045_AddedGearType")]
+    partial class AddedGearType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,28 +111,15 @@ namespace Dealership.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ColorTypeId");
+                    b.Property<string>("Code");
 
                     b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ColorTypeId");
-
-                    b.ToTable("Colors");
-                });
-
-            modelBuilder.Entity("Dealership.Data.Models.ColorType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Type");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ColorTypes");
+                    b.ToTable("Colors");
                 });
 
             modelBuilder.Entity("Dealership.Data.Models.Extra", b =>
@@ -230,17 +219,9 @@ namespace Dealership.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Dealership.Data.Models.Color", b =>
-                {
-                    b.HasOne("Dealership.Data.Models.ColorType", "ColorType")
-                        .WithMany("Colors")
-                        .HasForeignKey("ColorTypeId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("Dealership.Data.Models.Gearbox", b =>
                 {
-                    b.HasOne("Dealership.Data.Models.GearType", "GearType")
+                    b.HasOne("Dealership.Data.Models.GearType")
                         .WithMany("Gearboxes")
                         .HasForeignKey("GearTypeId")
                         .OnDelete(DeleteBehavior.Cascade);

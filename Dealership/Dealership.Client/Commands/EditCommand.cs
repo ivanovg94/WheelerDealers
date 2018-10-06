@@ -8,11 +8,11 @@ namespace Dealership.Client.Commands
 {
     public class EditCommand : PrimeCommand
     {
-        public EditCommand(IDealershipContext context) : base(context)
+        public EditCommand()
         {
-
         }
-        public override string ProcessCommand(string[] parameters)
+
+        public override string Execute(string[] parameters)
         {
             throw new NotImplementedException();
         }

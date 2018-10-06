@@ -8,12 +8,11 @@ namespace Dealership.Client.Commands
 {
     public class FilterCommand : PrimeCommand
     {
-        public FilterCommand(IDealershipContext context) : base(context)
+        public FilterCommand()
         {
-
         }
 
-        public override string ProcessCommand(string[] parameters)
+        public override string Execute(string[] parameters)
         {
             throw new NotImplementedException();
         }

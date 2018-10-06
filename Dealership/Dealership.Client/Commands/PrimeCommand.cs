@@ -8,16 +8,12 @@ namespace Dealership.Client.Commands
 {
     public abstract class PrimeCommand : ICommand
     {
-        private IDealershipContext dealershipContext;
-
-        public PrimeCommand(IDealershipContext context)
+        public IDealershipContext Context { get; set; }
+        public PrimeCommand()
         {
-            this.dealershipContext = context;
         }
 
-        protected IDealershipContext DealershipContext { get => dealershipContext; }
+        public abstract string Execute(string[] parameters);
 
-        public abstract string ProcessCommand(string[] parameters);
-        
     }
 }

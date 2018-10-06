@@ -8,12 +8,11 @@ namespace Dealership.Client.Commands
 {
     public class RemoveCommand : PrimeCommand
     {
-        public RemoveCommand(IDealershipContext context) : base(context)
+        public RemoveCommand()
         {
-
         }
 
-        public override string ProcessCommand(string[] parameters)
+        public override string Execute(string[] parameters)
         {
             throw new NotImplementedException();
         }
