@@ -11,9 +11,10 @@ namespace Dealership.Client.Commands.CRUD
 {
     public class AddCarCommand : PrimeCommand
     {
-        //add brand, model, hp, engCap, prod.date,price, chasis, nDoors, colorName,ColorType,ColorCode, fuelType, gearbox, nGears
+        //add brand, model, hp, engCap, prod.date, price, chasis, nDoors, colorName,ColorType, fuelType, gearbox, nGears
         public override string Execute(string[] parameters)
         {
+            // validation TODO
             var paramBrand = parameters[0];
             var paramModel = parameters[1];
             var paramHp = short.Parse(parameters[2]);
@@ -28,15 +29,18 @@ namespace Dealership.Client.Commands.CRUD
             var paramNumberOfGears = byte.Parse(parameters[11]);
 
             Brand newBrand = null;
+
             Chassis newChassis = base.Context.Chassis.First(ch => ch.Name == paramChasis);
+
             Color newColor = null;
+
             FuelType newFuelType = base.Context.FuelTypes.First(ft => ft.Type == paramFuelType);
             Gearbox newGearbox = base.Context.Gearboxes.Where(gb => gb.GearType.Type == paramGearbox).First(g => g.NumberOfGears == paramNumberOfGears);
 
             if (!base.Context.Brands.Any(b => b.Name == paramBrand))
             {
-                base.Context.Brands.Add(new Brand() { Name = "BMW" });
-                newBrand = new Brand() { Name = "BMW" };
+                newBrand = new Brand() { Name = paramBrand };
+                base.Context.Brands.Add(newBrand);
             }
             else
             {
