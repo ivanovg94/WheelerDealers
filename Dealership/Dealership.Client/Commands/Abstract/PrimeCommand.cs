@@ -9,6 +9,7 @@ namespace Dealership.Client.Commands.Abstract
 {
     public abstract class PrimeCommand : ICommand
     {
+        //Remove after all command logic is moved to service layer
         public IDealershipContext Context { get; set; }
         public PrimeCommand()
         {

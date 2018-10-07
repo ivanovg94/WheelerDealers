@@ -15,7 +15,7 @@ namespace Dealership.Client
             Console.WriteLine("list  - list ASC/DESC and list sold ASC/DESC");
             Console.WriteLine("filter: ");
             Console.WriteLine("     filterBrand {brandName}");
-            Console.WriteLine("view  - not supported yet");
+            Console.WriteLine("view {carId}");
             Console.WriteLine("edit  - not supported yet");
             Console.WriteLine("export - not supported yet");
             Console.WriteLine("import - not supported yet");
