@@ -30,6 +30,7 @@ namespace Dealership.Client.Commands.CRUD
                                     ProductionDate = c.ProductionDate,
                                     Price = c.Price,
                                     Chassis = c.Chasis.Name,
+                                    NDoors = c.Chasis.NumberOfDoors,
                                     Color = c.Color.Name,
                                     ColorType = c.Color.ColorType.Type,
                                     Fuel = c.FuelType.Type,

@@ -14,12 +14,15 @@ namespace Dealership.Client.Commands.CRUD
         public ListCommand()
         {
         }
-        
+
         // null/sold direction
         public override string Execute(string[] parameters)
         {
             bool isSold = false;
-            if (parameters.Length == 2) { isSold = true; }
+            if (parameters.Length == 2)
+            {
+                isSold = true;
+            }
 
             var querry = base.Context.Cars.Where(c => c.IsSold == isSold)
                                 .Select(c => new CarVM
@@ -41,9 +44,16 @@ namespace Dealership.Client.Commands.CRUD
                                     Extras = c.CarsExtras.Select(ce => ce.Extra.Name).ToList()
                                 });
             var data = new List<CarVM>();
-            if (parameters.Last() == "ASC") { data=querry.OrderBy(c => c.Id).ToList(); }
-            else if (parameters.Last() == "DESC") { data=querry.OrderByDescending(c => c.Id).ToList(); }
-           
+
+            if (parameters.Last() == "ASC")
+            {
+                data = querry.OrderBy(c => c.Id).ToList();
+            }
+            else if (parameters.Last() == "DESC")
+            {
+                data = querry.OrderByDescending(c => c.Id).ToList();
+            }
+
             return string.Join($"{new string('-', 151)}\r\n", data);
         }
     }
