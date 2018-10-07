@@ -9,6 +9,7 @@ using Dealership.Client.Contracts.Abstract;
 using Dealership.Client.Core;
 using Dealership.Client.Core.Abstract;
 using Dealership.Data.Context;
+using Dealership.Services;
 
 namespace Dealership.Client.Module
 {
@@ -18,6 +19,8 @@ namespace Dealership.Client.Module
         {
             builder.RegisterType<DealershipEngine>().As<IEngine>().SingleInstance();
             builder.RegisterType<DealershipContext>().As<IDealershipContext>().SingleInstance();
+            builder.RegisterType<CarService>().As<ICarService>().SingleInstance();
+
 
             builder.RegisterType<AddCarCommand>().Named<ICommand>("add").PropertiesAutowired();
             builder.RegisterType<RemoveCarCommand>().Named<ICommand>("remove").PropertiesAutowired();

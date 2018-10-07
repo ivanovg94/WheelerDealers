@@ -2,6 +2,7 @@
 using Dealership.Client.Core.Abstract;
 using Dealership.Client.ViewModels;
 using Dealership.Data.Context;
+using Dealership.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace Dealership.Client.Commands.CRUD
 {
     public class ListCommand : PrimeCommand
     {
+        public ICarService Service { get; set; }
         public ListCommand()
         {
         }
@@ -24,37 +26,30 @@ namespace Dealership.Client.Commands.CRUD
                 isSold = true;
             }
 
-            var querry = base.Context.Cars.Where(c => c.IsSold == isSold)
-                                .Select(c => new CarVM
-                                {
-                                    Id = c.Id,
-                                    BrandName = c.Brand.Name,
-                                    Model = c.Model,
-                                    EngineCap = c.EngineCapacity,
-                                    HorsePower = c.HorsePower,
-                                    ProductionDate = c.ProductionDate,
-                                    Price = c.Price,
-                                    Chassis = c.Chasis.Name,
-                                    NDoors = c.Chasis.NumberOfDoors,
-                                    Color = c.Color.Name,
-                                    ColorType = c.Color.ColorType.Type,
-                                    Fuel = c.FuelType.Type,
-                                    Gearbox = c.GearBox.GearType.Type,
-                                    NumberOfGears = c.GearBox.NumberOfGears,
-                                    Extras = c.CarsExtras.Select(ce => ce.Extra.Name).ToList()
-                                });
-            var data = new List<CarVM>();
+            string order = parameters.Last();
 
-            if (parameters.Last() == "ASC")
-            {
-                data = querry.OrderBy(c => c.Id).ToList();
-            }
-            else if (parameters.Last() == "DESC")
-            {
-                data = querry.OrderByDescending(c => c.Id).ToList();
-            }
+            var data = Service.GetCars(isSold, order);
 
-            return string.Join($"{new string('-', 151)}\r\n", data);
+            var result = data.Select(c => new CarVM
+            {
+                Id = c.Id,
+                BrandName = c.Brand.Name,
+                Model = c.Model,
+                EngineCap = c.EngineCapacity,
+                HorsePower = c.HorsePower,
+                ProductionDate = c.ProductionDate,
+                Price = c.Price,
+                Chassis = c.Chasis.Name,
+                NDoors = c.Chasis.NumberOfDoors,
+                Color = c.Color.Name,
+                ColorType = c.Color.ColorType.Type,
+                Fuel = c.FuelType.Type,
+                Gearbox = c.GearBox.GearType.Type,
+                NumberOfGears = c.GearBox.NumberOfGears,
+                Extras = c.CarsExtras.Select(ce => ce.Extra.Name).ToList()
+            });
+
+            return string.Join($"{new string('-', 151)}\r\n", result);
         }
     }
 }
