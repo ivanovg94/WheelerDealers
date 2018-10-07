@@ -29,6 +29,7 @@ namespace Dealership.Client.Commands.CRUD
                                     HorsePower = c.HorsePower,
                                     ProductionDate = c.ProductionDate,
                                     Price = c.Price,
+                                    NDoors=c.Chasis.NumberOfDoors,
                                     Chassis = c.Chasis.Name,
                                     NDoors = c.Chasis.NumberOfDoors,
                                     Color = c.Color.Name,

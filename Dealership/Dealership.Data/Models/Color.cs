@@ -6,11 +6,25 @@ namespace Dealership.Data.Models
 {
     public class Color
     {
+        private ICollection<Car> _cars;
+
+        public Color()
+        {
+            this._cars = new HashSet<Car>();
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
         public int ColorTypeId { get; set; }
-        public ColorType ColorType { get; set; }
-        public ICollection<Car> Cars { get; set; }
+        public virtual ColorType ColorType { get; set; }
+        public virtual ICollection<Car> Cars
+        {
+            get { return _cars; }
+            set
+            {
+                _cars = value;
+            }
+        }
 
     }
 }
