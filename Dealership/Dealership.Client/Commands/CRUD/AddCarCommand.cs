@@ -2,6 +2,7 @@
 using Dealership.Client.Core.Abstract;
 using Dealership.Data.Context;
 using Dealership.Data.Models;
+using Dealership.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace Dealership.Client.Commands.CRUD
 {
     public class AddCarCommand : PrimeCommand
     {
+        public ICarService carService { get; set; }
         //add brand, model, hp, engCap, prod.date, price, chasis, nDoors, colorName,ColorType, fuelType, gearbox, nGears
         public override string Execute(string[] parameters)
         {
@@ -62,26 +64,11 @@ namespace Dealership.Client.Commands.CRUD
                                               .First(ct => ct.ColorType.Type == paramColorType);
             }
 
+            Car commandResult = carService.AddCar(newBrand, paramModel, paramHp
+                 , paramEngCapacity, paramProdDate, paramPrice
+                 , newChassis, newColor, newFuelType, newGearbox);
 
-            var newCar = new Car()
-            {
-                Brand = newBrand,
-                Model = paramModel,
-                HorsePower = paramHp,
-                EngineCapacity = paramEngCapacity,
-                ProductionDate = paramProdDate,
-                Price = paramPrice,
-                Chasis = newChassis,
-                Color = newColor,
-                FuelType = newFuelType,
-                GearBox = newGearbox,
-            };
-
-            base.Context.Cars.Add(newCar);
-
-            base.Context.SaveChanges();
-
-            return $"{newCar.Brand.Name}, {newCar.Model} with ID:{newCar.Id} was added successful!";
+            return $"{commandResult.Brand.Name} {commandResult.Model} with Id:{commandResult.Id} was added successfully";
         }
     }
 }

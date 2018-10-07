@@ -8,22 +8,41 @@ namespace Dealership.Services
 {
     public class CarService : ICarService
     {
-        private IDealershipContext context;
+        private IDealershipContext Context;
 
         public CarService(IDealershipContext context)
         {
-            this.context = context ?? throw new ArgumentNullException(nameof(context));
+            this.Context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public Car AddCar( /*parameters*/ )
+        public Car AddCar(Brand brand, string model, short horsePower, short engineCapacity
+            , DateTime productionDate, decimal price, Chassis chassis, Color color, FuelType fuelType, Gearbox gearbox)
         {
             //logic
-            return null;
+            var newCar = new Car()
+            {
+                Brand = brand,
+                Model = model,
+                HorsePower = horsePower,
+                EngineCapacity = engineCapacity,
+                ProductionDate = productionDate,
+                Price = price,
+                Chasis = chassis,
+                Color = color,
+                FuelType = fuelType,
+                GearBox = gearbox
+            };
+
+            Context.Cars.Add(newCar);
+
+            Context.SaveChanges();
+
+            return newCar;
         }
 
         public IEnumerable<Car> GetCars(bool filterSold, string direction)
         {
-            var querry = this.context.Cars.Where(c => c.IsSold == filterSold);
+            var querry = this.Context.Cars.Where(c => c.IsSold == filterSold);
 
             if (direction.ToLower() == "asc")
             {
