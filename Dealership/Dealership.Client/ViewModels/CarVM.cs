@@ -24,7 +24,7 @@ namespace Dealership.Client.ViewModels
 
         public override string ToString()
         {
-            return $"Id:{this.Id} {this.BrandName} {this.Model}, Engine: {this.EngineCap}cc {this.Fuel} {this.HorsePower}hp, Body type {this.NumberOfGears} door {this.Chassis}, Prod.: {this.ProductionDate.ToShortDateString()}, Price: {this.Price}, Color: {this.Color} {this.ColorType} Transmission: {this.NumberOfGears} step {this.Gearbox} \r\nExtras: {string.Join(", ",this.Extras)}\r\n";
+            return $"Id:{this.Id} {this.BrandName} {this.Model}, Engine: {this.EngineCap}cc {this.Fuel} {this.HorsePower}hp, Body type {this.NDoors} door {this.Chassis}, Prod.: {this.ProductionDate.ToShortDateString()}, Price: {this.Price}, Color: {this.Color} {this.ColorType} Transmission: {this.NumberOfGears} step {this.Gearbox} \r\nExtras: {string.Join(", ",this.Extras)}\r\n";
         }
     }
 }

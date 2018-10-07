@@ -6,6 +6,13 @@ namespace Dealership.Data.Models
 {
     public class Car
     {
+        private ICollection<CarsExtras> _carsExtras;
+
+        public Car()
+        {
+            this._carsExtras = new HashSet<CarsExtras>();
+        }
+
         public int Id { get; set; }
         public string Model { get; set; }
         public short HorsePower { get; set; }
@@ -15,16 +22,23 @@ namespace Dealership.Data.Models
         public DateTime ProductionDate { get; set; }
 
         public int BrandId { get; set; }
-        public Brand Brand { get; set; }
+        public virtual Brand Brand { get; set; }
         public int ChasisId { get; set; }
-        public Chassis Chasis { get; set; }
+        public virtual Chassis Chasis { get; set; }
         public int ColorId { get; set; }
-        public Color Color { get; set; }
+        public virtual Color Color { get; set; }
         public int FuelTypeId { get; set; }
-        public FuelType FuelType { get; set; }
+        public virtual FuelType FuelType { get; set; }
         public int GearBoxId { get; set; }
-        public Gearbox GearBox { get; set; }
+        public virtual Gearbox GearBox { get; set; }
 
-        public ICollection<CarsExtras> CarsExtras { get; set; }
+        public virtual ICollection<CarsExtras> CarsExtras
+        {
+            get { return _carsExtras; }
+            set
+            {
+                _carsExtras = value;
+            }
+        }
     }
 }

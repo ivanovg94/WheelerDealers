@@ -26,6 +26,7 @@ namespace Dealership.Data.Context
             {
                 optionsBuilder
                     //.UseLoggerFactory(loggerFactory)
+                    .UseLazyLoadingProxies()
                     .UseSqlServer(Configuration.ConnectionString);
             }
         }

@@ -6,12 +6,26 @@ namespace Dealership.Data.Models
 {
     public class Gearbox
     {
+        private ICollection<Car> _cars;
+
+        public Gearbox()
+        {
+            this._cars = new HashSet<Car>();
+        }
+
         public int Id { get; set; }
         public int GearTypeId { get; set; }
         public byte NumberOfGears { get; set; }
 
-        public GearType GearType { get; set; }
-        public ICollection<Car> Cars { get; set; }
+        public virtual GearType GearType { get; set; }
+        public virtual ICollection<Car> Cars
+        {
+            get { return _cars; }
+            set
+            {
+                _cars = value;
+            }
+        }
 
     }
 }

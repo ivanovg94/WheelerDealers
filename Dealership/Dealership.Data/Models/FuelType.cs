@@ -4,11 +4,25 @@ using System.Text;
 
 namespace Dealership.Data.Models
 {
-   public class FuelType
+    public class FuelType
     {
+        private ICollection<Car> _cars;
+
+        public FuelType()
+        {
+            this._cars = new HashSet<Car>();
+        }
+
         public int Id { get; set; }
         public string Type { get; set; }
-        public ICollection<Car> Cars { get; set; }
+        public virtual ICollection<Car> Cars
+        {
+            get { return _cars; }
+            set
+            {
+                _cars = value;
+            }
+        }
 
     }
 }
