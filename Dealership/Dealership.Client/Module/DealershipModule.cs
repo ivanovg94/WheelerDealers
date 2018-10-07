@@ -4,6 +4,7 @@ using System.Text;
 using Autofac;
 using Dealership.Client.Commands;
 using Dealership.Client.Commands.CRUD;
+using Dealership.Client.Commands.CRUD.EditCommands;
 using Dealership.Client.Contracts;
 using Dealership.Client.Contracts.Abstract;
 using Dealership.Client.Core;
@@ -27,6 +28,17 @@ namespace Dealership.Client.Module
             builder.RegisterType<ImportCommand>().Named<ICommand>("import").PropertiesAutowired();
             builder.RegisterType<FilterByBrandCommand>().Named<ICommand>("filterBrand").PropertiesAutowired();
             builder.RegisterType<ViewCarDetailsCommand>().Named<ICommand>("view").PropertiesAutowired();
+            builder.RegisterType<EditBrandCommand>().Named<ICommand>("editbrand").PropertiesAutowired();
+            builder.RegisterType<EditModelCommand>().Named<ICommand>("editmodel").PropertiesAutowired();
+            builder.RegisterType<EditChassisCommand>().Named<ICommand>("editchassis").PropertiesAutowired();
+            builder.RegisterType<EditColorCommand>().Named<ICommand>("editcolor").PropertiesAutowired();
+            builder.RegisterType<EditEngineCapacity>().Named<ICommand>("editenginecapacity").PropertiesAutowired();
+            builder.RegisterType<EditFuelTypeCommand>().Named<ICommand>("editfueltype").PropertiesAutowired();
+            builder.RegisterType<EditGearbox>().Named<ICommand>("editgearbox").PropertiesAutowired();
+            builder.RegisterType<EditHorsePowerCommand>().Named<ICommand>("edithorsepower").PropertiesAutowired();
+            builder.RegisterType<EditPriceCommand>().Named<ICommand>("editprice").PropertiesAutowired();
+            builder.RegisterType<EditProductionDateCommand>().Named<ICommand>("editdate").PropertiesAutowired();
+
 
 
             base.Load(builder);

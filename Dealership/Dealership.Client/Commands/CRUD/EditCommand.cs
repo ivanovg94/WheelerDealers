@@ -16,7 +16,7 @@ namespace Dealership.Client.Commands.CRUD
         // edit [id]
         public override string Execute(string[] parameters)
         {
-           
+            throw new NotImplementedException();
         }
     }
 }
