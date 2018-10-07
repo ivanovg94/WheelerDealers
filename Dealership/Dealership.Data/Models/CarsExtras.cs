@@ -10,5 +10,7 @@ namespace Dealership.Data.Models
         public int ExtraId { get; set; }
         public Car Car { get; set; }
         public Extra Extra { get; set; }
+
+
     }
 }

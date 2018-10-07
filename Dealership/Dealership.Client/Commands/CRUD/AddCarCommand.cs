@@ -1,4 +1,5 @@
-﻿using Dealership.Client.Core.Abstract;
+﻿using Dealership.Client.Commands.Abstract;
+using Dealership.Client.Core.Abstract;
 using Dealership.Data.Context;
 using Dealership.Data.Models;
 using System;
@@ -6,15 +7,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Dealership.Client.Commands
+namespace Dealership.Client.Commands.CRUD
 {
     public class AddCarCommand : PrimeCommand
     {
-        public AddCarCommand()
-        {
-        }
-
-
         //add brand, model, hp, engCap, prod.date,price, chasis, nDoors, colorName,ColorType,ColorCode, fuelType, gearbox, nGears
         public override string Execute(string[] parameters)
         {

@@ -24,5 +24,7 @@ namespace Dealership.Data.Models
         public FuelType FuelType { get; set; }
         public int GearBoxId { get; set; }
         public Gearbox GearBox { get; set; }
+
+        public ICollection<CarsExtras> CarsExtras { get; set; }
     }
 }
