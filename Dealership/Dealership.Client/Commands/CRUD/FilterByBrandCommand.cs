@@ -31,7 +31,6 @@ namespace Dealership.Client.Commands.CRUD
                                     Price = c.Price,
                                     NDoors=c.Chasis.NumberOfDoors,
                                     Chassis = c.Chasis.Name,
-                                    NDoors = c.Chasis.NumberOfDoors,
                                     Color = c.Color.Name,
                                     ColorType = c.Color.ColorType.Type,
                                     Fuel = c.FuelType.Type,
