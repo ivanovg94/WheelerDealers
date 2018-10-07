@@ -20,8 +20,6 @@ namespace Dealership.Data.Context
         DbSet<FuelType> FuelTypes { get; set; }
 
         DbSet<Gearbox> Gearboxes { get; set; }
-        DbSet<ColorType> ColorTypes { get; set; }
-        DbSet<GearType> GearTypes { get; set; }
 
         DbSet<ColorType> ColorTypes { get; set; }
 
