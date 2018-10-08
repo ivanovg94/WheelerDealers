@@ -112,7 +112,7 @@ namespace Dealership.Client.Commands.CRUD
                 newGearbox = base.Context.Gearboxes.Where(gb => gb.GearType.Type == paramGearbox)
                   .First(g => g.NumberOfGears == paramNumberOfGears);
             }
-            else
+            else 
             {
 
                 throw new ArgumentException("Entered invalid gearbox!");
