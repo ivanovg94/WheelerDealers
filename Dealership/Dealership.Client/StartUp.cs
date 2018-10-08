@@ -16,7 +16,7 @@ namespace Dealership.Client
             Console.WriteLine("filter: ");
             Console.WriteLine("     filterBrand {brandName}");
             Console.WriteLine("view {carId}");
-            Console.WriteLine("edit  - not supported yet");
+            Console.WriteLine("edit  [id] [exact property] [new value]");
             Console.WriteLine("export sold? asc/desc");
             Console.WriteLine("import {filename} -ex: import cars");
 

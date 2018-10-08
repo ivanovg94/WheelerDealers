@@ -189,5 +189,17 @@ namespace Dealership.Services
 
             return brand;
         }
+        public void EditBrand(int id, string newValue) // works but must include navigation props tables !
+        {
+            Car car = Context.Cars.Include(b => b.Brand)
+                    .Include(ch => ch.Chasis)
+                    .Include(c => c.Color)
+                    .Include(f => f.FuelType)
+                    .Include(gb => gb.GearBox)
+                    .Include(x => x.CarsExtras)
+                    .First(c => c.Id == id);
+            car.Brand.Name = newValue;
+            Context.SaveChanges();
+        }
     }
 }
