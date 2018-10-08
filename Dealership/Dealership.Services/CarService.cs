@@ -1,4 +1,5 @@
-﻿using Dealership.Data.Context;
+﻿using Dealership.Client.Exceptions;
+using Dealership.Data.Context;
 using Dealership.Data.Models;
 using Dealership.Services.Abstract;
 using Microsoft.EntityFrameworkCore;
@@ -75,7 +76,7 @@ namespace Dealership.Services
 
         public Car GetCar(int id)
         {
-            return this.Context.Cars.Where(c => c.Id == id)
+            var car = this.Context.Cars.Where(c => c.Id == id)
                                            .Include(c => c.Brand)
                                            .Include(c => c.CarsExtras)
                                                 .ThenInclude(ce => ce.Extra)
@@ -86,8 +87,24 @@ namespace Dealership.Services
                                            .Include(c => c.GearBox)
                                                .ThenInclude(gb => gb.GearType)
                                            .FirstOrDefault();
+
+            if (car == null)
+            {
+                throw new CarNotFoundException($"There is no car with ID {id}.");
+            }
+
+            return car;
         }
 
+        public Brand GetBrand(string brandName)
+        {
+            var brand = this.Context.Brands.FirstOrDefault(b => b.Name == brandName);
+            if (brand == null)
+            {
+                throw new BrandNotFoundException($"There is no brand with name \"{brandName}\".");
+            }
 
+            return brand;
+        }
     }
 }

@@ -17,5 +17,7 @@ namespace Dealership.Services.Abstract
         Car GetCar(int id);
 
         IEnumerable<Car> GetCars(bool filterSold, string direction);
+
+        Brand GetBrand(string brandName);
     }
 }
