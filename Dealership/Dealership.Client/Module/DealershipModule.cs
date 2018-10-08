@@ -11,6 +11,7 @@ using Dealership.Client.Core;
 using Dealership.Client.Core.Abstract;
 using Dealership.Data.Context;
 using Dealership.Services;
+using Dealership.Services.Abstract;
 
 namespace Dealership.Client.Module
 {
