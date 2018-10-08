@@ -50,7 +50,7 @@ namespace Dealership.Client.Commands.CRUD
             }
 
             var car = CarService.CreateCar(brandName, model, horesePower, engineCapacity, prodDate, price, chassisName, colorName, colorType, fuelType, gearboxType, numberOfGears);
-
+            // consider using only one of theese CarService.CreateCar/AddCar ???
             this.CarService.AddCar(car);
 
             return $"{car.Brand.Name} {car.Model} with Id:{car.Id} was added successfully";

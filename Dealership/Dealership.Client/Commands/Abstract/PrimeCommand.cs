@@ -1,4 +1,5 @@
-﻿using Dealership.Client.Contracts;
+﻿using Autofac;
+using Dealership.Client.Contracts;
 using Dealership.Client.Contracts.Abstract;
 using Dealership.Data.Context;
 using System;
@@ -11,6 +12,8 @@ namespace Dealership.Client.Commands.Abstract
     {
         //Remove after all command logic is moved to service layer
         public IDealershipContext Context { get; set; }
+        public IComponentContext autoFacContext { get; set; }
+
         public PrimeCommand()
         {
         }
