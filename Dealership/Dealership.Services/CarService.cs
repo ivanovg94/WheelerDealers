@@ -3,7 +3,6 @@ using Dealership.Data.Models;
 using Dealership.Services.Abstract;
 using Dealership.Services.Exceptions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -94,6 +93,12 @@ namespace Dealership.Services
             return car;
         }
 
+        public void AddCars(ICollection<Car> cars)
+        {
+            this.Context.Cars.AddRange(cars);
+            this.Context.SaveChanges();
+        }
+
         public IList<Car> GetCars(bool filterSold, string direction)
         {
             var querry = this.Context.Cars.Where(c => c.IsSold == filterSold)
@@ -117,6 +122,7 @@ namespace Dealership.Services
             }
             else { return querry.ToList(); }
         }
+
         public IList<Car> GetCars(string direction)
         {
             var querry = this.Context.Cars
@@ -141,7 +147,6 @@ namespace Dealership.Services
             else { return querry.ToList(); }
         }
 
-       
         public Car GetCar(int id)
         {
             var car = this.Context.Cars.Where(c => c.Id == id)

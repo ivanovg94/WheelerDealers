@@ -1,7 +1,7 @@
 [
   {
-    "BrandName": "vwImport",
-    "Model": "golf",
+    "BrandName": "vw",
+    "Model": "golfImport",
     "Chassis": "Sedan",
     "NDoors": 4,
     "EngineCap": 1111,
@@ -16,8 +16,8 @@
     "Extras": []
   },
   {
-    "BrandName": "vwImport",
-    "Model": "passat",
+    "BrandName": "vw",
+    "Model": "passatImport",
     "Chassis": "Sedan",
     "NDoors": 4,
     "EngineCap": 1111,

@@ -12,6 +12,8 @@ namespace Dealership.Services.Abstract
         //TODO: ICar
         Car AddCar(Car car);
 
+        void AddCars(ICollection<Car> cars);
+
         Car GetCar(int id);
 
         IList<Car> GetCars(bool filterSold, string direction);
