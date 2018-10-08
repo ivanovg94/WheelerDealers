@@ -19,6 +19,8 @@ namespace Dealership.Client
             Console.WriteLine("edit  - not supported yet");
             Console.WriteLine("export sold? asc/desc");
             Console.WriteLine("import {filename} -ex: import cars");
+            Console.WriteLine("generatePdf - output folder: DataProcessor/PdfReports");
+
 
             Console.WriteLine();
             Console.WriteLine();

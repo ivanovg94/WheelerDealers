@@ -51,6 +51,7 @@ namespace Dealership.Client.Module
             builder.RegisterType<EditHorsePowerCommand>().Named<ICommand>("edithorsepower").PropertiesAutowired();
             builder.RegisterType<EditPriceCommand>().Named<ICommand>("editprice").PropertiesAutowired();
             builder.RegisterType<EditProductionDateCommand>().Named<ICommand>("editdate").PropertiesAutowired();
+            builder.RegisterType<GeneratePdfCommand>().Named<ICommand>("generatePdf").PropertiesAutowired();
         }
     }
 }
