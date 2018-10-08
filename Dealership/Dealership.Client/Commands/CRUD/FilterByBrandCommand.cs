@@ -1,6 +1,6 @@
 ﻿using Dealership.Client.Commands.Abstract;
-using Dealership.Client.Exceptions;
 using Dealership.Client.ViewModels;
+using Dealership.Services.Abstract;
 using System.Linq;
 using System.Text;
 
@@ -8,16 +8,13 @@ namespace Dealership.Client.Commands.CRUD
 {
     public class FilterByBrandCommand : PrimeCommand
     {
+        public ICarService CarService { get; set; }
+
         public override string Execute(string[] parameters)
         {
             string brandName = parameters[0];
 
-            var brand = this.Context.Brands.FirstOrDefault(b => b.Name == brandName);
-
-            if (brand == null)
-            {
-                throw new BrandNotFoundException($"There is no brand with name {brandName}.");
-            }
+            var brand = this.CarService.GetBrand(brandName);
 
             var cars = this.Context.Cars.Where(c => c.Brand == brand)
                                 .Select(c => new CarVM

@@ -20,38 +20,67 @@ namespace Dealership.Client.Commands.CRUD
             // validation TODO
             var paramBrand = parameters[0];
             var paramModel = parameters[1];
-            var paramHp = short.Parse(parameters[2]);
-            var paramEngCapacity = short.Parse(parameters[3]);
-            var paramProdDate = DateTime.Parse(parameters[4]);
-            var paramPrice = decimal.Parse(parameters[5]);
+            short paramHp; //short.Parse(parameters[2]);
+            if (!short.TryParse(parameters[2], out paramHp))
+            {
+                throw new ArgumentException("Invalid horse power value!");
+            }
+
+            short paramEngCapacity;
+            if (short.TryParse(parameters[3],out paramEngCapacity))
+            {
+                throw new ArgumentException("Invalid engine capacity value!");
+            }
+
+            DateTime paramProdDate;// = DateTime.Parse(parameters[4]);
+            if (!DateTime.TryParse(parameters[4],out paramProdDate))
+            {
+                throw new ArgumentException("Invalid production date passed!");
+            }
+
+            decimal paramPrice;//= decimal.Parse(parameters[5]);
+            if (!decimal.TryParse(parameters[5],out paramPrice))
+            {
+                throw new ArgumentException("Invalid price value!");
+            }
             var paramChasis = parameters[6];
             var paramColorName = parameters[7];
             var paramColorType = parameters[8];
             var paramFuelType = parameters[9];
             var paramGearbox = parameters[10];
-            var paramNumberOfGears = byte.Parse(parameters[11]);
+
+            byte paramNumberOfGears;// = byte.Parse(parameters[11]);
+            if (!byte.TryParse(parameters[11],out paramNumberOfGears))
+            {
+                throw new ArgumentException("Invalid number of gears passed!");
+            }
 
             Brand newBrand = null;
 
-            Chassis newChassis = base.Context.Chassis.First(ch => ch.Name == paramChasis);
+            Chassis newChassis = null;
 
             Color newColor = null;
 
-            FuelType newFuelType = base.Context.FuelTypes.First(ft => ft.Type == paramFuelType);
-            Gearbox newGearbox = base.Context.Gearboxes.Where(gb => gb.GearType.Type == paramGearbox).First(g => g.NumberOfGears == paramNumberOfGears);
+            FuelType newFuelType = null;
 
-            if (!base.Context.Brands.Any(b => b.Name == paramBrand))
+            Gearbox newGearbox = null;
+
+            if (base.Context.Brands.Any(b => b.Name == paramBrand))
+            {
+                newBrand = base.Context.Brands.First(b => b.Name == paramBrand);
+            }
+            else
             {
                 newBrand = new Brand() { Name = paramBrand };
                 base.Context.Brands.Add(newBrand);
             }
-            else
+
+            if (base.Context.Colors.Where(c => c.Name == paramColorName).Any(ct => ct.Name == paramColorType))
             {
-                newBrand = base.Context.Brands.First(b => b.Name == paramBrand);
-
+                newColor = base.Context.Colors.Where(c => c.Name == paramColorName)
+                                              .First(ct => ct.ColorType.Type == paramColorType);
             }
-
-            if (!base.Context.Colors.Where(c => c.Name == paramColorName).Any(ct => ct.Name == paramColorType))
+            else
             {
                 newColor = new Color()
                 {
@@ -59,15 +88,39 @@ namespace Dealership.Client.Commands.CRUD
                     ColorType = base.Context.ColorTypes.First(ct => ct.Type == paramColorType)
                 };
             }
+
+            if (base.Context.Chassis.Any(ch => ch.Name == paramChasis))
+            {
+                base.Context.Chassis.First(ch => ch.Name == paramChasis);
+            }
             else
             {
-                newColor = base.Context.Colors.Where(c => c.Name == paramColorName)
-                                              .First(ct => ct.ColorType.Type == paramColorType);
+                throw new ArgumentException("Input chassis not valid!");
+            }
+
+            if (base.Context.FuelTypes.Any(ft => ft.Type == paramFuelType))
+            {
+                newFuelType = base.Context.FuelTypes.First(ft => ft.Type == paramFuelType);
+            }
+            else
+            {
+                throw new ArgumentException("Input chassis not valid!");
+            }
+
+            if (base.Context.Gearboxes.Any(gb => gb.GearType.Type == paramGearbox))
+            {
+                newGearbox = base.Context.Gearboxes.Where(gb => gb.GearType.Type == paramGearbox)
+                  .First(g => g.NumberOfGears == paramNumberOfGears);
+            }
+            else
+            {
+
+                throw new ArgumentException("Entered invalid gearbox!");
             }
 
             Car commandResult = carService.AddCar(newBrand, paramModel, paramHp
-                 , paramEngCapacity, paramProdDate, paramPrice
-                 , newChassis, newColor, newFuelType, newGearbox);
+                                                , paramEngCapacity, paramProdDate, paramPrice
+                                                , newChassis, newColor, newFuelType, newGearbox);
 
             return $"{commandResult.Brand.Name} {commandResult.Model} with Id:{commandResult.Id} was added successfully";
         }

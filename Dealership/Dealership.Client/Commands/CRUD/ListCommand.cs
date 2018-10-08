@@ -19,11 +19,9 @@ namespace Dealership.Client.Commands.CRUD
             IList<Car> data = new List<Car>();
             var dir = "";
             if (parameters.Length == 2) { dir = parameters[1]; }
-            // sold asc/desc
+
             if (parameters[0].ToLower() == "sold") { data = Service.GetCars(true, dir); }
-            // active | asc/desc
             else if (parameters[0].ToLower() == "active") { data = Service.GetCars(false, dir); }
-            // all (default)
             else if (parameters[0].ToLower() == "all") { data = Service.GetCars(dir); }
 
             var result = data.Select(c => new CarVM

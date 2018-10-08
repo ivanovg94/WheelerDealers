@@ -1,4 +1,5 @@
-﻿using Dealership.Data.Context;
+﻿using Dealership.Client.Exceptions;
+using Dealership.Data.Context;
 using Dealership.Data.Models;
 using Dealership.Services.Abstract;
 using Microsoft.EntityFrameworkCore;
@@ -18,10 +19,9 @@ namespace Dealership.Services
             this.Context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public Car AddCar(Brand brand, string model, short horsePower, short engineCapacity
-            , DateTime productionDate, decimal price, Chassis chassis, Color color, FuelType fuelType, Gearbox gearbox)
+        public Car CreateCar(Brand brand, string model, short horsePower, short engineCapacity
+           , DateTime productionDate, decimal price, Chassis chassis, Color color, FuelType fuelType, Gearbox gearbox)
         {
-            //logic
             var newCar = new Car()
             {
                 Brand = brand,
@@ -36,8 +36,16 @@ namespace Dealership.Services
                 GearBox = gearbox
             };
 
-            Context.Cars.Add(newCar);
+            return newCar;
+        }
 
+        public Car AddCar(Brand brand, string model, short horsePower, short engineCapacity
+            , DateTime productionDate, decimal price, Chassis chassis, Color color, FuelType fuelType, Gearbox gearbox)
+        {
+            //logic
+            var newCar = CreateCar(brand, model, horsePower, engineCapacity, productionDate, price, chassis, color, fuelType, gearbox);
+
+            Context.Cars.Add(newCar);
             Context.SaveChanges();
 
             return newCar;
@@ -93,7 +101,7 @@ namespace Dealership.Services
        
         public Car GetCar(int id)
         {
-            return this.Context.Cars.Where(c => c.Id == id)
+            var car = this.Context.Cars.Where(c => c.Id == id)
                                            .Include(c => c.Brand)
                                            .Include(c => c.CarsExtras)
                                                 .ThenInclude(ce => ce.Extra)
@@ -104,6 +112,24 @@ namespace Dealership.Services
                                            .Include(c => c.GearBox)
                                                .ThenInclude(gb => gb.GearType)
                                            .FirstOrDefault();
+
+            if (car == null)
+            {
+                throw new CarNotFoundException($"There is no car with ID {id}.");
+            }
+
+            return car;
+        }
+
+        public Brand GetBrand(string brandName)
+        {
+            var brand = this.Context.Brands.FirstOrDefault(b => b.Name == brandName);
+            if (brand == null)
+            {
+                throw new BrandNotFoundException($"There is no brand with name \"{brandName}\".");
+            }
+
+            return brand;
         }
     }
 }
