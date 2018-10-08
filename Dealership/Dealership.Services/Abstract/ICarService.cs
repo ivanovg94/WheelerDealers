@@ -12,6 +12,7 @@ namespace Dealership.Services.Abstract
 
         Car GetCar(int id);
 
-        IEnumerable<Car> GetCars(bool filterSold, string direction);
+        IList<Car> GetCars(bool filterSold, string direction);
+        IList<Car> GetCars(string direction);
     }
 }

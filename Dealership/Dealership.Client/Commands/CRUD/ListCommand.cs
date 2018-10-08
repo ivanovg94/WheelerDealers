@@ -1,13 +1,9 @@
 ﻿using Dealership.Client.Commands.Abstract;
-using Dealership.Client.Core.Abstract;
 using Dealership.Client.ViewModels;
-using Dealership.Data.Context;
-using Dealership.Services;
+using Dealership.Data.Models;
 using Dealership.Services.Abstract;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Dealership.Client.Commands.CRUD
 {
@@ -18,18 +14,17 @@ namespace Dealership.Client.Commands.CRUD
         {
         }
 
-        // null/sold direction
         public override string Execute(string[] parameters)
         {
-            bool isSold = false;
-            if (parameters.Length == 2)
-            {
-                isSold = true;
-            }
-
-            string order = parameters.Last();
-
-            var data = Service.GetCars(isSold, order);
+            IList<Car> data = new List<Car>();
+            var dir = "";
+            if (parameters.Length == 2) { dir = parameters[1]; }
+            // sold asc/desc
+            if (parameters[0].ToLower() == "sold") { data = Service.GetCars(true, dir); }
+            // active | asc/desc
+            else if (parameters[0].ToLower() == "active") { data = Service.GetCars(false, dir); }
+            // all (default)
+            else if (parameters[0].ToLower() == "all") { data = Service.GetCars(dir); }
 
             var result = data.Select(c => new CarVM
             {
