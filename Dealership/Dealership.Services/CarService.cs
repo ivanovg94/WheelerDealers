@@ -1,7 +1,7 @@
-﻿using Dealership.Client.Exceptions;
-using Dealership.Data.Context;
+﻿using Dealership.Data.Context;
 using Dealership.Data.Models;
 using Dealership.Services.Abstract;
+using Dealership.Services.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,9 +18,52 @@ namespace Dealership.Services
             this.Context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public Car CreateCar(Brand brand, string model, short horsePower, short engineCapacity
-           , DateTime productionDate, decimal price, Chassis chassis, Color color, FuelType fuelType, Gearbox gearbox)
+        public Car CreateCar(string brandName, string model, short horsePower, short engineCapacity
+           , DateTime productionDate, decimal price, string chassisName, string colorName, string colorType, string fuelTypeName, string gearboxTypeName, int numOfGears)
         {
+            var brand = this.Context.Brands.FirstOrDefault(b => b.Name == brandName);
+            if (brand == null)
+            {
+                brand = new Brand() { Name = brandName };
+                this.Context.Brands.Add(brand);
+                this.Context.SaveChanges();
+            }
+
+            var chassis = this.Context.Chassis.FirstOrDefault(c => c.Name == chassisName);
+            if (chassis == null)
+            {
+                throw new ChassisNotFoundException($"There is no chassis with name \"{chassisName}\".");
+            }
+
+            var color = this.Context.Colors.FirstOrDefault(c => c.Name == colorName);
+            if (color == null)
+            {
+                color = new Color
+                {
+                    Name = colorName,
+                    ColorType = this.Context.ColorTypes.FirstOrDefault(ct => ct.Type == colorType)
+                };
+
+                if (color.ColorType == null)
+                {
+                    throw new ColorTypeNotFoundException($"There is no color type with name \"{chassisName}\".");
+                }
+                this.Context.Colors.Add(color);
+                this.Context.SaveChanges();
+            }
+
+            var fuelType = this.Context.FuelTypes.FirstOrDefault(f => f.Type == fuelTypeName);
+            if (fuelType == null)
+            {
+                throw new FuelNotFoundException($"There is no fuel with name \"{fuelTypeName}\".");
+            }
+
+            var gearbox = this.Context.Gearboxes.FirstOrDefault(g => g.GearType.Type == gearboxTypeName && g.NumberOfGears == numOfGears);
+            if (gearbox == null)
+            {
+                throw new GearboxNotFoundException($"There is no such a gearbox.");
+            }
+
             var newCar = new Car()
             {
                 Brand = brand,
@@ -30,24 +73,24 @@ namespace Dealership.Services
                 ProductionDate = productionDate,
                 Price = price,
                 Chasis = chassis,
+                ChasisId = chassis.Id,
                 Color = color,
+                ColorId = color.Id,
                 FuelType = fuelType,
-                GearBox = gearbox
+                FuelTypeId = fuelType.Id,
+                GearBox = gearbox,
+                GearBoxId = gearbox.Id
             };
 
             return newCar;
         }
 
-        public Car AddCar(Brand brand, string model, short horsePower, short engineCapacity
-            , DateTime productionDate, decimal price, Chassis chassis, Color color, FuelType fuelType, Gearbox gearbox)
+        public Car AddCar(Car car)
         {
-            //logic
-            var newCar = CreateCar(brand, model, horsePower, engineCapacity, productionDate, price, chassis, color, fuelType, gearbox);
+            this.Context.Cars.Add(car);
+            this.Context.SaveChanges();
 
-            Context.Cars.Add(newCar);
-            Context.SaveChanges();
-
-            return newCar;
+            return car;
         }
 
         public IEnumerable<Car> GetCars(bool filterSold, string direction)
@@ -96,6 +139,16 @@ namespace Dealership.Services
             return car;
         }
 
+        public Car RemoveCar(int id)
+        {
+            var car = GetCar(id);
+
+            this.Context.Cars.Remove(car);
+            this.Context.SaveChanges();
+
+            return car;
+        }
+
         public Brand GetBrand(string brandName)
         {
             var brand = this.Context.Brands.FirstOrDefault(b => b.Name == brandName);
@@ -105,6 +158,11 @@ namespace Dealership.Services
             }
 
             return brand;
+        }
+
+        public Car CreateCar(Brand brand, string model, short horsePower, short engineCapacity, DateTime productionDate, decimal price, Chassis chassis, Color color, FuelType fuelType, Gearbox gearbox)
+        {
+            throw new NotImplementedException();
         }
     }
 }

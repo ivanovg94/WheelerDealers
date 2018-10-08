@@ -14,6 +14,7 @@ namespace Dealership.Data.Models
         }
 
         public int Id { get; set; }
+
         public string Model { get; set; }
         public short HorsePower { get; set; }
         public short EngineCapacity { get; set; }
