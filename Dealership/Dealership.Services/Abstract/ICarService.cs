@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Dealership.Data.Models;
 
-namespace Dealership.Services
+namespace Dealership.Services.Abstract
 {
     public interface ICarService
     {
@@ -10,7 +10,7 @@ namespace Dealership.Services
             , DateTime productionDate, decimal price, Chassis chassis
             , Color color, FuelType fuelType, Gearbox gearbox);
 
-        Car GetCar();
+        Car GetCar(int id);
 
         IEnumerable<Car> GetCars(bool filterSold, string direction);
     }

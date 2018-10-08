@@ -1,5 +1,7 @@
 ﻿using Dealership.Data.Context;
 using Dealership.Data.Models;
+using Dealership.Services.Abstract;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,7 +44,16 @@ namespace Dealership.Services
 
         public IEnumerable<Car> GetCars(bool filterSold, string direction)
         {
-            var querry = this.Context.Cars.Where(c => c.IsSold == filterSold);
+            var querry = this.Context.Cars.Where(c => c.IsSold == filterSold)
+                                           .Include(c => c.Brand)
+                                           .Include(c => c.CarsExtras)
+                                                .ThenInclude(ce => ce.Extra)
+                                           .Include(c => c.Chasis)
+                                           .Include(c => c.Color)
+                                               .ThenInclude(co => co.ColorType)
+                                           .Include(c => c.FuelType)
+                                           .Include(c => c.GearBox)
+                                               .ThenInclude(gb => gb.GearType);
 
             if (direction.ToLower() == "asc")
             {
@@ -55,10 +66,19 @@ namespace Dealership.Services
             else { throw new InvalidOperationException("Invalid direction!"); }
         }
 
-        public Car GetCar( /*parameters*/ )
+        public Car GetCar(int id)
         {
-            //logic
-            throw new NotImplementedException();
+            return this.Context.Cars.Where(c => c.Id == id)
+                                           .Include(c => c.Brand)
+                                           .Include(c => c.CarsExtras)
+                                                .ThenInclude(ce => ce.Extra)
+                                           .Include(c => c.Chasis)
+                                           .Include(c => c.Color)
+                                               .ThenInclude(co => co.ColorType)
+                                           .Include(c => c.FuelType)
+                                           .Include(c => c.GearBox)
+                                               .ThenInclude(gb => gb.GearType)
+                                           .FirstOrDefault();
         }
     }
 }

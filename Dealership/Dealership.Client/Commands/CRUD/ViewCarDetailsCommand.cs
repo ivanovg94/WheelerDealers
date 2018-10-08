@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text;
 using Dealership.Client.Commands.Abstract;
 using Dealership.Data.Context;
+using Dealership.Services;
+using Dealership.Services.Abstract;
 
 namespace Dealership.Client.Commands.CRUD
 {
     public class ViewCarDetailsCommand : PrimeCommand
     {
+        public ICarService CarService { get; set; }
         public ViewCarDetailsCommand()
         {
         }
@@ -16,8 +19,7 @@ namespace Dealership.Client.Commands.CRUD
         // id
         public override string Execute(string[] parameters)
         {
-            var id = int.Parse(parameters[0]);
-            var car = base.Context.Cars.First(c => c.Id == id);
+            var car = CarService.GetCar(int.Parse(parameters[0]));
             var extras = string.Join(", ", car.CarsExtras.Select(ce => ce.Extra.Name).ToList());
             return $"Id:{car.Id} {car.Brand.Name} {car.Model}, Engine: {car.EngineCapacity}cc {car.FuelType.Type} {car.HorsePower}hp, Body type {car.Chasis.NumberOfDoors} door {car.Chasis.Name}, Prod.: {car.ProductionDate.ToShortDateString()}, Price: {car.Price}, Color: {car.Color.Name} {car.Color.ColorType.Type} Transmission: {car.GearBox.NumberOfGears} step {car.GearBox.GearType.Type} \r\nExtras: {extras}\r\n";
         }
