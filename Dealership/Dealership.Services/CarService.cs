@@ -3,6 +3,7 @@ using Dealership.Data.Models;
 using Dealership.Services.Abstract;
 using Dealership.Services.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -93,7 +94,7 @@ namespace Dealership.Services
             return car;
         }
 
-        public IEnumerable<Car> GetCars(bool filterSold, string direction)
+        public IList<Car> GetCars(bool filterSold, string direction)
         {
             var querry = this.Context.Cars.Where(c => c.IsSold == filterSold)
                                            .Include(c => c.Brand)
@@ -114,9 +115,33 @@ namespace Dealership.Services
             {
                 return querry.OrderByDescending(c => c.Id).ToList();
             }
-            else { throw new InvalidOperationException("Invalid direction!"); }
+            else { return querry.ToList(); }
+        }
+        public IList<Car> GetCars(string direction)
+        {
+            var querry = this.Context.Cars
+                                           .Include(c => c.Brand)
+                                           .Include(c => c.CarsExtras)
+                                                .ThenInclude(ce => ce.Extra)
+                                           .Include(c => c.Chasis)
+                                           .Include(c => c.Color)
+                                               .ThenInclude(co => co.ColorType)
+                                           .Include(c => c.FuelType)
+                                           .Include(c => c.GearBox)
+                                               .ThenInclude(gb => gb.GearType);
+
+            if (direction.ToLower() == "asc")
+            {
+                return querry.OrderBy(c => c.Id).ToList();
+            }
+            else if (direction.ToLower() == "desc")
+            {
+                return querry.OrderByDescending(c => c.Id).ToList();
+            }
+            else { return querry.ToList(); }
         }
 
+       
         public Car GetCar(int id)
         {
             var car = this.Context.Cars.Where(c => c.Id == id)
@@ -158,11 +183,6 @@ namespace Dealership.Services
             }
 
             return brand;
-        }
-
-        public Car CreateCar(Brand brand, string model, short horsePower, short engineCapacity, DateTime productionDate, decimal price, Chassis chassis, Color color, FuelType fuelType, Gearbox gearbox)
-        {
-            throw new NotImplementedException();
         }
     }
 }
