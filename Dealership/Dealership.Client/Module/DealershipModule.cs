@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Autofac;
+﻿using Autofac;
 using Dealership.Client.Commands;
 using Dealership.Client.Commands.CRUD;
 using Dealership.Client.Commands.CRUD.EditCommands;
-using Dealership.Client.Contracts;
 using Dealership.Client.Contracts.Abstract;
 using Dealership.Client.Core;
 using Dealership.Client.Core.Abstract;
+using Dealership.Client.Core.Providers;
 using Dealership.Data.Context;
 using Dealership.Services;
 using Dealership.Services.Abstract;
@@ -19,11 +16,23 @@ namespace Dealership.Client.Module
     {
         protected override void Load(ContainerBuilder builder)
         {
+            RegisterCoreComponents(builder);
+            RegisterCommands(builder);
+
+            base.Load(builder);
+        }
+
+        private void RegisterCoreComponents(ContainerBuilder builder)
+        {
             builder.RegisterType<DealershipEngine>().As<IEngine>().SingleInstance();
             builder.RegisterType<DealershipContext>().As<IDealershipContext>().SingleInstance();
             builder.RegisterType<CarService>().As<ICarService>().SingleInstance();
+            builder.RegisterType<ConsoleReader>().As<IReader>().SingleInstance();
+            builder.RegisterType<ConsoleWriter>().As<IWriter>().SingleInstance();
+        }
 
-
+        private void RegisterCommands(ContainerBuilder builder)
+        {
             builder.RegisterType<AddCarCommand>().Named<ICommand>("add").PropertiesAutowired();
             builder.RegisterType<RemoveCarCommand>().Named<ICommand>("remove").PropertiesAutowired();
             builder.RegisterType<ListCommand>().Named<ICommand>("list").PropertiesAutowired();
@@ -42,8 +51,6 @@ namespace Dealership.Client.Module
             builder.RegisterType<EditHorsePowerCommand>().Named<ICommand>("edithorsepower").PropertiesAutowired();
             builder.RegisterType<EditPriceCommand>().Named<ICommand>("editprice").PropertiesAutowired();
             builder.RegisterType<EditProductionDateCommand>().Named<ICommand>("editdate").PropertiesAutowired();
-            
-            base.Load(builder);
         }
     }
 }
