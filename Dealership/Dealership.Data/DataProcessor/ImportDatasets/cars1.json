@@ -1,0 +1,34 @@
+[
+  {
+    "BrandName": "vwImport",
+    "Model": "golf",
+    "Chassis": "Sedan",
+    "NDoors": 4,
+    "EngineCap": 1111,
+    "HorsePower": 111,
+    "ProductionDate": "2005-12-10T00:00:00",
+    "Price": 1000.00,
+    "Color": "red",
+    "ColorType": "Acrylic",
+    "Fuel": "Diesel",
+    "Gearbox": "Automatic",
+    "NumberOfGears": 3,
+    "Extras": []
+  },
+  {
+    "BrandName": "vwImport",
+    "Model": "passat",
+    "Chassis": "Sedan",
+    "NDoors": 4,
+    "EngineCap": 1111,
+    "HorsePower": 111,
+    "ProductionDate": "2005-12-10T00:00:00",
+    "Price": 1000.00,
+    "Color": "red",
+    "ColorType": "Acrylic",
+    "Fuel": "Diesel",
+    "Gearbox": "Automatic",
+    "NumberOfGears": 3,
+    "Extras": []
+  }
+]

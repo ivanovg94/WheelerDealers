@@ -9,4 +9,9 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DataProcessor\ExportResults\" />
+    <Folder Include="DataProcessor\ImportDatasets\" />
+  </ItemGroup>
+
 </Project>

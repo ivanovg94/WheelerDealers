@@ -17,10 +17,9 @@ namespace Dealership.Services
             this.Context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public Car AddCar(Brand brand, string model, short horsePower, short engineCapacity
-            , DateTime productionDate, decimal price, Chassis chassis, Color color, FuelType fuelType, Gearbox gearbox)
+        public Car CreateCar(Brand brand, string model, short horsePower, short engineCapacity
+           , DateTime productionDate, decimal price, Chassis chassis, Color color, FuelType fuelType, Gearbox gearbox)
         {
-            //logic
             var newCar = new Car()
             {
                 Brand = brand,
@@ -35,8 +34,16 @@ namespace Dealership.Services
                 GearBox = gearbox
             };
 
-            Context.Cars.Add(newCar);
+            return newCar;
+        }
 
+        public Car AddCar(Brand brand, string model, short horsePower, short engineCapacity
+            , DateTime productionDate, decimal price, Chassis chassis, Color color, FuelType fuelType, Gearbox gearbox)
+        {
+            //logic
+            var newCar = CreateCar(brand, model, horsePower, engineCapacity, productionDate, price, chassis, color, fuelType, gearbox);
+
+            Context.Cars.Add(newCar);
             Context.SaveChanges();
 
             return newCar;
@@ -80,5 +87,7 @@ namespace Dealership.Services
                                                .ThenInclude(gb => gb.GearType)
                                            .FirstOrDefault();
         }
+
+
     }
 }
