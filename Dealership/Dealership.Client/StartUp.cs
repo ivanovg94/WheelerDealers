@@ -15,6 +15,8 @@ namespace Dealership.Client
             Console.WriteLine("list active/sold/all asc/desc ");
             Console.WriteLine("filter: ");
             Console.WriteLine("     filterBrand {brandName}");
+            Console.WriteLine("     filterYears {yearFrom} {yearTo}");
+
             Console.WriteLine("view {carId}");
             Console.WriteLine("edit  [id] [exact property] [new value]");
             Console.WriteLine("export sold? asc/desc");

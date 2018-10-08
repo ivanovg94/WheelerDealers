@@ -2,6 +2,7 @@
 using Dealership.Client.Commands;
 using Dealership.Client.Commands.CRUD;
 using Dealership.Client.Commands.CRUD.EditCommands;
+using Dealership.Client.Commands.CRUD.FilterCarsCommands;
 using Dealership.Client.Contracts.Abstract;
 using Dealership.Client.Core;
 using Dealership.Client.Core.Abstract;
@@ -25,7 +26,7 @@ namespace Dealership.Client.Module
         private void RegisterCoreComponents(ContainerBuilder builder)
         {
             builder.RegisterType<DealershipEngine>().As<IEngine>().SingleInstance();
-            builder.RegisterType<DealershipContext>().As<IDealershipContext>().SingleInstance();
+            builder.RegisterType<DealershipContext>().As<IDealershipContext>();
             builder.RegisterType<CarService>().As<ICarService>().SingleInstance();
             builder.RegisterType<ConsoleReader>().As<IReader>().SingleInstance();
             builder.RegisterType<ConsoleWriter>().As<IWriter>().SingleInstance();
@@ -40,6 +41,7 @@ namespace Dealership.Client.Module
             builder.RegisterType<ExportCommand>().Named<ICommand>("export").PropertiesAutowired();
             builder.RegisterType<ImportCommand>().Named<ICommand>("import").PropertiesAutowired();
             builder.RegisterType<FilterByBrandCommand>().Named<ICommand>("filterBrand").PropertiesAutowired();
+            builder.RegisterType<FilterByYearsCommand>().Named<ICommand>("filterYears").PropertiesAutowired();
             builder.RegisterType<ViewCarDetailsCommand>().Named<ICommand>("view").PropertiesAutowired();
             builder.RegisterType<EditBrandCommand>().Named<ICommand>("editbrand").PropertiesAutowired();
             builder.RegisterType<EditModelCommand>().Named<ICommand>("editmodel").PropertiesAutowired();
