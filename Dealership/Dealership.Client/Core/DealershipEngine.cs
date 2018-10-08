@@ -26,7 +26,7 @@ namespace Dealership.Client.Core
                 try
                 {
                     var inputParams = input.Split();
-                    var command = this.CommandParser(inputParams[0]);
+                    var command = this.ParseCommand(inputParams[0]);
                     //commands not implemented yet !
                     //commandResult returns message according to operation result (successful or not)
                     var commandResult = command.Execute(inputParams.Skip(1).ToArray());
@@ -40,7 +40,7 @@ namespace Dealership.Client.Core
             }
         }
 
-        private ICommand CommandParser(string commandStr)
+        private ICommand ParseCommand(string commandStr)
         {
             return this.containerContext.ResolveNamed<ICommand>(commandStr);
         }
