@@ -13,7 +13,7 @@ namespace Dealership.Client.Commands.ExtrasCommands
         //createExtra | name
         public override string Execute(string[] parameters)
         {
-            //TODO: validate
+            if (parameters.Length == 0) { throw new ArgumentException("Invalid parameters"); }
             var extra = this.ExtraService.CreateExtra(parameters[0]);
             return $"Created extra {extra.Name} with Id {extra.Id}";
         }

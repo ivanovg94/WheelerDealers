@@ -1,6 +1,7 @@
 ﻿using Dealership.Data.Context;
 using Dealership.Data.Models;
 using Dealership.Services.Abstract;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,19 @@ namespace Dealership.Services
 
         public Extra AddExtraToCar(int carId, string extraName)
         {
+            if (this.Context.Cars.Any(c => c.Id == carId))
+            {
+                throw new ArgumentException($"Car with Id {carId} does not exist");
+            }
+
+            if (this.Context.Cars.Include(c => c.CarsExtras)
+                                   .ThenInclude(ce => ce.Extra)
+                                 .FirstOrDefault(c => c.Id == carId)
+                                 .CarsExtras.Any(ce => ce.Extra.Name == extraName))
+            {
+                throw new ArgumentException($"Car with Id {carId} already has extra with name {extraName}.");
+            }
+
             //TODO: validate
             Extra extra = null;
             if (!this.Context.Extras.Any(e => e.Name == extraName))
@@ -38,8 +52,7 @@ namespace Dealership.Services
 
             var newCarExtra = new CarsExtras() { CarId = carId, ExtraId = extra.Id };
             this.Context.CarsExtras.Add(newCarExtra);
-      //      this.CarService.GetCar(carId).CarsExtras.Add(newCarExtra);
-     //       extra.CarsExtras.Add(newCarExtra);
+            //       extra.CarsExtras.Add(newCarExtra);
 
             this.Context.SaveChanges();
             return extra;
@@ -47,7 +60,9 @@ namespace Dealership.Services
 
         public Extra GetExtraById(int id)
         {
-            return Context.Extras.FirstOrDefault();
+            var extra = Context.Extras.FirstOrDefault();
+            return extra;
+
         }
 
         public Extra GetExtraByName(string name)
@@ -62,7 +77,14 @@ namespace Dealership.Services
 
         public ICollection<Extra> GetExtrasForCar(int carId)
         {
-            return this.CarService.GetCar(carId).CarsExtras.Select(x => x.Extra).ToList();
+            if (!this.Context.Cars.Any(c => c.Id == carId))
+            {
+                throw new ArgumentException("Invalid car Id.");
+            }
+            return this.Context.Cars.Include(c => c.CarsExtras)
+                                        .ThenInclude(ce => ce.Extra)
+                                        .First(c => c.Id == carId).CarsExtras
+                                        .Select(x => x.Extra).ToList();
         }
 
     }

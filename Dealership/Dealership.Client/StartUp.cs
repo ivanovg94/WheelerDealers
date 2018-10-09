@@ -15,6 +15,7 @@ namespace Dealership.Client
             Console.WriteLine("remove {carId}");
             Console.WriteLine("createextra {extra name}");
             Console.WriteLine("addextratocar {carId, extra name}");
+            Console.WriteLine("getextrasforcar {carId}");
             Console.WriteLine("remove {carId}");
 
             Console.WriteLine("list active/sold/all asc/desc ");

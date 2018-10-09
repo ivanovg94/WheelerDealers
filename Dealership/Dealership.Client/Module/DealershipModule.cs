@@ -2,6 +2,7 @@
 using Dealership.Client.Commands;
 using Dealership.Client.Commands.CRUD;
 using Dealership.Client.Commands.CRUD.EditCommands;
+using Dealership.Client.Commands.CRUD.ExtrasCommands;
 using Dealership.Client.Commands.CRUD.FilterCarsCommands;
 using Dealership.Client.Commands.ExtrasCommands;
 using Dealership.Client.Contracts;
@@ -61,6 +62,7 @@ namespace Dealership.Client.Module
             builder.RegisterType<CreateExtraCommand>().Named<ICommand>("createextra").PropertiesAutowired();
             builder.RegisterType<EditProductionDateCommand>().Named<ICommand>("editdate").PropertiesAutowired();
             builder.RegisterType<GeneratePdfCommand>().Named<ICommand>("generatePdf").PropertiesAutowired();
+            builder.RegisterType<GetExtrasForCarCommand>().Named<ICommand>("getextrasforcar").PropertiesAutowired();
 
 
             base.Load(builder);
