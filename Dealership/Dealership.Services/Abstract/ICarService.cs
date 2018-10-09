@@ -6,13 +6,13 @@ namespace Dealership.Services.Abstract
 {
     public interface ICarService
     {
-        Car CreateCar(Brand brand, string model, short horsePower, short engineCapacity
-            , DateTime productionDate, decimal price, Chassis chassis
-            , Color color, FuelType fuelType, Gearbox gearbox);
+        Car CreateCar(string brandName, string model, short horsePower, short engineCapacity
+           , DateTime productionDate, decimal price, string chassisName, string colorName, string colorType, string fuelTypeName, string gearboxTypeName, int numOfGears);
 
-        Car AddCar(Brand brand, string model, short horsePower, short engineCapacity
-            , DateTime productionDate, decimal price, Chassis chassis
-            , Color color, FuelType fuelType, Gearbox gearbox);
+        //TODO: ICar
+        Car AddCar(Car car);
+
+        void AddCars(ICollection<Car> cars);
 
         Car GetCar(int id);
 
@@ -20,5 +20,7 @@ namespace Dealership.Services.Abstract
         IList<Car> GetCars(string direction);
 
         Brand GetBrand(string brandName);
+
+        Car RemoveCar(int carId);
     }
 }

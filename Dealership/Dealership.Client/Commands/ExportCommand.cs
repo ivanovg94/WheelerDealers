@@ -24,7 +24,7 @@ namespace Dealership.Client.Commands
             var jsonOutput = Serializer(parameters);
             File.WriteAllText(exportDirRes + "cars.json", jsonOutput);
 
-            return $"Succesfully exported cars!";
+            return $"Successfully exported cars!";
         }
 
         public string Serializer(string[] parameters)

@@ -30,7 +30,7 @@ namespace Dealership.Data.DataProcessor.Dto
 
         public string GearBox { get; set; }
 
-        public int NumberOfGears { get; set; }
+        public byte NumberOfGears { get; set; }
 
         public ICollection<string> Extras { get; set; }
     }

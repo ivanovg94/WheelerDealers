@@ -1,6 +1,5 @@
 ﻿using Dealership.Client.Commands.Abstract;
 using Dealership.Client.Core.Abstract;
-using Dealership.Client.Exceptions;
 using Dealership.Data.Context;
 using Dealership.Services.Abstract;
 using System;
@@ -18,11 +17,7 @@ namespace Dealership.Client.Commands.CRUD
         public override string Execute(string[] parameters)
         {
             int carId = int.Parse(parameters[0]);
-
-            var car = this.CarService.GetCar(carId);
-
-            this.Context.Cars.Remove(car);
-            base.Context.SaveChanges();
+            this.CarService.RemoveCar(carId);
 
             return $"Car with ID {carId} was removed!";
         }

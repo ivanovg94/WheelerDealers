@@ -12,54 +12,54 @@ namespace Dealership.Client.Commands
 {
     public class ImportCommand : PrimeCommand
     {
-        private const string FailureMessage = "Invalid data format.";
-        private const string SuccessMessage = "Record {0} successfully imported.";
-        private const string importDirRes = @"..\..\..\..\Dealership.Data\DataProcessor\ImportDatasets\";
+        //import {filename} --ex: cars
         const string datasetDir = @"..\..\..\..\Dealership.Data\DataProcessor\ImportDatasets\";
 
         public ICarService CarService { get; set; }
 
         public override string Execute(string[] parameters)
         {
-            //var cars = ImportCars(File.ReadAllText(datasetDir + "cars1.json"));
+            string fileName = parameters[0];
+            var cars = ImportCars(File.ReadAllText(datasetDir + fileName + ".json"));
 
-            return $"Succesfully imported cars";
+            return $"Successfully imported cars!";
         }
 
-        //public string ImportCars(string jsonString)
-        //{
-        //    var sb = new StringBuilder();
+        public string ImportCars(string jsonString)
+        {
+            var sb = new StringBuilder();
 
-        //    var deserializedCars = JsonConvert.DeserializeObject<List<CarDto>>(jsonString, new JsonSerializerSettings
-        //    {
-        //        NullValueHandling = NullValueHandling.Ignore
-        //    });
+            var deserializedCars = JsonConvert.DeserializeObject<List<CarDto>>(jsonString, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
 
-        //    var cars = new List<Car>();
-        //    foreach (var carDto in deserializedCars)
-        //    {
-        //        Brand brand = carDto.BrandName;
-        //        string model = carDto.Model;
-        //        short horsePower = carDto.HorsePower;
-        //        short engineCapacity = carDto.EngineCapacity;
-        //        DateTime productionDate = carDto.ProductionDate;
-        //        decimal price = carDto.Price;
-        //        string chassis = carDto.Chassis;
-        //        string color = carDto.Color;
-        //        string fuelType = carDto.Fuel;
-        //        string gearbox = carDto.GearBox;
+            var cars = new List<Car>();
+            foreach (var carDto in deserializedCars)
+            {
+                string brand = carDto.BrandName;
+                string model = carDto.Model;
+                short horsePower = carDto.HorsePower;
+                short engineCapacity = carDto.EngineCapacity;
+                DateTime productionDate = carDto.ProductionDate;
+                decimal price = carDto.Price;
+                string chassis = carDto.Chassis;
+                string color = carDto.Color;
+                string colorType = carDto.ColorType;
+                string fuelType = carDto.Fuel;
+                string gearbox = carDto.GearBox;
+                byte numOfGears = carDto.NumberOfGears;
 
-        //        var car = CarService.CreateCar(brand, model, horsePower, engineCapacity, productionDate, price, chassis, color, fuelType, gearbox);
+                var car = CarService.CreateCar(brand, model, horsePower, engineCapacity, productionDate, price, chassis, color, colorType, fuelType, gearbox, numOfGears);
 
-        //        //TODO: add logger
-        //        //sb.AppendLine(string.Format(SuccessMessage, car.Brand + " " + car.Model));
-        //    }
+                cars.Add(car);
+                //TODO: add logger
+                //sb.AppendLine(string.Format(SuccessMessage, car.Brand + " " + car.Model));
+            }
 
-        //    //Context.Cars.AddRange(cars);
-        //    Context.SaveChanges();
+            this.CarService.AddCars(cars);
 
-        //    var result = sb.ToString();
-        //    return result;
-        //}
+            return "Cars successfully imported.";
+        }
     }
 }

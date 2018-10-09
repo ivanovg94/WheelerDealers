@@ -10,7 +10,7 @@ namespace Dealership.Services.Abstract
         ICarService CarService { get; set; }
         IDealershipContext Context { get; set; }
 
-        CarsExtras AddExtraToCar(int carId, string extraName);
+        Extra AddExtraToCar(int carId, string extraName);
         Extra CreateExtra(string name);
         ICollection<Extra> GetAllExtras();
         Extra GetExtraById(int id);

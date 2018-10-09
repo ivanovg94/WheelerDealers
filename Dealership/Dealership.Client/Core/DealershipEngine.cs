@@ -12,16 +12,22 @@ namespace Dealership.Client.Core
     public class DealershipEngine : IEngine
     {
         private IComponentContext containerContext;
-        string input = string.Empty;
-
-        public DealershipEngine(IComponentContext containerContext)
+        private readonly IReader reader;
+        private readonly IWriter writer;
+        
+        public DealershipEngine(IComponentContext containerContext, IReader reader, IWriter writer)
         {
             this.containerContext = containerContext;
+            this.reader = reader;
+            this.writer = writer;
         }
+
+        string input = string.Empty;
+
         public void Run()
         {
 
-            while ((input = Console.ReadLine()) != "exit")
+            while ((input = reader.ReadLine()) != "exit")
             {
                 try
                 {
@@ -31,12 +37,13 @@ namespace Dealership.Client.Core
                     //commandResult returns message according to operation result (successful or not)
                     var commandResult = command.Execute(inputParams.Skip(1).ToArray());
 
-                    Console.WriteLine(commandResult);
+                    writer.WriteLine(commandResult);
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                 }
+
             }
         }
 

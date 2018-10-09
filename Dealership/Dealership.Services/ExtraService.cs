@@ -21,7 +21,7 @@ namespace Dealership.Services
             return extra;
         }
 
-        public CarsExtras AddExtraToCar(int carId, string extraName)
+        public Extra AddExtraToCar(int carId, string extraName)
         {
             //TODO: validate
             Extra extra = null;
@@ -38,11 +38,11 @@ namespace Dealership.Services
 
             var newCarExtra = new CarsExtras() { CarId = carId, ExtraId = extra.Id };
             this.Context.CarsExtras.Add(newCarExtra);
-            this.CarService.GetCar(carId).CarsExtras.Add(newCarExtra);
+      //      this.CarService.GetCar(carId).CarsExtras.Add(newCarExtra);
      //       extra.CarsExtras.Add(newCarExtra);
 
             this.Context.SaveChanges();
-            return newCarExtra;
+            return extra;
         }
 
         public Extra GetExtraById(int id)
