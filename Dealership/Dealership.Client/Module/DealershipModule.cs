@@ -8,6 +8,8 @@ using Dealership.Client.Core;
 using Dealership.Client.Core.Abstract;
 using Dealership.Client.Core.Providers;
 using Dealership.Data.Context;
+using Dealership.Data.Models;
+using Dealership.Data.Repository;
 using Dealership.Services;
 using Dealership.Services.Abstract;
 
@@ -19,6 +21,7 @@ namespace Dealership.Client.Module
         {
             RegisterCoreComponents(builder);
             RegisterCommands(builder);
+            RegisterRepository(builder);
 
             base.Load(builder);
         }
@@ -28,6 +31,7 @@ namespace Dealership.Client.Module
             builder.RegisterType<DealershipEngine>().As<IEngine>().SingleInstance();
             builder.RegisterType<DealershipContext>().As<IDealershipContext>();
             builder.RegisterType<CarService>().As<ICarService>().SingleInstance();
+            builder.RegisterType<BrandService>().As<IBrandService>().SingleInstance();
             builder.RegisterType<ConsoleReader>().As<IReader>().SingleInstance();
             builder.RegisterType<ConsoleWriter>().As<IWriter>().SingleInstance();
         }
@@ -54,6 +58,11 @@ namespace Dealership.Client.Module
             builder.RegisterType<EditPriceCommand>().Named<ICommand>("editprice").PropertiesAutowired();
             builder.RegisterType<EditProductionDateCommand>().Named<ICommand>("editdate").PropertiesAutowired();
             builder.RegisterType<GeneratePdfCommand>().Named<ICommand>("generatePdf").PropertiesAutowired();
+        }
+
+        private void RegisterRepository(ContainerBuilder builder)
+        {
+            builder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>));
         }
     }
 }

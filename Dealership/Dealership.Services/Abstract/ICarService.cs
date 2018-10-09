@@ -9,7 +9,6 @@ namespace Dealership.Services.Abstract
         Car CreateCar(string brandName, string model, short horsePower, short engineCapacity
            , DateTime productionDate, decimal price, string chassisName, string colorName, string colorType, string fuelTypeName, string gearboxTypeName, int numOfGears);
 
-        //TODO: ICar
         Car AddCar(Car car);
 
         void AddCars(ICollection<Car> cars);
@@ -17,6 +16,7 @@ namespace Dealership.Services.Abstract
         Car GetCar(int id);
 
         IList<Car> GetCars(bool filterSold, string direction);
+
         IList<Car> GetCars(string direction);
 
         Brand GetBrand(string brandName);

@@ -13,12 +13,9 @@ namespace Dealership.Client.Commands.CRUD
     {
         public ICarService CarService { get; set; }
 
-
         // edit [id]
         public override string Execute(string[] parameters)
         {
-
-
             var id = int.Parse(parameters[0]);
             var prop = parameters[1];
             var newValue = parameters[2];
@@ -36,16 +33,7 @@ namespace Dealership.Client.Commands.CRUD
 
             return "EditBrandCommand reached!"; // for testing purposes
 
-
-
-
-
-
-
-
-
-
-
+                                                                        
             //var id = parameters[0];
             //var prop = parameters[1];
             //var newValue = parameters[2];

@@ -10,6 +10,8 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
     {
         public ICarService CarService { get; set; }
 
+        // public IBrandService BrandService { get; set; }
+
         public override string Execute(string[] parameters)
         {
             string brandName = parameters[0];
@@ -17,7 +19,7 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
             var brand = this.CarService.GetBrand(brandName);
 
             var cars = this.CarService.GetCars("asc")
-                .Where(c => c.Brand == brand)
+                .Where(c => c.Brand.Name == brandName)
                 .Select(c => new CarVM
                 {
                     Id = c.Id,
@@ -30,9 +32,9 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
                     NDoors = c.Chasis.NumberOfDoors,
                     Chassis = c.Chasis.Name,
                     Color = c.Color.Name,
-                    ColorType = c.Color.ColorType.Type,
-                    Fuel = c.FuelType.Type,
-                    Gearbox = c.GearBox.GearType.Type,
+                    ColorType = c.Color.ColorType.Name,
+                    Fuel = c.FuelType.Name,
+                    Gearbox = c.GearBox.GearType.Name,
                     NumberOfGears = c.GearBox.NumberOfGears,
                     Extras = c.CarsExtras.Select(ce => ce.Extra.Name).ToList()
                 }).ToList();

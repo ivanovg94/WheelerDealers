@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using Dealership.Data.Models;
+using Dealership.Data.Models.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dealership.Data.Context
@@ -41,6 +43,33 @@ namespace Dealership.Data.Context
             base.OnModelCreating(modelBuilder);
 
         }
+
+        public override int SaveChanges()
+        {
+            this.ApplyAuditInfoRules();
+            return base.SaveChanges();
+        }
+
+        private void ApplyAuditInfoRules()
+        {
+            var newlyCreatedEntities = this.ChangeTracker.Entries()
+                .Where(e => e.Entity is IEditable && ((e.State == EntityState.Added) || (e.State == EntityState.Modified)));
+
+            foreach (var entry in newlyCreatedEntities)
+            {
+                var entity = (IEditable)entry.Entity;
+
+                if (entry.State == EntityState.Added && entity.CreatedOn == null)
+                {
+                    entity.CreatedOn = DateTime.Now;
+                }
+                else
+                {
+                    entity.ModifiedOn = DateTime.Now;
+                }
+            }
+        }
+
         private void SeedData(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Chassis>().HasData(new Chassis { Id = 1, Name = "Sedan", NumberOfDoors = 4 });
@@ -50,8 +79,8 @@ namespace Dealership.Data.Context
             modelBuilder.Entity<Chassis>().HasData(new Chassis { Id = 5, Name = "Suv", NumberOfDoors = 5 });
             modelBuilder.Entity<Chassis>().HasData(new Chassis { Id = 6, Name = "Hatchback", NumberOfDoors = 5 });
 
-            modelBuilder.Entity<GearType>().HasData(new GearType { Id = 1, Type = "Automatic" });
-            modelBuilder.Entity<GearType>().HasData(new GearType { Id = 2, Type = "Manual" });
+            modelBuilder.Entity<GearType>().HasData(new GearType { Id = 1, Name = "Automatic" });
+            modelBuilder.Entity<GearType>().HasData(new GearType { Id = 2, Name = "Manual" });
 
             modelBuilder.Entity<Gearbox>().HasData(new Gearbox { Id = 1, GearTypeId = 1, NumberOfGears = 3 });
             modelBuilder.Entity<Gearbox>().HasData(new Gearbox { Id = 2, GearTypeId = 1, NumberOfGears = 4 });
@@ -63,17 +92,17 @@ namespace Dealership.Data.Context
             modelBuilder.Entity<Gearbox>().HasData(new Gearbox { Id = 8, GearTypeId = 2, NumberOfGears = 5 });
             modelBuilder.Entity<Gearbox>().HasData(new Gearbox { Id = 9, GearTypeId = 2, NumberOfGears = 6 });
 
-            modelBuilder.Entity<FuelType>().HasData(new FuelType { Id = 1, Type = "Diesel" });
-            modelBuilder.Entity<FuelType>().HasData(new FuelType { Id = 2, Type = "Gasoline" });
-            modelBuilder.Entity<FuelType>().HasData(new FuelType { Id = 3, Type = "LPG" });
-            modelBuilder.Entity<FuelType>().HasData(new FuelType { Id = 4, Type = "Hybrid" });
-            modelBuilder.Entity<FuelType>().HasData(new FuelType { Id = 5, Type = "Electic" });
+            modelBuilder.Entity<FuelType>().HasData(new FuelType { Id = 1, Name = "Diesel" });
+            modelBuilder.Entity<FuelType>().HasData(new FuelType { Id = 2, Name = "Gasoline" });
+            modelBuilder.Entity<FuelType>().HasData(new FuelType { Id = 3, Name = "LPG" });
+            modelBuilder.Entity<FuelType>().HasData(new FuelType { Id = 4, Name = "Hybrid" });
+            modelBuilder.Entity<FuelType>().HasData(new FuelType { Id = 5, Name = "Electic" });
 
-            modelBuilder.Entity<ColorType>().HasData(new ColorType { Id = 1, Type = "Acrylic" });
-            modelBuilder.Entity<ColorType>().HasData(new ColorType { Id = 2, Type = "Metalic" });
-            modelBuilder.Entity<ColorType>().HasData(new ColorType { Id = 3, Type = "Pearlescent" });
-            modelBuilder.Entity<ColorType>().HasData(new ColorType { Id = 4, Type = "Matte" });
-            modelBuilder.Entity<ColorType>().HasData(new ColorType { Id = 5, Type = "Xirallic" });
+            modelBuilder.Entity<ColorType>().HasData(new ColorType { Id = 1, Name = "Acrylic" });
+            modelBuilder.Entity<ColorType>().HasData(new ColorType { Id = 2, Name = "Metalic" });
+            modelBuilder.Entity<ColorType>().HasData(new ColorType { Id = 3, Name = "Pearlescent" });
+            modelBuilder.Entity<ColorType>().HasData(new ColorType { Id = 4, Name = "Matte" });
+            modelBuilder.Entity<ColorType>().HasData(new ColorType { Id = 5, Name = "Xirallic" });
         }
     }
 }
