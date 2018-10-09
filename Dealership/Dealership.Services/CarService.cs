@@ -18,9 +18,9 @@ namespace Dealership.Services
         private readonly IRepository<ColorType> colorTypeRepository;
         private readonly IRepository<FuelType> fuelTypeRepository;
         private readonly IRepository<Gearbox> gearboxRepository;
-
-
-        public CarService(IRepository<Car> carsRepository, IRepository<Brand> brandRepository, IRepository<Chassis> chassisRepository, IRepository<Color> colorRepository, IRepository<ColorType> colorTypeRepository, IRepository<FuelType> fuelTypeRepository, IRepository<Gearbox> gearboxRepository)
+        private readonly IRepository<GearType> gearTypeRepository;
+               
+        public CarService(IRepository<Car> carsRepository, IRepository<Brand> brandRepository, IRepository<Chassis> chassisRepository, IRepository<Color> colorRepository, IRepository<ColorType> colorTypeRepository, IRepository<FuelType> fuelTypeRepository, IRepository<Gearbox> gearboxRepository, IRepository<GearType> gearTypeRepository)
         {
             this.carsRepository = carsRepository;
             this.brandRepository = brandRepository;
@@ -29,6 +29,7 @@ namespace Dealership.Services
             this.colorTypeRepository = colorTypeRepository;
             this.fuelTypeRepository = fuelTypeRepository;
             this.gearboxRepository = gearboxRepository;
+            this.gearTypeRepository = gearTypeRepository;
         }
 
         public Car CreateCar(string brandName, string model, short horsePower, short engineCapacity
@@ -119,16 +120,17 @@ namespace Dealership.Services
 
         public IList<Car> GetCars(bool filterSold, string direction)
         {
-            var querry = this.carsRepository.All().Where(c => c.IsSold == filterSold)
-            .Include(c => c.Brand)
-            .Include(c => c.CarsExtras)
-                 .ThenInclude(ce => ce.Extra)
-            .Include(c => c.Chasis)
-            .Include(c => c.Color)
-                .ThenInclude(co => co.ColorType)
-            .Include(c => c.FuelType)
-            .Include(c => c.GearBox)
-                .ThenInclude(gb => gb.GearType);
+            var querry = this.carsRepository.All()
+                                            .Where(c => c.IsSold == filterSold)
+                                            .Include(c => c.Brand)
+                                            .Include(c => c.CarsExtras)
+                                                 .ThenInclude(ce => ce.Extra)
+                                            .Include(c => c.Chasis)
+                                            .Include(c => c.Color)
+                                                .ThenInclude(co => co.ColorType)
+                                            .Include(c => c.FuelType)
+                                            .Include(c => c.GearBox)
+                                                .ThenInclude(gb => gb.GearType);
 
             if (direction.ToLower() == "asc")
             {
@@ -144,15 +146,15 @@ namespace Dealership.Services
         public IList<Car> GetCars(string direction)
         {
             var querry = this.carsRepository.All()
-            .Include(c => c.Brand)
-            .Include(c => c.CarsExtras)
-                 .ThenInclude(ce => ce.Extra)
-            .Include(c => c.Chasis)
-            .Include(c => c.Color)
-                .ThenInclude(co => co.ColorType)
-            .Include(c => c.FuelType)
-            .Include(c => c.GearBox)
-                .ThenInclude(gb => gb.GearType);
+                                             .Include(c => c.Brand)
+                                             .Include(c => c.CarsExtras)
+                                                  .ThenInclude(ce => ce.Extra)
+                                             .Include(c => c.Chasis)
+                                             .Include(c => c.Color)
+                                                 .ThenInclude(co => co.ColorType)
+                                             .Include(c => c.FuelType)
+                                             .Include(c => c.GearBox)
+                                                 .ThenInclude(gb => gb.GearType);
 
             if (direction.ToLower() == "asc")
             {
@@ -199,7 +201,7 @@ namespace Dealership.Services
 
         public void EditBrand(int id, string newValue) // works but must include navigation props tables !
         {
-            Car car = Context.Cars.Include(b => b.Brand)
+            Car car = carsRepository.All().Include(b => b.Brand)
                     .Include(ch => ch.Chasis)
                     .Include(c => c.Color)
                     .Include(f => f.FuelType)
@@ -210,28 +212,26 @@ namespace Dealership.Services
             if (car != null)
             {
                 Brand newBrand;
-                if (Context.Brands.Any(b => b.Name == newValue))
+                if (brandRepository.All().Any(b => b.Name == newValue))
                 {
-                    newBrand = Context.Brands.First(b => b.Name == newValue);
+                    newBrand = brandRepository.All().First(b => b.Name == newValue);
                 }
                 else
                 {
                     newBrand = new Brand() { Name = newValue };
                 }
                 car.Brand = newBrand;
-                Context.SaveChanges();
+                brandRepository.Save();
             }
             else
             {
                 throw new ArgumentNullException($"Car with id:{id} not exist!");
             }
-
-
         }
 
         public void EditModel(int id, string newValue) // works but must include navigation props tables !
         {
-            Car car = Context.Cars.Include(b => b.Brand)
+            Car car = carsRepository.All().Include(b => b.Brand)
                     .Include(ch => ch.Chasis)
                     .Include(c => c.Color)
                     .Include(f => f.FuelType)
@@ -242,19 +242,17 @@ namespace Dealership.Services
             if (car != null)
             {
                 car.Model = newValue;
-                Context.SaveChanges();
+                carsRepository.Save();
             }
             else
             {
                 throw new ArgumentNullException($"Car with id:{id} not exist!");
             }
-
-
         }
 
         public void EditHorsePower(int id, string newValue) // works but must include navigation props tables !
         {
-            Car car = Context.Cars.Include(b => b.Brand)
+            Car car = carsRepository.All().Include(b => b.Brand)
                     .Include(ch => ch.Chasis)
                     .Include(c => c.Color)
                     .Include(f => f.FuelType)
@@ -265,19 +263,17 @@ namespace Dealership.Services
             if (car != null)
             {
                 car.HorsePower = short.Parse(newValue);
-                Context.SaveChanges();
+                carsRepository.Save();
             }
             else
             {
                 throw new ArgumentNullException($"Car with id:{id} not exist!");
             }
-
-
         }
 
         public void EditEngineCapacity(int id, string newValue) // works but must include navigation props tables !
         {
-            Car car = Context.Cars.Include(b => b.Brand)
+            Car car = carsRepository.All().Include(b => b.Brand)
                     .Include(ch => ch.Chasis)
                     .Include(c => c.Color)
                     .Include(f => f.FuelType)
@@ -288,19 +284,17 @@ namespace Dealership.Services
             if (car != null)
             {
                 car.EngineCapacity = short.Parse(newValue);
-                Context.SaveChanges();
+                carsRepository.Save();
             }
             else
             {
                 throw new ArgumentNullException($"Car with id:{id} not exist!");
             }
-
-
         }
 
         public void EditIsSold(int id, string newValue) // works but must include navigation props tables !
         {
-            Car car = Context.Cars.Include(b => b.Brand)
+            Car car = carsRepository.All().Include(b => b.Brand)
                     .Include(ch => ch.Chasis)
                     .Include(c => c.Color)
                     .Include(f => f.FuelType)
@@ -311,18 +305,17 @@ namespace Dealership.Services
             if (car != null)
             {
                 car.IsSold = bool.Parse(newValue);
-                Context.SaveChanges();
+                carsRepository.Save();
             }
             else
             {
                 throw new ArgumentNullException($"Car with id:{id} not exist!");
             }
-
         }
 
         public void EditPrice(int id, string newValue) // works but must include navigation props tables !
         {
-            Car car = Context.Cars.Include(b => b.Brand)
+            Car car = carsRepository.All().Include(b => b.Brand)
                     .Include(ch => ch.Chasis)
                     .Include(c => c.Color)
                     .Include(f => f.FuelType)
@@ -333,19 +326,17 @@ namespace Dealership.Services
             if (car != null)
             {
                 car.Price = decimal.Parse(newValue);
-                Context.SaveChanges();
+                carsRepository.Save();
             }
             else
             {
                 throw new ArgumentNullException($"Car with id:{id} not exist!");
             }
-
-
         }
 
         public void EditProductionDate(int id, string newValue) // works but must include navigation props tables !
         {
-            Car car = Context.Cars.Include(b => b.Brand)
+            Car car = carsRepository.All().Include(b => b.Brand)
                     .Include(ch => ch.Chasis)
                     .Include(c => c.Color)
                     .Include(f => f.FuelType)
@@ -356,7 +347,7 @@ namespace Dealership.Services
             if (car != null)
             {
                 car.ProductionDate = DateTime.Parse(newValue);
-                Context.SaveChanges();
+                carsRepository.Save();
             }
             else
             {
@@ -366,7 +357,7 @@ namespace Dealership.Services
 
         public void EditChassis(int id, string newValue) // works but must include navigation props tables !
         {
-            Car car = Context.Cars.Include(b => b.Brand)
+            Car car = carsRepository.All().Include(b => b.Brand)
                     .Include(ch => ch.Chasis)
                     .Include(c => c.Color)
                     .Include(f => f.FuelType)
@@ -377,18 +368,17 @@ namespace Dealership.Services
             if (car != null)
             {
                 car.Chasis.Name = newValue;
-                Context.SaveChanges();
+                carsRepository.Save();
             }
             else
             {
                 throw new ArgumentNullException($"Car with id:{id} not exist!");
             }
-
         }
 
         public void EditColor(int id, string newValue) // works but must include navigation props tables !
         {
-            Car car = Context.Cars.Include(b => b.Brand)
+            Car car = carsRepository.All().Include(b => b.Brand)
                     .Include(ch => ch.Chasis)
                     .Include(c => c.Color)
                     .Include(f => f.FuelType)
@@ -399,9 +389,9 @@ namespace Dealership.Services
             if (car != null)
             {
                 Color newColor;
-                if (Context.Colors.Any(c => c.Name == newValue))
+                if (colorRepository.All().Any(c => c.Name == newValue))
                 {
-                    newColor = Context.Colors.First();
+                    newColor = colorRepository.All().First();
                 }
                 else
                 {
@@ -409,24 +399,23 @@ namespace Dealership.Services
                     {
                         Name = newValue
                         ,
-                        ColorType = new ColorType() { Type = "Metalic" }
+                        ColorType = new ColorType() { Name = "Metalic" }
                     };//default type "Metalic"
-                    Context.Colors.Add(newColor);
+                    colorRepository.Add(newColor);
                 }
 
                 car.Color = newColor;
-                Context.SaveChanges();
+                carsRepository.Save();
             }
             else
             {
                 throw new ArgumentNullException($"Car with id:{id} not exist!");
             }
-
         }
 
         public void EditColorType(int id, string newValue) // works but must include navigation props tables !
         {
-            Car car = Context.Cars.Include(b => b.Brand)
+            Car car = carsRepository.All().Include(b => b.Brand)
                     .Include(ch => ch.Chasis)
                     .Include(c => c.Color)
                     .Include(f => f.FuelType)
@@ -437,9 +426,9 @@ namespace Dealership.Services
             if (car != null)
             {
                 ColorType newColorType;
-                if (Context.ColorTypes.Any(c => c.Type == newValue))
+                if (colorTypeRepository.All().Any(c => c.Name == newValue))
                 {
-                    newColorType = Context.ColorTypes.First(ct => ct.Type == newValue);
+                    newColorType = colorTypeRepository.All().First(ct => ct.Name == newValue);
                 }
                 else
                 {
@@ -447,18 +436,17 @@ namespace Dealership.Services
                 }
 
                 car.Color.ColorType = newColorType;
-                Context.SaveChanges();
+                carsRepository.Save();
             }
             else
             {
                 throw new ArgumentNullException($"Car with id:{id} not exist!");
             }
-
         }
 
         public void EditFuelType(int id, string newValue) // works but must include navigation props tables !
         {
-            Car car = Context.Cars.Include(b => b.Brand)
+            Car car = carsRepository.All().Include(b => b.Brand)
                     .Include(ch => ch.Chasis)
                     .Include(c => c.Color)
                     .Include(f => f.FuelType)
@@ -468,12 +456,11 @@ namespace Dealership.Services
 
             if (car != null)
             {
-                var newFuelType = Context.FuelTypes.First(ft => ft.Type == newValue);
+                var newFuelType = fuelTypeRepository.All().First(ft => ft.Name == newValue);
                 if (newFuelType != null)
                 {
                     car.FuelType = newFuelType;
-                    Context.SaveChanges();
-
+                    fuelTypeRepository.Save();
                 }
                 else
                 {
@@ -484,12 +471,11 @@ namespace Dealership.Services
             {
                 throw new ArgumentNullException($"Car with id:{id} not exist!");
             }
-
         }
 
         public void EditGearbox(int id, string newValue) // works but must include navigation props tables !
         {
-            Car car = Context.Cars.Include(b => b.Brand)
+            Car car = carsRepository.All().Include(b => b.Brand)
                     .Include(ch => ch.Chasis)
                     .Include(c => c.Color)
                     .Include(f => f.FuelType)
@@ -500,35 +486,21 @@ namespace Dealership.Services
             if (car != null)
             {
                 GearType newGearType;
-                if (Context.Gearboxes.Any(gb => gb.GearType.Type == newValue))
+                if (gearTypeRepository.All().Any(gb => gb.Name == newValue))
                 {
-                    newGearType = Context.GearTypes.First(gt => gt.Type == newValue);
-
+                    newGearType = gearTypeRepository.All().First(gt => gt.Name == newValue);
                 }
                 else
                 {
                     throw new ArgumentException($"Gearbox:{newValue} not exist!");
                 }
                 car.GearBox.GearType = newGearType;
-                Context.SaveChanges();
+                carsRepository.Save();
             }
             else
             {
                 throw new ArgumentNullException($"Car with id:{id} not exist!");
             }
-
-        }
-            Car car = carsRepository.All()
-                 .Include(b => b.Brand)
-                .Include(ch => ch.Chasis)
-                .Include(c => c.Color)
-                .Include(f => f.FuelType)
-                .Include(gb => gb.GearBox)
-                .Include(x => x.CarsExtras)
-                .First(c => c.Id == id);
-            car.Brand.Name = newValue;
-
-            carsRepository.Save();
         }
 
         public Brand GetBrand(string brandName)
