@@ -14,7 +14,7 @@ namespace Dealership.Client.Core
         private IComponentContext containerContext;
         private readonly IReader reader;
         private readonly IWriter writer;
-        
+
         public DealershipEngine(IComponentContext containerContext, IReader reader, IWriter writer)
         {
             this.containerContext = containerContext;
@@ -26,7 +26,6 @@ namespace Dealership.Client.Core
 
         public void Run()
         {
-
             while ((input = reader.ReadLine()) != "exit")
             {
                 try
@@ -41,8 +40,9 @@ namespace Dealership.Client.Core
                 }
                 catch (Exception ex)
                 {
-                    writer.WriteLine(ex.Message);
-                }               
+                    Console.WriteLine(ex.Message);
+                }
+
             }
         }
 

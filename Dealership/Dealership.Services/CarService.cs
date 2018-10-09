@@ -199,6 +199,325 @@ namespace Dealership.Services
 
         public void EditBrand(int id, string newValue) // works but must include navigation props tables !
         {
+            Car car = Context.Cars.Include(b => b.Brand)
+                    .Include(ch => ch.Chasis)
+                    .Include(c => c.Color)
+                    .Include(f => f.FuelType)
+                    .Include(gb => gb.GearBox)
+                    .Include(x => x.CarsExtras)
+                    .First(c => c.Id == id);
+
+            if (car != null)
+            {
+                Brand newBrand;
+                if (Context.Brands.Any(b => b.Name == newValue))
+                {
+                    newBrand = Context.Brands.First(b => b.Name == newValue);
+                }
+                else
+                {
+                    newBrand = new Brand() { Name = newValue };
+                }
+                car.Brand = newBrand;
+                Context.SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentNullException($"Car with id:{id} not exist!");
+            }
+
+
+        }
+
+        public void EditModel(int id, string newValue) // works but must include navigation props tables !
+        {
+            Car car = Context.Cars.Include(b => b.Brand)
+                    .Include(ch => ch.Chasis)
+                    .Include(c => c.Color)
+                    .Include(f => f.FuelType)
+                    .Include(gb => gb.GearBox)
+                    .Include(x => x.CarsExtras)
+                    .First(c => c.Id == id);
+
+            if (car != null)
+            {
+                car.Model = newValue;
+                Context.SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentNullException($"Car with id:{id} not exist!");
+            }
+
+
+        }
+
+        public void EditHorsePower(int id, string newValue) // works but must include navigation props tables !
+        {
+            Car car = Context.Cars.Include(b => b.Brand)
+                    .Include(ch => ch.Chasis)
+                    .Include(c => c.Color)
+                    .Include(f => f.FuelType)
+                    .Include(gb => gb.GearBox)
+                    .Include(x => x.CarsExtras)
+                    .First(c => c.Id == id);
+
+            if (car != null)
+            {
+                car.HorsePower = short.Parse(newValue);
+                Context.SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentNullException($"Car with id:{id} not exist!");
+            }
+
+
+        }
+
+        public void EditEngineCapacity(int id, string newValue) // works but must include navigation props tables !
+        {
+            Car car = Context.Cars.Include(b => b.Brand)
+                    .Include(ch => ch.Chasis)
+                    .Include(c => c.Color)
+                    .Include(f => f.FuelType)
+                    .Include(gb => gb.GearBox)
+                    .Include(x => x.CarsExtras)
+                    .First(c => c.Id == id);
+
+            if (car != null)
+            {
+                car.EngineCapacity = short.Parse(newValue);
+                Context.SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentNullException($"Car with id:{id} not exist!");
+            }
+
+
+        }
+
+        public void EditIsSold(int id, string newValue) // works but must include navigation props tables !
+        {
+            Car car = Context.Cars.Include(b => b.Brand)
+                    .Include(ch => ch.Chasis)
+                    .Include(c => c.Color)
+                    .Include(f => f.FuelType)
+                    .Include(gb => gb.GearBox)
+                    .Include(x => x.CarsExtras)
+                    .First(c => c.Id == id);
+
+            if (car != null)
+            {
+                car.IsSold = bool.Parse(newValue);
+                Context.SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentNullException($"Car with id:{id} not exist!");
+            }
+
+        }
+
+        public void EditPrice(int id, string newValue) // works but must include navigation props tables !
+        {
+            Car car = Context.Cars.Include(b => b.Brand)
+                    .Include(ch => ch.Chasis)
+                    .Include(c => c.Color)
+                    .Include(f => f.FuelType)
+                    .Include(gb => gb.GearBox)
+                    .Include(x => x.CarsExtras)
+                    .First(c => c.Id == id);
+
+            if (car != null)
+            {
+                car.Price = decimal.Parse(newValue);
+                Context.SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentNullException($"Car with id:{id} not exist!");
+            }
+
+
+        }
+
+        public void EditProductionDate(int id, string newValue) // works but must include navigation props tables !
+        {
+            Car car = Context.Cars.Include(b => b.Brand)
+                    .Include(ch => ch.Chasis)
+                    .Include(c => c.Color)
+                    .Include(f => f.FuelType)
+                    .Include(gb => gb.GearBox)
+                    .Include(x => x.CarsExtras)
+                    .First(c => c.Id == id);
+
+            if (car != null)
+            {
+                car.ProductionDate = DateTime.Parse(newValue);
+                Context.SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentNullException($"Car with id:{id} not exist!");
+            }
+        }
+
+        public void EditChassis(int id, string newValue) // works but must include navigation props tables !
+        {
+            Car car = Context.Cars.Include(b => b.Brand)
+                    .Include(ch => ch.Chasis)
+                    .Include(c => c.Color)
+                    .Include(f => f.FuelType)
+                    .Include(gb => gb.GearBox)
+                    .Include(x => x.CarsExtras)
+                    .First(c => c.Id == id);
+
+            if (car != null)
+            {
+                car.Chasis.Name = newValue;
+                Context.SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentNullException($"Car with id:{id} not exist!");
+            }
+
+        }
+
+        public void EditColor(int id, string newValue) // works but must include navigation props tables !
+        {
+            Car car = Context.Cars.Include(b => b.Brand)
+                    .Include(ch => ch.Chasis)
+                    .Include(c => c.Color)
+                    .Include(f => f.FuelType)
+                    .Include(gb => gb.GearBox)
+                    .Include(x => x.CarsExtras)
+                    .First(c => c.Id == id);
+
+            if (car != null)
+            {
+                Color newColor;
+                if (Context.Colors.Any(c => c.Name == newValue))
+                {
+                    newColor = Context.Colors.First();
+                }
+                else
+                {
+                    newColor = new Color()
+                    {
+                        Name = newValue
+                        ,
+                        ColorType = new ColorType() { Type = "Metalic" }
+                    };//default type "Metalic"
+                    Context.Colors.Add(newColor);
+                }
+
+                car.Color = newColor;
+                Context.SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentNullException($"Car with id:{id} not exist!");
+            }
+
+        }
+
+        public void EditColorType(int id, string newValue) // works but must include navigation props tables !
+        {
+            Car car = Context.Cars.Include(b => b.Brand)
+                    .Include(ch => ch.Chasis)
+                    .Include(c => c.Color)
+                    .Include(f => f.FuelType)
+                    .Include(gb => gb.GearBox)
+                    .Include(x => x.CarsExtras)
+                    .First(c => c.Id == id);
+
+            if (car != null)
+            {
+                ColorType newColorType;
+                if (Context.ColorTypes.Any(c => c.Type == newValue))
+                {
+                    newColorType = Context.ColorTypes.First(ct => ct.Type == newValue);
+                }
+                else
+                {
+                    throw new ArgumentNullException("Color type not exist!");
+                }
+
+                car.Color.ColorType = newColorType;
+                Context.SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentNullException($"Car with id:{id} not exist!");
+            }
+
+        }
+
+        public void EditFuelType(int id, string newValue) // works but must include navigation props tables !
+        {
+            Car car = Context.Cars.Include(b => b.Brand)
+                    .Include(ch => ch.Chasis)
+                    .Include(c => c.Color)
+                    .Include(f => f.FuelType)
+                    .Include(gb => gb.GearBox)
+                    .Include(x => x.CarsExtras)
+                    .First(c => c.Id == id);
+
+            if (car != null)
+            {
+                var newFuelType = Context.FuelTypes.First(ft => ft.Type == newValue);
+                if (newFuelType != null)
+                {
+                    car.FuelType = newFuelType;
+                    Context.SaveChanges();
+
+                }
+                else
+                {
+                    throw new ArgumentException($"Fuel type :{newValue} not exist!");
+                }
+            }
+            else
+            {
+                throw new ArgumentNullException($"Car with id:{id} not exist!");
+            }
+
+        }
+
+        public void EditGearbox(int id, string newValue) // works but must include navigation props tables !
+        {
+            Car car = Context.Cars.Include(b => b.Brand)
+                    .Include(ch => ch.Chasis)
+                    .Include(c => c.Color)
+                    .Include(f => f.FuelType)
+                    .Include(gb => gb.GearBox)
+                    .Include(x => x.CarsExtras)
+                    .First(c => c.Id == id);
+
+            if (car != null)
+            {
+                GearType newGearType;
+                if (Context.Gearboxes.Any(gb => gb.GearType.Type == newValue))
+                {
+                    newGearType = Context.GearTypes.First(gt => gt.Type == newValue);
+
+                }
+                else
+                {
+                    throw new ArgumentException($"Gearbox:{newValue} not exist!");
+                }
+                car.GearBox.GearType = newGearType;
+                Context.SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentNullException($"Car with id:{id} not exist!");
+            }
+
+        }
             Car car = carsRepository.All()
                  .Include(b => b.Brand)
                 .Include(ch => ch.Chasis)

@@ -2,7 +2,10 @@
 using Dealership.Client.Commands;
 using Dealership.Client.Commands.CRUD;
 using Dealership.Client.Commands.CRUD.EditCommands;
+using Dealership.Client.Commands.CRUD.ExtrasCommands;
 using Dealership.Client.Commands.CRUD.FilterCarsCommands;
+using Dealership.Client.Commands.ExtrasCommands;
+using Dealership.Client.Contracts;
 using Dealership.Client.Contracts.Abstract;
 using Dealership.Client.Core;
 using Dealership.Client.Core.Abstract;
@@ -29,6 +32,9 @@ namespace Dealership.Client.Module
         private void RegisterCoreComponents(ContainerBuilder builder)
         {
             builder.RegisterType<DealershipEngine>().As<IEngine>().SingleInstance();
+            builder.RegisterType<DealershipContext>().As<IDealershipContext>();/*.SingleInstance();*/
+            builder.RegisterType<CarService>().As<ICarService>().SingleInstance().PropertiesAutowired();
+            builder.RegisterType<ExtraService>().As<IExtraService>().SingleInstance().PropertiesAutowired();
             builder.RegisterType<DealershipContext>().As<IDealershipContext>();
             builder.RegisterType<CarService>().As<ICarService>().SingleInstance();
             builder.RegisterType<BrandService>().As<IBrandService>().SingleInstance();
@@ -56,8 +62,15 @@ namespace Dealership.Client.Module
             builder.RegisterType<EditGearbox>().Named<ICommand>("editgearbox").PropertiesAutowired();
             builder.RegisterType<EditHorsePowerCommand>().Named<ICommand>("edithorsepower").PropertiesAutowired();
             builder.RegisterType<EditPriceCommand>().Named<ICommand>("editprice").PropertiesAutowired();
+            builder.RegisterType<AddExtraToCarCommand>().Named<ICommand>("addextratocar").PropertiesAutowired();
+            builder.RegisterType<CreateExtraCommand>().Named<ICommand>("createextra").PropertiesAutowired();
             builder.RegisterType<EditProductionDateCommand>().Named<ICommand>("editdate").PropertiesAutowired();
             builder.RegisterType<GeneratePdfCommand>().Named<ICommand>("generatePdf").PropertiesAutowired();
+            builder.RegisterType<GetExtrasForCarCommand>().Named<ICommand>("getextrasforcar").PropertiesAutowired();
+
+
+            base.Load(builder);
+
         }
 
         private void RegisterRepository(ContainerBuilder builder)
