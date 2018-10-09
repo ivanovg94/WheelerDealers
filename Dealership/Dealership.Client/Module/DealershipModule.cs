@@ -1,11 +1,4 @@
 ﻿using Autofac;
-using Dealership.Client.Commands;
-using Dealership.Client.Commands.CRUD;
-using Dealership.Client.Commands.CRUD.EditCommands;
-using Dealership.Client.Commands.CRUD.ExtrasCommands;
-using Dealership.Client.Commands.CRUD.FilterCarsCommands;
-using Dealership.Client.Commands.ExtrasCommands;
-using Dealership.Client.Contracts;
 using Dealership.Client.Contracts.Abstract;
 using Dealership.Client.Core;
 using Dealership.Client.Core.Abstract;
@@ -13,6 +6,8 @@ using Dealership.Client.Core.Providers;
 using Dealership.Data.Context;
 using Dealership.Services;
 using Dealership.Services.Abstract;
+using System.Linq;
+using System.Reflection;
 
 namespace Dealership.Client.Module
 {
@@ -21,7 +16,7 @@ namespace Dealership.Client.Module
         protected override void Load(ContainerBuilder builder)
         {
             RegisterCoreComponents(builder);
-            RegisterCommands(builder);
+            RegisterDynamicCommands(builder);
 
             base.Load(builder);
         }
@@ -38,35 +33,24 @@ namespace Dealership.Client.Module
             builder.RegisterType<ConsoleWriter>().As<IWriter>().SingleInstance();
         }
 
-        private void RegisterCommands(ContainerBuilder builder)
+        private void RegisterDynamicCommands(ContainerBuilder builder)
         {
-            builder.RegisterType<AddCarCommand>().Named<ICommand>("add").PropertiesAutowired();
-            builder.RegisterType<RemoveCarCommand>().Named<ICommand>("remove").PropertiesAutowired();
-            builder.RegisterType<ListCommand>().Named<ICommand>("list").PropertiesAutowired();
-            builder.RegisterType<EditCommand>().Named<ICommand>("edit").PropertiesAutowired();
-            builder.RegisterType<ExportCommand>().Named<ICommand>("export").PropertiesAutowired();
-            builder.RegisterType<ImportCommand>().Named<ICommand>("import").PropertiesAutowired();
-            builder.RegisterType<FilterByBrandCommand>().Named<ICommand>("filterBrand").PropertiesAutowired();
-            builder.RegisterType<FilterByYearsCommand>().Named<ICommand>("filterYears").PropertiesAutowired();
-            builder.RegisterType<ViewCarDetailsCommand>().Named<ICommand>("view").PropertiesAutowired();
-            builder.RegisterType<EditBrandCommand>().Named<ICommand>("editbrand").PropertiesAutowired();
-            builder.RegisterType<EditModelCommand>().Named<ICommand>("editmodel").PropertiesAutowired();
-            builder.RegisterType<EditChassisCommand>().Named<ICommand>("editchassis").PropertiesAutowired();
-            builder.RegisterType<EditColorCommand>().Named<ICommand>("editcolor").PropertiesAutowired();
-            builder.RegisterType<EditEngineCapacity>().Named<ICommand>("editenginecapacity").PropertiesAutowired();
-            builder.RegisterType<EditFuelTypeCommand>().Named<ICommand>("editfueltype").PropertiesAutowired();
-            builder.RegisterType<EditGearbox>().Named<ICommand>("editgearbox").PropertiesAutowired();
-            builder.RegisterType<EditHorsePowerCommand>().Named<ICommand>("edithorsepower").PropertiesAutowired();
-            builder.RegisterType<EditPriceCommand>().Named<ICommand>("editprice").PropertiesAutowired();
-            builder.RegisterType<AddExtraToCarCommand>().Named<ICommand>("addextratocar").PropertiesAutowired();
-            builder.RegisterType<CreateExtraCommand>().Named<ICommand>("createextra").PropertiesAutowired();
-            builder.RegisterType<EditProductionDateCommand>().Named<ICommand>("editdate").PropertiesAutowired();
-            builder.RegisterType<GeneratePdfCommand>().Named<ICommand>("generatePdf").PropertiesAutowired();
-            builder.RegisterType<GetExtrasForCarCommand>().Named<ICommand>("getextrasforcar").PropertiesAutowired();
+            Assembly currentAssembly = Assembly.GetExecutingAssembly();
 
+            var commandTypes = currentAssembly
+                               .DefinedTypes
+                               .Where(typeInfo =>
+                                    typeInfo.ImplementedInterfaces.Contains(typeof(ICommand))
+                                    && typeInfo.IsAbstract == false)
+                               .ToList();
 
-            base.Load(builder);
-
+            // register in autofac
+            foreach (var commandType in commandTypes)
+            {
+                builder.RegisterType(commandType.AsType())
+                                    .Named<ICommand>(commandType.Name.ToLower().Replace("command", ""))
+                                    .PropertiesAutowired();
+            }
         }
     }
 }

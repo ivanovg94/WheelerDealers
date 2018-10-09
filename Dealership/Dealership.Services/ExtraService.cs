@@ -24,9 +24,14 @@ namespace Dealership.Services
 
         public Extra AddExtraToCar(int carId, string extraName)
         {
-            if (this.Context.Cars.Any(c => c.Id == carId))
+            if (!this.Context.Cars.Any(c => c.Id == carId))
             {
                 throw new ArgumentException($"Car with Id {carId} does not exist");
+            }
+
+            if (string.IsNullOrEmpty(extraName))
+            {
+                throw new ArgumentException("c ne baca");
             }
 
             if (this.Context.Cars.Include(c => c.CarsExtras)
