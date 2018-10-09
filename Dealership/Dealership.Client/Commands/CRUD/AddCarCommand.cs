@@ -13,7 +13,7 @@ namespace Dealership.Client.Commands.CRUD
 {
     public class AddCarCommand : PrimeCommand
     {
-        public ICarService carService { get; set; }
+        public ICarService CarService { get; set; }
         //add brand, model, hp, engCap, prod.date, price, chasis, nDoors, colorName,ColorType, fuelType, gearbox, nGears
         public override string Execute(string[] parameters)
         {
@@ -118,7 +118,7 @@ namespace Dealership.Client.Commands.CRUD
                 throw new ArgumentException("Entered invalid gearbox!");
             }
 
-            Car commandResult = carService.AddCar(newBrand, paramModel, paramHp
+            Car commandResult = CarService.AddCar(newBrand, paramModel, paramHp
                                                 , paramEngCapacity, paramProdDate, paramPrice
                                                 , newChassis, newColor, newFuelType, newGearbox);
 

@@ -36,7 +36,7 @@ namespace Dealership.Client.Core
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
-                }               
+                }
             }
         }
 

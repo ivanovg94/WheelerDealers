@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Dealership.Client.Core.Abstract;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace Dealership.Client
@@ -22,7 +23,7 @@ namespace Dealership.Client
 
             Console.WriteLine();
             Console.WriteLine();
-                                 
+
             var builder = new ContainerBuilder();
             builder.RegisterAssemblyModules(Assembly.GetExecutingAssembly());
             var container = builder.Build();
