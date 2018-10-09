@@ -12,6 +12,7 @@
   <ItemGroup>
     <Folder Include="DataProcessor\ExportResults\" />
     <Folder Include="DataProcessor\ImportDatasets\" />
+    <Folder Include="DataProcessor\PdfReports\" />
   </ItemGroup>
 
 </Project>
