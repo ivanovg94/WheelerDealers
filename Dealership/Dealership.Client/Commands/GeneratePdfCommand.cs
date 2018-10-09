@@ -54,8 +54,8 @@ namespace Dealership.Client.Commands
                         table.AddCell(car.EngineCapacity.ToString());
                         table.AddCell(car.Chasis.Name);
                         table.AddCell(car.Color.Name);
-                        table.AddCell(car.GearBox.GearType.Type);
-                        table.AddCell(car.FuelType.Type);
+                        table.AddCell(car.GearBox.GearType.Name);
+                        table.AddCell(car.FuelType.Name);
                         table.AddCell(car.Price.ToString());
                     }
 

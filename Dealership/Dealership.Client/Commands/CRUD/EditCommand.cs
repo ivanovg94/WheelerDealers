@@ -13,12 +13,9 @@ namespace Dealership.Client.Commands.CRUD
     {
         public ICarService CarService { get; set; }
 
-
         // edit [id]
         public override string Execute(string[] parameters)
         {
-
-
             var id = int.Parse(parameters[0]);
             var prop = parameters[1];
             var newValue = parameters[2];
@@ -26,26 +23,17 @@ namespace Dealership.Client.Commands.CRUD
             var methods = this.CarService.GetType().GetMethods();
 
             foreach (var method in methods)
-            {// find adequate method and
+            {// find adequate method
                 if (method.Name.Contains("Edit" + prop))
-                {
+                { // invoke method with needed parameters
                     method.Invoke(CarService, new object[] { id, newValue });
                     break;
                 }
             }
 
-            return "EditBrandCommand reached!"; // for testing purposes
+            return $"{prop} of car with id:{id} edited successfully!"; // for testing purposes
 
-
-
-
-
-
-
-
-
-
-
+                                                                        
             //var id = parameters[0];
             //var prop = parameters[1];
             //var newValue = parameters[2];

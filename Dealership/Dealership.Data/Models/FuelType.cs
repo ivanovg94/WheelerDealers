@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Dealership.Data.Models
 {
-    public class FuelType
+    public class FuelType : Entity
     {
         private ICollection<Car> _cars;
 
@@ -13,8 +11,8 @@ namespace Dealership.Data.Models
             this._cars = new HashSet<Car>();
         }
 
-        public int Id { get; set; }
-        public string Type { get; set; }
+        public string Name { get; set; }
+
         public virtual ICollection<Car> Cars
         {
             get { return _cars; }

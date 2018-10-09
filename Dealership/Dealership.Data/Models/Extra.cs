@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Dealership.Data.Models
 {
-    public class Extra
+    public class Extra : Entity
     {
         private ICollection<CarsExtras> _carsExtras;
 
@@ -13,7 +13,6 @@ namespace Dealership.Data.Models
             this._carsExtras = new HashSet<CarsExtras>();
         }
 
-        public int Id { get; set; }
         public string Name { get; set; }
 
         public virtual ICollection<CarsExtras> CarsExtras

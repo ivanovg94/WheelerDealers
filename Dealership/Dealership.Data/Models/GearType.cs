@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Dealership.Data.Models
 {
-    public class GearType
+    public class GearType : Entity
     {
         private ICollection<Gearbox> _gearboxes;
 
@@ -13,8 +11,8 @@ namespace Dealership.Data.Models
             this._gearboxes = new HashSet<Gearbox>();
         }
 
-        public int Id { get; set; }
-        public string Type { get; set; }
+        public string Name { get; set; }
+
         public virtual ICollection<Gearbox> Gearboxes
         {
             get { return _gearboxes; }

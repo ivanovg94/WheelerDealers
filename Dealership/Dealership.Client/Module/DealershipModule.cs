@@ -4,6 +4,8 @@ using Dealership.Client.Core;
 using Dealership.Client.Core.Abstract;
 using Dealership.Client.Core.Providers;
 using Dealership.Data.Context;
+using Dealership.Data.Models;
+using Dealership.Data.Repository;
 using Dealership.Services;
 using Dealership.Services.Abstract;
 using System.Linq;
@@ -17,6 +19,7 @@ namespace Dealership.Client.Module
         {
             RegisterCoreComponents(builder);
             RegisterDynamicCommands(builder);
+            RegisterRepository(builder);
 
             base.Load(builder);
         }
@@ -29,6 +32,7 @@ namespace Dealership.Client.Module
             builder.RegisterType<ExtraService>().As<IExtraService>().SingleInstance().PropertiesAutowired();
             builder.RegisterType<DealershipContext>().As<IDealershipContext>();
             builder.RegisterType<CarService>().As<ICarService>().SingleInstance();
+            builder.RegisterType<BrandService>().As<IBrandService>().SingleInstance();
             builder.RegisterType<ConsoleReader>().As<IReader>().SingleInstance();
             builder.RegisterType<ConsoleWriter>().As<IWriter>().SingleInstance();
         }
@@ -51,6 +55,11 @@ namespace Dealership.Client.Module
                                     .Named<ICommand>(commandType.Name.ToLower().Replace("command", ""))
                                     .PropertiesAutowired();
             }
+        }
+
+        private void RegisterRepository(ContainerBuilder builder)
+        {
+            builder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>));
         }
     }
 }

@@ -51,9 +51,9 @@ namespace Dealership.Client.Commands
                 Chassis = c.Chasis.Name,
                 NDoors = c.Chasis.NumberOfDoors,
                 Color = c.Color.Name,
-                ColorType = c.Color.ColorType.Type,
-                Fuel = c.FuelType.Type,
-                Gearbox = c.GearBox.GearType.Type,
+                ColorType = c.Color.ColorType.Name,
+                Fuel = c.FuelType.Name,
+                Gearbox = c.GearBox.GearType.Name,
                 NumberOfGears = c.GearBox.NumberOfGears,
                 Extras = c.CarsExtras.Select(ce => ce.Extra.Name).ToList()
             }).ToList();

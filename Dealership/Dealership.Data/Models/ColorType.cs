@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Dealership.Data.Models
 {
-    public class ColorType
+    public class ColorType : Entity
     {
         private ICollection<Color> _colors;
 
@@ -13,9 +11,7 @@ namespace Dealership.Data.Models
             this._colors = new HashSet<Color>();
         }
 
-        public int Id { get; set; }
-
-        public string Type { get; set; }
+        public string Name { get; set; }
 
         public virtual ICollection<Color> Colors
         {
