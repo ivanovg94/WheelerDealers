@@ -60,10 +60,5 @@ namespace Dealership.Data.Repository
 
             entry.State = EntityState.Modified;
         }
-
-        public void Save()
-        {
-            this.context.SaveChanges();
-        }
     }
 }

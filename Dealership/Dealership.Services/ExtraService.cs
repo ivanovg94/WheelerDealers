@@ -1,40 +1,40 @@
-﻿using Dealership.Data.Context;
-using Dealership.Data.Models;
+﻿using Dealership.Data.Models;
+using Dealership.Data.UnitOfWork;
 using Dealership.Services.Abstract;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Dealership.Services
 {
     public class ExtraService : IExtraService
     {
-        public IDealershipContext Context { get; set; }
-        public ICarService CarService { get; set; }
+        private readonly IUnitOfWork unitOfWork;
 
+        public ExtraService(IUnitOfWork unitOfWork)
+        {
+            this.unitOfWork = unitOfWork;
+        }
         public Extra CreateExtra(string name)
         {
             var extra = new Extra() { Name = name };
-            this.Context.Extras.Add(extra);
-            this.Context.SaveChanges();
+            this.unitOfWork.GetRepository<Extra>().Add(extra);
+            this.unitOfWork.SaveChanges();
             return extra;
         }
 
         public Extra AddExtraToCar(int carId, string extraName)
         {
-            if (!this.Context.Cars.Any(c => c.Id == carId))
+            if (!this.unitOfWork.GetRepository<Car>().All().Any(c => c.Id == carId))
             {
                 throw new ArgumentException($"Car with Id {carId} does not exist");
             }
 
-            if (string.IsNullOrEmpty(extraName))
-            {
-                throw new ArgumentException("c ne baca");
-            }
 
-            if (this.Context.Cars.Include(c => c.CarsExtras)
+
+            if (this.unitOfWork.GetRepository<Car>().All()
+                                 .Include(c => c.CarsExtras)
                                    .ThenInclude(ce => ce.Extra)
                                  .FirstOrDefault(c => c.Id == carId)
                                  .CarsExtras.Any(ce => ce.Extra.Name == extraName))
@@ -43,50 +43,46 @@ namespace Dealership.Services
             }
 
             //TODO: validate
-            Extra extra = null;
-            if (!this.Context.Extras.Any(e => e.Name == extraName))
+            var extra = GetExtraByName(extraName);
+            if (extra == null)
             {
                 extra = new Extra() { Name = extraName };
-                this.Context.Extras.Add(extra);
-                this.Context.SaveChanges();
+                this.unitOfWork.GetRepository<Extra>().Add(extra);
+                this.unitOfWork.SaveChanges(); //????? does it break the queery ?
             }
-            else
-            {
-                extra = GetExtraByName(extraName);
-            }
+
 
             var newCarExtra = new CarsExtras() { CarId = carId, ExtraId = extra.Id };
-            this.Context.CarsExtras.Add(newCarExtra);
+            this.unitOfWork.GetRepository<CarsExtras>().Add(newCarExtra);
             //       extra.CarsExtras.Add(newCarExtra);
 
-            this.Context.SaveChanges();
+            this.unitOfWork.SaveChanges();
             return extra;
         }
 
         public Extra GetExtraById(int id)
         {
-            var extra = Context.Extras.FirstOrDefault();
-            return extra;
-
+            return this.unitOfWork.GetRepository<Extra>().All().FirstOrDefault(x => x.Id == id);
         }
 
         public Extra GetExtraByName(string name)
         {
-            return this.Context.Extras.FirstOrDefault(e => e.Name == name);
+            return this.unitOfWork.GetRepository<Extra>().All().FirstOrDefault(e => e.Name == name);
         }
 
         public ICollection<Extra> GetAllExtras()
         {
-            return this.Context.Extras.ToList();
+            return this.unitOfWork.GetRepository<Extra>().All().ToList();
         }
 
         public ICollection<Extra> GetExtrasForCar(int carId)
         {
-            if (!this.Context.Cars.Any(c => c.Id == carId))
+            if (!this.unitOfWork.GetRepository<Car>().All().Any(c => c.Id == carId))
             {
                 throw new ArgumentException("Invalid car Id.");
             }
-            return this.Context.Cars.Include(c => c.CarsExtras)
+            return this.unitOfWork.GetRepository<Car>().All()
+                                        .Include(c => c.CarsExtras)
                                         .ThenInclude(ce => ce.Extra)
                                         .First(c => c.Id == carId).CarsExtras
                                         .Select(x => x.Extra).ToList();

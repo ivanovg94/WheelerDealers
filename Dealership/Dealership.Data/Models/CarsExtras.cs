@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Dealership.Data.Models.Contracts;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Dealership.Data.Models
 {
-   public class CarsExtras
+    public class CarsExtras : IDeletable, IEditable
     {
         public int CarId { get; set; }
 
@@ -13,5 +15,15 @@ namespace Dealership.Data.Models
         public virtual Car Car { get; set; }
 
         public virtual Extra Extra { get; set; }
+        public bool IsDeleted { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime? DeletedOn { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime? CreatedOn { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime? ModifiedOn { get; set; }
     }
 }

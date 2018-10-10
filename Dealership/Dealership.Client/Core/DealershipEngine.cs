@@ -40,6 +40,10 @@ namespace Dealership.Client.Core
                 }
                 catch (Exception ex)
                 {
+                    while (ex.InnerException != null)
+                    {
+                        ex = ex.InnerException;
+                    }
                     Console.WriteLine(ex.Message);
                 }
 

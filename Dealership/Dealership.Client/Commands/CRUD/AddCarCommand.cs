@@ -14,44 +14,19 @@ namespace Dealership.Client.Commands.CRUD
             var brandName = parameters[0];
             var model = parameters[1];
 
-            short horesePower;
-            if (!short.TryParse(parameters[2], out horesePower))
-            {
-                throw new ArgumentException("Invalid horse power value!");
-            }
-
-            short engineCapacity;
-            if (!short.TryParse(parameters[3], out engineCapacity))
-            {
-                throw new ArgumentException("Invalid engine capacity value!");
-            }
-
-            DateTime prodDate;
-            if (!DateTime.TryParse(parameters[4], out prodDate))
-            {
-                throw new ArgumentException("Invalid production date passed!");
-            }
-
-            decimal price;
-            if (!decimal.TryParse(parameters[5], out price))
-            {
-                throw new ArgumentException("Invalid price value!");
-            }
+            if (!short.TryParse(parameters[2], out short horesePower)) { throw new ArgumentException("Invalid horse power value!"); }
+            if (!short.TryParse(parameters[3], out short engineCapacity)) { throw new ArgumentException("Invalid engine capacity value!"); }
+            if (!DateTime.TryParse(parameters[4], out DateTime prodDate)) { throw new ArgumentException("Invalid production date passed!"); }
+            if (!decimal.TryParse(parameters[5], out decimal price)) { throw new ArgumentException("Invalid price value!"); }
             var chassisName = parameters[6];
             var colorName = parameters[7];
             var colorType = parameters[8];
             var fuelType = parameters[9];
             var gearboxType = parameters[10];
 
-            byte numberOfGears; 
-            if (!byte.TryParse(parameters[11], out numberOfGears))
-            {
-                throw new ArgumentException("Invalid number of gears passed!");
-            }
+            if (!byte.TryParse(parameters[11], out byte numberOfGears)) { throw new ArgumentException("Invalid number of gears passed!"); }
 
             var car = CarService.CreateCar(brandName, model, horesePower, engineCapacity, prodDate, price, chassisName, colorName, colorType, fuelType, gearboxType, numberOfGears);
-            // consider using only one of theese CarService.CreateCar or AddCar ???
-            this.CarService.AddCar(car);
 
             return $"{car.Brand.Name} {car.Model} with Id:{car.Id} was added successfully";
         }

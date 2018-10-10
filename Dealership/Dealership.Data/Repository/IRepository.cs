@@ -14,7 +14,5 @@ namespace Dealership.Data.Repository
         void Delete(T entity);
 
         void Update(T entity);
-
-        void Save();
     }
 }

@@ -1,32 +1,24 @@
 ﻿using Dealership.Data.Models;
-using Dealership.Data.Repository;
+using Dealership.Data.UnitOfWork;
 using Dealership.Services.Abstract;
 using Dealership.Services.Exceptions;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Dealership.Services
 {
-   public class BrandService : IBrandService
+    public class BrandService : IBrandService
     {
-        private readonly IRepository<Brand> brandRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public BrandService(IRepository<Brand> brandRepository)
-        { 
-            this.brandRepository = brandRepository;
+        public BrandService(IUnitOfWork unitOfWork)
+        {
+            this.unitOfWork = unitOfWork;
         }
 
         public Brand GetBrand(string brandName)
         {
-            var brand = this.brandRepository.All().FirstOrDefault(b => b.Name == brandName);
-
-            if (brand == null)
-            {
-                throw new BrandNotFoundException($"There is no brand with name \"{brandName}\".");
-            }
-
+            var brand = this.unitOfWork.GetRepository<Brand>().All().FirstOrDefault(b => b.Name == brandName);
+            if (brand == null) { throw new BrandNotFoundException($"There is no brand with name \"{brandName}\"."); }
             return brand;
         }
     }

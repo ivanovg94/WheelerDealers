@@ -18,7 +18,10 @@ namespace Dealership.Client.Commands.ExtrasCommands
             if (parameters.Length == 0) { throw new ArgumentException("Invalid parameters"); }
             if (!int.TryParse(parameters[0], out int id)) { throw new ArgumentException("Invalid value for Id!"); }
 
-            var extra = this.ExtraService.AddExtraToCar(id, string.Join(" ", parameters.Skip(1)));
+            var extrasNames = string.Join(" ", parameters.Skip(1));
+
+            if (string.IsNullOrEmpty(extrasNames)) { throw new ArgumentException("c ne baca"); }
+            var extra = this.ExtraService.AddExtraToCar(id, extrasNames);
             return $"Added extra {extra.Name} to car with Id {id}";
         }
     }
