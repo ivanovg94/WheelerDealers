@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dealership.Data.Models
 {
@@ -11,6 +12,9 @@ namespace Dealership.Data.Models
             this._colors = new HashSet<Color>();
         }
 
+        [Required]
+        [MaxLength(25)]
+        [MinLength(2)]
         public string Name { get; set; }
 
         public virtual ICollection<Color> Colors

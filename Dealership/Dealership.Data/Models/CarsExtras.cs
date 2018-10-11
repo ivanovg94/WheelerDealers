@@ -9,12 +9,11 @@ namespace Dealership.Data.Models
     public class CarsExtras : IDeletable, IEditable
     {
         public int CarId { get; set; }
-
-        public int ExtraId { get; set; }
-
         public virtual Car Car { get; set; }
 
+        public int ExtraId { get; set; }
         public virtual Extra Extra { get; set; }
+
         public bool IsDeleted { get; set; }
 
         [DataType(DataType.DateTime)]

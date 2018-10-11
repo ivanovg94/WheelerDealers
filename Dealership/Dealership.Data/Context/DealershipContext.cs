@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Dealership.Data.Context.Configurations;
 using Dealership.Data.Models;
 using Dealership.Data.Models.Contracts;
 using Microsoft.EntityFrameworkCore;
@@ -29,14 +30,13 @@ namespace Dealership.Data.Context
                 optionsBuilder
                     //.UseLoggerFactory(loggerFactory)
                   //  .UseLazyLoadingProxies()
-                    .UseSqlServer(Configuration.ConnectionString);
+                    .UseSqlServer(ConnectionStringConfig.ConnectionString);
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CarsExtras>()
-                .HasKey(ce => new { ce.CarId, ce.ExtraId });
+            modelBuilder.ApplyConfiguration(new CarsExtrasConfig());
 
             SeedData(modelBuilder);
 

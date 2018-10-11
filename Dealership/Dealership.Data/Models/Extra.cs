@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Dealership.Data.Models
@@ -13,6 +14,9 @@ namespace Dealership.Data.Models
             this._carsExtras = new HashSet<CarsExtras>();
         }
 
+        [Required]
+        [MaxLength(25)]
+        [MinLength(2)]
         public string Name { get; set; }
 
         public virtual ICollection<CarsExtras> CarsExtras

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dealership.Data.Models
 {
@@ -11,8 +12,12 @@ namespace Dealership.Data.Models
             this._cars = new HashSet<Car>();
         }
 
+        [Required]
+        [MaxLength(25)]
+        [MinLength(2)]
         public string Name { get; set; }
 
+        [Range(2,7)]
         public byte NumberOfDoors { get; set; }
 
         public virtual ICollection<Car> Cars

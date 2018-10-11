@@ -1,6 +1,7 @@
 ﻿using Dealership.Data.Models.Contracts;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Dealership.Data.Models
@@ -14,16 +15,27 @@ namespace Dealership.Data.Models
             this._carsExtras = new HashSet<CarsExtras>();
         }
 
+        [Required]
+        [MaxLength(25)]
+        [MinLength(2)]
         public string Model { get; set; }
 
+        [Required]
+        [Range(1,int.MaxValue)]
         public short HorsePower { get; set; }
 
+        [Required]
+        [Range(1, 100000)]
         public short EngineCapacity { get; set; }
 
         public bool IsSold { get; set; }
 
+        [Required]
+        [Range(0, int.MaxValue)]
         public decimal Price { get; set; }
 
+        [Required]
+        [DataType(DataType.DateTime)]
         public DateTime ProductionDate { get; set; }
 
         public int BrandId { get; set; }   

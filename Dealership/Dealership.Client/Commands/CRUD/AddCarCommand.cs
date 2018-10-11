@@ -12,12 +12,6 @@ namespace Dealership.Client.Commands.CRUD
         {
             //validation TODO
             var brandName = parameters[0];
-
-            if (brandName.Length < 2 || brandName.Length > 25)
-            {
-                throw new ArgumentOutOfRangeException("The name of brand cannot be less than 2 symbols or more than 25 symbols.");
-            }
-
             var model = parameters[1];
 
             if (!short.TryParse(parameters[2], out short horesePower)) { throw new ArgumentException("Invalid horse power value!"); }

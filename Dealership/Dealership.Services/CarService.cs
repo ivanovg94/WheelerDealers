@@ -22,6 +22,11 @@ namespace Dealership.Services
             DateTime productionDate, decimal price, string bodyTypeName, string colorName, string colorType,
             string fuelTypeName, string gearboxTypeName, int numOfGears)
         {
+            if (brandName.Length < 2 || brandName.Length > 25)
+            {
+                throw new ArgumentOutOfRangeException("The name of brand cannot be less than 2 symbols or more than 25 symbols.");
+            }
+
             var brand = this.unitOfWork.GetRepository<Brand>().All().FirstOrDefault(b => b.Name == brandName);
 
             if (brand == null)
