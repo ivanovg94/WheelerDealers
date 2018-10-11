@@ -269,12 +269,8 @@ namespace Dealership.Services
             var newColorType = parameters[2];
             var car = GetCar(id);
 
-<<<<<<< HEAD
-            Color newColor = unitOfWork.GetRepository<Color>().All().First(c => c.Name == newColorValue);
-=======
-            var newColor = unitOfWork.GetRepository<Color>().All().FirstOrDefault(c => c.Name == newValue);
+            var newColor = unitOfWork.GetRepository<Color>().All().FirstOrDefault(c => c.Name == newColorValue);
 
->>>>>>> 7d6d3124de32016e5e7bc215a22104c674c866ac
             if (newColor == null)
             {
                 var newType = unitOfWork.GetRepository<ColorType>().All().FirstOrDefault(gt => gt.Name == newColorType);
@@ -303,7 +299,6 @@ namespace Dealership.Services
             var newValue = parameters[1];
 
             var car = GetCar(id);
-<<<<<<< HEAD
 
             ColorType newColorType = unitOfWork.GetRepository<ColorType>().All().First(ct => ct.Name == newValue);
 
@@ -311,10 +306,6 @@ namespace Dealership.Services
             {
                 throw new ArgumentNullException("Color type not exist!");
             }
-=======
-            var newColorType = unitOfWork.GetRepository<ColorType>().All().FirstOrDefault(ct => ct.Name == newValue);
-            if (newColorType == null) { throw new ArgumentNullException("Color type not exist!"); }
->>>>>>> 7d6d3124de32016e5e7bc215a22104c674c866ac
 
             car.Color.ColorType = newColorType;
             unitOfWork.SaveChanges();
@@ -326,13 +317,9 @@ namespace Dealership.Services
             var newValue = parameters[1];
 
             var car = GetCar(id);
-<<<<<<< HEAD
 
-            var newFuelType = unitOfWork.GetRepository<FuelType>().All().First(ft => ft.Name == newValue);
-
-=======
             var newFuelType = unitOfWork.GetRepository<FuelType>().All().FirstOrDefault(ft => ft.Name == newValue);
->>>>>>> 7d6d3124de32016e5e7bc215a22104c674c866ac
+
             if (newFuelType != null)
             {
                 car.FuelType = newFuelType;
@@ -348,18 +335,13 @@ namespace Dealership.Services
             var newValue = parameters[1];
 
             var car = GetCar(id);
-<<<<<<< HEAD
+
             GearType newGearType = unitOfWork.GetRepository<GearType>().All().First(gt => gt.Name == newValue);
 
             if (newGearType == null)
             {
                 throw new ArgumentException($"Gearbox:{newValue} not exist!");
             }
-
-=======
-            var newGearType = unitOfWork.GetRepository<GearType>().All().FirstOrDefault(gb => gb.Name == newValue);
-            if (newGearType == null) { throw new ArgumentException($"Gearbox:{newValue} not exist!"); }
->>>>>>> 7d6d3124de32016e5e7bc215a22104c674c866ac
             car.GearBox.GearType = newGearType;
             unitOfWork.SaveChanges();
 
