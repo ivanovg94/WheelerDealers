@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Dealership.Data.Context.Configurations
 {
-    class CarsExtrasConfig : IEntityTypeConfiguration<CarsExtras>
+    internal class CarsExtrasConfiguration : IEntityTypeConfiguration<CarsExtras>
     {
         public void Configure(EntityTypeBuilder<CarsExtras> builder)
         {

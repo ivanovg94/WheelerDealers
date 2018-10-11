@@ -32,7 +32,7 @@ namespace Dealership.Client.Module
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
             builder.RegisterType<CarService>().As<ICarService>();
             builder.RegisterType<ExtraService>().As<IExtraService>();
-            builder.RegisterType<CarService>().As<ICarService>();
+            builder.RegisterType<UserService>().As<IUserService>();
             builder.RegisterType<BrandService>().As<IBrandService>();
             builder.RegisterType<ConsoleReader>().As<IReader>().SingleInstance();
             builder.RegisterType<ConsoleWriter>().As<IWriter>().SingleInstance();

@@ -37,7 +37,7 @@ namespace Dealership.Services
             }
 
             var bodyType = this.unitOfWork.GetRepository<BodyType>().All().FirstOrDefault(c => c.Name == bodyTypeName);
-            if (bodyType == null) { throw new ChassisNotFoundException($"There is no body type with name \"{bodyTypeName}\"."); }
+            if (bodyType == null) { throw new BodyTypeNotFoundException($"There is no body type with name \"{bodyTypeName}\"."); }
 
             var color = this.unitOfWork.GetRepository<Color>().All().FirstOrDefault(c => c.Name == colorName);
             if (color == null)

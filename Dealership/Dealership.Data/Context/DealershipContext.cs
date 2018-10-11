@@ -1,42 +1,49 @@
-﻿using System;
-using System.Linq;
-using Dealership.Data.Context.Configurations;
+﻿using Dealership.Data.Context.Configurations;
 using Dealership.Data.Models;
 using Dealership.Data.Models.Contracts;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
 
 namespace Dealership.Data.Context
 {
     public class DealershipContext : DbContext, IDealershipContext
     {
         public DbSet<Brand> Brands { get; set; }
+
         public DbSet<Car> Cars { get; set; }
+
         public DbSet<CarsExtras> CarsExtras { get; set; }
+
         public DbSet<BodyType> Chassis { get; set; }
+
         public DbSet<Color> Colors { get; set; }
+
         public DbSet<Extra> Extras { get; set; }
+
         public DbSet<FuelType> FuelTypes { get; set; }
+
         public DbSet<Gearbox> Gearboxes { get; set; }
 
         public DbSet<GearType> GearTypes { get; set; }
 
         public DbSet<ColorType> ColorTypes { get; set; }
 
-
+        public DbSet<User> Users { get; set; }
+                
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder
-                    //.UseLoggerFactory(loggerFactory)
-                  //  .UseLazyLoadingProxies()
-                    .UseSqlServer(ConnectionStringConfig.ConnectionString);
+                    .UseSqlServer(ConnectionConfiguration.ConnectionString);
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new CarsExtrasConfig());
+            modelBuilder.ApplyConfiguration(new CarsExtrasConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
 
             SeedData(modelBuilder);
 
