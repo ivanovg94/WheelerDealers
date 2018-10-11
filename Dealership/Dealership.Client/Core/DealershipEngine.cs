@@ -26,7 +26,7 @@ namespace Dealership.Client.Core
 
         public void Run()
         {
-            while ((input = reader.ReadLine()) != "exit")
+            while ((input = reader.ReadLine().ToLower()) != "exit")
             {
                 try
                 {
@@ -46,13 +46,19 @@ namespace Dealership.Client.Core
                     }
                     Console.WriteLine(ex.Message);
                 }
-
             }
         }
 
         private ICommand ParseCommand(string commandStr)
         {
+            try
+            {
             return this.containerContext.ResolveNamed<ICommand>(commandStr);
+            }
+            catch (Exception)
+            {
+                throw new InvalidOperationException("The entered command is invalid!");
+            }
         }
     }
 }
