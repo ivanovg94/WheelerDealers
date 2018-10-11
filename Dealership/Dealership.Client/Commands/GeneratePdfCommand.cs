@@ -53,7 +53,7 @@ namespace Dealership.Client.Commands
                         table.AddCell(car.ProductionDate.Year.ToString());
                         table.AddCell(car.HorsePower.ToString());
                         table.AddCell(car.EngineCapacity.ToString());
-                        table.AddCell(car.Chasis.Name);
+                        table.AddCell(car.BodyType.Name);
                         table.AddCell(car.Color.Name);
                         table.AddCell(car.GearBox.GearType.Name);
                         table.AddCell(car.FuelType.Name);

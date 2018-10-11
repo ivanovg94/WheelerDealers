@@ -43,14 +43,14 @@ namespace Dealership.Client.Commands
                 short engineCapacity = carDto.EngineCap;
                 DateTime productionDate = carDto.ProductionDate;
                 decimal price = carDto.Price;
-                string chassis = carDto.Chassis;
+                string bodyType = carDto.BodyType;
                 string color = carDto.Color;
                 string colorType = carDto.ColorType;
                 string fuelType = carDto.Fuel;
                 string gearbox = carDto.Gearbox;
                 byte numOfGears = carDto.NumberOfGears;
 
-                var car = CarService.CreateCar(brand, model, horsePower, engineCapacity, productionDate, price, chassis, color, colorType, fuelType, gearbox, numOfGears);
+                var car = CarService.CreateCar(brand, model, horsePower, engineCapacity, productionDate, price, bodyType, color, colorType, fuelType, gearbox, numOfGears);
 
                 cars.Add(car);
                 //TODO: add logger

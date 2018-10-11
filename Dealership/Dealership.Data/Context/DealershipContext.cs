@@ -11,7 +11,7 @@ namespace Dealership.Data.Context
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Car> Cars { get; set; }
         public DbSet<CarsExtras> CarsExtras { get; set; }
-        public DbSet<Chassis> Chassis { get; set; }
+        public DbSet<BodyType> Chassis { get; set; }
         public DbSet<Color> Colors { get; set; }
         public DbSet<Extra> Extras { get; set; }
         public DbSet<FuelType> FuelTypes { get; set; }
@@ -72,12 +72,12 @@ namespace Dealership.Data.Context
 
         private void SeedData(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Chassis>().HasData(new Chassis { Id = 1, Name = "Sedan", NumberOfDoors = 4 });
-            modelBuilder.Entity<Chassis>().HasData(new Chassis { Id = 2, Name = "Coupe", NumberOfDoors = 2 });
-            modelBuilder.Entity<Chassis>().HasData(new Chassis { Id = 3, Name = "Cabrio", NumberOfDoors = 2 });
-            modelBuilder.Entity<Chassis>().HasData(new Chassis { Id = 4, Name = "Touring", NumberOfDoors = 4 });
-            modelBuilder.Entity<Chassis>().HasData(new Chassis { Id = 5, Name = "Suv", NumberOfDoors = 5 });
-            modelBuilder.Entity<Chassis>().HasData(new Chassis { Id = 6, Name = "Hatchback", NumberOfDoors = 5 });
+            modelBuilder.Entity<BodyType>().HasData(new BodyType { Id = 1, Name = "Sedan", NumberOfDoors = 4 });
+            modelBuilder.Entity<BodyType>().HasData(new BodyType { Id = 2, Name = "Coupe", NumberOfDoors = 2 });
+            modelBuilder.Entity<BodyType>().HasData(new BodyType { Id = 3, Name = "Cabrio", NumberOfDoors = 2 });
+            modelBuilder.Entity<BodyType>().HasData(new BodyType { Id = 4, Name = "Touring", NumberOfDoors = 4 });
+            modelBuilder.Entity<BodyType>().HasData(new BodyType { Id = 5, Name = "Suv", NumberOfDoors = 5 });
+            modelBuilder.Entity<BodyType>().HasData(new BodyType { Id = 6, Name = "Hatchback", NumberOfDoors = 5 });
 
             modelBuilder.Entity<GearType>().HasData(new GearType { Id = 1, Name = "Automatic" });
             modelBuilder.Entity<GearType>().HasData(new GearType { Id = 2, Name = "Manual" });

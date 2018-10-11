@@ -19,10 +19,6 @@ namespace Dealership.Services.Abstract
 
         IList<Car> GetCars(string direction);
 
-        Brand GetBrand(string brandName);
-
-        Chassis GetBodyType(string bodyName);
-
         Car RemoveCar(int carId);
     }
 }

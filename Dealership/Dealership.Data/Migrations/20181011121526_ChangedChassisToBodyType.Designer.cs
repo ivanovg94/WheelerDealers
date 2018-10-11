@@ -4,14 +4,16 @@ using Dealership.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Dealership.Data.Migrations
 {
     [DbContext(typeof(DealershipContext))]
-    partial class DealershipContextModelSnapshot : ModelSnapshot
+    [Migration("20181011121526_ChangedChassisToBodyType")]
+    partial class ChangedChassisToBodyType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -78,9 +80,11 @@ namespace Dealership.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("BodyTypeId");
+                    b.Property<int?>("BodyTypeId");
 
                     b.Property<int>("BrandId");
+
+                    b.Property<int>("ChasisId");
 
                     b.Property<int>("ColorId");
 
@@ -315,8 +319,7 @@ namespace Dealership.Data.Migrations
                 {
                     b.HasOne("Dealership.Data.Models.BodyType", "BodyType")
                         .WithMany("Cars")
-                        .HasForeignKey("BodyTypeId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("BodyTypeId");
 
                     b.HasOne("Dealership.Data.Models.Brand", "Brand")
                         .WithMany("Cars")

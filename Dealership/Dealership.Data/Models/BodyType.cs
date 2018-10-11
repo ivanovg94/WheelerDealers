@@ -2,11 +2,11 @@
 
 namespace Dealership.Data.Models
 {
-    public class Chassis : Entity
+    public class BodyType : Entity
     {
         private ICollection<Car> _cars;
 
-        public Chassis()
+        public BodyType()
         {
             this._cars = new HashSet<Car>();
         }

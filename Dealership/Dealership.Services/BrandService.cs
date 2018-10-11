@@ -18,7 +18,10 @@ namespace Dealership.Services
         public Brand GetBrand(string brandName)
         {
             var brand = this.unitOfWork.GetRepository<Brand>().All().FirstOrDefault(b => b.Name == brandName);
-            if (brand == null) { throw new BrandNotFoundException($"There is no brand with name \"{brandName}\"."); }
+            if (brand == null)
+            {
+                throw new BrandNotFoundException($"There is no brand with name \"{brandName}\".");
+            }
             return brand;
         }
     }

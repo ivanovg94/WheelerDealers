@@ -13,14 +13,16 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
         //filterByBodyType {bodyType}
         public ICarService CarService { get; set; }
 
+        public IBodyTypeService BodyTypeService { get; set; }
+
         public override string Execute(string[] parameters)
         {
             string bodyType = parameters[0];
 
-            var body = CarService.GetBodyType(bodyType);
+            var body = BodyTypeService.GetBodyType(bodyType);
 
             var cars = this.CarService.GetCars("asc")
-                .Where(c => c.Chasis == body)
+                .Where(c => c.BodyType == body)
                 .Select(c => new CarVM
                 {
                     Id = c.Id,
@@ -30,8 +32,8 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
                     HorsePower = c.HorsePower,
                     ProductionDate = c.ProductionDate,
                     Price = c.Price,
-                    NDoors = c.Chasis.NumberOfDoors,
-                    Chassis = c.Chasis.Name,
+                    NDoors = c.BodyType.NumberOfDoors,
+                    BodyType = c.BodyType.Name,
                     Color = c.Color.Name,
                     ColorType = c.Color.ColorType.Name,
                     Fuel = c.FuelType.Name,

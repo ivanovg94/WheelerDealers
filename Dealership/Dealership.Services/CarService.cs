@@ -19,7 +19,7 @@ namespace Dealership.Services
         }
 
         public Car CreateCar(string brandName, string model, short horsePower, short engineCapacity,
-            DateTime productionDate, decimal price, string chassisName, string colorName, string colorType,
+            DateTime productionDate, decimal price, string bodyTypeName, string colorName, string colorType,
             string fuelTypeName, string gearboxTypeName, int numOfGears)
         {
             var brand = this.unitOfWork.GetRepository<Brand>().All().FirstOrDefault(b => b.Name == brandName);
@@ -31,8 +31,8 @@ namespace Dealership.Services
                 this.unitOfWork.SaveChanges();
             }
 
-            var chassis = this.unitOfWork.GetRepository<Chassis>().All().FirstOrDefault(c => c.Name == chassisName);
-            if (chassis == null) { throw new ChassisNotFoundException($"There is no chassis with name \"{chassisName}\"."); }
+            var bodyType = this.unitOfWork.GetRepository<BodyType>().All().FirstOrDefault(c => c.Name == bodyTypeName);
+            if (bodyType == null) { throw new ChassisNotFoundException($"There is no body type with name \"{bodyTypeName}\"."); }
 
             var color = this.unitOfWork.GetRepository<Color>().All().FirstOrDefault(c => c.Name == colorName);
             if (color == null)
@@ -44,7 +44,7 @@ namespace Dealership.Services
                                                .FirstOrDefault(ct => ct.Name == colorType)
                 };
 
-                if (color.ColorType == null) { throw new ColorTypeNotFoundException($"There is no color type with name \"{chassisName}\"."); }
+                if (color.ColorType == null) { throw new ColorTypeNotFoundException($"There is no color type with name \"{bodyTypeName}\"."); }
                 this.unitOfWork.GetRepository<Color>().Add(color);
                 this.unitOfWork.SaveChanges();
             }
@@ -67,8 +67,8 @@ namespace Dealership.Services
                 EngineCapacity = engineCapacity,
                 ProductionDate = productionDate,
                 Price = price,
-                Chasis = chassis,
-                ChasisId = chassis.Id,
+                BodyType = bodyType,
+                BodyTypeId = bodyType.Id,
                 Color = color,
                 ColorId = color.Id,
                 FuelType = fuelType,
@@ -102,7 +102,7 @@ namespace Dealership.Services
                                             .Include(c => c.Brand)
                                             .Include(c => c.CarsExtras)
                                                  .ThenInclude(ce => ce.Extra)
-                                            .Include(c => c.Chasis)
+                                            .Include(c => c.BodyType)
                                             .Include(c => c.Color)
                                                 .ThenInclude(co => co.ColorType)
                                             .Include(c => c.FuelType)
@@ -120,7 +120,7 @@ namespace Dealership.Services
                                              .Include(c => c.Brand)
                                              .Include(c => c.CarsExtras)
                                                   .ThenInclude(ce => ce.Extra)
-                                             .Include(c => c.Chasis)
+                                             .Include(c => c.BodyType)
                                              .Include(c => c.Color)
                                                  .ThenInclude(co => co.ColorType)
                                              .Include(c => c.FuelType)
@@ -139,7 +139,7 @@ namespace Dealership.Services
                                            .Include(c => c.Brand)
                                            .Include(c => c.CarsExtras)
                                                 .ThenInclude(ce => ce.Extra)
-                                           .Include(c => c.Chasis)
+                                           .Include(c => c.BodyType)
                                            .Include(c => c.Color)
                                                .ThenInclude(co => co.ColorType)
                                            .Include(c => c.FuelType)
@@ -241,20 +241,20 @@ namespace Dealership.Services
             unitOfWork.SaveChanges();
         }
 
-        public void EditChassis(string[] parameters)
+        public void EditBodyType(string[] parameters)
         {
             var id = int.Parse(parameters[0]);
             var newValue = parameters[1];
 
-            var newChassis = this.unitOfWork.GetRepository<Chassis>().All().FirstOrDefault(ch => ch.Name == newValue);
+            var newBodyType = this.unitOfWork.GetRepository<BodyType>().All().FirstOrDefault(ch => ch.Name == newValue);
 
-            if (newChassis == null)
+            if (newBodyType == null)
             {
-                throw new ArgumentException("Invalid chassis!");
+                throw new ArgumentException("Invalid body type!");
             }
 
             var car = GetCar(id);
-            car.Chasis = newChassis;
+            car.BodyType = newBodyType;
             unitOfWork.SaveChanges();
         }
 
@@ -341,20 +341,6 @@ namespace Dealership.Services
             car.GearBox.GearType = newGearType;
             unitOfWork.SaveChanges();
 
-        }
-
-        public Brand GetBrand(string brandName)
-        {
-            var brand = this.unitOfWork.GetRepository<Brand>().All().FirstOrDefault(b => b.Name.ToLower() == brandName);
-            if (brand == null) { throw new BrandNotFoundException($"There is no brand with name \"{brandName}\"."); }
-            return brand;
-        }
-        
-        public Chassis GetBodyType(string bodyName)
-        {
-            var bodyType = this.unitOfWork.GetRepository<Chassis>().All().FirstOrDefault(b => b.Name.ToLower() == bodyName);
-            if (bodyType == null) { throw new BodyTypeNotFoundException($"There is no body type with name \"{bodyName}\"."); }
-            return bodyType;
         }
     }
 }
