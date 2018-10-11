@@ -1,5 +1,5 @@
 ﻿using Dealership.Client.Commands.Abstract;
-using Dealership.Data.DataProcessor.Dto;
+using Dealership.Client.ViewModels;
 using Dealership.Data.Models;
 using Dealership.Services.Abstract;
 using Newtonsoft.Json;
@@ -29,7 +29,7 @@ namespace Dealership.Client.Commands
         {
             var sb = new StringBuilder();
 
-            var deserializedCars = JsonConvert.DeserializeObject<List<CarDto>>(jsonString, new JsonSerializerSettings
+            var deserializedCars = JsonConvert.DeserializeObject<List<CarVM>>(jsonString, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
@@ -40,14 +40,14 @@ namespace Dealership.Client.Commands
                 string brand = carDto.BrandName;
                 string model = carDto.Model;
                 short horsePower = carDto.HorsePower;
-                short engineCapacity = carDto.EngineCapacity;
+                short engineCapacity = carDto.EngineCap;
                 DateTime productionDate = carDto.ProductionDate;
                 decimal price = carDto.Price;
                 string chassis = carDto.Chassis;
                 string color = carDto.Color;
                 string colorType = carDto.ColorType;
                 string fuelType = carDto.Fuel;
-                string gearbox = carDto.GearBox;
+                string gearbox = carDto.Gearbox;
                 byte numOfGears = carDto.NumberOfGears;
 
                 var car = CarService.CreateCar(brand, model, horsePower, engineCapacity, productionDate, price, chassis, color, colorType, fuelType, gearbox, numOfGears);

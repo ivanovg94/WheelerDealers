@@ -1,25 +1,30 @@
-﻿using Dealership.Client.Commands.Abstract;
+﻿
+using Dealership.Client.Commands.Abstract;
 using Dealership.Client.ViewModels;
 using Dealership.Services.Abstract;
+using System;
 using System.Linq;
 using System.Text;
 
 namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
 {
-    public class FilterByBrandCommand : PrimeCommand
+    public class FilterByPriceCommand : PrimeCommand
     {
+        //filterByPrice {priceFrom} {priceTo}
         public ICarService CarService { get; set; }
-
-        // public IBrandService BrandService { get; set; }
 
         public override string Execute(string[] parameters)
         {
-            string brandName = parameters[0];
+            int priceFrom = int.Parse(parameters[0]);
+            int priceTo = int.Parse(parameters[1]);
 
-            var brand = this.CarService.GetBrand(brandName);
+            if (priceFrom > priceTo)
+            {
+                throw new ArgumentException("The value of the first price cannot exceed the value of the second price!");
+            }
 
             var cars = this.CarService.GetCars("asc")
-                .Where(c => c.Brand.Name.ToLower() == brandName)
+                .Where(c => c.Price >= priceFrom && c.Price <= priceTo)
                 .Select(c => new CarVM
                 {
                     Id = c.Id,
@@ -37,12 +42,13 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
                     Gearbox = c.GearBox.GearType.Name,
                     NumberOfGears = c.GearBox.NumberOfGears,
                     Extras = c.CarsExtras.Select(ce => ce.Extra.Name).ToList()
-                }).ToList();
-            ;
+                })
+                 .OrderBy(c => c.Price)
+                 .ToList();
 
             if (!cars.Any())
             {
-                return $"No cars with brand {brandName}.";
+                return $"No cars with price between {priceFrom} and {priceTo}.";
             }
 
             var sb = new StringBuilder();

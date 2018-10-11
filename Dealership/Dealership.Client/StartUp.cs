@@ -18,6 +18,8 @@ namespace Dealership.Client
             Console.WriteLine("getextrasforcar {carId}");
             Console.WriteLine("list active/sold/all asc/desc ");
             Console.WriteLine("filterbybrand {brandName} / filterbyyears {yearFrom} {yearTo}");
+            Console.WriteLine("filterByPrice {priceFrom} {priceTo} / filterByBodyType {bodyType}");
+            
             Console.WriteLine("viewcardetails {carId}");
             Console.WriteLine("edit[exact property] [id] [new value]");
             Console.WriteLine("export sold? asc/desc");
