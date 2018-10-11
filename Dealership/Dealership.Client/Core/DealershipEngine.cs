@@ -26,7 +26,7 @@ namespace Dealership.Client.Core
 
         public void Run()
         {
-            while ((input = reader.ReadLine()) != "exit")
+            while ((input = reader.ReadLine().ToLower()) != "exit")
             {
                 try
                 {

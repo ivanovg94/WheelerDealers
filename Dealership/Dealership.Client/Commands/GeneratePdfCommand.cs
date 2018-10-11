@@ -29,6 +29,7 @@ namespace Dealership.Client.Commands
                     var table = new Table(10);
 
                     table.SetTextAlignment(TextAlignment.CENTER);
+                    table.SetBold();
 
                     var cell = new Cell(1, 10).Add(new Paragraph("Wheeler Dealer"));
                     cell.SetBold();

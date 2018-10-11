@@ -1,0 +1,4 @@
+Biznes iziskvaniq validacii: username da e pone 5 simvola, ako ima takav username da ne se dobavq pak
+Password: minimum 6 symvola. Biznes validaciqta moje da se napravi chrez atributi.
+
+validaciq v komanda: dali parametrite sa pravilni -dali e string, ili int

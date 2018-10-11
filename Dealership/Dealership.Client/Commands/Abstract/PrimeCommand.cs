@@ -12,7 +12,7 @@ namespace Dealership.Client.Commands.Abstract
     {
         //Remove after all command logic is moved to service layer
         public IDealershipContext Context { get; set; }
-        public IComponentContext autoFacContext { get; set; }
+        public IComponentContext AutoFacContext { get; set; }
 
         public PrimeCommand()
         {
