@@ -9,6 +9,8 @@ namespace Dealership.Services.Abstract
         Car CreateCar(string brandName, string model, short horsePower, short engineCapacity
            , DateTime productionDate, decimal price, string chassisName, string colorName, string colorType, string fuelTypeName, string gearboxTypeName, int numOfGears);
 
+        void AddCar(Car car);
+
         void AddCars(ICollection<Car> cars);
 
         Car GetCar(int id);

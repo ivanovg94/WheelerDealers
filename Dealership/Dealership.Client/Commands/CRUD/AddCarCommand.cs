@@ -28,6 +28,8 @@ namespace Dealership.Client.Commands.CRUD
 
             var car = CarService.CreateCar(brandName, model, horesePower, engineCapacity, prodDate, price, chassisName, colorName, colorType, fuelType, gearboxType, numberOfGears);
 
+            CarService.AddCar(car);
+
             return $"{car.Brand.Name} {car.Model} with Id:{car.Id} was added successfully";
         }
     }

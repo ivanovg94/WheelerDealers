@@ -76,13 +76,14 @@ namespace Dealership.Services
                 GearBoxId = gearbox.Id
             };
 
-            this.unitOfWork.GetRepository<Car>().Add(newCar);
-            this.unitOfWork.SaveChanges();
             return newCar;
-
         }
 
-
+        public void AddCar(Car car)
+        {
+            this.unitOfWork.GetRepository<Car>().Add(car);
+            this.unitOfWork.SaveChanges();
+        }
 
         public void AddCars(ICollection<Car> cars)
         {
