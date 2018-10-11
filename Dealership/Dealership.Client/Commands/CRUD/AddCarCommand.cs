@@ -12,13 +12,19 @@ namespace Dealership.Client.Commands.CRUD
         {
             //validation TODO
             var brandName = parameters[0];
+
+            if (brandName.Length < 2 || brandName.Length > 25)
+            {
+                throw new ArgumentOutOfRangeException("The name of brand cannot be less than 2 symbols or more than 25 symbols.");
+            }
+
             var model = parameters[1];
 
             if (!short.TryParse(parameters[2], out short horesePower)) { throw new ArgumentException("Invalid horse power value!"); }
             if (!short.TryParse(parameters[3], out short engineCapacity)) { throw new ArgumentException("Invalid engine capacity value!"); }
             if (!DateTime.TryParse(parameters[4], out DateTime prodDate)) { throw new ArgumentException("Invalid production date passed!"); }
             if (!decimal.TryParse(parameters[5], out decimal price)) { throw new ArgumentException("Invalid price value!"); }
-            var chassisName = parameters[6];
+            var bodyTypeName = parameters[6];
             var colorName = parameters[7];
             var colorType = parameters[8];
             var fuelType = parameters[9];
@@ -26,7 +32,7 @@ namespace Dealership.Client.Commands.CRUD
 
             if (!byte.TryParse(parameters[11], out byte numberOfGears)) { throw new ArgumentException("Invalid number of gears passed!"); }
 
-            var car = CarService.CreateCar(brandName, model, horesePower, engineCapacity, prodDate, price, chassisName, colorName, colorType, fuelType, gearboxType, numberOfGears);
+            var car = CarService.CreateCar(brandName, model, horesePower, engineCapacity, prodDate, price, bodyTypeName, colorName, colorType, fuelType, gearboxType, numberOfGears);
 
             CarService.AddCar(car);
 

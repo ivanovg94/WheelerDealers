@@ -2,7 +2,7 @@
   {
     "BrandName": "vw",
     "Model": "golfImport",
-    "Chassis": "Sedan",
+    "BodyType": "Sedan",
     "NDoors": 4,
     "EngineCap": 1111,
     "HorsePower": 111,
@@ -18,7 +18,7 @@
   {
     "BrandName": "vw",
     "Model": "passatImport",
-    "Chassis": "Sedan",
+    "BodyType": "Sedan",
     "NDoors": 4,
     "EngineCap": 1111,
     "HorsePower": 111,

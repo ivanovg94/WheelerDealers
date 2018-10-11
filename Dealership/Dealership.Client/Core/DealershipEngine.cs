@@ -45,6 +45,7 @@ namespace Dealership.Client.Core
                         ex = ex.InnerException;
                     }
                     Console.WriteLine(ex.Message);
+                    ExceptionLogging.SendErrorToText(ex);
                 }
             }
         }

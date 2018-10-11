@@ -10,13 +10,13 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
     {
         public ICarService CarService { get; set; }
 
-        // public IBrandService BrandService { get; set; }
+        public IBrandService BrandService { get; set; }
 
         public override string Execute(string[] parameters)
         {
             string brandName = parameters[0];
 
-            var brand = this.CarService.GetBrand(brandName);
+            var brand = this.BrandService.GetBrand(brandName);
 
             var cars = this.CarService.GetCars("asc")
                 .Where(c => c.Brand.Name.ToLower() == brandName)
@@ -29,8 +29,8 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
                     HorsePower = c.HorsePower,
                     ProductionDate = c.ProductionDate,
                     Price = c.Price,
-                    NDoors = c.Chasis.NumberOfDoors,
-                    Chassis = c.Chasis.Name,
+                    NDoors = c.BodyType.NumberOfDoors,
+                    BodyType = c.BodyType.Name,
                     Color = c.Color.Name,
                     ColorType = c.Color.ColorType.Name,
                     Fuel = c.FuelType.Name,

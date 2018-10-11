@@ -29,8 +29,8 @@ namespace Dealership.Data.Models
         public int BrandId { get; set; }   
         public virtual Brand Brand { get; set; }
 
-        public int ChasisId { get; set; }
-        public virtual Chassis Chasis { get; set; }
+        public int BodyTypeId { get; set; }
+        public virtual BodyType BodyType { get; set; }
 
         public int ColorId { get; set; }
         public virtual Color Color { get; set; }

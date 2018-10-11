@@ -4,14 +4,16 @@ using Dealership.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Dealership.Data.Migrations
 {
     [DbContext(typeof(DealershipContext))]
-    partial class DealershipContextModelSnapshot : ModelSnapshot
+    [Migration("20181011121830_ChangedChassisIdToBodyTypeId")]
+    partial class ChangedChassisIdToBodyTypeId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,9 +67,7 @@ namespace Dealership.Data.Migrations
 
                     b.Property<DateTime?>("ModifiedOn");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(25);
+                    b.Property<string>("Name");
 
                     b.HasKey("Id");
 

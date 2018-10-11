@@ -9,7 +9,7 @@ namespace Dealership.Client.ViewModels
         public int Id { get; set; }
         public string BrandName { get; set; }
         public string Model { get; set; }
-        public string Chassis { get; set; }
+        public string BodyType { get; set; }
         public byte NDoors { get; set; }
         public short EngineCap { get; set; }
         public short HorsePower { get; set; }
@@ -24,7 +24,7 @@ namespace Dealership.Client.ViewModels
 
         public override string ToString()
         {
-            return $"Id:{this.Id} {this.BrandName} {this.Model}, Engine: {this.EngineCap}cc {this.Fuel} {this.HorsePower}hp, Body type {this.NDoors} door {this.Chassis}, Prod.: {this.ProductionDate.ToShortDateString()}, Price: {this.Price}, Color: {this.Color} {this.ColorType} Transmission: {this.NumberOfGears} step {this.Gearbox} \r\nExtras: {string.Join(", ",this.Extras)}\r\n";
+            return $"Id:{this.Id} {this.BrandName} {this.Model}, Engine: {this.EngineCap}cc {this.Fuel} {this.HorsePower}hp, Body type {this.NDoors} door {this.BodyType}, Prod.: {this.ProductionDate.ToShortDateString()}, Price: {this.Price}, Color: {this.Color} {this.ColorType} Transmission: {this.NumberOfGears} step {this.Gearbox} \r\nExtras: {string.Join(", ",this.Extras)}\r\n";
         }
     }
 }
