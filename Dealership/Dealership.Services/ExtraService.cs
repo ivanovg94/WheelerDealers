@@ -31,8 +31,6 @@ namespace Dealership.Services
                 throw new ArgumentException($"Car with Id {carId} does not exist");
             }
 
-
-
             if (this.unitOfWork.GetRepository<Car>().All()
                                  .Include(c => c.CarsExtras)
                                    .ThenInclude(ce => ce.Extra)
@@ -87,6 +85,5 @@ namespace Dealership.Services
                                         .First(c => c.Id == carId).CarsExtras
                                         .Select(x => x.Extra).ToList();
         }
-
     }
 }

@@ -154,7 +154,6 @@ namespace Dealership.Services
         public Car RemoveCar(int id)
         {
             var car = GetCar(id);
-
             this.unitOfWork.GetRepository<Car>().Delete(car);
             this.unitOfWork.SaveChanges();
 
@@ -166,10 +165,7 @@ namespace Dealership.Services
             var car = GetCar(id);
             Brand newBrand = unitOfWork.GetRepository<Brand>().All().FirstOrDefault(b => b.Name == newValue);
 
-            if (newBrand == null)
-            {
-                newBrand = new Brand() { Name = newValue };
-            }
+            if (newBrand == null) { newBrand = new Brand() { Name = newValue }; }
             car.Brand = newBrand;
             unitOfWork.SaveChanges();
 
