@@ -19,7 +19,7 @@ namespace Dealership.Client
             Console.WriteLine("list active/sold/all asc/desc ");
             Console.WriteLine("filterbybrand {brandName} / filterbyyears {yearFrom} {yearTo}");
             Console.WriteLine("viewcardetails {carId}");
-            Console.WriteLine("edit[exact property] [id] [new value]");
+            Console.WriteLine("edit [exact property] [id] [new value]");
             Console.WriteLine("export sold? asc/desc");
             Console.WriteLine("import {filename} -ex: import cars");
             Console.WriteLine("generatePdf - output folder: DataProcessor/PdfReports");
