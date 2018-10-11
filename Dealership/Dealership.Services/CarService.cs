@@ -280,9 +280,16 @@ namespace Dealership.Services
 
         public Brand GetBrand(string brandName)
         {
-            var brand = this.unitOfWork.GetRepository<Brand>().All().FirstOrDefault(b => b.Name == brandName);
+            var brand = this.unitOfWork.GetRepository<Brand>().All().FirstOrDefault(b => b.Name.ToLower() == brandName);
             if (brand == null) { throw new BrandNotFoundException($"There is no brand with name \"{brandName}\"."); }
             return brand;
+        }
+        
+        public Chassis GetBodyType(string bodyName)
+        {
+            var bodyType = this.unitOfWork.GetRepository<Chassis>().All().FirstOrDefault(b => b.Name.ToLower() == bodyName);
+            if (bodyType == null) { throw new BodyTypeNotFoundException($"There is no body type with name \"{bodyName}\"."); }
+            return bodyType;
         }
     }
 }

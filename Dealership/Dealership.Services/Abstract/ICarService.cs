@@ -21,6 +21,8 @@ namespace Dealership.Services.Abstract
 
         Brand GetBrand(string brandName);
 
+        Chassis GetBodyType(string bodyName);
+
         Car RemoveCar(int carId);
     }
 }
