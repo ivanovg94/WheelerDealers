@@ -1,0 +1,16 @@
+D:\TELERIK.ALPHA\dealership\Dealership\dealership\Dealership\Dealership.Client\bin\Debug\netcoreapp2.1\Dealership.Client.deps.json
+D:\TELERIK.ALPHA\dealership\Dealership\dealership\Dealership\Dealership.Client\bin\Debug\netcoreapp2.1\Dealership.Client.runtimeconfig.json
+D:\TELERIK.ALPHA\dealership\Dealership\dealership\Dealership\Dealership.Client\bin\Debug\netcoreapp2.1\Dealership.Client.runtimeconfig.dev.json
+D:\TELERIK.ALPHA\dealership\Dealership\dealership\Dealership\Dealership.Client\bin\Debug\netcoreapp2.1\Dealership.Client.dll
+D:\TELERIK.ALPHA\dealership\Dealership\dealership\Dealership\Dealership.Client\bin\Debug\netcoreapp2.1\Dealership.Client.pdb
+D:\TELERIK.ALPHA\dealership\Dealership\dealership\Dealership\Dealership.Client\bin\Debug\netcoreapp2.1\Dealership.Data.dll
+D:\TELERIK.ALPHA\dealership\Dealership\dealership\Dealership\Dealership.Client\bin\Debug\netcoreapp2.1\Dealership.Services.dll
+D:\TELERIK.ALPHA\dealership\Dealership\dealership\Dealership\Dealership.Client\bin\Debug\netcoreapp2.1\Dealership.Data.pdb
+D:\TELERIK.ALPHA\dealership\Dealership\dealership\Dealership\Dealership.Client\bin\Debug\netcoreapp2.1\Dealership.Services.pdb
+D:\TELERIK.ALPHA\dealership\Dealership\dealership\Dealership\Dealership.Client\obj\Debug\netcoreapp2.1\Dealership.Client.csprojAssemblyReference.cache
+D:\TELERIK.ALPHA\dealership\Dealership\dealership\Dealership\Dealership.Client\obj\Debug\netcoreapp2.1\Dealership.Client.csproj.CoreCompileInputs.cache
+D:\TELERIK.ALPHA\dealership\Dealership\dealership\Dealership\Dealership.Client\obj\Debug\netcoreapp2.1\Dealership.Client.AssemblyInfoInputs.cache
+D:\TELERIK.ALPHA\dealership\Dealership\dealership\Dealership\Dealership.Client\obj\Debug\netcoreapp2.1\Dealership.Client.AssemblyInfo.cs
+D:\TELERIK.ALPHA\dealership\Dealership\dealership\Dealership\Dealership.Client\obj\Debug\netcoreapp2.1\Dealership.Client.csproj.CopyComplete
+D:\TELERIK.ALPHA\dealership\Dealership\dealership\Dealership\Dealership.Client\obj\Debug\netcoreapp2.1\Dealership.Client.dll
+D:\TELERIK.ALPHA\dealership\Dealership\dealership\Dealership\Dealership.Client\obj\Debug\netcoreapp2.1\Dealership.Client.pdb

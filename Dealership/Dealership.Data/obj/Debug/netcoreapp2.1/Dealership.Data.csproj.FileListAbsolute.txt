@@ -1,0 +1,9 @@
+D:\TELERIK.ALPHA\dealership\Dealership\dealership\Dealership\Dealership.Data\bin\Debug\netcoreapp2.1\Dealership.Data.deps.json
+D:\TELERIK.ALPHA\dealership\Dealership\dealership\Dealership\Dealership.Data\bin\Debug\netcoreapp2.1\Dealership.Data.dll
+D:\TELERIK.ALPHA\dealership\Dealership\dealership\Dealership\Dealership.Data\bin\Debug\netcoreapp2.1\Dealership.Data.pdb
+D:\TELERIK.ALPHA\dealership\Dealership\dealership\Dealership\Dealership.Data\obj\Debug\netcoreapp2.1\Dealership.Data.csprojAssemblyReference.cache
+D:\TELERIK.ALPHA\dealership\Dealership\dealership\Dealership\Dealership.Data\obj\Debug\netcoreapp2.1\Dealership.Data.csproj.CoreCompileInputs.cache
+D:\TELERIK.ALPHA\dealership\Dealership\dealership\Dealership\Dealership.Data\obj\Debug\netcoreapp2.1\Dealership.Data.AssemblyInfoInputs.cache
+D:\TELERIK.ALPHA\dealership\Dealership\dealership\Dealership\Dealership.Data\obj\Debug\netcoreapp2.1\Dealership.Data.AssemblyInfo.cs
+D:\TELERIK.ALPHA\dealership\Dealership\dealership\Dealership\Dealership.Data\obj\Debug\netcoreapp2.1\Dealership.Data.dll
+D:\TELERIK.ALPHA\dealership\Dealership\dealership\Dealership\Dealership.Data\obj\Debug\netcoreapp2.1\Dealership.Data.pdb
