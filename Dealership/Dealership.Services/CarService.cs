@@ -18,8 +18,9 @@ namespace Dealership.Services
             this.unitOfWork = unitOfWork;
         }
 
-        public Car CreateCar(string brandName, string model, short horsePower, short engineCapacity
-           , DateTime productionDate, decimal price, string chassisName, string colorName, string colorType, string fuelTypeName, string gearboxTypeName, int numOfGears)
+        public Car CreateCar(string brandName, string model, short horsePower, short engineCapacity,
+            DateTime productionDate, decimal price, string chassisName, string colorName, string colorType,
+            string fuelTypeName, string gearboxTypeName, int numOfGears)
         {
             var brand = this.unitOfWork.GetRepository<Brand>().All().FirstOrDefault(b => b.Name == brandName);
 
@@ -227,12 +228,9 @@ namespace Dealership.Services
         {
             var car = GetCar(id);
 
-            Color newColor;
-            if (unitOfWork.GetRepository<Color>().All().Any(c => c.Name == newValue))
-            {
-                newColor = unitOfWork.GetRepository<Color>().All().First();
-            }
-            else
+            var newColor = unitOfWork.GetRepository<Color>().All().FirstOrDefault(c => c.Name == newValue);
+
+            if (newColor == null)
             {
                 newColor = new Color()
                 {
@@ -250,13 +248,8 @@ namespace Dealership.Services
         public void EditColorType(int id, string newValue)
         {
             var car = GetCar(id);
-
-            ColorType newColorType;
-            if (unitOfWork.GetRepository<ColorType>().All().Any(c => c.Name == newValue))
-            {
-                newColorType = unitOfWork.GetRepository<ColorType>().All().First(ct => ct.Name == newValue);
-            }
-            else { throw new ArgumentNullException("Color type not exist!"); }
+            var newColorType = unitOfWork.GetRepository<ColorType>().All().FirstOrDefault(ct => ct.Name == newValue);
+            if (newColorType == null) { throw new ArgumentNullException("Color type not exist!"); }
 
             car.Color.ColorType = newColorType;
             unitOfWork.SaveChanges();
@@ -265,7 +258,7 @@ namespace Dealership.Services
         public void EditFuelType(int id, string newValue)
         {
             var car = GetCar(id);
-            var newFuelType = unitOfWork.GetRepository<FuelType>().All().First(ft => ft.Name == newValue);
+            var newFuelType = unitOfWork.GetRepository<FuelType>().All().FirstOrDefault(ft => ft.Name == newValue);
             if (newFuelType != null)
             {
                 car.FuelType = newFuelType;
@@ -278,12 +271,8 @@ namespace Dealership.Services
         public void EditGearbox(int id, string newValue) // works but must include navigation props tables !
         {
             var car = GetCar(id);
-            GearType newGearType;
-            if (unitOfWork.GetRepository<GearType>().All().Any(gb => gb.Name == newValue))
-            {
-                newGearType = unitOfWork.GetRepository<GearType>().All().First(gt => gt.Name == newValue);
-            }
-            else { throw new ArgumentException($"Gearbox:{newValue} not exist!"); }
+            var newGearType = unitOfWork.GetRepository<GearType>().All().FirstOrDefault(gb => gb.Name == newValue);
+            if (newGearType == null) { throw new ArgumentException($"Gearbox:{newValue} not exist!"); }
             car.GearBox.GearType = newGearType;
             unitOfWork.SaveChanges();
 
