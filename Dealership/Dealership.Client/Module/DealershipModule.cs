@@ -5,6 +5,7 @@ using Dealership.Client.Core.Abstract;
 using Dealership.Client.Core.Providers;
 using Dealership.Data.Context;
 using Dealership.Data.Models;
+using Dealership.Data.Models.Contracts;
 using Dealership.Data.Repository;
 using Dealership.Data.UnitOfWork;
 using Dealership.Services;
@@ -36,6 +37,7 @@ namespace Dealership.Client.Module
             builder.RegisterType<BrandService>().As<IBrandService>();
             builder.RegisterType<ConsoleReader>().As<IReader>().SingleInstance();
             builder.RegisterType<ConsoleWriter>().As<IWriter>().SingleInstance();
+            builder.RegisterType<UserSession>().As<IUserSession>().SingleInstance();
         }
 
         private void RegisterDynamicCommands(ContainerBuilder builder)

@@ -4,14 +4,16 @@ using Dealership.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Dealership.Data.Migrations
 {
     [DbContext(typeof(DealershipContext))]
-    partial class DealershipContextModelSnapshot : ModelSnapshot
+    [Migration("20181011194841_AddedLastLogIn")]
+    partial class AddedLastLogIn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -345,6 +347,8 @@ namespace Dealership.Data.Migrations
                         .IsRequired();
 
                     b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime>("LastLoggedIn");
 
                     b.Property<DateTime?>("ModifiedOn");
 

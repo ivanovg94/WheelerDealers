@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 namespace Dealership.Data.Models
 {
@@ -13,9 +14,10 @@ namespace Dealership.Data.Models
         public string Password { get; set; }
 
         [Required]
-        [EmailAddress(ErrorMessage = "Invalid email address.")]
+        [DataType(DataType.EmailAddress)]
+        [RegularExpression(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$", ErrorMessage = "Invalid email address.")]
         public string Email { get; set; }
 
-        public ICollection<Car> FavoriteCars { get; set; }
+        public virtual ICollection<Car> FavoriteCars { get; set; }
     }
 }

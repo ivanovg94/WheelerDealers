@@ -9,7 +9,6 @@ namespace Dealership.Services
     public class UserService : IUserService
     {
         private readonly IUnitOfWork unitOfWork;
-        private  User currentUser;
 
         public UserService(IUnitOfWork unitOfWork)
         {
@@ -45,7 +44,6 @@ namespace Dealership.Services
                 Email = email,
             };
 
-            currentUser = user;
 
             this.unitOfWork.GetRepository<User>().Add(user);
             this.unitOfWork.SaveChanges();
@@ -53,32 +51,12 @@ namespace Dealership.Services
             return user;
         }
 
-        //public User GetUser(string username)
-        //{
-        //    var user = this.unitOfWork
-        //        .GetRepository<User>()
-        //        .All()
-        //        .FirstOrDefault(u => u.Username == username);
-
-        //    if (user == null)
-        //    {
-        //        throw new ArgumentException("There is no user with the given username.");
-        //    }
-
-        //    return user;
-        //}
-
-        private User GetUserByCredentials(string username, string password)
+        public User GetUserByCredentials(string username, string password)
         {
             var user = this.unitOfWork
                 .GetRepository<User>()
                 .All()
                 .FirstOrDefault(u => u.Username == username);
-
-            //if (user == null)
-            //{
-            //    throw new ArgumentException("There is no user with the given username.");
-            //}
 
             if (user == null || user.Password != password || user.IsDeleted)
             {
@@ -88,12 +66,15 @@ namespace Dealership.Services
             return user;
         }
 
-        public User Login(string username, string password)
+        public User DeleteUser(string username, string password)
         {
-            Authorize();
             var user = GetUserByCredentials(username, password);
 
-            currentUser = user;
+            this.unitOfWork
+                .GetRepository<User>()
+                .Delete(user);
+            this.unitOfWork.SaveChanges();
+
             return user;
         }
 
@@ -111,26 +92,6 @@ namespace Dealership.Services
                     .GetRepository<User>()
                     .All()
                     .Any(u => u.Email == email);
-        }
-
-        public void Logout()
-        {
-            Authorize();
-            currentUser = null;
-        }
-
-        private void Authorize()
-        {
-            if (currentUser == null)
-            {
-                throw new InvalidOperationException("There is no logged in user.");
-            }
-        }
-
-        public User GetCurrentUser()
-        {
-            Authorize();
-            return currentUser;
         }
     }
 }

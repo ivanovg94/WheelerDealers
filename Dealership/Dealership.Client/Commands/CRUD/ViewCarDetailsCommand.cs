@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Dealership.Client.Commands.Abstract;
 using Dealership.Data.Context;
+using Dealership.Data.Models.Contracts;
 using Dealership.Services;
 using Dealership.Services.Abstract;
 
@@ -11,6 +12,10 @@ namespace Dealership.Client.Commands.CRUD
 {
     public class ViewCarDetailsCommand : PrimeCommand
     {
+        public ViewCarDetailsCommand(IUserSession userSession) : base(userSession)
+        {
+        }
+
         public ICarService CarService { get; set; }
 
         // id

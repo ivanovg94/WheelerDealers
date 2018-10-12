@@ -7,9 +7,9 @@ using System.Text;
 
 namespace Dealership.Client.Commands.UserCommands
 {
-    public class GetCurrentUserCommand : PrimeCommand
+    public class DeleteUserCommand : PrimeCommand
     {
-        public GetCurrentUserCommand(IUserSession userSession) : base(userSession)
+        public DeleteUserCommand(IUserSession userSession) : base(userSession)
         {
         }
 
@@ -17,9 +17,12 @@ namespace Dealership.Client.Commands.UserCommands
 
         public override string Execute(string[] parameters)
         {
-            var user = base.UserSession.CurrentUser;
+            string username = parameters[0];
+            string password = parameters[1];
 
-            return $"Current user: {user.Username} {user.Password}";
+            var user = this.UserService.DeleteUser(username, password);
+
+            return $"User {username} successfully deleted!";
         }
     }
 }

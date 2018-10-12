@@ -1,5 +1,6 @@
 ﻿using Dealership.Client.Commands.Abstract;
 using Dealership.Client.ViewModels;
+using Dealership.Data.Models.Contracts;
 using Dealership.Services.Abstract;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,10 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
 {
     public class FilterByBrandCommand : PrimeCommand
     {
+        public FilterByBrandCommand(IUserSession userSession) : base(userSession)
+        {
+        }
+
         public ICarService CarService { get; set; }
 
         public IBrandService BrandService { get; set; }

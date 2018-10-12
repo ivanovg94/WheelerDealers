@@ -1,4 +1,5 @@
 ﻿using Dealership.Client.Commands.Abstract;
+using Dealership.Data.Models.Contracts;
 using Dealership.Services.Abstract;
 using iText.Kernel.Pdf;
 using iText.Layout;
@@ -12,6 +13,10 @@ namespace Dealership.Client.Commands
     public class GeneratePdfCommand : PrimeCommand
     {
         const string outputDir = @"..\..\..\..\Dealership.Data\DataProcessor\PdfReports\";
+
+        public GeneratePdfCommand(IUserSession userSession) : base(userSession)
+        {
+        }
 
         public ICarService CarService { get; set; }
 

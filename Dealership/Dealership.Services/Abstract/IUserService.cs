@@ -6,16 +6,8 @@ namespace Dealership.Services.Abstract
     {
         User RegisterUser(string username, string password, string confirmPassword, string email);
 
-        //User GetUser(string username);
+        User GetUserByCredentials(string username, string password);
 
-        //bool IsUserExisting(string username);
-
-        //bool IsEmailExisting(string email);
-
-        User Login(string username, string password);
-
-        User GetCurrentUser();
-
-        void Logout();
+        User DeleteUser(string username, string password);
     }
 }

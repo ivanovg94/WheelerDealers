@@ -1,5 +1,6 @@
 ﻿using Dealership.Client.Commands.Abstract;
 using Dealership.Client.ViewModels;
+using Dealership.Data.Models.Contracts;
 using Dealership.Services.Abstract;
 using Newtonsoft.Json;
 using System.IO;
@@ -13,11 +14,11 @@ namespace Dealership.Client.Commands
         //export available 
         const string exportDirRes = @"..\..\..\..\Dealership.Data\DataProcessor\ExportResults\";
 
-        public ICarService CarService { get; set; }
-
-        public ExportCommand()
+        public ExportCommand(IUserSession userSession) : base(userSession)
         {
         }
+
+        public ICarService CarService { get; set; }
 
         public override string Execute(string[] parameters)
         {

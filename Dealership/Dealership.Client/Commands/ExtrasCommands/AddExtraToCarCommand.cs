@@ -1,4 +1,5 @@
 ﻿using Dealership.Client.Commands.Abstract;
+using Dealership.Data.Models.Contracts;
 using Dealership.Services.Abstract;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,10 @@ namespace Dealership.Client.Commands.ExtrasCommands
 
     public class AddExtraToCarCommand : PrimeCommand
     {
+        public AddExtraToCarCommand(IUserSession userSession) : base(userSession)
+        {
+        }
+
         public IExtraService ExtraService { get; set; }
 
         //addExtraToCar carId, extraName

@@ -2,6 +2,7 @@
 using Dealership.Client.Commands.Abstract;
 using Dealership.Client.Contracts.Abstract;
 using Dealership.Data.Models;
+using Dealership.Data.Models.Contracts;
 using Dealership.Services.Abstract;
 using System;
 using System.Linq;
@@ -11,6 +12,10 @@ namespace Dealership.Client.Commands.CRUD
 {
     public class EditCommand : PrimeCommand
     {
+        public EditCommand(IUserSession userSession) : base(userSession)
+        {
+        }
+
         public ICarService CarService { get; set; }
 
         // edit [exact property.Name] [id] [newValue] 'optional => [secondNewValue]'

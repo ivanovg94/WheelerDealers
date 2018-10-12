@@ -23,7 +23,7 @@ namespace Dealership.Services
             var bodyType = this.unitOfWork.GetRepository<BodyType>().All().FirstOrDefault(b => b.Name.ToLower() == bodyName);
             if (bodyType == null)
             {
-                throw new BodyTypeNotFoundException($"There is no body type with name \"{bodyName}\".");
+                throw new InvalidOperationException($"There is no body type with name \"{bodyName}\".");
             }
             return bodyType;
         }
