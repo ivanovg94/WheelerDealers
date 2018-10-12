@@ -13,15 +13,17 @@ namespace Dealership.Client.Core
         private IComponentContext containerContext;
         private readonly IReader reader;
         private readonly IWriter writer;
-
+        private readonly IExceptionLogging exceptionLogging;
         private readonly IUserSession userSession;
 
-        public DealershipEngine(IComponentContext containerContext, IReader reader, IWriter writer, IUserSession userSession)
+        public DealershipEngine(IComponentContext containerContext, IReader reader,
+                                IWriter writer, IUserSession userSession, IExceptionLogging exceptionLogging)
         {
             this.containerContext = containerContext;
             this.reader = reader;
             this.writer = writer;
             this.userSession = userSession;
+            this.exceptionLogging = exceptionLogging;
         }
 
         string input = string.Empty;
@@ -51,8 +53,8 @@ namespace Dealership.Client.Core
                     {
                         ex = ex.InnerException;
                     }
-                    Console.WriteLine(ex.Message);
-                    ExceptionLogging.SendErrorToText(ex);
+                    writer.WriteLine(ex.Message);
+                    this.exceptionLogging.SendErrorToText(ex);
                 }
             }
         }

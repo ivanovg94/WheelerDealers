@@ -1,20 +1,18 @@
-﻿using System;
+﻿using Dealership.Client.Core.Abstract;
+using System;
 using System.IO;
 
-public static class ExceptionLogging
+public class ExceptionLogging : IExceptionLogging
 {
-    private static String ErrorlineNo, Errormsg, extype, ErrorLocation, Source, Trace;
-
-    public static void SendErrorToText(Exception ex)
+    public void SendErrorToText(Exception ex)
     {
         var line = Environment.NewLine + Environment.NewLine;
-
-        ErrorlineNo = ex.StackTrace.Substring(ex.StackTrace.Length - 7, 7);
-        Errormsg = ex.GetType().Name.ToString();
-        extype = ex.GetType().ToString();
-        ErrorLocation = ex.Message.ToString();
-        Source = ex.Source.ToString();
-        Trace = ex.StackTrace.ToString();
+        var errorlineNo = ex.StackTrace.Substring(ex.StackTrace.Length - 7, 7);
+        var errormsg = ex.GetType().Name.ToString();
+        var extype = ex.GetType().ToString();
+        var errorLocation = ex.Message.ToString();
+        var source = ex.Source.ToString();
+        var trace = ex.StackTrace.ToString();
         try
         {
             string filepath = @"..\..\..\..\Dealership.Data\DataProcessor\ExceptionLogging\";
@@ -30,10 +28,10 @@ public static class ExceptionLogging
             using (StreamWriter sw = File.AppendText(filepath))
             {
                 string error = $"Log Written Date: {DateTime.Now.ToString()} {line} " +
-                    $"Error Line No : {ErrorlineNo} {line} Error Message:  {Errormsg} {line}" +
-                    $" Exception Type: {extype} { line} Error Location :{ErrorLocation} {line} " +
-                    $" Source : {Source}{line}" +
-                    $" Stack trace: {Trace}{line}";
+                    $"Error Line No : {errorlineNo} {line} Error Message:  {errormsg} {line}" +
+                    $" Exception Type: {extype} { line} Error Location :{errorLocation} {line} " +
+                    $" Source : {source}{line}" +
+                    $" Stack trace: {trace}{line}";
 
                 sw.WriteLine("-----------Exception Details on " + " " + DateTime.Now.ToString() + "-----------------");
                 sw.WriteLine("-------------------------------------------------------------------------------------");
@@ -44,7 +42,6 @@ public static class ExceptionLogging
                 sw.Flush();
                 sw.Close();
             }
-
         }
         catch (Exception e)
         {
