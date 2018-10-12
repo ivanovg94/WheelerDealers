@@ -1,29 +1,21 @@
-﻿using Autofac;
-using Dealership.Client.Contracts.Abstract;
-using Dealership.Client.Core.Abstract;
-using Dealership.Data.Models.Contracts;
+﻿using Dealership.Client.Core.Abstract;
 using System;
-using System.Linq;
-
 
 namespace Dealership.Client.Core
 {
     public class DealershipEngine : IEngine
     {
-        private IComponentContext containerContext;
         private readonly IReader reader;
         private readonly IWriter writer;
         private readonly IExceptionLogging exceptionLogging;
-        private readonly IUserSession userSession;
+        private readonly ICommandProcessor processor;
 
-        public DealershipEngine(IComponentContext containerContext, IReader reader,
-                                IWriter writer, IUserSession userSession, IExceptionLogging exceptionLogging)
+        public DealershipEngine(IReader reader, IWriter writer, IExceptionLogging exceptionLogging, ICommandProcessor commandProcessor)
         {
-            this.containerContext = containerContext;
             this.reader = reader;
             this.writer = writer;
-            this.userSession = userSession;
             this.exceptionLogging = exceptionLogging;
+            this.processor = commandProcessor;
         }
 
         string input = string.Empty;
@@ -34,18 +26,7 @@ namespace Dealership.Client.Core
             {
                 try
                 {
-                    var inputParams = input.Split();
-                    string commandName = inputParams[0].ToLower();
-
-                    if (userSession.CurrentUser == null && commandName != "login" && commandName != "register")
-                    {
-                        throw new InvalidOperationException("Please login or register.");
-                    }
-
-                    var command = this.ParseCommand(commandName);
-                    var commandResult = command.Execute(inputParams.Skip(1).ToArray());
-
-                    writer.WriteLine(commandResult);
+                    writer.WriteLine(processor.ProcessCommand(input));
                 }
                 catch (Exception ex)
                 {
@@ -59,16 +40,6 @@ namespace Dealership.Client.Core
             }
         }
 
-        private ICommand ParseCommand(string commandStr)
-        {
-            try
-            {
-                return this.containerContext.ResolveNamed<ICommand>(commandStr);
-            }
-            catch (Exception)
-            {
-                throw new InvalidOperationException("The entered command is invalid!");
-            }
-        }
+
     }
 }

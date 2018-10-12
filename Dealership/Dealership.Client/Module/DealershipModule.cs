@@ -40,6 +40,8 @@ namespace Dealership.Client.Module
             builder.RegisterType<ConsoleWriter>().As<IWriter>().SingleInstance();
             builder.RegisterType<UserSession>().As<IUserSession>().SingleInstance();
             builder.RegisterType<ExceptionLogging>().As<IExceptionLogging>().SingleInstance();
+            builder.RegisterType<CommandParser>().As<ICommandParser>();
+            builder.RegisterType<CommandProcessor>().As<ICommandProcessor>();
         }
 
         private void RegisterDynamicCommands(ContainerBuilder builder)
