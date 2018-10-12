@@ -1,44 +1,27 @@
 ﻿using Dealership.Client.Commands.Abstract;
 using Dealership.Client.ViewModels;
-using Dealership.Data.Models;
 using Dealership.Data.Models.Contracts;
 using Dealership.Services.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
-namespace Dealership.Client.Commands.CRUD
+namespace Dealership.Client.Commands.UserCommands
 {
-    public class ListCommand : PrimeCommand
+    public class ListFavorites : PrimeCommand
     {
-        public ListCommand(IUserSession userSession) : base(userSession)
+        public IUserService UserService { get; set; }
+
+        public ListFavorites(IUserSession userSession) : base(userSession)
         {
         }
 
-        public ICarService Service { get; set; }
-
         public override string Execute(string[] parameters)
         {
-            if (parameters.Length == 0)
-            {
-                throw new ArgumentException("Invalid parameters");
-            }
+            var cars = this.UserService.ListFavorites(this.UserSession.CurrentUser.Username);
 
-            IList<Car> data = new List<Car>();
-            var dir = "";
-            if (parameters.Length == 2)
-            {
-                dir = parameters[1];
-            }
-            if (parameters[0].ToLower() == "sold")
-            {
-                data = Service.GetCars(true, dir);
-            }
-            else if (parameters[0].ToLower() == "active") { data = Service.GetCars(false, dir); }
-            else if (parameters[0].ToLower() == "all") { data = Service.GetCars(dir); }
-            else { throw new ArgumentException("Invalid parameters!"); }
-
-            var result = data.Select(c => new CarVM
+            var result = cars.Select(c => new CarVM
             {
                 Id = c.Id,
                 BrandName = c.Brand.Name,

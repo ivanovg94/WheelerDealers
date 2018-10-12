@@ -23,6 +23,11 @@ namespace Dealership.Client.Commands.UserCommands
                 throw new InvalidOperationException("There is logged in user. Logout first to register new user!");
             }
 
+            if (parameters.Length != 4)
+            {
+                throw new ArgumentException("Invalid parameters");
+            }
+
             string username = parameters[0];
             string password = parameters[1];
             string confirmPassword = parameters[2];

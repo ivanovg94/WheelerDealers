@@ -18,6 +18,11 @@ namespace Dealership.Client.Commands.UserCommands
 
         public override string Execute(string[] parameters)
         {
+            if (parameters.Length != 2)
+            {
+                throw new ArgumentException("Invalid parameters");
+            }
+
             string username = parameters[0];
             string password = parameters[1];
 

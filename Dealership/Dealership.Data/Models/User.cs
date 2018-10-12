@@ -22,6 +22,6 @@ namespace Dealership.Data.Models
         [MaxLength(25)]
         public UserType UserType { get; set; }
 
-        public virtual ICollection<Car> FavoriteCars { get; set; }
+        public ICollection<Car> FavoriteCars { get; set; }
     }
 }

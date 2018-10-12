@@ -1,4 +1,5 @@
 ﻿using Dealership.Data.Models;
+using System.Collections.Generic;
 
 namespace Dealership.Services.Abstract
 {
@@ -9,5 +10,9 @@ namespace Dealership.Services.Abstract
         User GetUserByCredentials(string username, string password);
 
         User DeleteUser(string username, string password);
+
+        Car AddCarToFavorites(int carId, string username);
+
+        IList<Car> ListFavorites(string username);
     }
 }

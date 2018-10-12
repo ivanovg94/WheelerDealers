@@ -24,7 +24,7 @@ namespace Dealership.Services
         {
             if (brandName.Length < 2 || brandName.Length > 25)
             {
-                throw new ArgumentOutOfRangeException("The name of brand cannot be less than 2 symbols or more than 25 symbols.");
+                throw new ServiceException("The name of brand cannot be less than 2 symbols or more than 25 symbols.");
             }
 
             var brand = this.unitOfWork.GetRepository<Brand>().All().FirstOrDefault(b => b.Name == brandName);
@@ -37,7 +37,7 @@ namespace Dealership.Services
             }
 
             var bodyType = this.unitOfWork.GetRepository<BodyType>().All().FirstOrDefault(c => c.Name == bodyTypeName);
-            if (bodyType == null) { throw new InvalidOperationException($"There is no body type with name \"{bodyTypeName}\"."); }
+            if (bodyType == null) { throw new ServiceException($"There is no body type with name \"{bodyTypeName}\"."); }
 
             var color = this.unitOfWork.GetRepository<Color>().All()
                                                               .Include(c => c.ColorType)
@@ -58,7 +58,7 @@ namespace Dealership.Services
                                           .FirstOrDefault(f => f.Name == fuelTypeName);
             if (fuelType == null)
             {
-                throw new InvalidOperationException($"There is no fuel with name \"{fuelTypeName}\".");
+                throw new ServiceException($"There is no fuel with name \"{fuelTypeName}\".");
             }
 
             var gearbox = this.unitOfWork.GetRepository<Gearbox>().All()
@@ -66,7 +66,7 @@ namespace Dealership.Services
                                   && g.NumberOfGears == numOfGears);
             if (gearbox == null)
             {
-                throw new InvalidOperationException($"There is no such a gearbox.");
+                throw new ServiceException($"There is no such a gearbox.");
             }
 
             var newCar = new Car()
@@ -95,7 +95,7 @@ namespace Dealership.Services
         {
             if (car == null)
             {
-                throw new ArgumentNullException("Car doesn't exist!");
+                throw new ServiceException("Car doesn't exist!");
             }
             this.unitOfWork.GetRepository<Car>().Add(car);
             this.unitOfWork.SaveChanges();
@@ -182,7 +182,7 @@ namespace Dealership.Services
 
             if (car == null)
             {
-                throw new CarNotFoundException($"There is no car with ID {id}.");
+                throw new ServiceException($"There is no car with ID {id}.");
             }
             return car;
         }
