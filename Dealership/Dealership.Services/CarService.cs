@@ -198,11 +198,14 @@ namespace Dealership.Services
         public Car RemoveCar(int id)
         {
             var car = GetCar(id);
-            this.unitOfWork.GetRepository<Car>().Delete(car);
+            this.unitOfWork.GetRepository<Car>().Del
+ete(car);
             this.unitOfWork.SaveChanges();
 
             return car;
         }
+
+         
 
         public void EditBrand(string[] parameters) // works but must include navigation props tables !
         {
