@@ -1,6 +1,7 @@
 ﻿using Dealership.Data.Models;
 using Dealership.Data.UnitOfWork;
 using Dealership.Services.Abstract;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace Dealership.Services
 
             }
 
-            var car =this.carService.GetCar(id);
+            var car = this.carService.GetCar(id);
 
             Brand newBrand = unitOfWork.GetRepository<Brand>().All().FirstOrDefault(b => b.Name == newValue);
 
@@ -124,30 +125,26 @@ namespace Dealership.Services
         {
             var id = int.Parse(parameters[0]);
             var newColorValue = parameters[1];
-            var newColorType = parameters[2];
+            var newColorTypeName = parameters[2];
             var car = this.carService.GetCar(id);
 
-            var newColor = unitOfWork.GetRepository<Color>().All().FirstOrDefault(c => c.Name == newColorValue);
+
+            var newType = unitOfWork.GetRepository<ColorType>().All().FirstOrDefault(gt => gt.Name == newColorTypeName);
+            if (newType == null) { throw new ArgumentException("Invalid color type!"); }
+
+            var newColor = unitOfWork.GetRepository<Color>().All()
+                                     .Include(c => c.ColorType)
+                                     .FirstOrDefault(c => c.Name == newColorValue
+                                     && c.ColorType.Name == newColorTypeName);
 
             if (newColor == null)
             {
-                var newType = unitOfWork.GetRepository<ColorType>().All().FirstOrDefault(gt => gt.Name == newColorType);
-
-                if (newType == null)
-                {
-                    throw new ArgumentException("Invalid color type!");
-                }
-                newColor = new Color()
-                {
-                    Name = newColorValue,
-                    ColorType = newType
-
-                };
+                newColor = new Color() { Name = newColorValue, ColorType = newType };
                 unitOfWork.GetRepository<Color>().Add(newColor);
-
+                this.unitOfWork.SaveChanges();
             }
 
-            car.Color = newColor;
+            car.ColorId = newColor.Id;
             unitOfWork.SaveChanges();
         }
 
@@ -157,15 +154,24 @@ namespace Dealership.Services
             var newValue = parameters[1];
 
             var car = this.carService.GetCar(id);
+            var colorName = car.Color.Name;
+            var newColorType = unitOfWork.GetRepository<ColorType>().All().FirstOrDefault(ct => ct.Name == newValue);
+            if (newColorType == null) { throw new ArgumentNullException("Color type not exist!"); }
 
-            ColorType newColorType = unitOfWork.GetRepository<ColorType>().All().First(ct => ct.Name == newValue);
-
-            if (newColorType == null)
+            var newColor = unitOfWork.GetRepository<Color>().All()
+                .Include(c => c.ColorType)
+                .FirstOrDefault(c => c.Name == colorName
+                && c.ColorType.Name == newValue);
+            if (newColor == null)
             {
-                throw new ArgumentNullException("Color type not exist!");
+                newColor = new Color { Name = colorName, ColorType = newColorType };
+                this.unitOfWork.GetRepository<Color>().Add(newColor);
+                this.unitOfWork.SaveChanges();
             }
 
-            car.Color.ColorType = newColorType;
+            car.Color = newColor;
+            car.ColorId = newColor.Id;
+
             unitOfWork.SaveChanges();
         }
 

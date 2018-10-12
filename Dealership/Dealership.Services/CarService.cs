@@ -39,17 +39,17 @@ namespace Dealership.Services
             var bodyType = this.unitOfWork.GetRepository<BodyType>().All().FirstOrDefault(c => c.Name == bodyTypeName);
             if (bodyType == null) { throw new ServiceException($"There is no body type with name \"{bodyTypeName}\"."); }
 
-            var color = this.unitOfWork.GetRepository<Color>().All().FirstOrDefault(c => c.Name == colorName);
+            var color = this.unitOfWork.GetRepository<Color>().All()
+                                                              .Include(c => c.ColorType)
+                                                              .FirstOrDefault(c => c.Name == colorName
+                                                               && c.ColorType.Name == colorType);
+            var colorTypeFromDatabase = this.unitOfWork.GetRepository<ColorType>().All()
+                                       .FirstOrDefault(ct => ct.Name == colorType);
+            if (colorTypeFromDatabase == null) { throw new InvalidOperationException($"There is no color type with name \"{bodyTypeName}\"."); }
+
             if (color == null)
             {
-                color = new Color
-                {
-                    Name = colorName,
-                    ColorType = this.unitOfWork.GetRepository<ColorType>().All()
-                                               .FirstOrDefault(ct => ct.Name == colorType)
-                };
-
-                if (color.ColorType == null) { throw new ServiceException($"There is no color type with name \"{bodyTypeName}\"."); }
+                color = new Color { Name = colorName, ColorType = colorTypeFromDatabase };
                 this.unitOfWork.GetRepository<Color>().Add(color);
                 this.unitOfWork.SaveChanges();
             }
