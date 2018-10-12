@@ -42,6 +42,7 @@ namespace Dealership.Services
                 Username = username,
                 Password = password,
                 Email = email,
+                UserType = Enum.Parse<UserType>("User")
             };
 
 

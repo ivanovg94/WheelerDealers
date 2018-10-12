@@ -10,7 +10,7 @@ using System.Reflection;
 
 namespace Dealership.Client.Commands.CRUD
 {
-    public class EditCommand : PrimeCommand
+    public class EditCommand : AdminCommand
     {
         public ICarService CarService { get; set; }
         public IEditCarService EditCarService { get; set; }
@@ -23,6 +23,8 @@ namespace Dealership.Client.Commands.CRUD
         // edit [exact property.Name] [id] [newValue] 'if property has more than one values => [secondNewValue]'
         public override string Execute(string[] parameters)
         {
+            base.Execute(parameters);
+
             var prop = parameters[0];
             var id = parameters[1];
 

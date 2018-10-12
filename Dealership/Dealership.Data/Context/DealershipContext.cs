@@ -48,7 +48,6 @@ namespace Dealership.Data.Context
             SeedData(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
-
         }
 
         public override int SaveChanges()
@@ -110,6 +109,8 @@ namespace Dealership.Data.Context
             modelBuilder.Entity<ColorType>().HasData(new ColorType { Id = 3, Name = "Pearlescent" });
             modelBuilder.Entity<ColorType>().HasData(new ColorType { Id = 4, Name = "Matte" });
             modelBuilder.Entity<ColorType>().HasData(new ColorType { Id = 5, Name = "Xirallic" });
+
+            modelBuilder.Entity<User>().HasData(new User { Id = 1, Username = "admin", Password = "admin", Email = "wheelerDealer@gmail.com", UserType = Enum.Parse<UserType>("Admin") });
         }
     }
 }
