@@ -19,7 +19,10 @@ namespace Dealership.Client.Commands.CRUD
 
         public override string Execute(string[] parameters)
         {
-            if (parameters.Length == 0) { throw new ArgumentException("Invalid parameters"); }
+            if (parameters.Length == 0)
+            {
+                throw new ArgumentException("Invalid parameters");
+            }
 
             IList<Car> data = new List<Car>();
             var dir = "";

@@ -10,32 +10,37 @@ using System.Reflection;
 
 namespace Dealership.Client.Commands.CRUD
 {
-    public class EditCommand : PrimeCommand
+    public class EditCommand : AdminCommand
     {
+        public ICarService CarService { get; set; }
+        public IEditCarService EditCarService { get; set; }
+
         public EditCommand(IUserSession userSession) : base(userSession)
         {
         }
 
-        public ICarService CarService { get; set; }
 
         // edit [exact property.Name] [id] [newValue] 'if property has more than one values => [secondNewValue]'
         public override string Execute(string[] parameters)
         {
+            base.Execute(parameters);
+
             var prop = parameters[0];
             var id = parameters[1];
 
-            var methods = this.CarService.GetType().GetMethods();
+            var methods = this.EditCarService.GetType().GetMethods();
+
 
             foreach (var method in methods)
             {
                 if (method.Name.Contains("Edit" + prop))
                 {
-                    method.Invoke(CarService, new object[] { parameters.Skip(1).ToArray() });
+                    method.Invoke(EditCarService, new object[] { parameters.Skip(1).ToArray() });
                     break;
                 }
             }
 
-            return $"{prop} of car with id:{id} edited successfully!"; // not used anywhere yet but must return something..
+            return $"Edit command exit!"; // test purpose only
         }
     }
 }

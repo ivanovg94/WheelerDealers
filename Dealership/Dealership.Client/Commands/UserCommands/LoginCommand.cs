@@ -26,8 +26,7 @@ namespace Dealership.Client.Commands.UserCommands
                 throw new InvalidOperationException("There is logged in user.");
             }
 
-            var user = this.UserService.GetUserByCredentials(username, password);
-            
+            var user = this.UserService.GetUserByCredentials(username, password);            
             base.UserSession.CurrentUser = user;
 
             return $"User {username} successfully logged in!";

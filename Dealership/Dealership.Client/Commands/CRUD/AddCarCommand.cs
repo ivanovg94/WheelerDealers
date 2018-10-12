@@ -5,7 +5,7 @@ using System;
 
 namespace Dealership.Client.Commands.CRUD
 {
-    public class AddCarCommand : PrimeCommand
+    public class AddCarCommand : AdminCommand
     {
         public AddCarCommand(IUserSession userSession) : base(userSession)
         {
@@ -15,6 +15,8 @@ namespace Dealership.Client.Commands.CRUD
         //add brand, model, hp, engCap, prod.date, price, chasis, nDoors, colorName,ColorType, fuelType, gearbox, nGears
         public override string Execute(string[] parameters)
         {
+            base.Execute(parameters);
+
             //validation TODO
             var brandName = parameters[0];
             var model = parameters[1];
