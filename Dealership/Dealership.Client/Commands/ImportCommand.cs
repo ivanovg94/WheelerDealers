@@ -11,7 +11,7 @@ using System.Text;
 
 namespace Dealership.Client.Commands
 {
-    public class ImportCommand : PrimeCommand
+    public class ImportCommand : AdminCommand
     {
         //import {filename} --ex: cars
         const string datasetDir = @"..\..\..\..\Dealership.Data\DataProcessor\ImportDatasets\";
@@ -24,13 +24,14 @@ namespace Dealership.Client.Commands
 
         public override string Execute(string[] parameters)
         {
+            base.Execute(parameters);
             string fileName = parameters[0];
-            var cars = ImportCars(File.ReadAllText(datasetDir + fileName + ".json"));
+            var carsCount = ImportCars(File.ReadAllText(datasetDir + fileName + ".json"));
 
-            return $"Successfully imported cars!";
+            return $"Successfully imported {carsCount} cars!";
         }
 
-        public string ImportCars(string jsonString)
+        public int ImportCars(string jsonString)
         {
             var sb = new StringBuilder();
 
@@ -58,13 +59,16 @@ namespace Dealership.Client.Commands
                 var car = CarService.CreateCar(brand, model, horsePower, engineCapacity, productionDate, price, bodyType, color, colorType, fuelType, gearbox, numOfGears);
 
                 cars.Add(car);
-                //TODO: add logger
-                //sb.AppendLine(string.Format(SuccessMessage, car.Brand + " " + car.Model));
+            }
+
+            if (cars.Count == 0)
+            {
+                throw new InvalidOperationException("There is no cars to be imported.");
             }
 
             this.CarService.AddCars(cars);
 
-            return "Cars successfully imported.";
+            return cars.Count;
         }
     }
 }

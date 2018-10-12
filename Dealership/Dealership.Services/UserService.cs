@@ -1,7 +1,10 @@
 ﻿using Dealership.Data.Models;
 using Dealership.Data.UnitOfWork;
 using Dealership.Services.Abstract;
+using Dealership.Services.Exceptions;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Dealership.Services
@@ -9,10 +12,14 @@ namespace Dealership.Services
     public class UserService : IUserService
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly ICarService carService;
 
-        public UserService(IUnitOfWork unitOfWork)
+        //public ICarService CarService { get; set; }
+
+        public UserService(IUnitOfWork unitOfWork, ICarService carService)
         {
             this.unitOfWork = unitOfWork;
+            this.carService = carService;
         }
 
         public User RegisterUser(string username, string password, string confirmPassword, string email)
@@ -54,15 +61,22 @@ namespace Dealership.Services
 
         public User GetUserByCredentials(string username, string password)
         {
-            var user = this.unitOfWork
-                .GetRepository<User>()
-                .All()
-                .FirstOrDefault(u => u.Username == username);
+            User user = GetUserByUsername(username);
 
             if (user == null || user.Password != password || user.IsDeleted)
             {
                 throw new InvalidOperationException("Invalid username or password.");
             }
+
+            return user;
+        }
+
+        private User GetUserByUsername(string username)
+        {
+            var user = this.unitOfWork
+                .GetRepository<User>()
+                .All()
+                .FirstOrDefault(u => u.Username == username);
 
             return user;
         }
@@ -77,6 +91,30 @@ namespace Dealership.Services
             this.unitOfWork.SaveChanges();
 
             return user;
+        }
+
+        public Car AddCarToFavorites(int carId, string username)
+        {
+            //TODO: add many to many relation
+            Car car = this.carService.GetCar(carId);
+
+            User user = this.unitOfWork
+                  .GetRepository<User>()
+                  .All()
+                  .Include(u => u.FavoriteCars)
+                  .FirstOrDefault(u => u.Username == username);
+            return car;
+        }
+
+        public IList<Car> ListFavorites(string username)
+        {
+            var user = this.unitOfWork
+                  .GetRepository<User>()
+                  .All()
+                  .Include(u => u.FavoriteCars)
+                  .FirstOrDefault(u => u.Username == username);
+
+            return user.FavoriteCars.ToList();
         }
 
         private bool IsUserExisting(string username)

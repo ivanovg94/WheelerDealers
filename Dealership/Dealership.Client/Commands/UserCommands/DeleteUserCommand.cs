@@ -20,6 +20,11 @@ namespace Dealership.Client.Commands.UserCommands
             string username = parameters[0];
             string password = parameters[1];
 
+            if (parameters.Length != 2)
+            {
+                throw new ArgumentException("Invalid parameters");
+            }
+
             var user = this.UserService.DeleteUser(username, password);
 
             return $"User {username} successfully deleted!";

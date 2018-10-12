@@ -202,7 +202,6 @@ namespace Dealership.Services
             }
             car.GearBox.GearType = newGearType;
             unitOfWork.SaveChanges();
-
         }
     }
 }
