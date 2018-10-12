@@ -43,13 +43,13 @@ namespace Dealership.Services
                                                               .Include(c => c.ColorType)
                                                               .FirstOrDefault(c => c.Name == colorName
                                                                && c.ColorType.Name == colorType);
-            var cType = this.unitOfWork.GetRepository<ColorType>().All()
+            var colorTypeFromDatabase = this.unitOfWork.GetRepository<ColorType>().All()
                                        .FirstOrDefault(ct => ct.Name == colorType);
-            if (cType == null) { throw new InvalidOperationException($"There is no color type with name \"{bodyTypeName}\"."); }
+            if (colorTypeFromDatabase == null) { throw new InvalidOperationException($"There is no color type with name \"{bodyTypeName}\"."); }
 
             if (color == null)
             {
-                color = new Color { Name = colorName, ColorType = cType };
+                color = new Color { Name = colorName, ColorType = colorTypeFromDatabase };
                 this.unitOfWork.GetRepository<Color>().Add(color);
                 this.unitOfWork.SaveChanges();
             }
