@@ -18,8 +18,14 @@ namespace Dealership.Client.Commands.CRUD
 
             IList<Car> data = new List<Car>();
             var dir = "";
-            if (parameters.Length == 2) { dir = parameters[1]; }
-            if (parameters[0].ToLower() == "sold") { data = Service.GetCars(true, dir); }
+            if (parameters.Length == 2)
+            {
+                dir = parameters[1];
+            }
+            if (parameters[0].ToLower() == "sold")
+            {
+                data = Service.GetCars(true, dir);
+            }
             else if (parameters[0].ToLower() == "active") { data = Service.GetCars(false, dir); }
             else if (parameters[0].ToLower() == "all") { data = Service.GetCars(dir); }
             else { throw new ArgumentException("Invalid parameters!"); }

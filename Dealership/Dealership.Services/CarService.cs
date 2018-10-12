@@ -37,7 +37,10 @@ namespace Dealership.Services
             }
 
             var bodyType = this.unitOfWork.GetRepository<BodyType>().All().FirstOrDefault(c => c.Name == bodyTypeName);
-            if (bodyType == null) { throw new BodyTypeNotFoundException($"There is no body type with name \"{bodyTypeName}\"."); }
+            if (bodyType == null)
+            {
+                throw new BodyTypeNotFoundException($"There is no body type with name \"{bodyTypeName}\".");
+            }
 
             var color = this.unitOfWork.GetRepository<Color>().All().FirstOrDefault(c => c.Name == colorName);
             if (color == null)
@@ -49,19 +52,29 @@ namespace Dealership.Services
                                                .FirstOrDefault(ct => ct.Name == colorType)
                 };
 
-                if (color.ColorType == null) { throw new ColorTypeNotFoundException($"There is no color type with name \"{bodyTypeName}\"."); }
+                if (color.ColorType == null)
+                {
+                    throw new ColorTypeNotFoundException($"There is no color type with name \"{bodyTypeName}\".");
+
+                }
                 this.unitOfWork.GetRepository<Color>().Add(color);
                 this.unitOfWork.SaveChanges();
             }
 
             var fuelType = this.unitOfWork.GetRepository<FuelType>().All()
                                           .FirstOrDefault(f => f.Name == fuelTypeName);
-            if (fuelType == null) { throw new FuelNotFoundException($"There is no fuel with name \"{fuelTypeName}\"."); }
+            if (fuelType == null)
+            {
+                throw new FuelNotFoundException($"There is no fuel with name \"{fuelTypeName}\".");
+            }
 
             var gearbox = this.unitOfWork.GetRepository<Gearbox>().All()
                 .FirstOrDefault(g => g.GearType.Name == gearboxTypeName
                                   && g.NumberOfGears == numOfGears);
-            if (gearbox == null) { throw new GearboxNotFoundException($"There is no such a gearbox."); }
+            if (gearbox == null)
+            {
+                throw new GearboxNotFoundException($"There is no such a gearbox.");
+            }
 
             var newCar = new Car()
             {
@@ -87,6 +100,10 @@ namespace Dealership.Services
 
         public void AddCar(Car car)
         {
+            if (car == null)
+            {
+                throw new ArgumentNullException("Car doesn't exist!");
+            }
             this.unitOfWork.GetRepository<Car>().Add(car);
             this.unitOfWork.SaveChanges();
         }
@@ -95,12 +112,15 @@ namespace Dealership.Services
         {
             foreach (var car in cars)
             {
-                this.unitOfWork.GetRepository<Car>().Add(car);
+                if (car != null)
+                {
+                    this.unitOfWork.GetRepository<Car>().Add(car);
+                }
             }
             this.unitOfWork.SaveChanges();
         }
 
-        public IList<Car> GetCars(bool filterSold, string direction)
+        public IList<Car> GetCars(bool filterSold, string order)
         {
             var querry = this.unitOfWork.GetRepository<Car>().All()
                                             .Where(c => c.IsSold == filterSold)
@@ -114,9 +134,19 @@ namespace Dealership.Services
                                             .Include(c => c.GearBox)
                                                 .ThenInclude(gb => gb.GearType);
 
-            if (direction.ToLower() == "asc") { return querry.OrderBy(c => c.Id).ToList(); }
-            else if (direction.ToLower() == "desc") { return querry.OrderByDescending(c => c.Id).ToList(); }
-            else { return querry.ToList(); }
+            if (order.ToLower() == "asc")
+            {
+                return querry.OrderBy(c => c.Id).ToList();
+            }
+
+            else if (order.ToLower() == "desc")
+            {
+                return querry.OrderByDescending(c => c.Id).ToList();
+            }
+            else
+            {
+                return querry.ToList();
+            }
         }
 
         public IList<Car> GetCars(string direction)
@@ -132,9 +162,15 @@ namespace Dealership.Services
                                              .Include(c => c.GearBox)
                                                  .ThenInclude(gb => gb.GearType);
 
-            if (direction.ToLower() == "asc") { return querry.OrderBy(c => c.Id).ToList(); }
-            else if (direction.ToLower() == "desc") { return querry.OrderByDescending(c => c.Id).ToList(); }
-            else { return querry.ToList(); }
+            if (direction.ToLower() == "desc")
+            {
+                return querry.OrderByDescending(c => c.Id).ToList();
+            }
+            else
+            {
+                return querry.OrderBy(c => c.Id).ToList();
+            }
+
         }
 
         public Car GetCar(int id)
@@ -152,7 +188,10 @@ namespace Dealership.Services
                                                .ThenInclude(gb => gb.GearType)
                                            .FirstOrDefault();
 
-            if (car == null) { throw new CarNotFoundException($"There is no car with ID {id}."); }
+            if (car == null)
+            {
+                throw new CarNotFoundException($"There is no car with ID {id}.");
+            }
             return car;
         }
 

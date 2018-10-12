@@ -26,7 +26,7 @@ namespace Dealership.Client.Core
 
         public void Run()
         {
-            while ((input = reader.ReadLine().ToLower()) != "exit")
+            while ((input = reader.ReadLine()) != "exit")
             {
                 try
                 {
@@ -54,7 +54,7 @@ namespace Dealership.Client.Core
         {
             try
             {
-            return this.containerContext.ResolveNamed<ICommand>(commandStr);
+                return this.containerContext.ResolveNamed<ICommand>(commandStr);
             }
             catch (Exception)
             {
