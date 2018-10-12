@@ -87,6 +87,10 @@ namespace Dealership.Services
 
         public void AddCar(Car car)
         {
+            if (car == null)
+            {
+                throw new ArgumentNullException("Car doesn't exist!");
+            }
             this.unitOfWork.GetRepository<Car>().Add(car);
             this.unitOfWork.SaveChanges();
         }
@@ -95,12 +99,15 @@ namespace Dealership.Services
         {
             foreach (var car in cars)
             {
-                this.unitOfWork.GetRepository<Car>().Add(car);
+                if (car != null)
+                {
+                    this.unitOfWork.GetRepository<Car>().Add(car);
+                }
             }
             this.unitOfWork.SaveChanges();
         }
 
-        public IList<Car> GetCars(bool filterSold, string direction)
+        public IList<Car> GetCars(bool filterSold, string order)
         {
             var querry = this.unitOfWork.GetRepository<Car>().All()
                                             .Where(c => c.IsSold == filterSold)
@@ -114,9 +121,19 @@ namespace Dealership.Services
                                             .Include(c => c.GearBox)
                                                 .ThenInclude(gb => gb.GearType);
 
-            if (direction.ToLower() == "asc") { return querry.OrderBy(c => c.Id).ToList(); }
-            else if (direction.ToLower() == "desc") { return querry.OrderByDescending(c => c.Id).ToList(); }
-            else { return querry.ToList(); }
+            if (order.ToLower() == "asc")
+            {
+                return querry.OrderBy(c => c.Id).ToList();
+            }
+
+            else if (order.ToLower() == "desc")
+            {
+                return querry.OrderByDescending(c => c.Id).ToList();
+            }
+            else
+            {
+                return querry.ToList();
+            }
         }
 
         public IList<Car> GetCars(string direction)
@@ -132,9 +149,15 @@ namespace Dealership.Services
                                              .Include(c => c.GearBox)
                                                  .ThenInclude(gb => gb.GearType);
 
-            if (direction.ToLower() == "asc") { return querry.OrderBy(c => c.Id).ToList(); }
-            else if (direction.ToLower() == "desc") { return querry.OrderByDescending(c => c.Id).ToList(); }
-            else { return querry.ToList(); }
+            if (direction.ToLower() == "desc")
+            {
+                return querry.OrderByDescending(c => c.Id).ToList();
+            }
+            else
+            {
+                return querry.OrderBy(c => c.Id).ToList();
+            }
+
         }
 
         public Car GetCar(int id)
@@ -152,7 +175,10 @@ namespace Dealership.Services
                                                .ThenInclude(gb => gb.GearType)
                                            .FirstOrDefault();
 
-            if (car == null) { throw new CarNotFoundException($"There is no car with ID {id}."); }
+            if (car == null)
+            {
+                throw new CarNotFoundException($"There is no car with ID {id}.");
+            }
             return car;
         }
 

@@ -18,18 +18,11 @@ namespace Dealership.Client.Commands.CRUD
 
         public ICarService CarService { get; set; }
 
-        // edit [exact property.Name] [id] [newValue] 'optional => [secondNewValue]'
+        // edit [exact property.Name] [id] [newValue] 'if property has more than one values => [secondNewValue]'
         public override string Execute(string[] parameters)
         {
             var prop = parameters[0];
             var id = parameters[1];
-
-            //string secondNewValue = "";
-
-            //if (parameters.Count() == 4)
-            //{
-            //    secondNewValue = parameters[3];
-            //}
 
             var methods = this.CarService.GetType().GetMethods();
 
@@ -42,7 +35,7 @@ namespace Dealership.Client.Commands.CRUD
                 }
             }
 
-            return $"{prop} of car with id:{id} edited successfully!";
+            return $"{prop} of car with id:{id} edited successfully!"; // not used anywhere yet but must return something..
         }
     }
 }
