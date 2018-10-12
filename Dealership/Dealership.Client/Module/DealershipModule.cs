@@ -32,6 +32,7 @@ namespace Dealership.Client.Module
             builder.RegisterType<DealershipContext>().As<IDealershipContext>();
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
             builder.RegisterType<CarService>().As<ICarService>();
+            builder.RegisterType<EditCarService>().As<IEditCarService>();
             builder.RegisterType<ExtraService>().As<IExtraService>();
             builder.RegisterType<UserService>().As<IUserService>();
             builder.RegisterType<BrandService>().As<IBrandService>();
