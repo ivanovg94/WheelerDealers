@@ -1,5 +1,6 @@
 ﻿using Dealership.Client.Commands.Abstract;
 using Dealership.Client.ViewModels;
+using Dealership.Data.Models.Contracts;
 using Dealership.Services.Abstract;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,10 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
 {
     public class FilterByBodyTypeCommand : PrimeCommand
     {
+        public FilterByBodyTypeCommand(IUserSession userSession) : base(userSession)
+        {
+        }
+
         //filterByBodyType {bodyType}
         public ICarService CarService { get; set; }
 

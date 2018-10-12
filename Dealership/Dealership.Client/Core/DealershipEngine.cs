@@ -1,11 +1,10 @@
 ﻿using Autofac;
-using Dealership.Client.Contracts;
 using Dealership.Client.Contracts.Abstract;
 using Dealership.Client.Core.Abstract;
+using Dealership.Data.Models.Contracts;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+
 
 namespace Dealership.Client.Core
 {
@@ -15,11 +14,14 @@ namespace Dealership.Client.Core
         private readonly IReader reader;
         private readonly IWriter writer;
 
-        public DealershipEngine(IComponentContext containerContext, IReader reader, IWriter writer)
+        private readonly IUserSession userSession;
+
+        public DealershipEngine(IComponentContext containerContext, IReader reader, IWriter writer, IUserSession userSession)
         {
             this.containerContext = containerContext;
             this.reader = reader;
             this.writer = writer;
+            this.userSession = userSession;
         }
 
         string input = string.Empty;
@@ -31,9 +33,14 @@ namespace Dealership.Client.Core
                 try
                 {
                     var inputParams = input.Split();
-                    var command = this.ParseCommand(inputParams[0]);
-                    //commands not implemented yet !
-                    //commandResult returns message according to operation result (successful or not)
+                    string commandName = inputParams[0].ToLower();
+
+                    if (userSession.CurrentUser == null && commandName != "login" && commandName != "register")
+                    {
+                        throw new InvalidOperationException("Please login or register.");
+                    }
+
+                    var command = this.ParseCommand(commandName);
                     var commandResult = command.Execute(inputParams.Skip(1).ToArray());
 
                     writer.WriteLine(commandResult);

@@ -11,6 +11,13 @@ namespace Dealership.Client
         static void Main(string[] args)
         {
             Console.WriteLine("Supported commands:");
+
+            Console.WriteLine("register {username} {password} {confirmPass} {email}");
+            Console.WriteLine("login {username} {password}");
+            Console.WriteLine("logout");
+            Console.WriteLine("deleteUser {username} {password}");
+            Console.WriteLine();
+            
             Console.WriteLine("addcar {brand} {model} {horse power} {engine capacity} {production date} {price} {chasis} {color} {color type} {fuel type} {gearbox} {number of gears}");
             Console.WriteLine("removecar {carId}");
             Console.WriteLine("createextra {extra name}");

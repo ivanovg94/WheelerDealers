@@ -1,6 +1,7 @@
 ﻿using Dealership.Client.Commands.Abstract;
 using Dealership.Client.ViewModels;
 using Dealership.Data.Models;
+using Dealership.Data.Models.Contracts;
 using Dealership.Services.Abstract;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,10 @@ namespace Dealership.Client.Commands.CRUD
 {
     public class ListCommand : PrimeCommand
     {
+        public ListCommand(IUserSession userSession) : base(userSession)
+        {
+        }
+
         public ICarService Service { get; set; }
 
         public override string Execute(string[] parameters)

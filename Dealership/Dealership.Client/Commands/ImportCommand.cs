@@ -1,6 +1,7 @@
 ﻿using Dealership.Client.Commands.Abstract;
 using Dealership.Client.ViewModels;
 using Dealership.Data.Models;
+using Dealership.Data.Models.Contracts;
 using Dealership.Services.Abstract;
 using Newtonsoft.Json;
 using System;
@@ -14,6 +15,10 @@ namespace Dealership.Client.Commands
     {
         //import {filename} --ex: cars
         const string datasetDir = @"..\..\..\..\Dealership.Data\DataProcessor\ImportDatasets\";
+
+        public ImportCommand(IUserSession userSession) : base(userSession)
+        {
+        }
 
         public ICarService CarService { get; set; }
 

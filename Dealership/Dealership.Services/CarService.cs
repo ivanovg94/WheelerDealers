@@ -37,10 +37,7 @@ namespace Dealership.Services
             }
 
             var bodyType = this.unitOfWork.GetRepository<BodyType>().All().FirstOrDefault(c => c.Name == bodyTypeName);
-            if (bodyType == null)
-            {
-                throw new BodyTypeNotFoundException($"There is no body type with name \"{bodyTypeName}\".");
-            }
+            if (bodyType == null) { throw new InvalidOperationException($"There is no body type with name \"{bodyTypeName}\"."); }
 
             var color = this.unitOfWork.GetRepository<Color>().All().FirstOrDefault(c => c.Name == colorName);
             if (color == null)
@@ -52,29 +49,19 @@ namespace Dealership.Services
                                                .FirstOrDefault(ct => ct.Name == colorType)
                 };
 
-                if (color.ColorType == null)
-                {
-                    throw new ColorTypeNotFoundException($"There is no color type with name \"{bodyTypeName}\".");
-
-                }
+                if (color.ColorType == null) { throw new InvalidOperationException($"There is no color type with name \"{bodyTypeName}\"."); }
                 this.unitOfWork.GetRepository<Color>().Add(color);
                 this.unitOfWork.SaveChanges();
             }
 
             var fuelType = this.unitOfWork.GetRepository<FuelType>().All()
                                           .FirstOrDefault(f => f.Name == fuelTypeName);
-            if (fuelType == null)
-            {
-                throw new FuelNotFoundException($"There is no fuel with name \"{fuelTypeName}\".");
-            }
+            if (fuelType == null) { throw new InvalidOperationException($"There is no fuel with name \"{fuelTypeName}\"."); }
 
             var gearbox = this.unitOfWork.GetRepository<Gearbox>().All()
                 .FirstOrDefault(g => g.GearType.Name == gearboxTypeName
                                   && g.NumberOfGears == numOfGears);
-            if (gearbox == null)
-            {
-                throw new GearboxNotFoundException($"There is no such a gearbox.");
-            }
+            if (gearbox == null) { throw new InvalidOperationException($"There is no such a gearbox."); }
 
             var newCar = new Car()
             {
