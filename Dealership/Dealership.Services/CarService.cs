@@ -157,7 +157,6 @@ namespace Dealership.Services
             {
                 return querry.OrderBy(c => c.Id).ToList();
             }
-
         }
 
         public Car GetCar(int id)
@@ -371,7 +370,6 @@ namespace Dealership.Services
             }
             car.GearBox.GearType = newGearType;
             unitOfWork.SaveChanges();
-
         }
     }
 }

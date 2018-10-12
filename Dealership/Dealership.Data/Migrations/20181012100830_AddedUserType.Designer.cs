@@ -4,14 +4,16 @@ using Dealership.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Dealership.Data.Migrations
 {
     [DbContext(typeof(DealershipContext))]
-    partial class DealershipContextModelSnapshot : ModelSnapshot
+    [Migration("20181012100830_AddedUserType")]
+    partial class AddedUserType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -351,8 +353,7 @@ namespace Dealership.Data.Migrations
                     b.Property<string>("Password")
                         .IsRequired();
 
-                    b.Property<string>("UserType")
-                        .IsRequired();
+                    b.Property<int>("UserType");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -369,7 +370,7 @@ namespace Dealership.Data.Migrations
                     b.ToTable("Users");
 
                     b.HasData(
-                        new { Id = 1, Email = "wheelerDealer@gmail.com", IsDeleted = false, Password = "admin", UserType = "Admin", Username = "admin" }
+                        new { Id = 1, Email = "wheelerDealer@gmail.com", IsDeleted = false, Password = "admin", UserType = 0, Username = "admin" }
                     );
                 });
 

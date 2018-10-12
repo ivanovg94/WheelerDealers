@@ -4,6 +4,7 @@ using Dealership.Services.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Dealership.Client.Commands.UserCommands
 {
@@ -27,9 +28,15 @@ namespace Dealership.Client.Commands.UserCommands
             string confirmPassword = parameters[2];
             string email = parameters[3];
 
+            Regex regex = new Regex(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$");
+
+            Match match = regex.Match(email);
+            if (!match.Success)
+            {
+                throw new ArgumentException("Invalid email address.");
+            }
 
             var user = this.UserService.RegisterUser(username, password, confirmPassword, email);
-
             base.UserSession.CurrentUser = user;
 
             return $"User {username} was registered succesfully";
