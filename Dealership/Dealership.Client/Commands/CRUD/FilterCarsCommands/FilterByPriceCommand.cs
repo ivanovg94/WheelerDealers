@@ -51,7 +51,7 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
                  .OrderBy(c => c.Price)
                  .ToList();
 
-            if (!cars.Any())
+            if (cars.Count==0)
             {
                 return $"No cars with price between {priceFrom} and {priceTo}.";
             }
