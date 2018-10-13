@@ -55,8 +55,12 @@ namespace Dealership.Client.Commands.CRUD
                 Gearbox = c.GearBox.GearType.Name,
                 NumberOfGears = c.GearBox.NumberOfGears,
                 Extras = c.CarsExtras.Select(ce => ce.Extra.Name).ToList()
-            });
+            }).ToList();
 
+            if (result.Count == 0)
+            {
+                return $"There are no cars to be listed! Create new or inport cars.";
+            }
             return string.Join($"\r\n", result);
         }
     }
