@@ -16,4 +16,8 @@
     <ProjectReference Include="..\Dealership.Services\Dealership.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data.Tests\" />
+  </ItemGroup>
+
 </Project>
