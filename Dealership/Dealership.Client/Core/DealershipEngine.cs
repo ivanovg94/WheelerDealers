@@ -38,6 +38,7 @@ namespace Dealership.Client.Core
                     this.exceptionLogging.SendErrorToText(ex);
                 }
             }
+
         }
 
 
