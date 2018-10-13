@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Folder Include="Command.Tests\" />
+    <Folder Include="Data.Tests\" />
   </ItemGroup>
 
 </Project>
