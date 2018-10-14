@@ -20,7 +20,7 @@ namespace Dealership.Data.Models
         public string Email { get; set; }
 
         [MaxLength(25)]
-        public UserType UserType { get; set; }
+        public virtual UserType UserType { get; set; }
 
         public ICollection<Car> FavoriteCars { get; set; }
     }

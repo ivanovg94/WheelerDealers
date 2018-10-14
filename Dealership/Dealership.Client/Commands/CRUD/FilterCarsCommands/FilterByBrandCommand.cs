@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
 {
-    public class FilterByBrandCommand : PrimeCommand
+    public class FilterByBrandCommand : Command
     {
         public FilterByBrandCommand(IUserSession userSession) : base(userSession)
         {

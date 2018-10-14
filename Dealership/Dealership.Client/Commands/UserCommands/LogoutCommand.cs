@@ -5,7 +5,7 @@ using System;
 
 namespace Dealership.Client.Commands.UserCommands
 {
-    public class LogoutCommand : PrimeCommand
+    public class LogoutCommand : Command
     {
         public LogoutCommand(IUserSession userSession) : base(userSession)
         {

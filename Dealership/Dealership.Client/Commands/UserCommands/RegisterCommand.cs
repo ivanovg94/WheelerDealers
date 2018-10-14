@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace Dealership.Client.Commands.UserCommands
 {
-    public class RegisterCommand : PrimeCommand
+    public class RegisterCommand : Command
     {
         public RegisterCommand(IUserSession userSession) : base(userSession)
         {

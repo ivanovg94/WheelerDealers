@@ -1,4 +1,5 @@
 ﻿using Dealership.Data.Models;
+using Dealership.Data.Models.Contracts;
 using Dealership.Data.UnitOfWork;
 using Dealership.Services.Abstract;
 using Dealership.Services.Exceptions;
@@ -12,6 +13,11 @@ namespace Dealership.Services
     public class CarService : ICarService
     {
         private readonly IUnitOfWork unitOfWork;
+
+        public CarService()
+        {
+
+        }
 
         public CarService(IUnitOfWork unitOfWork)
         {
@@ -101,13 +107,13 @@ namespace Dealership.Services
             return newCar;
         }
 
-        public void AddCar(Car car)
+        public void AddCar(ICar car)
         {
             if (car == null)
             {
                 throw new ServiceException("Car doesn't exist!");
             }
-            this.unitOfWork.GetRepository<Car>().Add(car);
+            this.unitOfWork.GetRepository<Car>().Add((Car)car);
             this.unitOfWork.SaveChanges();
         }
 
@@ -174,8 +180,8 @@ namespace Dealership.Services
                 return querry.OrderBy(c => c.Id).ToList();
             }
         }
-
-        public Car GetCar(int id)
+        //virtual for unittesting
+        public virtual Car GetCar(int id)
         {
             var car = this.unitOfWork.GetRepository<Car>().All()
                                            .Where(c => c.Id == id)

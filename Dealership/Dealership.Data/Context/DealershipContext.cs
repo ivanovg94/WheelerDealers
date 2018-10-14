@@ -14,9 +14,9 @@ namespace Dealership.Data.Context
 
         }
 
-        public DealershipContext(DbContextOptionsBuilder contextOptions)
+        public DealershipContext(DbContextOptions contextOptions) : base(contextOptions)
         {
-
+            
         }
         public DbSet<Brand> Brands { get; set; }
 
@@ -53,7 +53,7 @@ namespace Dealership.Data.Context
         {
             modelBuilder.ApplyConfiguration(new CarsExtrasConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
-
+            
             SeedData(modelBuilder);
 
             base.OnModelCreating(modelBuilder);

@@ -11,6 +11,11 @@ namespace Dealership.Data.UnitOfWork
         private readonly IDealershipContext context;
         private readonly Dictionary<Type, object> repos = new Dictionary<Type, object>();
 
+        public UnitOfWork()
+        {
+
+        }
+
         public UnitOfWork(IDealershipContext context)
         {
             this.context = context;
@@ -20,8 +25,8 @@ namespace Dealership.Data.UnitOfWork
         {
             return this.context.SaveChanges();
         }
-
-        public IRepository<T> GetRepository<T>() where T : class, IDeletable
+        // virtual for unittesting
+        public virtual IRepository<T> GetRepository<T>() where T : class, IDeletable
         {
             var repoType = typeof(Repository<T>);
 

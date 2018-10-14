@@ -10,7 +10,7 @@ using System.Linq;
 namespace Dealership.Client.Commands
 {
     //generatePdf
-    public class GeneratePdfCommand : PrimeCommand
+    public class GeneratePdfCommand : Command
     {
         const string outputDir = @"..\..\..\..\Dealership.Data\DataProcessor\PdfReports\";
 

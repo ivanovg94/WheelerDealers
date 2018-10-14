@@ -2,13 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Dealership.Data.Models
 {
-    public class Car : Entity
+    public class Car : Entity, ICar
     {
         private ICollection<CarsExtras> _carsExtras;
+
 
         public Car()
         {
@@ -21,7 +23,7 @@ namespace Dealership.Data.Models
         public string Model { get; set; }
 
         [Required]
-        [Range(1,int.MaxValue)]
+        [Range(1, int.MaxValue)]
         public short HorsePower { get; set; }
 
         [Required]
@@ -37,8 +39,8 @@ namespace Dealership.Data.Models
         [Required]
         [DataType(DataType.DateTime)]
         public DateTime ProductionDate { get; set; }
-
-        public int BrandId { get; set; }   
+        
+        public int BrandId { get; set; }
         public virtual Brand Brand { get; set; }
 
         public int BodyTypeId { get; set; }

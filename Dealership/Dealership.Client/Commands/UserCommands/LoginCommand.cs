@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Dealership.Client.Commands.UserCommands
 {
-    public class LoginCommand : PrimeCommand
+    public class LoginCommand : Command
     {
         public LoginCommand(IUserSession userSession) : base(userSession)
         {

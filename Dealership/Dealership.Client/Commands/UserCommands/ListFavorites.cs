@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Dealership.Client.Commands.UserCommands
 {
-    public class ListFavorites : PrimeCommand
+    public class ListFavorites : Command
     {
         public IUserService UserService { get; set; }
 

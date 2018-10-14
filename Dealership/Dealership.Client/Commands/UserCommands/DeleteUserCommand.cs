@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Dealership.Client.Commands.UserCommands
 {
-    public class DeleteUserCommand : PrimeCommand
+    public class DeleteUserCommand : Command
     {
         public DeleteUserCommand(IUserSession userSession) : base(userSession)
         {

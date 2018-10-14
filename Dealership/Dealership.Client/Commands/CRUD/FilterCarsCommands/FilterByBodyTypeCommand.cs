@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
 {
-    public class FilterByBodyTypeCommand : PrimeCommand
+    public class FilterByBodyTypeCommand : Command
     {
         public FilterByBodyTypeCommand(IUserSession userSession) : base(userSession)
         {

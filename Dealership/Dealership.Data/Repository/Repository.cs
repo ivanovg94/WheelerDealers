@@ -11,6 +11,11 @@ namespace Dealership.Data.Repository
            where T : class, IDeletable
     {
         private readonly DealershipContext context;
+        // for unit testing
+        public Repository()
+        {
+
+        }
 
         public Repository(IDealershipContext context)
         {

@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Dealership.Client.Commands.Abstract
 {
-    public abstract class PrimeCommand : ICommand
+    public abstract class Command : ICommand
     {
         //Remove after all command logic is moved to service layer
         public IDealershipContext Context { get; set; }
@@ -19,8 +19,12 @@ namespace Dealership.Client.Commands.Abstract
 
         public IUserSession UserSession { get; set; }
 
-        public PrimeCommand(IUserSession userSession)
+        public Command(IUserSession userSession)
         {
+            if (userSession == null)
+            {
+                throw new ArgumentNullException("UserSession cannot be null!");
+            }
             this.UserSession = userSession;
         }
 

@@ -12,17 +12,21 @@ namespace Dealership.Client.Commands.CRUD
 {
     public class EditCommand : AdminCommand
     {
-        public ICarService CarService { get; set; }
         public IEditCarService EditCarService { get; set; }
-
-        public EditCommand(IUserSession userSession) : base(userSession)
+        
+        public EditCommand(IUserSession userSession, IEditCarService editCarService) : base(userSession)
         {
+            this.EditCarService = editCarService;
         }
 
 
-        // edit [exact property.Name] [id] [newValue] 'if property has more than one values => [secondNewValue]'
+        // edit [exact property.Name] [id] [newValue] [secondNewValue]
         public override string Execute(string[] parameters)
         {
+            if (parameters == null)
+            {
+                throw new ArgumentNullException("Invalid input parameters!");
+            }
             base.Execute(parameters);
 
             var prop = parameters[0];
@@ -30,17 +34,21 @@ namespace Dealership.Client.Commands.CRUD
 
             var methods = this.EditCarService.GetType().GetMethods();
 
+            object invocationResult = null;
 
             foreach (var method in methods)
             {
-                if (method.Name.Contains("Edit" + prop))
+                if (method.Name.ToLower().Contains("edit" + prop.ToLower()))
                 {
-                    method.Invoke(EditCarService, new object[] { parameters.Skip(1).ToArray() });
+                    invocationResult = method.Invoke(EditCarService, new object[] { parameters.Skip(1).ToArray() });
                     break;
                 }
             }
-
-            return $"Edit command exit!"; // test purpose only
+            if (invocationResult == null)
+            {
+                return $"Editing {prop} failed!";
+            }
+            return invocationResult.ToString();
         }
     }
 }

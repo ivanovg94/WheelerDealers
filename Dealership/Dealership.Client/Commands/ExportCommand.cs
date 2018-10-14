@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Dealership.Client.Commands
 {
-    public class ExportCommand : PrimeCommand
+    public class ExportCommand : Command
     {
         //export sold asc
         //export available 

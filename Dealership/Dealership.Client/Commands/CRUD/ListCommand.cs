@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Dealership.Client.Commands.CRUD
 {
-    public class ListCommand : PrimeCommand
+    public class ListCommand : Command
     {
         public ListCommand(IUserSession userSession) : base(userSession)
         {

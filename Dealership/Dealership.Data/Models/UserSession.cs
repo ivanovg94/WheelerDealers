@@ -4,6 +4,6 @@ namespace Dealership.Data.Models
 {
     public class UserSession : IUserSession
     {
-        public User CurrentUser { get; set; }
+        public virtual User CurrentUser { get; set; }
     }
 }

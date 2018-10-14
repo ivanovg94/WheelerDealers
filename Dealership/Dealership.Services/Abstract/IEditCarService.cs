@@ -6,28 +6,28 @@ namespace Dealership.Services.Abstract
 {
     public interface IEditCarService
     {
-        void EditBrand(string[] parameters);
+        string EditBrand(string[] parameters);
+        
+        string EditModel(string[] parameters);
+        
+        string EditHorsePower(string[] parameters);
 
-        void EditModel(string[] parameters);
+        string EditEngineCapacity(string[] parameters);
 
-        void EditHorsePower(string[] parameters);
+        string EditIsSold(string[] parameters);
 
-        void EditEngineCapacity(string[] parameters);
+        string EditPrice(string[] parameters);
 
-        void EditIsSold(string[] parameters);
+        string EditProductionDate(string[] parameters);
 
-        void EditPrice(string[] parameters);
+        string EditBodyType(string[] parameters);
 
-        void EditProductionDate(string[] parameters);
+        string EditColor(string[] parameters);
 
-        void EditBodyType(string[] parameters);
+        string EditColorType(string[] parameters);
 
-        void EditColor(string[] parameters);
+        string EditFuelType(string[] parameters);
 
-        void EditColorType(string[] parameters);
-
-        void EditFuelType(string[] parameters);
-
-        void EditGearbox(string[] parameters);
+        string EditGearbox(string[] parameters);
     }
 }

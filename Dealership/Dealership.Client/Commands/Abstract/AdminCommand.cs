@@ -6,7 +6,7 @@ using Dealership.Data.Models.Contracts;
 
 namespace Dealership.Client.Commands.Abstract
 {
-    public abstract class AdminCommand : PrimeCommand
+    public abstract class AdminCommand : Command
     {
         public AdminCommand(IUserSession userSession) : base(userSession)
         {

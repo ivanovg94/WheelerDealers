@@ -13,14 +13,33 @@ namespace Dealership.Services
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly ICarService carService;
+        // test purposes
+        public virtual ICarService CarService => carService;
+        public IUnitOfWork UnitOfWork => unitOfWork;
+
+
+        //unittest purposes
+        public EditCarService()
+        {
+
+        }
 
         public EditCarService(IUnitOfWork unitOfWork, ICarService carService)
         {
+            if (unitOfWork == null)
+            {
+                throw new ArgumentNullException("UnitOfWork cannot be null!");
+            }
+            if (carService == null)
+            {
+                throw new ArgumentNullException("CarService cannot be null!");
+            }
             this.unitOfWork = unitOfWork;
             this.carService = carService;
+            //field init changed to prop for testing
         }
 
-        public void EditBrand(string[] parameters) // works but must include navigation props tables !
+        public virtual string EditBrand(string[] parameters) // works but must include navigation props tables !
         {
             int id = int.Parse(parameters[0]);
             string newValue = parameters[1];
@@ -31,97 +50,117 @@ namespace Dealership.Services
 
             }
 
-            var car = this.carService.GetCar(id);
+            var car = this.CarService.GetCar(id);
 
-            Brand newBrand = unitOfWork.GetRepository<Brand>().All().FirstOrDefault(b => b.Name == newValue);
+            Brand newBrand = UnitOfWork.GetRepository<Brand>().All().FirstOrDefault(b => b.Name == newValue);
 
             if (newBrand == null)
             {
                 newBrand = new Brand() { Name = newValue };
             }
             car.Brand = newBrand;
-            unitOfWork.SaveChanges();
+            UnitOfWork.SaveChanges();
+
+            return $"Brand of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
 
         }
 
-        public void EditModel(string[] parameters)
+        public string EditModel(string[] parameters)
         {
+            if (parameters == null || parameters.Length == 0)
+            {
+                throw new ArgumentNullException("Invalid amount of parameters!");
+            }
             var id = int.Parse(parameters[0]);
             var newValue = parameters[1];
 
-            var car = this.carService.GetCar(id);
+            var car = this.CarService.GetCar(id);
             car.Model = newValue;
-            unitOfWork.SaveChanges();
+            UnitOfWork.SaveChanges();
+
+            return $"Model of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
         }
 
-        public void EditHorsePower(string[] parameters)
+        public string EditHorsePower(string[] parameters)
         {
             var id = int.Parse(parameters[0]);
             var newValue = parameters[1];
 
-            var car = this.carService.GetCar(id);
+            var car = this.CarService.GetCar(id);
             car.HorsePower = short.Parse(newValue);
-            unitOfWork.SaveChanges();
+            UnitOfWork.SaveChanges();
+
+            return $"Horse power of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
         }
 
-        public void EditEngineCapacity(string[] parameters)
+        public string EditEngineCapacity(string[] parameters)
         {
             var id = int.Parse(parameters[0]);
             var newValue = parameters[1];
 
-            var car = this.carService.GetCar(id);
+            var car = this.CarService.GetCar(id);
             car.EngineCapacity = short.Parse(newValue);
-            unitOfWork.SaveChanges();
+            UnitOfWork.SaveChanges();
+
+            return $"Engine capacity of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
         }
 
-        public void EditIsSold(string[] parameters)
+        public string EditIsSold(string[] parameters)
         {
             var id = int.Parse(parameters[0]);
             var newValue = parameters[1];
 
-            var car = this.carService.GetCar(id);
+            var car = this.CarService.GetCar(id);
             car.IsSold = bool.Parse(newValue);
-            unitOfWork.SaveChanges();
+            UnitOfWork.SaveChanges();
+
+            return $"IsSold of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
         }
 
-        public void EditPrice(string[] parameters)
+        public string EditPrice(string[] parameters)
         {
             var id = int.Parse(parameters[0]);
             var newValue = parameters[1];
 
-            var car = this.carService.GetCar(id);
+            var car = this.CarService.GetCar(id);
             car.Price = decimal.Parse(newValue);
-            unitOfWork.SaveChanges();
+            UnitOfWork.SaveChanges();
+
+            return $"Price of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
         }
 
-        public void EditProductionDate(string[] parameters)
+        public string EditProductionDate(string[] parameters)
         {
             var id = int.Parse(parameters[0]);
             var newValue = parameters[1];
 
-            var car = this.carService.GetCar(id);
+            var car = this.CarService.GetCar(id);
             car.ProductionDate = DateTime.Parse(newValue);
-            unitOfWork.SaveChanges();
+            UnitOfWork.SaveChanges();
+
+            return $"Production date of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
         }
 
-        public void EditBodyType(string[] parameters)
+        public string EditBodyType(string[] parameters)
         {
             var id = int.Parse(parameters[0]);
             var newValue = parameters[1];
 
-            var newBodyType = this.unitOfWork.GetRepository<BodyType>().All().FirstOrDefault(ch => ch.Name == newValue);
+            var newBodyType = this.UnitOfWork.GetRepository<BodyType>().All().FirstOrDefault(ch => ch.Name == newValue);
 
             if (newBodyType == null)
             {
                 throw new ArgumentException("Invalid body type!");
             }
 
-            var car = this.carService.GetCar(id);
+            var car = this.CarService.GetCar(id);
             car.BodyType = newBodyType;
-            unitOfWork.SaveChanges();
+            UnitOfWork.SaveChanges();
+
+            return $"Body type of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
         }
 
-        public void EditColor(string[] parameters)
+        public string EditColor(string[] parameters)
         {
             var id = int.Parse(parameters[0]);
             var newColorValue = parameters[1];
@@ -131,15 +170,15 @@ namespace Dealership.Services
             {
                 newColorTypeName = parameters[2];
             }
-            var car = this.carService.GetCar(id);
-            
-            var newType = unitOfWork.GetRepository<ColorType>().All().FirstOrDefault(gt => gt.Name == newColorTypeName);
+            var car = this.CarService.GetCar(id);
+
+            var newType = UnitOfWork.GetRepository<ColorType>().All().FirstOrDefault(gt => gt.Name == newColorTypeName);
             if (newType == null)
             {
                 throw new ArgumentException("Invalid color type!");
             }
 
-            var newColor = unitOfWork.GetRepository<Color>().All()
+            var newColor = UnitOfWork.GetRepository<Color>().All()
                                      .Include(c => c.ColorType)
                                      .FirstOrDefault(c => c.Name == newColorValue
                                      && c.ColorType.Name == newColorTypeName);
@@ -148,75 +187,86 @@ namespace Dealership.Services
             {
                 newColor = new Color() { Name = newColorValue, ColorType = newType };
 
-                unitOfWork.GetRepository<Color>().Add(newColor);
+                UnitOfWork.GetRepository<Color>().Add(newColor);
 
-                this.unitOfWork.SaveChanges();
+                this.UnitOfWork.SaveChanges();
             }
 
             car.ColorId = newColor.Id;
-            unitOfWork.SaveChanges();
+            UnitOfWork.SaveChanges();
+
+            return $"Color of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
         }
 
-        public void EditColorType(string[] parameters)
+        public string EditColorType(string[] parameters)
         {
             var id = int.Parse(parameters[0]);
             var newValue = parameters[1];
 
-            var car = this.carService.GetCar(id);
+            var car = this.CarService.GetCar(id);
             var colorName = car.Color.Name;
-            var newColorType = unitOfWork.GetRepository<ColorType>().All().FirstOrDefault(ct => ct.Name == newValue);
+            var newColorType = UnitOfWork.GetRepository<ColorType>().All().FirstOrDefault(ct => ct.Name == newValue);
             if (newColorType == null) { throw new ArgumentNullException("Color type not exist!"); }
 
-            var newColor = unitOfWork.GetRepository<Color>().All()
+            var newColor = UnitOfWork.GetRepository<Color>().All()
                 .Include(c => c.ColorType)
                 .FirstOrDefault(c => c.Name == colorName
                 && c.ColorType.Name == newValue);
             if (newColor == null)
             {
                 newColor = new Color { Name = colorName, ColorType = newColorType };
-                this.unitOfWork.GetRepository<Color>().Add(newColor);
-                this.unitOfWork.SaveChanges();
+                this.UnitOfWork.GetRepository<Color>().Add(newColor);
+                this.UnitOfWork.SaveChanges();
             }
 
             car.Color = newColor;
             car.ColorId = newColor.Id;
 
-            unitOfWork.SaveChanges();
+            UnitOfWork.SaveChanges();
+
+            return $"Color type of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
         }
 
-        public void EditFuelType(string[] parameters)
+        public string EditFuelType(string[] parameters)
         {
             var id = int.Parse(parameters[0]);
             var newValue = parameters[1];
 
-            var car = this.carService.GetCar(id);
+            var car = this.CarService.GetCar(id);
 
-            var newFuelType = unitOfWork.GetRepository<FuelType>().All().FirstOrDefault(ft => ft.Name == newValue);
+            var newFuelType = UnitOfWork.GetRepository<FuelType>().All().FirstOrDefault(ft => ft.Name == newValue);
 
             if (newFuelType != null)
             {
                 car.FuelType = newFuelType;
-                unitOfWork.SaveChanges();
+                UnitOfWork.SaveChanges();
             }
-            else { throw new ArgumentException($"Fuel type :{newValue} not exist!"); }
+            else
+            {
+                throw new ArgumentException($"Fuel type :{newValue} not exist!");
+            }
+
+            return $"Fuel type of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
 
         }
 
-        public void EditGearbox(string[] parameters) // works but must include navigation props tables !
+        public string EditGearbox(string[] parameters) // works but must include navigation props tables !
         {
             var id = int.Parse(parameters[0]);
             var newValue = parameters[1];
 
-            var car = this.carService.GetCar(id);
+            var car = this.CarService.GetCar(id);
 
-            GearType newGearType = unitOfWork.GetRepository<GearType>().All().First(gt => gt.Name == newValue);
+            GearType newGearType = UnitOfWork.GetRepository<GearType>().All().First(gt => gt.Name == newValue);
 
             if (newGearType == null)
             {
                 throw new ArgumentException($"Gearbox:{newValue} not exist!");
             }
             car.GearBox.GearType = newGearType;
-            unitOfWork.SaveChanges();
+            UnitOfWork.SaveChanges();
+
+            return $"Gearbox of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
         }
     }
 }

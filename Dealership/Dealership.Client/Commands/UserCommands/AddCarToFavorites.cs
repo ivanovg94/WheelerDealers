@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Dealership.Client.Commands.UserCommands
 {
-    public class AddCarToFavorites : PrimeCommand
+    public class AddCarToFavorites : Command
     {
         public IUserService UserService { get; set; }
 

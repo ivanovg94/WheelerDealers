@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Dealership.Data.Models.Contracts;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Dealership.Data.Models
 {
-    public class Brand : Entity
+    public class Brand : Entity, IBrand
     {
         private ICollection<Car> _cars;
 

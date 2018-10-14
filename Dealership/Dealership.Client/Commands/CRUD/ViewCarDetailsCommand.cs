@@ -10,7 +10,7 @@ using Dealership.Services.Abstract;
 
 namespace Dealership.Client.Commands.CRUD
 {
-    public class ViewCarDetailsCommand : PrimeCommand
+    public class ViewCarDetailsCommand : Command
     {
         public ViewCarDetailsCommand(IUserSession userSession) : base(userSession)
         {
