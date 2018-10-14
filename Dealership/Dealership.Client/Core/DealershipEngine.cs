@@ -28,6 +28,8 @@ namespace Dealership.Client.Core
                 {
                     writer.WriteLine(processor.ProcessCommand(input));
                 }
+
+
                 catch (Exception ex)
                 {
                     while (ex.InnerException != null)

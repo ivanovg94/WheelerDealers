@@ -33,6 +33,10 @@ namespace Dealership.Client
             Console.WriteLine("import {filename} -ex: import cars");
             Console.WriteLine("generatePdf - output folder: DataProcessor/PdfReports");
 
+            Console.WriteLine("addCarToFavorites {carId}");
+            Console.WriteLine("removeCarFromFavorites {carId}";
+            Console.WriteLine("listFavorites");
+                       
             Console.WriteLine();
             Console.WriteLine();
 

@@ -50,7 +50,7 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
                     Gearbox = c.GearBox.GearType.Name,
                     NumberOfGears = c.GearBox.NumberOfGears,
                     Extras = c.CarsExtras.Select(ce => ce.Extra.Name).ToList()
-                }).ToList(); ;
+                }).ToList();
 
             if (!cars.Any())
             {

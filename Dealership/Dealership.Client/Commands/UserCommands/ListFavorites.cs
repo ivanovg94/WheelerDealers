@@ -21,6 +21,11 @@ namespace Dealership.Client.Commands.UserCommands
         {
             var cars = this.UserService.ListFavorites(this.UserSession.CurrentUser.Username);
 
+            if (cars.Count == 0)
+            {
+                throw new InvalidOperationException("There is no cars in favorites.");
+            }
+
             var result = cars.Select(c => new CarVM
             {
                 Id = c.Id,

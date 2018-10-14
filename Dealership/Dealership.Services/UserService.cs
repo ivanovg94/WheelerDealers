@@ -52,7 +52,6 @@ namespace Dealership.Services
                 UserType = Enum.Parse<UserType>("User")
             };
 
-
             this.unitOfWork.GetRepository<User>().Add(user);
             this.unitOfWork.SaveChanges();
 
@@ -95,26 +94,72 @@ namespace Dealership.Services
 
         public Car AddCarToFavorites(int carId, string username)
         {
-            //TODO: add many to many relation
             Car car = this.carService.GetCar(carId);
+            User user = GetUserByUsername(username);
 
-            User user = this.unitOfWork
-                  .GetRepository<User>()
-                  .All()
-                  .Include(u => u.FavoriteCars)
-                  .FirstOrDefault(u => u.Username == username);
+            var isCarExists = this.unitOfWork.GetRepository<UsersCars>().All().Any(uc => uc.CarId == car.Id && uc.User == user);
+
+            if (isCarExists)
+            {
+                throw new ServiceException("This car is already added to favorites.");
+            }
+
+            var isUserCarDeleted = this.unitOfWork.GetRepository<UsersCars>().AllAndDeleted().FirstOrDefault(uc => uc.CarId == carId && uc.User == user);
+
+            if (isUserCarDeleted == null)
+            {
+                var newUserCar = new UsersCars() { CarId = carId, UserId = user.Id };
+                this.unitOfWork.GetRepository<UsersCars>().Add(newUserCar);
+                this.unitOfWork.SaveChanges();
+            }
+            else
+            {
+                isUserCarDeleted.IsDeleted = false;
+                this.unitOfWork.SaveChanges();
+            }
+
+            return car;
+        }
+
+        public Car RemoveCarFromFavorites(int carId, string username)
+        {
+            Car car = this.carService.GetCar(carId);
+            //User user = GetUserByUsername(username);
+
+            var usersCars = this.unitOfWork.GetRepository<UsersCars>().All().FirstOrDefault(uc => uc.CarId == carId && uc.User.Username == username);
+
+            if (usersCars == null)
+            {
+                throw new ServiceException("This car is not added to favorites.");
+            }
+
+            this.unitOfWork.GetRepository<UsersCars>().Delete(usersCars);
+            this.unitOfWork.SaveChanges();
+
             return car;
         }
 
         public IList<Car> ListFavorites(string username)
         {
-            var user = this.unitOfWork
-                  .GetRepository<User>()
-                  .All()
-                  .Include(u => u.FavoriteCars)
-                  .FirstOrDefault(u => u.Username == username);
+            var user = GetUserByUsername(username);
 
-            return user.FavoriteCars.ToList();
+            var userCars = this.unitOfWork.GetRepository<User>().All()
+                                        .Include(u => u.UsersCars)
+                                        .ThenInclude(uc => uc.Car)
+                                        .FirstOrDefault(u => u == user).UsersCars;
+
+            var cars = new List<Car>();
+
+            foreach (var uc in userCars)
+            {
+                if (uc.IsDeleted == false)
+                {
+                    var car = this.carService.GetCar(uc.CarId);
+                    cars.Add(car);
+                }
+            }
+
+            return cars;
         }
 
         private bool IsUserExisting(string username)

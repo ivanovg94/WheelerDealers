@@ -30,6 +30,8 @@ namespace Dealership.Data.Context
         public DbSet<ColorType> ColorTypes { get; set; }
 
         public DbSet<User> Users { get; set; }
+
+        public DbSet<UsersCars> UsersCars { get; set; }
                 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -44,7 +46,8 @@ namespace Dealership.Data.Context
         {
             modelBuilder.ApplyConfiguration(new CarsExtrasConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
-
+            modelBuilder.ApplyConfiguration(new UsersCarsConfiguration());
+            
             SeedData(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
