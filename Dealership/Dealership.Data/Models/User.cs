@@ -5,6 +5,13 @@ namespace Dealership.Data.Models
 {
     public class User : Entity
     {
+        private ICollection<UsersCars> userCars;
+
+        public User()
+        {
+            this.userCars = new HashSet<UsersCars>();
+        }
+
         [Required]
         [MaxLength(25)]
         [MinLength(3)]
@@ -22,6 +29,13 @@ namespace Dealership.Data.Models
         [MaxLength(25)]
         public virtual UserType UserType { get; set; }
 
-        public ICollection<Car> FavoriteCars { get; set; }
+        public ICollection<UsersCars> UsersCars
+        {
+            get { return userCars; }
+            set
+            {
+                userCars = value;
+            }
+        }
     }
 }

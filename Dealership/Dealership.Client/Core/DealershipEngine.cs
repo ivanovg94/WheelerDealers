@@ -78,6 +78,8 @@ namespace Dealership.Client.Core
 
 
                 }
+
+
                 catch (Exception ex)
                 {
                     while (ex.InnerException != null)

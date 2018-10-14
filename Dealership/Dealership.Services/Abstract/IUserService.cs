@@ -13,6 +13,8 @@ namespace Dealership.Services.Abstract
 
         Car AddCarToFavorites(int carId, string username);
 
+        Car RemoveCarFromFavorites(int carId, string username);
+
         IList<Car> ListFavorites(string username);
     }
 }

@@ -10,11 +10,13 @@ namespace Dealership.Data.Models
     public class Car : Entity, ICar
     {
         private ICollection<CarsExtras> _carsExtras;
+        private ICollection<UsersCars> usersCars;
 
 
         public Car()
         {
             this._carsExtras = new HashSet<CarsExtras>();
+            this.usersCars = new HashSet<UsersCars>();
         }
 
         [Required]
@@ -61,6 +63,15 @@ namespace Dealership.Data.Models
             set
             {
                 _carsExtras = value;
+            }
+        }
+
+        public virtual ICollection<UsersCars> UsersCars
+        {
+            get { return usersCars; }
+            set
+            {
+                usersCars = value;
             }
         }
     }
