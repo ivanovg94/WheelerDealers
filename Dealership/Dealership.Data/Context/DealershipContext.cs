@@ -9,6 +9,15 @@ namespace Dealership.Data.Context
 {
     public class DealershipContext : DbContext, IDealershipContext
     {
+        public DealershipContext()
+        {
+
+        }
+
+        public DealershipContext(DbContextOptionsBuilder contextOptions)
+        {
+
+        }
         public DbSet<Brand> Brands { get; set; }
 
         public DbSet<Car> Cars { get; set; }

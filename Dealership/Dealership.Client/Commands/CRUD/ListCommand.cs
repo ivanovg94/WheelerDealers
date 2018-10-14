@@ -11,11 +11,12 @@ namespace Dealership.Client.Commands.CRUD
 {
     public class ListCommand : PrimeCommand
     {
-        public ListCommand(IUserSession userSession) : base(userSession)
+        private readonly ICarService service;
+        public ListCommand(IUserSession userSession, ICarService service) : base(userSession)
         {
+            this.service = service;
         }
 
-        public ICarService Service { get; set; }
 
         public override string Execute(string[] parameters)
         {
@@ -32,10 +33,10 @@ namespace Dealership.Client.Commands.CRUD
             }
             if (parameters[0].ToLower() == "sold")
             {
-                data = Service.GetCars(true, dir);
+                data = service.GetCars(true, dir);
             }
-            else if (parameters[0].ToLower() == "active") { data = Service.GetCars(false, dir); }
-            else if (parameters[0].ToLower() == "all") { data = Service.GetCars(dir); }
+            else if (parameters[0].ToLower() == "active") { data = service.GetCars(false, dir); }
+            else if (parameters[0].ToLower() == "all") { data = service.GetCars(dir); }
             else { throw new ArgumentException("Invalid parameters!"); }
 
             var result = data.Select(c => new CarVM
@@ -55,8 +56,12 @@ namespace Dealership.Client.Commands.CRUD
                 Gearbox = c.GearBox.GearType.Name,
                 NumberOfGears = c.GearBox.NumberOfGears,
                 Extras = c.CarsExtras.Select(ce => ce.Extra.Name).ToList()
-            });
+            }).ToList();
 
+            if (result.Count == 0)
+            {
+                return $"There are no cars to be listed! Create new or inport cars.";
+            }
             return string.Join($"\r\n", result);
         }
     }

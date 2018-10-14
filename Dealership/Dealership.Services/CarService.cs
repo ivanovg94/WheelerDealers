@@ -15,6 +15,10 @@ namespace Dealership.Services
 
         public CarService(IUnitOfWork unitOfWork)
         {
+            if (unitOfWork == null)
+            {
+                throw new ArgumentNullException("UnitOfWork cannot be null!");
+            }
             this.unitOfWork = unitOfWork;
         }
 
@@ -37,7 +41,10 @@ namespace Dealership.Services
             }
 
             var bodyType = this.unitOfWork.GetRepository<BodyType>().All().FirstOrDefault(c => c.Name == bodyTypeName);
-            if (bodyType == null) { throw new ServiceException($"There is no body type with name \"{bodyTypeName}\"."); }
+            if (bodyType == null)
+            {
+                throw new ServiceException($"There is no body type with name \"{bodyTypeName}\".");
+            }
 
             var color = this.unitOfWork.GetRepository<Color>().All()
                                                               .Include(c => c.ColorType)
@@ -45,7 +52,10 @@ namespace Dealership.Services
                                                                && c.ColorType.Name == colorType);
             var colorTypeFromDatabase = this.unitOfWork.GetRepository<ColorType>().All()
                                        .FirstOrDefault(ct => ct.Name == colorType);
-            if (colorTypeFromDatabase == null) { throw new InvalidOperationException($"There is no color type with name \"{bodyTypeName}\"."); }
+            if (colorTypeFromDatabase == null)
+            {
+                throw new InvalidOperationException($"There is no color type with name \"{bodyTypeName}\".");
+            }
 
             if (color == null)
             {

@@ -125,12 +125,19 @@ namespace Dealership.Services
         {
             var id = int.Parse(parameters[0]);
             var newColorValue = parameters[1];
-            var newColorTypeName = parameters[2];
+            var newColorTypeName = "";
+
+            if (parameters.Length == 3)
+            {
+                newColorTypeName = parameters[2];
+            }
             var car = this.carService.GetCar(id);
-
-
+            
             var newType = unitOfWork.GetRepository<ColorType>().All().FirstOrDefault(gt => gt.Name == newColorTypeName);
-            if (newType == null) { throw new ArgumentException("Invalid color type!"); }
+            if (newType == null)
+            {
+                throw new ArgumentException("Invalid color type!");
+            }
 
             var newColor = unitOfWork.GetRepository<Color>().All()
                                      .Include(c => c.ColorType)
@@ -140,7 +147,9 @@ namespace Dealership.Services
             if (newColor == null)
             {
                 newColor = new Color() { Name = newColorValue, ColorType = newType };
+
                 unitOfWork.GetRepository<Color>().Add(newColor);
+
                 this.unitOfWork.SaveChanges();
             }
 

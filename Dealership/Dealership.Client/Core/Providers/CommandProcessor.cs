@@ -8,11 +8,9 @@ namespace Dealership.Client.Core.Providers
     public class CommandProcessor : ICommandProcessor
     {
         private readonly ICommandParser commandParser;
-        private readonly IUserSession userSession;
-        public CommandProcessor(ICommandParser commandParser, IUserSession userSession)
+        public CommandProcessor(ICommandParser commandParser)
         {
             this.commandParser = commandParser;
-            this.userSession = userSession;
         }
 
         public string ProcessCommand(string input)
@@ -20,11 +18,6 @@ namespace Dealership.Client.Core.Providers
             var inputParams = input.Split();
             string commandName = inputParams[0].ToLower();
             var args = inputParams.Skip(1).ToArray();
-
-            if (userSession.CurrentUser == null && commandName != "login" && commandName != "register")
-            {
-                throw new InvalidOperationException("Please login or register.");
-            }
 
             var command = this.commandParser.ParseCommand(commandName);
             return command.Execute(args);
