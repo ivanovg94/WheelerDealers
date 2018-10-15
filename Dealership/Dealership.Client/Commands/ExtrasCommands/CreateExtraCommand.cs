@@ -7,18 +7,19 @@ namespace Dealership.Client.Commands.ExtrasCommands
 {
     public class CreateExtraCommand : AdminCommand
     {
-        public CreateExtraCommand(IUserSession userSession) : base(userSession)
-        {
-        }
+        private readonly IExtraService extraService;
 
-        public IExtraService ExtraService { get; set; }
+        public CreateExtraCommand(IUserSession userSession, IExtraService extraService) : base(userSession)
+        {
+            this.extraService = extraService;
+        }
 
         //createExtra | name
         public override string Execute(string[] parameters)
         {
             base.Execute(parameters);
             if (parameters.Length == 0) { throw new ArgumentException("Invalid parameters"); }
-            var extra = this.ExtraService.CreateExtra(parameters[0]);
+            var extra = this.extraService.CreateExtra(parameters[0]);
             return $"Created extra {extra.Name} with Id {extra.Id}";
         }
     }
