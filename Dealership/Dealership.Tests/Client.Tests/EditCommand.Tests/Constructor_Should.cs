@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Moq;
 using Dealership.Services.Abstract;
+using Dealership.Data.Models.Contracts;
 
 namespace Dealership.Tests.Client.Tests.EditCommand.Tests
 {
@@ -10,22 +11,53 @@ namespace Dealership.Tests.Client.Tests.EditCommand.Tests
     public class Constructor_Should
     {
         [TestMethod]
-        public void ThrowArgumentNullException_WhenNullArgumentIsPassed()
+        public void ThrowArgumentNullException_WhenNullUserSessionIsPassed()
         {
             //arrange
             UserSession invalidUserSession = null;
-            var editCarServiceMock = new Mock<IEditCarService>();
+            var editCarServiceStub = new Mock<IEditCarService>();
             //act&assert
-            Assert.ThrowsException<ArgumentNullException>(() => new Dealership.Client.Commands.CRUD.EditCommand(invalidUserSession,editCarServiceMock.Object));
+            Assert.ThrowsException<ArgumentNullException>(() => new Dealership.Client.Commands.CRUD.EditCommand(invalidUserSession,editCarServiceStub.Object));
+        }
+        [TestMethod]
+        public void ThrowArgumentNullException_WhenNullEditCarServiceIsPassed()
+        {
+            //arrange
+            var validUserSessionStub = new Mock<IUserSession>();
+            IEditCarService nullEditCarService = null;
+            //act&assert
+            Assert.ThrowsException<ArgumentNullException>(() => new Dealership.Client.Commands.CRUD.EditCommand(validUserSessionStub.Object, nullEditCarService));
         }
         [TestMethod]
         public void NotThrowException_WhenValidUserSessionPassed()
         {
             //arrange
-            var UserSessionMock = new Mock<UserSession>();
+            var UserSessionMock = new Mock<IUserSession>();
             var editCarServiceMock = new Mock<IEditCarService>();
             //act&assert
             new Dealership.Client.Commands.CRUD.EditCommand(UserSessionMock.Object, editCarServiceMock.Object);
+        }
+        [TestMethod]
+        public void AssignUserSessionCorrectly_WhenValidParametersArePassed()
+        {
+            //arrange
+            var UserSessionMock = new Mock<IUserSession>();
+            var editCarServiceMock = new Mock<IEditCarService>();
+            //act
+            var sut = new Dealership.Client.Commands.CRUD.EditCommand(UserSessionMock.Object, editCarServiceMock.Object);
+
+            Assert.IsInstanceOfType(sut.UserSession,typeof(IUserSession));
+        }
+        [TestMethod]
+        public void AssignEditCarServiceCorrectly_WhenValidParametersArePassed()
+        {
+            //arrange
+            var UserSessionMock = new Mock<IUserSession>();
+            var editCarServiceMock = new Mock<IEditCarService>();
+            //act
+            var sut = new Dealership.Client.Commands.CRUD.EditCommand(UserSessionMock.Object, editCarServiceMock.Object);
+
+            Assert.IsInstanceOfType(sut.EditCarService, typeof(IEditCarService));
         }
     }
 }

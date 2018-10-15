@@ -18,7 +18,7 @@ namespace Dealership.Services
         public IUnitOfWork UnitOfWork => unitOfWork;
 
 
-        //unittest purposes
+        //mocking purposes
         public EditCarService()
         {
 
@@ -41,13 +41,27 @@ namespace Dealership.Services
 
         public virtual string EditBrand(string[] parameters) // works but must include navigation props tables !
         {
-            int id = int.Parse(parameters[0]);
+            if (parameters == null)
+            {
+                throw new ArgumentNullException("Parameters cannot be null!");
+            }
+            if (parameters.Length == 0)
+            {
+                throw new ArgumentException("Invalid number of parameters!");
+            }
+
+            int id /*int.Parse(parameters[0])*/;
+            if (!int.TryParse(parameters[0],out id))
+            {
+                throw new ArgumentException("Invalid ID!");
+            }
+
             string newValue = parameters[1];
+
             string secondNewValue = "";
             if (parameters.Length == 3)
             {
                 secondNewValue = parameters[2];
-
             }
 
             var car = this.CarService.GetCar(id);
