@@ -6,8 +6,14 @@
 
   <ItemGroup>
     <Compile Remove="Command.Tests\**" />
+
     <EmbeddedResource Remove="Command.Tests\**" />
     <None Remove="Command.Tests\**" />
+    <Compile Remove="Data.Tests\**" />
+    <EmbeddedResource Remove="Command.Tests\**" />
+    <EmbeddedResource Remove="Data.Tests\**" />
+    <None Remove="Command.Tests\**" />
+    <None Remove="Data.Tests\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,10 +28,6 @@
     <ProjectReference Include="..\Dealership.Client\Dealership.Client.csproj" />
     <ProjectReference Include="..\Dealership.Data\Dealership.Data.csproj" />
     <ProjectReference Include="..\Dealership.Services\Dealership.Services.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Data.Tests\" />
   </ItemGroup>
 
 </Project>
