@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Dealership.Tests.CarService.Tests
+namespace Dealership.Tests.CarServiceTests
 {
     [TestClass]
     public class AddCar_Should

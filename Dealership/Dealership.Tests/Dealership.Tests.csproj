@@ -14,10 +14,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Dealership.Client\Dealership.Client.csproj" />
-<<<<<<< HEAD
     <ProjectReference Include="..\Dealership.Data\Dealership.Data.csproj" />
-=======
->>>>>>> cf32c65bad950bdef7c1f435abdbde28755528cd
+
     <ProjectReference Include="..\Dealership.Services\Dealership.Services.csproj" />
   </ItemGroup>
 

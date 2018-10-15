@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Dealership.Services
 {
@@ -15,6 +16,10 @@ namespace Dealership.Services
         private readonly ICarService carService;
 
         //public ICarService CarService { get; set; }
+        public UserService()
+        {
+
+        }
 
         public UserService(IUnitOfWork unitOfWork, ICarService carService)
         {
@@ -26,22 +31,35 @@ namespace Dealership.Services
         {
             if (IsUserExisting(username))
             {
-                throw new InvalidOperationException("There is already registered user with that username.");
+                throw new ServiceException("There is already registered user with that username.");
             }
 
             if (IsEmailExisting(email))
             {
-                throw new InvalidOperationException("There is already registered user with that email.");
+                throw new ServiceException("There is already registered user with that email.");
             }
 
             if (password != confirmPassword)
             {
-                throw new InvalidOperationException("Password does not match the confirm password.");
+                throw new ServiceException("Password does not match the confirm password.");
             }
 
             if (password.Length < 3)
             {
                 throw new ArgumentException("The length of the password cannot be less than 3 symbols");
+            }
+
+            if (username.Length < 3 || username.Length > 25)
+            {
+                throw new ArgumentException("The length of the username cannot be less than 3 and more than 25 symbols.");
+            }
+
+            Regex regex = new Regex(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$");
+
+            Match match = regex.Match(email);
+            if (!match.Success)
+            {
+                throw new ArgumentException("Invalid email address.");
             }
 
             var user = new User()
@@ -62,9 +80,9 @@ namespace Dealership.Services
         {
             User user = GetUserByUsername(username);
 
-            if (user == null || user.Password != password || user.IsDeleted)
+            if (user == null || user.Password != password)
             {
-                throw new InvalidOperationException("Invalid username or password.");
+                throw new ServiceException("Invalid username or password.");
             }
 
             return user;
@@ -97,7 +115,7 @@ namespace Dealership.Services
             Car car = this.carService.GetCar(carId);
             User user = GetUserByUsername(username);
 
-            var isCarExists = this.unitOfWork.GetRepository<UsersCars>().All().Any(uc => uc.CarId == car.Id && uc.User == user);
+            var isCarExists = this.unitOfWork.GetRepository<UsersCars>().All().Any(uc => uc.CarId == car.Id && uc.UserId == user.Id);
 
             if (isCarExists)
             {
@@ -108,7 +126,7 @@ namespace Dealership.Services
 
             if (isUserCarDeleted == null)
             {
-                var newUserCar = new UsersCars() { CarId = carId, UserId = user.Id };
+                var newUserCar = new UsersCars() { CarId = carId, User = user };
                 this.unitOfWork.GetRepository<UsersCars>().Add(newUserCar);
                 this.unitOfWork.SaveChanges();
             }
@@ -124,8 +142,7 @@ namespace Dealership.Services
         public Car RemoveCarFromFavorites(int carId, string username)
         {
             Car car = this.carService.GetCar(carId);
-            //User user = GetUserByUsername(username);
-
+            
             var usersCars = this.unitOfWork.GetRepository<UsersCars>().All().FirstOrDefault(uc => uc.CarId == carId && uc.User.Username == username);
 
             if (usersCars == null)
@@ -141,12 +158,11 @@ namespace Dealership.Services
 
         public IList<Car> ListFavorites(string username)
         {
-            var user = GetUserByUsername(username);
-
             var userCars = this.unitOfWork.GetRepository<User>().All()
                                         .Include(u => u.UsersCars)
                                         .ThenInclude(uc => uc.Car)
-                                        .FirstOrDefault(u => u == user).UsersCars;
+                                        .FirstOrDefault(u => u.Username == username)
+                                        .UsersCars;
 
             var cars = new List<Car>();
 

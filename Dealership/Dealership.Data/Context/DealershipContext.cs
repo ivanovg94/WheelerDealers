@@ -55,8 +55,7 @@ namespace Dealership.Data.Context
         {
             modelBuilder.ApplyConfiguration(new CarsExtrasConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
-            //conflict
-            //modelBuilder.ApplyConfiguration(new UsersCarsConfiguration());
+            modelBuilder.ApplyConfiguration(new UsersCarsConfiguration());
             
             SeedData(modelBuilder);
 

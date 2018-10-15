@@ -26,6 +26,7 @@ namespace Dealership.Client.Commands.UserCommands
             }
 
             var user = this.UserService.DeleteUser(username, password);
+            base.UserSession.CurrentUser = null;
 
             return $"User {username} successfully deleted!";
         }
