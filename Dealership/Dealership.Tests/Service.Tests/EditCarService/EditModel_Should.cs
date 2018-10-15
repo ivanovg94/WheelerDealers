@@ -14,6 +14,11 @@ using System.Text;
 
 namespace Dealership.Tests.Service.Tests.EditCarService
 {
+    //arrange
+    //var contextOptions = new DbContextOptionsBuilder<DealershipContext>()
+    //    .UseInMemoryDatabase(databaseName:
+    //    "EditModelCorrectly_WhenValidParametersArePassed").Options;
+
     [TestClass]
     public class EditModel_Should
     {
@@ -41,42 +46,30 @@ namespace Dealership.Tests.Service.Tests.EditCarService
             //act&assert
             Assert.ThrowsException<ArgumentNullException>(() => editCarService.EditModel(emptyArray));
         }
-        [Ignore]
+
         [TestMethod]
         public void EditModelCorrectly_WhenValidParametersArePassed()
         {
-            //arrange
-            var contextOptions = new DbContextOptionsBuilder<DealershipContext>()
-                .UseInMemoryDatabase(databaseName:
-                "EditModelCorrectly_WhenValidParametersArePassed").Options;
-
             var testCar = new Car()
             {
                 Brand = new Brand() { Name = "test" },
-                Model = "316i",
+                Model = "test",
 
             };
 
             var validParameters = new string[2] { "1", "330xi" };
+            string result;
 
-            using (var context = new DealershipContext(contextOptions))
-            {
+            var unitOfWork = new Mock<IUnitOfWork>();
+            var carService = new Mock<Services.CarService>();
+            carService.Setup(x => x.GetCar(1)).Returns(testCar);
 
-                //context.Cars.Add(testCar);
-                var repo = new Repository<Car>(context);
-                var unitOfWork = new UnitOfWork(context);
-                //context.Cars.Add(testCar);
-                //repo.Add(testCar);
-                //unitOfWork.GetRepository<Car>().Add(testCar);
-                var count = context.Cars.Count();
-                var carService = new Services.CarService(unitOfWork);
-                var sut = new Services.EditCarService(unitOfWork, carService);
-                carService.AddCar(testCar);
-                // dont find car in context.local 
-                sut.EditModel(validParameters);
+            var sut = new Services.EditCarService(unitOfWork.Object, carService.Object);
 
-            }
-            //assert
+            result = sut.EditModel(validParameters);
+            //assert    
+            Assert.IsTrue(result.Contains("edited"));
+            Assert.IsTrue(testCar.Model == validParameters[1]);
         }
     }
 }

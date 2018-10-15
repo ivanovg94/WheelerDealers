@@ -1,12 +1,8 @@
 ﻿using Autofac;
-using Dealership.Client.Contracts;
 using Dealership.Client.Contracts.Abstract;
 using Dealership.Data.Context;
-using Dealership.Data.Models;
 using Dealership.Data.Models.Contracts;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Dealership.Client.Commands.Abstract
 {

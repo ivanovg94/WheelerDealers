@@ -13,9 +13,13 @@ namespace Dealership.Client.Commands.CRUD
     public class EditCommand : AdminCommand
     {
         public IEditCarService EditCarService { get; set; }
-        
+
         public EditCommand(IUserSession userSession, IEditCarService editCarService) : base(userSession)
         {
+            if (editCarService == null)
+            {
+                throw new ArgumentNullException("EditCarService cannot be null!");
+            }
             this.EditCarService = editCarService;
         }
 
@@ -38,7 +42,7 @@ namespace Dealership.Client.Commands.CRUD
 
             foreach (var method in methods)
             {
-                if (method.Name.ToLower().Contains("edit" + prop.ToLower()))
+                if (method.Name.ToLower().Contains(prop.ToLower()))
                 {
                     invocationResult = method.Invoke(EditCarService, new object[] { parameters.Skip(1).ToArray() });
                     break;
@@ -46,7 +50,7 @@ namespace Dealership.Client.Commands.CRUD
             }
             if (invocationResult == null)
             {
-                return $"Editing {prop} failed!";
+                return $"Editing {prop} of car with ID:{id} failed!";
             }
             return invocationResult.ToString();
         }
