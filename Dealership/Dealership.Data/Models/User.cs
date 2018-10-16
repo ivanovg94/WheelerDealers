@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+
 namespace Dealership.Data.Models
 {
     public class User : Entity
@@ -30,10 +31,10 @@ namespace Dealership.Data.Models
 
         public ICollection<UsersCars> UsersCars
         {
-            get { return userCars; }
+            get { return this.userCars; }
             set
             {
-                userCars = value;
+                this.userCars = value;
             }
         }
     }

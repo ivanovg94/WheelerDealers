@@ -1,18 +1,15 @@
-﻿
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace Dealership.Data.Models
 {
     public class Extra : Entity
     {
-        private ICollection<CarsExtras> _carsExtras;
+        private ICollection<CarsExtras> carsExtras;
 
         public Extra()
         {
-            this._carsExtras = new HashSet<CarsExtras>();
+            this.carsExtras = new HashSet<CarsExtras>();
         }
 
         [Required]
@@ -22,10 +19,10 @@ namespace Dealership.Data.Models
 
         public ICollection<CarsExtras> CarsExtras
         {
-            get { return _carsExtras; }
+            get { return this.carsExtras; }
             set
             {
-                _carsExtras = value;
+                this.carsExtras = value;
             }
         }
     }

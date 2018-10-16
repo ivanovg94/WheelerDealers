@@ -5,11 +5,11 @@ namespace Dealership.Data.Models
 {
     public class ColorType : Entity
     {
-        private ICollection<Color> _colors;
+        private ICollection<Color> colors;
 
         public ColorType()
         {
-            this._colors = new HashSet<Color>();
+            this.colors = new HashSet<Color>();
         }
 
         [Required]
@@ -19,10 +19,10 @@ namespace Dealership.Data.Models
 
         public ICollection<Color> Colors
         {
-            get { return _colors; }
+            get { return this.colors; }
             set
             {
-                _colors = value;
+                this.colors = value;
             }
         }
     }

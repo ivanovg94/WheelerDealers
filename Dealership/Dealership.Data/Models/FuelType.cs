@@ -5,11 +5,11 @@ namespace Dealership.Data.Models
 {
     public class FuelType : Entity
     {
-        private ICollection<Car> _cars;
+        private ICollection<Car> cars;
 
         public FuelType()
         {
-            this._cars = new HashSet<Car>();
+            this.cars = new HashSet<Car>();
         }
 
         [Required]
@@ -18,10 +18,10 @@ namespace Dealership.Data.Models
         public string Name { get; set; }
         public ICollection<Car> Cars
         {
-            get { return _cars; }
+            get { return this.cars; }
             set
             {
-                _cars = value;
+                this.cars = value;
             }
         }
     }
