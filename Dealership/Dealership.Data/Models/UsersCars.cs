@@ -1,8 +1,6 @@
 ﻿using Dealership.Data.Models.Contracts;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace Dealership.Data.Models
 {
@@ -13,7 +11,7 @@ namespace Dealership.Data.Models
 
         public int CarId { get; set; }
         public Car Car { get; set; }
-        
+
         [DataType(DataType.DateTime)]
         public DateTime? CreatedOn { get; set; }
 

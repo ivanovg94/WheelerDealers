@@ -16,9 +16,9 @@ namespace Dealership.Data.Models
         [Required]
         [MaxLength(25)]
         [MinLength(2)]
-        public virtual string Name { get; set; }
+        public string Name { get; set; }
 
-        public virtual ICollection<Car> Cars
+        public ICollection<Car> Cars
         {
             get { return _cars; }
             set

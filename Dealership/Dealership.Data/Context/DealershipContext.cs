@@ -1,4 +1,5 @@
-﻿using Dealership.Data.Context.Configurations;
+﻿using Dealership.Data.Context.Abstract;
+using Dealership.Data.Context.Configurations;
 using Dealership.Data.Models;
 using Dealership.Data.Models.Contracts;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,9 @@ namespace Dealership.Data.Context
         {
 
         }
-
         public DealershipContext(DbContextOptions contextOptions) : base(contextOptions)
         {
-            
+
         }
         public DbSet<Brand> Brands { get; set; }
 
@@ -41,7 +41,7 @@ namespace Dealership.Data.Context
         public DbSet<User> Users { get; set; }
 
         public DbSet<UsersCars> UsersCars { get; set; }
-                
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -56,7 +56,7 @@ namespace Dealership.Data.Context
             modelBuilder.ApplyConfiguration(new CarsExtrasConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new UsersCarsConfiguration());
-            
+
             SeedData(modelBuilder);
 
             base.OnModelCreating(modelBuilder);

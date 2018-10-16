@@ -1,6 +1,6 @@
 ﻿using Autofac;
 using Dealership.Client.Contracts.Abstract;
-using Dealership.Data.Context;
+using Dealership.Data.Context.Abstract;
 using Dealership.Data.Models.Contracts;
 using System;
 

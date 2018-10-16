@@ -17,7 +17,7 @@ namespace Dealership.Data.Models
         [MinLength(2)]
         public string Name { get; set; }
 
-        public virtual ICollection<Color> Colors
+        public ICollection<Color> Colors
         {
             get { return _colors; }
             set

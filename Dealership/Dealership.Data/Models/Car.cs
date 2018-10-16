@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace Dealership.Data.Models
 {
@@ -11,7 +9,6 @@ namespace Dealership.Data.Models
     {
         private ICollection<CarsExtras> _carsExtras;
         private ICollection<UsersCars> usersCars;
-
 
         public Car()
         {
@@ -31,7 +28,6 @@ namespace Dealership.Data.Models
         [Required]
         [Range(1, 100000)]
         public short EngineCapacity { get; set; }
-
         public bool IsSold { get; set; }
 
         [Required]
@@ -41,23 +37,23 @@ namespace Dealership.Data.Models
         [Required]
         [DataType(DataType.DateTime)]
         public DateTime ProductionDate { get; set; }
-        
+
         public int BrandId { get; set; }
-        public virtual Brand Brand { get; set; }
+        public Brand Brand { get; set; }
 
         public int BodyTypeId { get; set; }
-        public virtual BodyType BodyType { get; set; }
+        public BodyType BodyType { get; set; }
 
         public int ColorId { get; set; }
-        public virtual Color Color { get; set; }
+        public Color Color { get; set; }
 
         public int FuelTypeId { get; set; }
-        public virtual FuelType FuelType { get; set; }
+        public FuelType FuelType { get; set; }
 
         public int GearBoxId { get; set; }
-        public virtual Gearbox GearBox { get; set; }
+        public Gearbox GearBox { get; set; }
 
-        public virtual ICollection<CarsExtras> CarsExtras
+        public ICollection<CarsExtras> CarsExtras
         {
             get { return _carsExtras; }
             set
@@ -66,7 +62,7 @@ namespace Dealership.Data.Models
             }
         }
 
-        public virtual ICollection<UsersCars> UsersCars
+        public ICollection<UsersCars> UsersCars
         {
             get { return usersCars; }
             set

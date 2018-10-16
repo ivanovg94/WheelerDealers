@@ -4,6 +4,7 @@ using Dealership.Client.Core;
 using Dealership.Client.Core.Abstract;
 using Dealership.Client.Core.Providers;
 using Dealership.Data.Context;
+using Dealership.Data.Context.Abstract;
 using Dealership.Data.Models;
 using Dealership.Data.Models.Contracts;
 using Dealership.Data.Repository;

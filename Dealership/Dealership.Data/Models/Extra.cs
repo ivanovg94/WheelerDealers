@@ -20,7 +20,7 @@ namespace Dealership.Data.Models
         [MinLength(2)]
         public string Name { get; set; }
 
-        public virtual ICollection<CarsExtras> CarsExtras
+        public ICollection<CarsExtras> CarsExtras
         {
             get { return _carsExtras; }
             set
@@ -28,6 +28,5 @@ namespace Dealership.Data.Models
                 _carsExtras = value;
             }
         }
-
     }
 }

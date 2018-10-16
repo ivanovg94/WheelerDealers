@@ -1,4 +1,5 @@
 ﻿using Dealership.Data.Context;
+using Dealership.Data.Context.Abstract;
 using Dealership.Data.Models.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -11,7 +12,6 @@ namespace Dealership.Data.Repository
            where T : class, IDeletable
     {
         private readonly DealershipContext context;
-        // for unit testing
         public Repository()
         {
 

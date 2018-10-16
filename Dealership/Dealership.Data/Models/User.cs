@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 namespace Dealership.Data.Models
 {
@@ -27,7 +26,7 @@ namespace Dealership.Data.Models
         public string Email { get; set; }
 
         [MaxLength(25)]
-        public virtual UserType UserType { get; set; }
+        public UserType UserType { get; set; }
 
         public ICollection<UsersCars> UsersCars
         {

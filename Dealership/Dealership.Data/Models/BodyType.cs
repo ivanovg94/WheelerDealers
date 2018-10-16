@@ -17,16 +17,13 @@ namespace Dealership.Data.Models
         [MinLength(2)]
         public string Name { get; set; }
 
-        [Range(2,7)]
+        [Range(2, 7)]
         public byte NumberOfDoors { get; set; }
 
-        public virtual ICollection<Car> Cars
+        public ICollection<Car> Cars
         {
             get { return _cars; }
-            set
-            {
-                _cars = value;
-            }
+            set { _cars = value; }
         }
     }
 }
