@@ -71,6 +71,8 @@ namespace Dealership.Services
                 newBrand = new Brand() { Name = newValue };
             }
             car.Brand = newBrand;
+
+            UnitOfWork.GetRepository<Car>().Update(car);
             UnitOfWork.SaveChanges();
 
             return $"Brand of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
@@ -92,6 +94,8 @@ namespace Dealership.Services
 
             var car = this.CarService.GetCar(id);
             car.Model = newValue;
+
+            UnitOfWork.GetRepository<Car>().Update(car);
             UnitOfWork.SaveChanges();
 
             return $"Model of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
@@ -113,6 +117,8 @@ namespace Dealership.Services
 
             var car = this.CarService.GetCar(id);
             car.HorsePower = short.Parse(newValue);
+
+            UnitOfWork.GetRepository<Car>().Update(car);
             UnitOfWork.SaveChanges();
 
             return $"Horse power of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
@@ -135,6 +141,8 @@ namespace Dealership.Services
 
             var car = this.CarService.GetCar(id);
             car.EngineCapacity = short.Parse(newValue);
+
+            UnitOfWork.GetRepository<Car>().Update(car);
             UnitOfWork.SaveChanges();
 
             return $"Engine capacity of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
@@ -157,6 +165,8 @@ namespace Dealership.Services
 
             var car = this.CarService.GetCar(id);
             car.IsSold = bool.Parse(newValue);
+
+            UnitOfWork.GetRepository<Car>().Update(car);
             UnitOfWork.SaveChanges();
 
             return $"IsSold of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
@@ -201,6 +211,8 @@ namespace Dealership.Services
 
             var car = this.CarService.GetCar(id);
             car.ProductionDate = DateTime.Parse(newValue);
+
+            UnitOfWork.GetRepository<Car>().Update(car);
             UnitOfWork.SaveChanges();
 
             return $"Production date of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
@@ -229,6 +241,8 @@ namespace Dealership.Services
 
             var car = this.CarService.GetCar(id);
             car.BodyType = newBodyType;
+
+            UnitOfWork.GetRepository<Car>().Update(car);
             UnitOfWork.SaveChanges();
 
             return $"Body type of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
@@ -280,6 +294,8 @@ namespace Dealership.Services
             }
 
             car.ColorId = newColor.Id;
+
+            UnitOfWork.GetRepository<Car>().Update(car);
             UnitOfWork.SaveChanges();
 
             return $"Color of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
@@ -322,6 +338,7 @@ namespace Dealership.Services
             car.Color = newColor;
             car.ColorId = newColor.Id;
 
+            UnitOfWork.GetRepository<Car>().Update(car);
             UnitOfWork.SaveChanges();
 
             return $"Color type of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
@@ -352,6 +369,7 @@ namespace Dealership.Services
             if (newFuelType != null)
             {
                 car.FuelType = newFuelType;
+                UnitOfWork.GetRepository<Car>().Update(car);
                 UnitOfWork.SaveChanges();
             }
             else
@@ -390,6 +408,8 @@ namespace Dealership.Services
                 throw new ArgumentException($"Gearbox:{newValue} not exist!");
             }
             car.GearBox.GearType = newGearType;
+
+            UnitOfWork.GetRepository<Car>().Update(car);
             UnitOfWork.SaveChanges();
 
             return $"Gearbox of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
