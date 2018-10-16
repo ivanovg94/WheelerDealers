@@ -2,6 +2,7 @@
 using Dealership.Client.ViewModels;
 using Dealership.Data.Models.Contracts;
 using Dealership.Services.Abstract;
+using System;
 using System.Linq;
 using System.Text;
 
@@ -12,8 +13,7 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
         private readonly IBodyTypeService bodyTypeService;
         private readonly ICarService carService;
 
-        public FilterByBodyTypeCommand(IUserSession userSession, IBodyTypeService bodyTypeService,
-                                         ICarService carService) : base(userSession)
+        public FilterByBodyTypeCommand(IUserSession userSession, IBodyTypeService bodyTypeService, ICarService carService) : base(userSession)
         {
             this.bodyTypeService = bodyTypeService;
             this.carService = carService;
@@ -21,8 +21,12 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
 
         public override string Execute(string[] parameters)
         {
-            string bodyType = parameters[0];
+            if (parameters.Length != 1)
+            {
+                throw new ArgumentException("Invalid parameters.");
+            }
 
+            string bodyType = parameters[0];
             var body = bodyTypeService.GetBodyType(bodyType);
 
             var cars = this.carService.GetCars("asc")
@@ -49,7 +53,7 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
 
             if (!cars.Any())
             {
-                return $"No cars with body type \"{bodyType}\"";
+                return $"There are no cars with body type {bodyType}";
             }
 
             var sb = new StringBuilder();
@@ -58,7 +62,6 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
             {
                 sb.AppendLine(car.ToString());
             }
-
             return sb.ToString().TrimEnd();
         }
     }

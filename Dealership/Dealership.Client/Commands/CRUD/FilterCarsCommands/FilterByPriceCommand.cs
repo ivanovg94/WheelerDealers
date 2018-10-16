@@ -16,11 +16,23 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
         {
             this.carService = carService;
         }
-        
+
         public override string Execute(string[] parameters)
         {
-            int priceFrom = int.Parse(parameters[0]);
-            int priceTo = int.Parse(parameters[1]);
+            if (parameters.Length != 2)
+            {
+                throw new ArgumentException("Invalid parameters.");
+            }
+            
+            if (!int.TryParse(parameters[0], out int priceFrom))
+            {
+                throw new FormatException("Invalid value for the first price!");
+            }
+
+            if (!int.TryParse(parameters[1], out int priceTo))
+            {
+                throw new FormatException("Invalid value for the second price!");
+            }
 
             if (priceFrom > priceTo)
             {
@@ -52,7 +64,7 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
 
             if (cars.Count == 0)
             {
-                return $"No cars with price between {priceFrom} and {priceTo}.";
+                return $"There are no cars with price between {priceFrom} and {priceTo}.";
             }
 
             var sb = new StringBuilder();
@@ -61,7 +73,6 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
             {
                 sb.AppendLine(car.ToString());
             }
-
             return sb.ToString().TrimEnd();
         }
     }

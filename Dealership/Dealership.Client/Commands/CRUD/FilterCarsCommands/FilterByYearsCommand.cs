@@ -19,12 +19,20 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
 
         public override string Execute(string[] parameters)
         {
-            string yearFromInput = parameters[0];
-            string yearToInput = parameters[1];
+            if (parameters.Length != 2)
+            {
+                throw new ArgumentException("Invalid parameters.");
+            }
+            
+            if (!DateTime.TryParse("01/01/" + parameters[0], out DateTime yearFrom))
+            {
+                throw new FormatException("Invalid value for the first year!");
+            }
 
-            DateTime yearFrom = DateTime.Parse("01/01/" + yearFromInput);
-            DateTime yearTo = DateTime.Parse("31/12/" + yearToInput);
-
+            if (!DateTime.TryParse("31/12/" + parameters[1], out DateTime yearTo))
+            {
+                throw new FormatException("Invalid value for the second year!");
+            }
 
             if (yearFrom > yearTo)
             {
@@ -54,7 +62,7 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
 
             if (!cars.Any())
             {
-                return $"No cars with year between {yearFromInput} and {yearToInput}.";
+                return $"There are no cars with year between {yearFrom} and {yearTo}.";
             }
 
             var sb = new StringBuilder();

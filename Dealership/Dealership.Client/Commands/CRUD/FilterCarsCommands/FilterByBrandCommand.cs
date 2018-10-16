@@ -2,6 +2,7 @@
 using Dealership.Client.ViewModels;
 using Dealership.Data.Models.Contracts;
 using Dealership.Services.Abstract;
+using System;
 using System.Linq;
 using System.Text;
 
@@ -12,17 +13,20 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
         private readonly IBrandService brandService;
         private readonly ICarService carService;
 
-        public FilterByBrandCommand(IUserSession userSession, IBrandService brandService,
-                                         ICarService carService) : base(userSession)
+        public FilterByBrandCommand(IUserSession userSession, IBrandService brandService,ICarService carService) : base(userSession)
         {
             this.brandService = brandService;
             this.carService = carService;
         }
-        
+
         public override string Execute(string[] parameters)
         {
-            string brandName = parameters[0];
+            if (parameters.Length != 1)
+            {
+                throw new ArgumentException("Invalid parameters.");
+            }
 
+            string brandName = parameters[0];
             var brand = this.brandService.GetBrand(brandName);
 
             var cars = this.carService.GetCars("asc")
@@ -49,7 +53,7 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
 
             if (!cars.Any())
             {
-                return $"No cars with brand {brandName}.";
+                return $"There are no cars with brand {brandName}.";
             }
 
             var sb = new StringBuilder();
@@ -58,7 +62,6 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
             {
                 sb.AppendLine(car.ToString());
             }
-
             return sb.ToString().TrimEnd();
         }
     }

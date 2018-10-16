@@ -1,6 +1,7 @@
 ﻿using Dealership.Client.Commands.Abstract;
 using Dealership.Data.Models.Contracts;
 using Dealership.Services.Abstract;
+using System;
 
 namespace Dealership.Client.Commands.CRUD
 {
@@ -16,6 +17,12 @@ namespace Dealership.Client.Commands.CRUD
         public override string Execute(string[] parameters)
         {
             base.Execute(parameters);
+
+            if (parameters.Length != 1)
+            {
+                throw new ArgumentException("Invalid parameters.");
+            }
+
             int carId = int.Parse(parameters[0]);
             this.carService.RemoveCar(carId);
 
