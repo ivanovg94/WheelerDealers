@@ -51,7 +51,7 @@ namespace Dealership.Tests.Commands.Tests.FilterCarsCommandsTests
             var result = sut.Execute(parameters);
 
             // Assert
-            StringAssert.Contains(result, "2005");
+            StringAssert.Contains(result, "05");
         }
 
         [TestMethod]
