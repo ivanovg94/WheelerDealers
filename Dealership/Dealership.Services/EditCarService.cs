@@ -37,7 +37,7 @@ namespace Dealership.Services
             //field init changed to prop for testing
         }
 
-        public virtual string EditBrand(string[] parameters) // works but must include navigation props tables !
+        public virtual string EditBrand(string[] parameters)
         {
             if (parameters == null)
             {
@@ -48,8 +48,8 @@ namespace Dealership.Services
                 throw new ArgumentException("Invalid number of parameters!");
             }
 
-            int id /*int.Parse(parameters[0])*/;
-            if (!int.TryParse(parameters[0],out id))
+            int id;
+            if (!int.TryParse(parameters[0], out id))
             {
                 throw new ArgumentException("Invalid ID!");
             }
@@ -83,7 +83,11 @@ namespace Dealership.Services
             {
                 throw new ArgumentNullException("Invalid amount of parameters!");
             }
-            var id = int.Parse(parameters[0]);
+            int id /*int.Parse(parameters[0])*/;
+            if (!int.TryParse(parameters[0], out id))
+            {
+                throw new ArgumentException("Invalid ID!");
+            }
             var newValue = parameters[1];
 
             var car = this.CarService.GetCar(id);
@@ -95,7 +99,16 @@ namespace Dealership.Services
 
         public string EditHorsePower(string[] parameters)
         {
-            var id = int.Parse(parameters[0]);
+            if (parameters == null || parameters.Length == 0)
+            {
+                throw new ArgumentNullException("Invalid amount of parameters!");
+            }
+
+            int id /*int.Parse(parameters[0])*/;
+            if (!int.TryParse(parameters[0], out id))
+            {
+                throw new ArgumentException("Invalid ID!");
+            }
             var newValue = parameters[1];
 
             var car = this.CarService.GetCar(id);
@@ -107,7 +120,17 @@ namespace Dealership.Services
 
         public string EditEngineCapacity(string[] parameters)
         {
-            var id = int.Parse(parameters[0]);
+            if (parameters == null || parameters.Length == 0)
+            {
+                throw new ArgumentNullException("Invalid amount of parameters!");
+            }
+
+            int id /*int.Parse(parameters[0])*/;
+            if (!int.TryParse(parameters[0], out id))
+            {
+                throw new ArgumentException("Invalid ID!");
+            }
+
             var newValue = parameters[1];
 
             var car = this.CarService.GetCar(id);
@@ -119,7 +142,17 @@ namespace Dealership.Services
 
         public string EditIsSold(string[] parameters)
         {
-            var id = int.Parse(parameters[0]);
+            if (parameters == null || parameters.Length == 0)
+            {
+                throw new ArgumentNullException("Invalid amount of parameters!");
+            }
+
+            int id /*int.Parse(parameters[0])*/;
+            if (!int.TryParse(parameters[0], out id))
+            {
+                throw new ArgumentException("Invalid ID!");
+            }
+           
             var newValue = parameters[1];
 
             var car = this.CarService.GetCar(id);
@@ -129,9 +162,18 @@ namespace Dealership.Services
             return $"IsSold of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
         }
 
-        public string EditPrice(string[] parameters)
+        public string EditPrice(string[] parameters)// not tested
         {
-            var id = int.Parse(parameters[0]);
+            if (parameters == null || parameters.Length == 0)
+            {
+                throw new ArgumentNullException("Invalid amount of parameters!");
+            }
+
+            int id /*int.Parse(parameters[0])*/;
+            if (!int.TryParse(parameters[0], out id))
+            {
+                throw new ArgumentException("Invalid ID!");
+            }
             var newValue = parameters[1];
 
             var car = this.CarService.GetCar(id);
@@ -141,9 +183,18 @@ namespace Dealership.Services
             return $"Price of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
         }
 
-        public string EditProductionDate(string[] parameters)
+        public string EditProductionDate(string[] parameters)// not tested
         {
-            var id = int.Parse(parameters[0]);
+            if (parameters == null || parameters.Length == 0)
+            {
+                throw new ArgumentNullException("Invalid amount of parameters!");
+            }
+
+            int id /*int.Parse(parameters[0])*/;
+            if (!int.TryParse(parameters[0], out id))
+            {
+                throw new ArgumentException("Invalid ID!");
+            }
             var newValue = parameters[1];
 
             var car = this.CarService.GetCar(id);
@@ -155,7 +206,16 @@ namespace Dealership.Services
 
         public string EditBodyType(string[] parameters)
         {
-            var id = int.Parse(parameters[0]);
+            if (parameters == null || parameters.Length == 0)
+            {
+                throw new ArgumentNullException("Invalid amount of parameters!");
+            }
+
+            int id /*int.Parse(parameters[0])*/;
+            if (!int.TryParse(parameters[0], out id))
+            {
+                throw new ArgumentException("Invalid ID!");
+            }
             var newValue = parameters[1];
 
             var newBodyType = this.UnitOfWork.GetRepository<BodyType>().All().FirstOrDefault(ch => ch.Name == newValue);
@@ -174,9 +234,22 @@ namespace Dealership.Services
 
         public string EditColor(string[] parameters)
         {
-            var id = int.Parse(parameters[0]);
+            if (parameters == null)
+            {
+                throw new ArgumentNullException("Parameters cannot be null!");
+            }
+            if (parameters.Length == 0)
+            {
+                throw new ArgumentException("Invalid number of parameters!");
+            }
+
+            int id;
+            if (!int.TryParse(parameters[0], out id))
+            {
+                throw new ArgumentException("Invalid ID!");
+            }
             var newColorValue = parameters[1];
-            var newColorTypeName = "";
+            string newColorTypeName = "";
 
             if (parameters.Length == 3)
             {
@@ -212,7 +285,20 @@ namespace Dealership.Services
 
         public string EditColorType(string[] parameters)
         {
-            var id = int.Parse(parameters[0]);
+            if (parameters == null)
+            {
+                throw new ArgumentNullException("Parameters cannot be null!");
+            }
+            if (parameters.Length == 0)
+            {
+                throw new ArgumentException("Invalid number of parameters!");
+            }
+
+            int id;
+            if (!int.TryParse(parameters[0], out id))
+            {
+                throw new ArgumentException("Invalid ID!");
+            }
             var newValue = parameters[1];
 
             var car = this.CarService.GetCar(id);
@@ -241,7 +327,20 @@ namespace Dealership.Services
 
         public string EditFuelType(string[] parameters)
         {
-            var id = int.Parse(parameters[0]);
+            if (parameters == null)
+            {
+                throw new ArgumentNullException("Parameters cannot be null!");
+            }
+            if (parameters.Length == 0)
+            {
+                throw new ArgumentException("Invalid number of parameters!");
+            }
+
+            int id;
+            if (!int.TryParse(parameters[0], out id))
+            {
+                throw new ArgumentException("Invalid ID!");
+            }
             var newValue = parameters[1];
 
             var car = this.CarService.GetCar(id);
@@ -264,7 +363,20 @@ namespace Dealership.Services
 
         public string EditGearbox(string[] parameters) // works but must include navigation props tables !
         {
-            var id = int.Parse(parameters[0]);
+            if (parameters == null)
+            {
+                throw new ArgumentNullException("Parameters cannot be null!");
+            }
+            if (parameters.Length == 0)
+            {
+                throw new ArgumentException("Invalid number of parameters!");
+            }
+
+            int id;
+            if (!int.TryParse(parameters[0], out id))
+            {
+                throw new ArgumentException("Invalid ID!");
+            }
             var newValue = parameters[1];
 
             var car = this.CarService.GetCar(id);
