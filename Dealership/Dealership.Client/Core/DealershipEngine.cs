@@ -10,13 +10,15 @@ namespace Dealership.Client.Core
         private readonly IWriter writer;
         private readonly IExceptionLogging exceptionLogging;
         private readonly ICommandProcessor processor;
+        private readonly IRenderer renderer;
         private readonly IUserSession userSession;
 
         public DealershipEngine(IReader reader, IWriter writer, IUserSession userSession,
-            IExceptionLogging exceptionLogging, ICommandProcessor commandProcessor)
+            IExceptionLogging exceptionLogging, ICommandProcessor commandProcessor, IRenderer renderer)
         {
             this.reader = reader;
             this.writer = writer;
+            this.renderer = renderer;
             this.exceptionLogging = exceptionLogging;
             this.processor = commandProcessor;
             this.userSession = userSession;
@@ -26,7 +28,7 @@ namespace Dealership.Client.Core
 
         public void Run()
         {
-            this.writer.PrintCommands();
+            this.writer.WriteLine(this.renderer.GetCommandsInfo());
             while ((input = reader.ReadLine()) != "exit")
             {
                 try

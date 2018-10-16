@@ -9,22 +9,22 @@ using System.Linq;
 
 namespace Dealership.Client.Commands
 {
-    //generatePdf
     public class GeneratePdfCommand : Command
     {
         const string outputDir = @"..\..\..\..\Dealership.Data\DataProcessor\PdfReports\";
+        private readonly ICarService carService;
 
-        public GeneratePdfCommand(IUserSession userSession) : base(userSession)
+        public GeneratePdfCommand(IUserSession userSession, ICarService carService) : base(userSession)
         {
+            this.carService = carService;
         }
 
-        public ICarService CarService { get; set; }
 
         public override string Execute(string[] parameters)
         {
             var exportFile = outputDir + "Report.pdf";
 
-            var cars = this.CarService.GetCars(false, "asc").ToList();
+            var cars = this.carService.GetCars(false, "asc").ToList();
 
             using (var pdfWriter = new PdfWriter(exportFile))
             {

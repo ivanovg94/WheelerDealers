@@ -2,18 +2,17 @@
 using Dealership.Data.Models.Contracts;
 using Dealership.Services.Abstract;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Dealership.Client.Commands.UserCommands
 {
     public class DeleteUserCommand : Command
     {
-        public DeleteUserCommand(IUserSession userSession) : base(userSession)
-        {
-        }
+        private readonly IUserService userService;
 
-        public IUserService UserService { get; set; }
+        public DeleteUserCommand(IUserSession userSession, IUserService userService) : base(userSession)
+        {
+            this.userService = userService;
+        }
 
         public override string Execute(string[] parameters)
         {
@@ -25,7 +24,7 @@ namespace Dealership.Client.Commands.UserCommands
                 throw new ArgumentException("Invalid parameters");
             }
 
-            var user = this.UserService.DeleteUser(username, password);
+            var user = this.userService.DeleteUser(username, password);
             base.UserSession.CurrentUser = null;
 
             return $"User {username} successfully deleted!";

@@ -12,7 +12,7 @@ namespace Dealership.Client.Commands.CRUD
 {
     public class EditCommand : AdminCommand
     {
-        public IEditCarService EditCarService { get; set; }
+        private readonly IEditCarService editCarService;
 
         public EditCommand(IUserSession userSession, IEditCarService editCarService) : base(userSession)
         {
@@ -20,11 +20,10 @@ namespace Dealership.Client.Commands.CRUD
             {
                 throw new ArgumentNullException("EditCarService cannot be null!");
             }
-            this.EditCarService = editCarService;
+
+            this.editCarService = editCarService;
         }
 
-
-        // edit [exact property.Name] [id] [newValue] [secondNewValue]
         public override string Execute(string[] parameters)
         {
             if (parameters == null)
@@ -36,7 +35,7 @@ namespace Dealership.Client.Commands.CRUD
             var prop = parameters[0];
             var id = parameters[1];
 
-            var methods = this.EditCarService.GetType().GetMethods();
+            var methods = this.editCarService.GetType().GetMethods();
 
             object invocationResult = null;
 
@@ -44,7 +43,7 @@ namespace Dealership.Client.Commands.CRUD
             {
                 if (method.Name.ToLower().Contains(prop.ToLower()))
                 {
-                    invocationResult = method.Invoke(EditCarService, new object[] { parameters.Skip(1).ToArray() });
+                    invocationResult = method.Invoke(editCarService, new object[] { parameters.Skip(1).ToArray() });
                     break;
                 }
             }

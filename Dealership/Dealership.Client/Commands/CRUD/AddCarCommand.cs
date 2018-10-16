@@ -7,17 +7,17 @@ namespace Dealership.Client.Commands.CRUD
 {
     public class AddCarCommand : AdminCommand
     {
-        public AddCarCommand(IUserSession userSession) : base(userSession)
+        private readonly ICarService carService;
+
+        public AddCarCommand(IUserSession userSession, ICarService carService) : base(userSession)
         {
+            this.carService = carService;
         }
 
-        public ICarService CarService { get; set; }
-        //add brand, model, hp, engCap, prod.date, price, chasis, nDoors, colorName,ColorType, fuelType, gearbox, nGears
         public override string Execute(string[] parameters)
         {
             base.Execute(parameters);
 
-            //validation TODO
             var brandName = parameters[0];
             var model = parameters[1];
 
@@ -33,7 +33,6 @@ namespace Dealership.Client.Commands.CRUD
             if (!DateTime.TryParse(parameters[4], out DateTime prodDate))
             {
                 throw new ArgumentException("Invalid production date passed!");
-
             }
 
             if (!decimal.TryParse(parameters[5], out decimal price))
@@ -52,9 +51,9 @@ namespace Dealership.Client.Commands.CRUD
                 throw new ArgumentException("Invalid number of gears passed!");
             }
 
-            var car = CarService.CreateCar(brandName, model, horesePower, engineCapacity, prodDate, price, bodyTypeName, colorName, colorType, fuelType, gearboxType, numberOfGears);
+            var car = carService.CreateCar(brandName, model, horesePower, engineCapacity, prodDate, price, bodyTypeName, colorName, colorType, fuelType, gearboxType, numberOfGears);
 
-            CarService.AddCar(car);
+            carService.AddCar(car);
 
             return $"{car.Brand.Name} {car.Model} with Id:{car.Id} was added successfully";
         }

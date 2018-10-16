@@ -9,21 +9,23 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
 {
     public class FilterByBodyTypeCommand : Command
     {
-        public FilterByBodyTypeCommand(IUserSession userSession) : base(userSession)
+        private readonly IBodyTypeService bodyTypeService;
+        private readonly ICarService carService;
+
+        public FilterByBodyTypeCommand(IUserSession userSession, IBodyTypeService bodyTypeService,
+                                         ICarService carService) : base(userSession)
         {
+            this.bodyTypeService = bodyTypeService;
+            this.carService = carService;
         }
-
-        public ICarService CarService { get; set; }
-
-        public IBodyTypeService BodyTypeService { get; set; }
 
         public override string Execute(string[] parameters)
         {
             string bodyType = parameters[0];
 
-            var body = BodyTypeService.GetBodyType(bodyType);
+            var body = bodyTypeService.GetBodyType(bodyType);
 
-            var cars = this.CarService.GetCars("asc")
+            var cars = this.carService.GetCars("asc")
                 .Where(c => c.BodyType == body)
                 .Select(c => new CarVM
                 {

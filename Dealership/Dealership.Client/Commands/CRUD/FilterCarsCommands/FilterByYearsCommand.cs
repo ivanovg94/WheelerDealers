@@ -10,12 +10,12 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
 {
     public class FilterByYearsCommand : Command
     {
-        public FilterByYearsCommand(IUserSession userSession) : base(userSession)
-        {
-        }
+        private readonly ICarService carService;
 
-        //filterYears {yearFrom} {yearTo}
-        public ICarService CarService { get; set; }
+        public FilterByYearsCommand(IUserSession userSession, ICarService carService) : base(userSession)
+        {
+            this.carService = carService;
+        }
 
         public override string Execute(string[] parameters)
         {
@@ -31,7 +31,7 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
                 throw new ArgumentException("The value of the first year cannot exceed the value of the second year!");
             }
 
-            var cars = this.CarService.GetCars("asc")
+            var cars = this.carService.GetCars("asc")
                 .Where(c => c.ProductionDate >= yearFrom && c.ProductionDate <= yearTo)
                 .Select(c => new CarVM
                 {

@@ -2,19 +2,17 @@
 using Dealership.Data.Models.Contracts;
 using Dealership.Services.Abstract;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Dealership.Client.Commands.UserCommands
 {
     public class RegisterCommand : Command
     {
-        public RegisterCommand(IUserSession userSession) : base(userSession)
-        {
-        }
+        private readonly IUserService userService;
 
-        public IUserService UserService { get; set; }
+        public RegisterCommand(IUserSession userSession, IUserService userService) : base(userSession)
+        {
+            this.userService = userService;
+        }
 
         public override string Execute(string[] parameters)
         {
@@ -33,7 +31,7 @@ namespace Dealership.Client.Commands.UserCommands
             string confirmPassword = parameters[2];
             string email = parameters[3];
 
-            var user = this.UserService.RegisterUser(username, password, confirmPassword, email);
+            var user = this.userService.RegisterUser(username, password, confirmPassword, email);
             base.UserSession.CurrentUser = user;
 
             return $"User {username} was registered succesfully";

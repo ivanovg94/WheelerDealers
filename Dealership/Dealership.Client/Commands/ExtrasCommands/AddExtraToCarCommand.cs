@@ -6,7 +6,6 @@ using System.Linq;
 
 namespace Dealership.Client.Commands.ExtrasCommands
 {
-
     public class AddExtraToCarCommand : AdminCommand
     {
         private readonly IExtraService extraService;
@@ -16,17 +15,24 @@ namespace Dealership.Client.Commands.ExtrasCommands
             this.extraService = extraService;
         }
 
-
-        //addExtraToCar carId, extraName
         public override string Execute(string[] parameters)
         {
             base.Execute(parameters);
-            if (parameters.Length == 0) { throw new ArgumentException("Invalid parameters"); }
-            if (!int.TryParse(parameters[0], out int id)) { throw new FormatException("Invalid value for Id!"); }
+            if (parameters.Length == 0)
+            {
+                throw new ArgumentException("Invalid parameters");
+            }
+            if (!int.TryParse(parameters[0], out int id))
+            {
+                throw new FormatException("Invalid value for Id!");
+            }
 
             var extrasNames = string.Join(" ", parameters.Skip(1));
 
-            if (string.IsNullOrEmpty(extrasNames)) { throw new ArgumentException("Invalid extra/s!"); }
+            if (string.IsNullOrEmpty(extrasNames))
+            {
+                throw new ArgumentException("Invalid extra/s!");
+            }
             var extra = this.extraService.AddExtraToCar(id, extrasNames);
             return $"Added extra {extra.Name} to car with Id {id}";
         }

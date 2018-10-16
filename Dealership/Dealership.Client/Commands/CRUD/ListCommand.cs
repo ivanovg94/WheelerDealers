@@ -11,12 +11,12 @@ namespace Dealership.Client.Commands.CRUD
 {
     public class ListCommand : Command
     {
-        private readonly ICarService service;
+        private readonly ICarService carService;
+
         public ListCommand(IUserSession userSession, ICarService service) : base(userSession)
         {
-            this.service = service;
+            this.carService = service;
         }
-
 
         public override string Execute(string[] parameters)
         {
@@ -33,11 +33,20 @@ namespace Dealership.Client.Commands.CRUD
             }
             if (parameters[0].ToLower() == "sold")
             {
-                data = service.GetCars(true, dir);
+                data = carService.GetCars(true, dir);
             }
-            else if (parameters[0].ToLower() == "active") { data = service.GetCars(false, dir); }
-            else if (parameters[0].ToLower() == "all") { data = service.GetCars(dir); }
-            else { throw new ArgumentException("Invalid parameters!"); }
+            else if (parameters[0].ToLower() == "active")
+            {
+                data = carService.GetCars(false, dir);
+            }
+            else if (parameters[0].ToLower() == "all")
+            {
+                data = carService.GetCars(dir);
+            }
+            else
+            {
+                throw new ArgumentException("Invalid parameters!");
+            }
 
             var result = data.Select(c => new CarVM
             {

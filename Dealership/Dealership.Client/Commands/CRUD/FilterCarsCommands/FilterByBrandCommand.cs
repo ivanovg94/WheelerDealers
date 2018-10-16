@@ -9,21 +9,23 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
 {
     public class FilterByBrandCommand : Command
     {
-        public FilterByBrandCommand(IUserSession userSession) : base(userSession)
+        private readonly IBrandService brandService;
+        private readonly ICarService carService;
+
+        public FilterByBrandCommand(IUserSession userSession, IBrandService brandService,
+                                         ICarService carService) : base(userSession)
         {
+            this.brandService = brandService;
+            this.carService = carService;
         }
-
-        public ICarService CarService { get; set; }
-
-        public IBrandService BrandService { get; set; }
-
+        
         public override string Execute(string[] parameters)
         {
             string brandName = parameters[0];
 
-            var brand = this.BrandService.GetBrand(brandName);
+            var brand = this.brandService.GetBrand(brandName);
 
-            var cars = this.CarService.GetCars("asc")
+            var cars = this.carService.GetCars("asc")
                 .Where(c => c.Brand.Name.ToLower() == brandName)
                 .Select(c => new CarVM
                 {

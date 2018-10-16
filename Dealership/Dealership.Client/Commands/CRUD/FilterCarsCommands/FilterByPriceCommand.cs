@@ -1,5 +1,4 @@
-﻿
-using Dealership.Client.Commands.Abstract;
+﻿using Dealership.Client.Commands.Abstract;
 using Dealership.Client.ViewModels;
 using Dealership.Data.Models.Contracts;
 using Dealership.Services.Abstract;
@@ -13,11 +12,11 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
     {
         private readonly ICarService carService;
 
-        public FilterByPriceCommand(IUserSession userSession, ICarService carService  ) : base(userSession)
+        public FilterByPriceCommand(IUserSession userSession, ICarService carService) : base(userSession)
         {
+            this.carService = carService;
         }
-
-
+        
         public override string Execute(string[] parameters)
         {
             int priceFrom = int.Parse(parameters[0]);
@@ -51,7 +50,7 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
                  .OrderBy(c => c.Price)
                  .ToList();
 
-            if (cars.Count==0)
+            if (cars.Count == 0)
             {
                 return $"No cars with price between {priceFrom} and {priceTo}.";
             }
