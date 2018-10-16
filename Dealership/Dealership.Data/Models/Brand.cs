@@ -6,11 +6,11 @@ namespace Dealership.Data.Models
 {
     public class Brand : Entity, IBrand
     {
-        private ICollection<Car> _cars;
+        private ICollection<Car> cars;
 
         public Brand()
         {
-            this._cars = new HashSet<Car>();
+            this.cars = new HashSet<Car>();
         }
 
         [Required]
@@ -20,10 +20,10 @@ namespace Dealership.Data.Models
 
         public ICollection<Car> Cars
         {
-            get { return _cars; }
+            get { return this.cars; }
             set
             {
-                _cars = value;
+                this.cars = value;
             }
         }
     }
