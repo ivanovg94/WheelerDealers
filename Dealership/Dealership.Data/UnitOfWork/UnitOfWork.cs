@@ -1,4 +1,4 @@
-﻿using Dealership.Data.Context;
+﻿using Dealership.Data.Context.Abstract;
 using Dealership.Data.Models.Contracts;
 using Dealership.Data.Repository;
 using System;
@@ -13,7 +13,6 @@ namespace Dealership.Data.UnitOfWork
 
         public UnitOfWork()
         {
-
         }
 
         public UnitOfWork(IDealershipContext context)
@@ -25,7 +24,7 @@ namespace Dealership.Data.UnitOfWork
         {
             return this.context.SaveChanges();
         }
-        // virtual for unittesting
+        //TODO: virual?
         public virtual IRepository<T> GetRepository<T>() where T : class, IDeletable
         {
             var repoType = typeof(Repository<T>);

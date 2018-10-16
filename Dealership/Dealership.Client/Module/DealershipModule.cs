@@ -4,6 +4,7 @@ using Dealership.Client.Core;
 using Dealership.Client.Core.Abstract;
 using Dealership.Client.Core.Providers;
 using Dealership.Data.Context;
+using Dealership.Data.Context.Abstract;
 using Dealership.Data.Models;
 using Dealership.Data.Models.Contracts;
 using Dealership.Data.Repository;
@@ -37,6 +38,7 @@ namespace Dealership.Client.Module
             builder.RegisterType<UserService>().As<IUserService>();
             builder.RegisterType<BrandService>().As<IBrandService>();
             builder.RegisterType<ConsoleReader>().As<IReader>().SingleInstance();
+            builder.RegisterType<ConsoleRenderer>().As<IRenderer>().SingleInstance();
             builder.RegisterType<ConsoleWriter>().As<IWriter>().SingleInstance();
             builder.RegisterType<UserSession>().As<IUserSession>().SingleInstance();
             builder.RegisterType<ExceptionLogging>().As<IExceptionLogging>().SingleInstance();
@@ -55,12 +57,10 @@ namespace Dealership.Client.Module
                                     && typeInfo.IsAbstract == false)
                                .ToList();
 
-            // register in autofac
             foreach (var commandType in commandTypes)
             {
                 builder.RegisterType(commandType.AsType())
-                                    .Named<ICommand>(commandType.Name.ToLower().Replace("command", ""))
-                                    .PropertiesAutowired();
+                                    .Named<ICommand>(commandType.Name.ToLower().Replace("command", ""));
             }
         }
 

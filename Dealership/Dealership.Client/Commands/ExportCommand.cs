@@ -11,12 +11,13 @@ namespace Dealership.Client.Commands
     public class ExportCommand : Command
     {
         const string exportDirRes = @"..\..\..\..\Dealership.Data\DataProcessor\ExportResults\";
+        private readonly ICarService carService;
 
-        public ExportCommand(IUserSession userSession) : base(userSession)
+        public ExportCommand(IUserSession userSession, ICarService carService) : base(userSession)
         {
+            this.carService = carService;
         }
 
-        public ICarService CarService { get; set; }
 
         public override string Execute(string[] parameters)
         {
@@ -36,7 +37,7 @@ namespace Dealership.Client.Commands
 
             string order = parameters.Last();
 
-            var cars = CarService.GetCars(isSold, order);
+            var cars = carService.GetCars(isSold, order);
 
             var result = cars.Select(c => new CarVM
             {

@@ -17,7 +17,7 @@ namespace Dealership.Data.Models
         [MinLength(2)]
         public string Name { get; set; }
 
-        public virtual ICollection<Gearbox> Gearboxes
+        public ICollection<Gearbox> Gearboxes
         {
             get { return _gearboxes; }
             set

@@ -2,14 +2,12 @@
 using Dealership.Client.Contracts.Abstract;
 using Dealership.Client.Core.Abstract;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Dealership.Client.Core.Providers
 {
     public class CommandParser : ICommandParser
     {
-        private IComponentContext containerContext;
+        private readonly IComponentContext containerContext;
 
         public CommandParser(IComponentContext containerContext)
         {

@@ -3,9 +3,7 @@ using Dealership.Data.UnitOfWork;
 using Dealership.Services.Abstract;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Dealership.Services
 {
@@ -14,7 +12,7 @@ namespace Dealership.Services
         private readonly IUnitOfWork unitOfWork;
         private readonly ICarService carService;
         // test purposes
-        public virtual ICarService CarService => carService;
+        public ICarService CarService => carService;
         public IUnitOfWork UnitOfWork => unitOfWork;
 
 

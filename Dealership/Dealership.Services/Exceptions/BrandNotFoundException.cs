@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Dealership.Services.Exceptions
 {
@@ -9,12 +7,10 @@ namespace Dealership.Services.Exceptions
     {
         public BrandNotFoundException()
         {
-
         }
 
-        public BrandNotFoundException(string message) : base(message) 
+        public BrandNotFoundException(string message) : base(message)
         {
-
         }
     }
 }

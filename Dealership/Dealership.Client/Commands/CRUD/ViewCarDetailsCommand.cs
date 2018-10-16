@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dealership.Client.Commands.Abstract;
-using Dealership.Data.Context;
+﻿using Dealership.Client.Commands.Abstract;
 using Dealership.Data.Models.Contracts;
-using Dealership.Services;
 using Dealership.Services.Abstract;
+using System;
+using System.Linq;
 
 namespace Dealership.Client.Commands.CRUD
 {
     public class ViewCarDetailsCommand : Command
     {
-        private ICarService carService;
+        private readonly ICarService carService;
         public ViewCarDetailsCommand(IUserSession userSession, ICarService carService) : base(userSession)
         {
             this.carService = carService;
         }
 
-        // id
         public override string Execute(string[] parameters)
         {
             if (parameters.Length == 0) { throw new ArgumentException("Invalid parameters"); }

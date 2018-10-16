@@ -15,15 +15,23 @@ namespace Dealership.Client.Commands.CRUD.ExtrasCommands
             this.extraService = extraService;
         }
 
-        //getextrasforcar id
         public override string Execute(string[] parameters)
         {
             base.Execute(parameters);
-            if (parameters.Length == 0) { throw new ArgumentException("Invalid parameters"); }
-            if (!int.TryParse(parameters[0], out int id)) { throw new FormatException("Invalid value for Id!"); }
+            if (parameters.Length == 0)
+            {
+                throw new ArgumentException("Invalid parameters");
+            }
+            if (!int.TryParse(parameters[0], out int id))
+            {
+                throw new FormatException("Invalid value for Id!");
+            }
 
             var extras = this.extraService.GetExtrasForCar(id);
-            if (extras.Count == 0) { return "No extras."; }
+            if (extras.Count == 0)
+            {
+                return "No extras.";
+            }
             else { return $"Extras: {string.Join(", ", extras.Select(e => e.Name).ToList())}"; }
         }
     }

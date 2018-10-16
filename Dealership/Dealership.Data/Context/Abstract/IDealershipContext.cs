@@ -1,7 +1,7 @@
 ﻿using Dealership.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Dealership.Data.Context
+namespace Dealership.Data.Context.Abstract
 {
     public interface IDealershipContext
     {

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace Dealership.Data.Models
 {
@@ -16,12 +14,12 @@ namespace Dealership.Data.Models
 
         public int GearTypeId { get; set; }
 
-        [Range(1,10)]
+        [Range(1, 10)]
         public byte NumberOfGears { get; set; }
 
-        public virtual GearType GearType { get; set; }
+        public GearType GearType { get; set; }
 
-        public virtual ICollection<Car> Cars
+        public ICollection<Car> Cars
         {
             get { return _cars; }
             set

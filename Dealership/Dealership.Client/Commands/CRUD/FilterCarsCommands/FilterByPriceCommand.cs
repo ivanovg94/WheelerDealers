@@ -1,5 +1,4 @@
-﻿
-using Dealership.Client.Commands.Abstract;
+﻿using Dealership.Client.Commands.Abstract;
 using Dealership.Client.ViewModels;
 using Dealership.Data.Models.Contracts;
 using Dealership.Services.Abstract;
@@ -11,13 +10,13 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
 {
     public class FilterByPriceCommand : Command
     {
-        public FilterByPriceCommand(IUserSession userSession) : base(userSession)
+        private readonly ICarService carService;
+
+        public FilterByPriceCommand(IUserSession userSession, ICarService carService) : base(userSession)
         {
+            this.carService = carService;
         }
-
-        //filterByPrice {priceFrom} {priceTo}
-        public ICarService CarService { get; set; }
-
+        
         public override string Execute(string[] parameters)
         {
             int priceFrom = int.Parse(parameters[0]);
@@ -28,7 +27,7 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
                 throw new ArgumentException("The value of the first price cannot exceed the value of the second price!");
             }
 
-            var cars = this.CarService.GetCars("asc")
+            var cars = this.carService.GetCars("asc")
                 .Where(c => c.Price >= priceFrom && c.Price <= priceTo)
                 .Select(c => new CarVM
                 {
@@ -51,7 +50,7 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
                  .OrderBy(c => c.Price)
                  .ToList();
 
-            if (cars.Count==0)
+            if (cars.Count == 0)
             {
                 return $"No cars with price between {priceFrom} and {priceTo}.";
             }

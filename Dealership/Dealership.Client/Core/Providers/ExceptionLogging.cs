@@ -48,5 +48,4 @@ public class ExceptionLogging : IExceptionLogging
             e.ToString();
         }
     }
-
 }

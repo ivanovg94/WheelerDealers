@@ -19,9 +19,9 @@ namespace Dealership.Data.Models
 
         public int ColorTypeId { get; set; }
 
-        public virtual ColorType ColorType { get; set; }
+        public ColorType ColorType { get; set; }
 
-        public virtual ICollection<Car> Cars
+        public ICollection<Car> Cars
         {
             get { return _cars; }
             set

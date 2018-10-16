@@ -14,12 +14,12 @@ namespace Dealership.Client.Commands
     public class ImportCommand : AdminCommand
     {
         const string datasetDir = @"..\..\..\..\Dealership.Data\DataProcessor\ImportDatasets\";
+        private readonly ICarService carService;
 
-        public ImportCommand(IUserSession userSession) : base(userSession)
+        public ImportCommand(IUserSession userSession, ICarService carService) : base(userSession)
         {
+            this.carService = carService;
         }
-
-        public ICarService CarService { get; set; }
 
         public override string Execute(string[] parameters)
         {
@@ -55,7 +55,7 @@ namespace Dealership.Client.Commands
                 string gearbox = carDto.Gearbox;
                 byte numOfGears = carDto.NumberOfGears;
 
-                var car = CarService.CreateCar(brand, model, horsePower, engineCapacity, productionDate, price, bodyType, color, colorType, fuelType, gearbox, numOfGears);
+                var car = carService.CreateCar(brand, model, horsePower, engineCapacity, productionDate, price, bodyType, color, colorType, fuelType, gearbox, numOfGears);
 
                 cars.Add(car);
             }
@@ -65,7 +65,7 @@ namespace Dealership.Client.Commands
                 throw new InvalidOperationException("There is no cars to be imported.");
             }
 
-            this.CarService.AddCars(cars);
+            this.carService.AddCars(cars);
 
             return cars.Count;
         }

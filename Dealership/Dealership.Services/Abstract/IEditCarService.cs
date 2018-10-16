@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Dealership.Services.Abstract
+﻿namespace Dealership.Services.Abstract
 {
     public interface IEditCarService
     {

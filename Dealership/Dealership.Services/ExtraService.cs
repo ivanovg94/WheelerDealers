@@ -40,19 +40,16 @@ namespace Dealership.Services
                 throw new ArgumentException($"Car with Id {carId} already has extra with name {extraName}.");
             }
 
-            //TODO: validate
             var extra = GetExtraByName(extraName);
             if (extra == null)
             {
                 extra = new Extra() { Name = extraName };
                 this.unitOfWork.GetRepository<Extra>().Add(extra);
-                this.unitOfWork.SaveChanges(); //????? does it break the queery ?
+                this.unitOfWork.SaveChanges();
             }
-
 
             var newCarExtra = new CarsExtras() { CarId = carId, ExtraId = extra.Id };
             this.unitOfWork.GetRepository<CarsExtras>().Add(newCarExtra);
-            //       extra.CarsExtras.Add(newCarExtra);
 
             this.unitOfWork.SaveChanges();
             return extra;

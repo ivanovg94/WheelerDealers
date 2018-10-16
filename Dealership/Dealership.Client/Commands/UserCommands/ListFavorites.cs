@@ -3,23 +3,22 @@ using Dealership.Client.ViewModels;
 using Dealership.Data.Models.Contracts;
 using Dealership.Services.Abstract;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Dealership.Client.Commands.UserCommands
 {
     public class ListFavorites : Command
     {
-        public IUserService UserService { get; set; }
+        private readonly IUserService userService;
 
-        public ListFavorites(IUserSession userSession) : base(userSession)
+        public ListFavorites(IUserSession userSession, IUserService userService) : base(userSession)
         {
+            this.userService = userService;
         }
 
         public override string Execute(string[] parameters)
         {
-            var cars = this.UserService.ListFavorites(this.UserSession.CurrentUser.Username);
+            var cars = this.userService.ListFavorites(this.UserSession.CurrentUser.Username);
 
             if (cars.Count == 0)
             {

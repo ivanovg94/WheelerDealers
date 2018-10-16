@@ -1,5 +1,4 @@
 ﻿using Dealership.Client.Core.Abstract;
-using Dealership.Data.Models;
 using Dealership.Data.Models.Contracts;
 using System;
 
@@ -11,13 +10,15 @@ namespace Dealership.Client.Core
         private readonly IWriter writer;
         private readonly IExceptionLogging exceptionLogging;
         private readonly ICommandProcessor processor;
+        private readonly IRenderer renderer;
         private readonly IUserSession userSession;
 
         public DealershipEngine(IReader reader, IWriter writer, IUserSession userSession,
-            IExceptionLogging exceptionLogging, ICommandProcessor commandProcessor)
+            IExceptionLogging exceptionLogging, ICommandProcessor commandProcessor, IRenderer renderer)
         {
             this.reader = reader;
             this.writer = writer;
+            this.renderer = renderer;
             this.exceptionLogging = exceptionLogging;
             this.processor = commandProcessor;
             this.userSession = userSession;
@@ -27,7 +28,7 @@ namespace Dealership.Client.Core
 
         public void Run()
         {
-            this.writer.PrintCommands();
+            this.writer.WriteLine(this.renderer.GetCommandsInfo());
             while ((input = reader.ReadLine()) != "exit")
             {
                 try
@@ -38,48 +39,8 @@ namespace Dealership.Client.Core
                     {
                         throw new InvalidOperationException("Please login or register.");
                     }
-
-                    //if (this.userSession.CurrentUser == null)
-                    //{
-                    //    this.writer.PrintLoginCommands();
-                    //}
-                    //else if (this.userSession.CurrentUser.UserType == UserType.Admin)
-                    //{
-                    //    this.writer.PrintAdminCommands();
-                    //}
-                    //else if (this.userSession.CurrentUser.UserType == UserType.User)
-                    //{
-                    //    this.writer.PrintUserCommands();
-                    //}
-
-
-
-
-                    //if (!input.ToLower().Equals("clear"))
-                    //{
                     this.writer.WriteLine(processor.ProcessCommand(input));
-                    //}
-                    //else 
-                    //{
-                    //    this.writer.Clean();
-                    //    this.writer.PrintHeader();
-                    //    if (this.userSession.CurrentUser == null)
-                    //    {
-                    //        this.writer.PrintLoginCommands();
-                    //    }
-                    //    else if (this.userSession.CurrentUser.UserType == UserType.Admin)
-                    //    {
-                    //        this.writer.PrintAdminCommands();
-                    //    }
-                    //    else if (this.userSession.CurrentUser.UserType == UserType.User)
-                    //    {
-                    //        this.writer.PrintUserCommands();
-                    //    }
-                    //   }
-
-
                 }
-
 
                 catch (Exception ex)
                 {

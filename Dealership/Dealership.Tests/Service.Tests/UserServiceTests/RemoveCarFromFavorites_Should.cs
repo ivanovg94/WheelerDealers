@@ -5,10 +5,8 @@ using Dealership.Services.Abstract;
 using Dealership.Services.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Dealership.Tests.Service.Tests.UserServiceTests
 {

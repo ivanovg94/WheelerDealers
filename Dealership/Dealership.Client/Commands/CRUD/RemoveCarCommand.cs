@@ -6,17 +6,18 @@ namespace Dealership.Client.Commands.CRUD
 {
     public class RemoveCarCommand : AdminCommand
     {
-        public RemoveCarCommand(IUserSession userSession) : base(userSession)
-        {
-        }
+        private readonly ICarService carService;
 
-        public ICarService CarService { get; set; }
+        public RemoveCarCommand(IUserSession userSession, ICarService carService) : base(userSession)
+        {
+            this.carService = carService;
+        }
 
         public override string Execute(string[] parameters)
         {
             base.Execute(parameters);
             int carId = int.Parse(parameters[0]);
-            this.CarService.RemoveCar(carId);
+            this.carService.RemoveCar(carId);
 
             return $"Car with ID {carId} was removed!";
         }
