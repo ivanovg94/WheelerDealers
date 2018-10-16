@@ -20,7 +20,7 @@ namespace Dealership.Tests.Service.Tests.EditCarService
 
             var invalidParameters = new string[0];
 
-            var sut = new Dealership.Services.EditCarService(unitOfWorkStub.Object, carServiceStub.Object);
+            var sut = new Services.EditCarService(unitOfWorkStub.Object, carServiceStub.Object);
 
             Assert.ThrowsException<ArgumentException>(() => sut.EditBrand(invalidParameters));
         }
