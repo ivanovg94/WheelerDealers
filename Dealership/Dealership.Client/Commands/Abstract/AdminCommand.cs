@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Dealership.Data.Models;
+﻿using Dealership.Data.Models;
 using Dealership.Data.Models.Contracts;
+using System;
 
 namespace Dealership.Client.Commands.Abstract
 {
@@ -18,7 +16,6 @@ namespace Dealership.Client.Commands.Abstract
             {
                 throw new ArgumentException("Permission denied. You should be admin to do this operation.");
             }
-
             return "";
         }
     }

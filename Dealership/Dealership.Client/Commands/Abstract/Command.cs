@@ -8,7 +8,6 @@ namespace Dealership.Client.Commands.Abstract
 {
     public abstract class Command : ICommand
     {
-        //Remove after all command logic is moved to service layer
         public IDealershipContext Context { get; set; }
 
         public IComponentContext AutoFacContext { get; set; }
@@ -25,6 +24,5 @@ namespace Dealership.Client.Commands.Abstract
         }
 
         public abstract string Execute(string[] parameters);
-
     }
 }

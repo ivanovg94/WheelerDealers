@@ -1,6 +1,4 @@
 ﻿using Dealership.Client.Core.Abstract;
-using Dealership.Data.Models.Contracts;
-using System;
 using System.Linq;
 
 namespace Dealership.Client.Core.Providers
@@ -8,6 +6,7 @@ namespace Dealership.Client.Core.Providers
     public class CommandProcessor : ICommandProcessor
     {
         private readonly ICommandParser commandParser;
+
         public CommandProcessor(ICommandParser commandParser)
         {
             this.commandParser = commandParser;

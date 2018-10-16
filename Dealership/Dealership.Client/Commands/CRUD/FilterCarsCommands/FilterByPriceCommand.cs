@@ -11,12 +11,12 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
 {
     public class FilterByPriceCommand : Command
     {
-        public FilterByPriceCommand(IUserSession userSession) : base(userSession)
+        private readonly ICarService carService;
+
+        public FilterByPriceCommand(IUserSession userSession, ICarService carService  ) : base(userSession)
         {
         }
 
-        //filterByPrice {priceFrom} {priceTo}
-        public ICarService CarService { get; set; }
 
         public override string Execute(string[] parameters)
         {
@@ -28,7 +28,7 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
                 throw new ArgumentException("The value of the first price cannot exceed the value of the second price!");
             }
 
-            var cars = this.CarService.GetCars("asc")
+            var cars = this.carService.GetCars("asc")
                 .Where(c => c.Price >= priceFrom && c.Price <= priceTo)
                 .Select(c => new CarVM
                 {

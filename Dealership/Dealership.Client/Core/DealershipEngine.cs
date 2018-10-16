@@ -1,5 +1,4 @@
 ﻿using Dealership.Client.Core.Abstract;
-using Dealership.Data.Models;
 using Dealership.Data.Models.Contracts;
 using System;
 
@@ -12,6 +11,7 @@ namespace Dealership.Client.Core
         private readonly IExceptionLogging exceptionLogging;
         private readonly ICommandProcessor processor;
         private readonly IUserSession userSession;
+
         public DealershipEngine(IReader reader, IWriter writer, IUserSession userSession,
             IExceptionLogging exceptionLogging, ICommandProcessor commandProcessor)
         {
@@ -37,48 +37,8 @@ namespace Dealership.Client.Core
                     {
                         throw new InvalidOperationException("Please login or register.");
                     }
-
-                    //if (this.userSession.CurrentUser == null)
-                    //{
-                    //    this.writer.PrintLoginCommands();
-                    //}
-                    //else if (this.userSession.CurrentUser.UserType == UserType.Admin)
-                    //{
-                    //    this.writer.PrintAdminCommands();
-                    //}
-                    //else if (this.userSession.CurrentUser.UserType == UserType.User)
-                    //{
-                    //    this.writer.PrintUserCommands();
-                    //}
-
-
-
-
-                    //if (!input.ToLower().Equals("clear"))
-                    //{
                     this.writer.WriteLine(processor.ProcessCommand(input));
-                    //}
-                    //else 
-                    //{
-                    //    this.writer.Clean();
-                    //    this.writer.PrintHeader();
-                    //    if (this.userSession.CurrentUser == null)
-                    //    {
-                    //        this.writer.PrintLoginCommands();
-                    //    }
-                    //    else if (this.userSession.CurrentUser.UserType == UserType.Admin)
-                    //    {
-                    //        this.writer.PrintAdminCommands();
-                    //    }
-                    //    else if (this.userSession.CurrentUser.UserType == UserType.User)
-                    //    {
-                    //        this.writer.PrintUserCommands();
-                    //    }
-                    //   }
-
-
                 }
-
 
                 catch (Exception ex)
                 {
@@ -90,9 +50,6 @@ namespace Dealership.Client.Core
                     this.exceptionLogging.SendErrorToText(ex);
                 }
             }
-
         }
-
-
     }
 }

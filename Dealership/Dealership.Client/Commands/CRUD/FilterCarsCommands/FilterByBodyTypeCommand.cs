@@ -2,8 +2,6 @@
 using Dealership.Client.ViewModels;
 using Dealership.Data.Models.Contracts;
 using Dealership.Services.Abstract;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -15,7 +13,6 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
         {
         }
 
-        //filterByBodyType {bodyType}
         public ICarService CarService { get; set; }
 
         public IBodyTypeService BodyTypeService { get; set; }
