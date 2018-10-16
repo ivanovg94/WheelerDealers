@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 
-namespace Dealership.Tests.Client.Tests.EditCommand.Tests
+namespace Dealership.Tests.Commands.Tests.EditCommandTests
 {
     [TestClass]
     public class Constructor_Should

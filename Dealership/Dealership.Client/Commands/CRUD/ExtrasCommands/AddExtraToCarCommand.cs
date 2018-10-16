@@ -4,7 +4,7 @@ using Dealership.Services.Abstract;
 using System;
 using System.Linq;
 
-namespace Dealership.Client.Commands.ExtrasCommands
+namespace Dealership.Client.Commands.CRUD.ExtrasCommands
 {
     public class AddExtraToCarCommand : AdminCommand
     {

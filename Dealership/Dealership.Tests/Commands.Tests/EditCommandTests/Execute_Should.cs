@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Dealership.Tests.Client.Tests.EditCommand.Tests
+namespace Dealership.Tests.Commands.Tests.EditCommandTests
 {
     [TestClass]
     public class Execute_Should

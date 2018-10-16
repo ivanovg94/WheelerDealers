@@ -1,12 +1,25 @@
 # Dealership
+![alt text](https://di-uploads-pod1.s3.amazonaws.com/depaulachevy/uploads/2016/10/Car-Dealerships.jpg)
 
-Team name: WheelerDealers <br />
-Team members: <br />
-(Team Leader)[Viktor Doninski](https://gitlab.com/vicktor)<br />
-[Georgi Ivanov](https://gitlab.com/ivanovg94)<br />
-[Martin Kaerski](https://gitlab.com/MartinKaerski)<br />
-Dealership App<br />
-The purpose of the project is to store car information for a dealership. The cars will have different properties and selling price. 
-There will be information about available and sold cars. The user can manipulate the database through basic CRUD operations. 
-<br />
-[Kanban board](https://trello.com/b/1BDyADpf/team7)
+Dealership is a project which purpose is to store car information for a dealership. The cars have different properties and selling price.
+There is information about available and sold cars. The admin can manipulate the database through basic CRUD operations. The user can add and remove cars from favorites and list them.
+
+## Team: Wheeler Dealers
+### Team Members
+* (Team Leader)[Viktor Doninski](https://gitlab.com/vicktor)
+* [Georgi Ivanov](https://gitlab.com/ivanovg94)
+* [Martin Kaerski](https://gitlab.com/MartinKaerski)
+
+## Features
+* Register user
+* Login and  users
+* Add and remove cars
+* Edit cars
+* List cars filtered by different parameters
+* Show car details
+* Generate PDF of available cars
+* Import cars from JSON
+* Export cars to JSON
+
+## [Kanban board](https://trello.com/b/1BDyADpf/team7)
+

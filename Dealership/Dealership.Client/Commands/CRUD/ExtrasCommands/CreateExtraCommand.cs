@@ -3,7 +3,7 @@ using Dealership.Data.Models.Contracts;
 using Dealership.Services.Abstract;
 using System;
 
-namespace Dealership.Client.Commands.ExtrasCommands
+namespace Dealership.Client.Commands.CRUD.ExtrasCommands
 {
     public class CreateExtraCommand : AdminCommand
     {

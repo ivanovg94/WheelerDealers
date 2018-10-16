@@ -5,12 +5,11 @@ using Dealership.Services.Abstract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-using System.Collections.Generic;
 
-namespace Dealership.Tests.Commands.Tests
+namespace Dealership.Tests.Commands.Tests.ExtrasCommandsTests
 {
     [TestClass]
-    public class GetExtrasForCarCommand_Should
+    public class AddExtraToCarCommand_Should
     {
         [TestMethod]
         public void ThrowArgumentExcpetion_WhenEmptyCollectionIsPassed()
@@ -20,7 +19,7 @@ namespace Dealership.Tests.Commands.Tests
             var user = new User() { UserType = UserType.Admin };
             sessionMock.Setup(s => s.CurrentUser).Returns(user);
             var serviceMock = new Mock<IExtraService>();
-            var sut = new GetExtrasForCarCommand(sessionMock.Object, serviceMock.Object);
+            var sut = new AddExtraToCarCommand(sessionMock.Object, serviceMock.Object);
             var args = new string[0];
             //Act && Assert
             Assert.ThrowsException<ArgumentException>(() => sut.Execute(args));
@@ -34,30 +33,24 @@ namespace Dealership.Tests.Commands.Tests
             var user = new User() { UserType = UserType.Admin };
             sessionMock.Setup(s => s.CurrentUser).Returns(user);
             var serviceMock = new Mock<IExtraService>();
-            var sut = new GetExtrasForCarCommand(sessionMock.Object, serviceMock.Object);
+            var sut = new AddExtraToCarCommand(sessionMock.Object, serviceMock.Object);
             var args = new string[1] { "a" };
             //Act && Assert
             Assert.ThrowsException<FormatException>(() => sut.Execute(args));
         }
 
         [TestMethod]
-        public void ReturnPropperMessage_WhenNoElementsAreFound()
+        public void ThrowArgumentExcpetion_WhenEmptySpaceIsPassedAsParameter()
         {
             //Arrange
             var sessionMock = new Mock<IUserSession>();
             var user = new User() { UserType = UserType.Admin };
             sessionMock.Setup(s => s.CurrentUser).Returns(user);
             var serviceMock = new Mock<IExtraService>();
-            var emptyCollection = new List<Extra>();
-            serviceMock.Setup(s => s.GetExtrasForCar(It.IsAny<int>())).Returns(emptyCollection);
-            var sut = new GetExtrasForCarCommand(sessionMock.Object, serviceMock.Object);
-            var args = new string[1] { "1" };
-            //Act 
-            var actual = sut.Execute(args);
-            var expected = "No extras.";
-            //Assert
-            Assert.IsTrue(actual == expected);
+            var sut = new AddExtraToCarCommand(sessionMock.Object, serviceMock.Object);
+            var args = new string[2] { "1", "" };
+            //Act && Assert
+            Assert.ThrowsException<ArgumentException>(() => sut.Execute(args));
         }
-
     }
 }

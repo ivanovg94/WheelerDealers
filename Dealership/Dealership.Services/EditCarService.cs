@@ -16,10 +16,8 @@ namespace Dealership.Services
         public IUnitOfWork UnitOfWork => unitOfWork;
 
 
-        //mocking purposes
         public EditCarService()
         {
-
         }
 
         public EditCarService(IUnitOfWork unitOfWork, ICarService carService)
@@ -34,7 +32,6 @@ namespace Dealership.Services
             }
             this.unitOfWork = unitOfWork;
             this.carService = carService;
-            //field init changed to prop for testing
         }
 
         public virtual string EditBrand(string[] parameters)
@@ -85,8 +82,7 @@ namespace Dealership.Services
             {
                 throw new ArgumentNullException("Invalid amount of parameters!");
             }
-            int id /*int.Parse(parameters[0])*/;
-            if (!int.TryParse(parameters[0], out id))
+            if (!int.TryParse(parameters[0], out int id))
             {
                 throw new ArgumentException("Invalid ID!");
             }
@@ -108,8 +104,7 @@ namespace Dealership.Services
                 throw new ArgumentNullException("Invalid amount of parameters!");
             }
 
-            int id /*int.Parse(parameters[0])*/;
-            if (!int.TryParse(parameters[0], out id))
+            if (!int.TryParse(parameters[0], out int id))
             {
                 throw new ArgumentException("Invalid ID!");
             }
@@ -131,8 +126,7 @@ namespace Dealership.Services
                 throw new ArgumentNullException("Invalid amount of parameters!");
             }
 
-            int id /*int.Parse(parameters[0])*/;
-            if (!int.TryParse(parameters[0], out id))
+            if (!int.TryParse(parameters[0], out int id))
             {
                 throw new ArgumentException("Invalid ID!");
             }
@@ -155,8 +149,7 @@ namespace Dealership.Services
                 throw new ArgumentNullException("Invalid amount of parameters!");
             }
 
-            int id /*int.Parse(parameters[0])*/;
-            if (!int.TryParse(parameters[0], out id))
+            if (!int.TryParse(parameters[0], out int id))
             {
                 throw new ArgumentException("Invalid ID!");
             }
@@ -172,15 +165,14 @@ namespace Dealership.Services
             return $"IsSold of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
         }
 
-        public string EditPrice(string[] parameters)// not tested
+        public string EditPrice(string[] parameters)
         {
             if (parameters == null || parameters.Length == 0)
             {
                 throw new ArgumentNullException("Invalid amount of parameters!");
             }
 
-            int id /*int.Parse(parameters[0])*/;
-            if (!int.TryParse(parameters[0], out id))
+            if (!int.TryParse(parameters[0], out int id))
             {
                 throw new ArgumentException("Invalid ID!");
             }
@@ -192,18 +184,16 @@ namespace Dealership.Services
             UnitOfWork.SaveChanges();
 
             return $"Price of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
-            // return $"Price of car with ID:{id} edited successfully to {newValue}!";
         }
 
-        public string EditProductionDate(string[] parameters)// not tested
+        public string EditProductionDate(string[] parameters)
         {
             if (parameters == null || parameters.Length == 0)
             {
                 throw new ArgumentNullException("Invalid amount of parameters!");
             }
 
-            int id /*int.Parse(parameters[0])*/;
-            if (!int.TryParse(parameters[0], out id))
+            if (!int.TryParse(parameters[0], out int id))
             {
                 throw new ArgumentException("Invalid ID!");
             }
@@ -225,8 +215,7 @@ namespace Dealership.Services
                 throw new ArgumentNullException("Invalid amount of parameters!");
             }
 
-            int id /*int.Parse(parameters[0])*/;
-            if (!int.TryParse(parameters[0], out id))
+            if (!int.TryParse(parameters[0], out int id))
             {
                 throw new ArgumentException("Invalid ID!");
             }
@@ -259,8 +248,7 @@ namespace Dealership.Services
                 throw new ArgumentException("Invalid number of parameters!");
             }
 
-            int id;
-            if (!int.TryParse(parameters[0], out id))
+            if (!int.TryParse(parameters[0], out int id))
             {
                 throw new ArgumentException("Invalid ID!");
             }
@@ -312,8 +300,7 @@ namespace Dealership.Services
                 throw new ArgumentException("Invalid number of parameters!");
             }
 
-            int id;
-            if (!int.TryParse(parameters[0], out id))
+            if (!int.TryParse(parameters[0], out int id))
             {
                 throw new ArgumentException("Invalid ID!");
             }
@@ -355,8 +342,7 @@ namespace Dealership.Services
                 throw new ArgumentException("Invalid number of parameters!");
             }
 
-            int id;
-            if (!int.TryParse(parameters[0], out id))
+            if (!int.TryParse(parameters[0], out int id))
             {
                 throw new ArgumentException("Invalid ID!");
             }
@@ -381,7 +367,7 @@ namespace Dealership.Services
 
         }
 
-        public string EditGearbox(string[] parameters) // works but must include navigation props tables !
+        public string EditGearbox(string[] parameters)
         {
             if (parameters == null)
             {
@@ -392,8 +378,7 @@ namespace Dealership.Services
                 throw new ArgumentException("Invalid number of parameters!");
             }
 
-            int id;
-            if (!int.TryParse(parameters[0], out id))
+            if (!int.TryParse(parameters[0], out int id))
             {
                 throw new ArgumentException("Invalid ID!");
             }
