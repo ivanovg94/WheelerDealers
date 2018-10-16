@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Dealership.Tests.CarService.Tests
+namespace Dealership.Tests.CarServiceTests
 {
 
     [TestClass]

@@ -6,6 +6,7 @@ namespace Dealership.Data.Models.Contracts
 {
     public interface ICar : IDeletable
     {
+        int Id { get; set; }
         BodyType BodyType { get; set; }
         int BodyTypeId { get; set; }
         Brand Brand { get; set; }
