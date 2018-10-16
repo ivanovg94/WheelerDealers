@@ -5,11 +5,11 @@ namespace Dealership.Data.Models
 {
     public class GearType : Entity
     {
-        private ICollection<Gearbox> _gearboxes;
+        private ICollection<Gearbox> gearboxes;
 
         public GearType()
         {
-            this._gearboxes = new HashSet<Gearbox>();
+            this.gearboxes = new HashSet<Gearbox>();
         }
 
         [Required]
@@ -19,10 +19,10 @@ namespace Dealership.Data.Models
 
         public ICollection<Gearbox> Gearboxes
         {
-            get { return _gearboxes; }
+            get { return this.gearboxes; }
             set
             {
-                _gearboxes = value;
+                this.gearboxes = value;
             }
         }
     }

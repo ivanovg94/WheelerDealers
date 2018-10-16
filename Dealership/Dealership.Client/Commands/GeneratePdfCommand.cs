@@ -36,8 +36,8 @@ namespace Dealership.Client.Commands
                     table.SetTextAlignment(TextAlignment.CENTER);
                     table.SetBold();
 
-                    var cell = new Cell(1, 10).Add(new Paragraph("Wheeler Dealer"));
-                    cell.SetBold();
+                    var cell = new Cell(1, 10).Add(new Paragraph("Wheeler Dealer's available cars"));
+
                     table.AddCell(cell);
 
                     table.AddCell("Brand");
@@ -64,6 +64,9 @@ namespace Dealership.Client.Commands
                         table.AddCell(car.FuelType.Name);
                         table.AddCell(car.Price.ToString());
                     }
+
+                    cell = new Cell(1, 10).Add(new Paragraph($"Total cars: {cars.Count}"));
+                    table.AddCell(cell);
 
                     doc.Add(table);
                 }

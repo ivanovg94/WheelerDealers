@@ -7,12 +7,12 @@ namespace Dealership.Data.Models
 {
     public class Car : Entity, ICar
     {
-        private ICollection<CarsExtras> _carsExtras;
+        private ICollection<CarsExtras> carsExtras;
         private ICollection<UsersCars> usersCars;
 
         public Car()
         {
-            this._carsExtras = new HashSet<CarsExtras>();
+            this.carsExtras = new HashSet<CarsExtras>();
             this.usersCars = new HashSet<UsersCars>();
         }
 
@@ -55,19 +55,19 @@ namespace Dealership.Data.Models
 
         public ICollection<CarsExtras> CarsExtras
         {
-            get { return _carsExtras; }
+            get { return this.carsExtras; }
             set
             {
-                _carsExtras = value;
+                this.carsExtras = value;
             }
         }
 
         public ICollection<UsersCars> UsersCars
         {
-            get { return usersCars; }
+            get { return this.usersCars; }
             set
             {
-                usersCars = value;
+                this.usersCars = value;
             }
         }
     }

@@ -5,11 +5,11 @@ namespace Dealership.Data.Models
 {
     public class BodyType : Entity
     {
-        private ICollection<Car> _cars;
+        private ICollection<Car> cars;
 
         public BodyType()
         {
-            this._cars = new HashSet<Car>();
+            this.cars = new HashSet<Car>();
         }
 
         [Required]
@@ -22,8 +22,8 @@ namespace Dealership.Data.Models
 
         public ICollection<Car> Cars
         {
-            get { return _cars; }
-            set { _cars = value; }
+            get { return this.cars; }
+            set { this.cars = value; }
         }
     }
 }

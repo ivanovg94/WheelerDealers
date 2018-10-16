@@ -1,5 +1,6 @@
 ﻿using Dealership.Data.Context;
 using Dealership.Data.Models;
+using Dealership.Data.Repository;
 using Dealership.Data.UnitOfWork;
 using Dealership.Services.Abstract;
 using Microsoft.EntityFrameworkCore;
@@ -60,33 +61,71 @@ namespace Dealership.Tests.Service.Tests.EditCarService
             var contextOptions = new DbContextOptionsBuilder<DealershipContext>()
                 .UseInMemoryDatabase(databaseName:
                 "EditModelCorrectly_WhenValidParametersArePassed").Options;
-            var dealerShipContext = new DealershipContext(contextOptions);
 
-            var testBrand = new Mock<Brand>();
-            testBrand.Setup(tb => tb.Name).Returns("brand");
+            string result;
+            Car testCar;
 
-            var unitOfWork = new UnitOfWork(dealerShipContext);
-
-            var testCar = new Car() { Brand = testBrand.Object };
-
-            var carServiceStub = new Mock<ICarService>();
-            carServiceStub.Setup(cs => cs.CreateCar(It.IsAny<string>(), It.IsAny<string>()
-                , It.IsAny<short>(), It.IsAny<short>(), It.IsAny<DateTime>()
-                , It.IsAny<decimal>(), It.IsAny<string>(), It.IsAny<string>()
-                , It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()
-                , It.IsAny<int>())).Returns(testCar);
-
-            carServiceStub.Setup(cs => cs.GetCar(1)).Returns(testCar);
-
-            string[] validParameters = new string[2] { "1", "test" };
+            string[] validParameters = new string[2] { "1", "newBrand" };
             string expectedBrandName = validParameters[1];
 
-            var editCarService = new Services.EditCarService(unitOfWork, carServiceStub.Object);
+            using (var dealerShipContext = new DealershipContext(contextOptions))
+            {
+                var testBrand = new Brand() { Name = "testBrand" };
 
-            var result = editCarService.EditBrand(validParameters);
+                var unitOfWork = new UnitOfWork(dealerShipContext);
+
+                testCar = new Car() { Brand = testBrand };
+
+                var carServiceStub = new Mock<ICarService>();
+
+                carServiceStub.Setup(cs => cs.GetCar(1)).Returns(testCar);
+
+                var editCarService = new Services.EditCarService(unitOfWork, carServiceStub.Object);
+
+                result = editCarService.EditBrand(validParameters);
+            }
 
             Assert.IsTrue(result.Contains("edited"));
             Assert.IsTrue(testCar.Brand.Name == expectedBrandName);
         }
+
+        [TestMethod]
+        public void CreateNewBrand_IfInputBrandNotExistsInDatabase()
+        {
+            //arrange
+            var contextOptions = new DbContextOptionsBuilder<DealershipContext>()
+                .UseInMemoryDatabase(databaseName:
+                "EditModelCorrectly_WhenValidParametersArePassed").Options;
+
+            string result;
+            Car testCar;
+
+            string[] validParameters = new string[2] { "1", "unexistingBrand" };
+            string expectedBrandName = validParameters[1];
+
+            using (var dealerShipContext = new DealershipContext(contextOptions))
+            {
+                var testBrand = new Brand() { Name = "testBrand" };
+
+                var unitOfWork = new UnitOfWork(dealerShipContext);
+
+                testCar = new Car() { Brand = testBrand };
+
+                var carServiceStub = new Mock<ICarService>();
+                carServiceStub.Setup(cs => cs.GetCar(1)).Returns(testCar);
+
+                var editCarService = new Services.EditCarService(unitOfWork, carServiceStub.Object);
+
+                result = editCarService.EditBrand(validParameters);
+            }
+
+            Assert.IsTrue(testCar.Brand.Name == expectedBrandName);
+        }
     }
 }
+
+//carServiceStub.Setup(cs => cs.CreateCar(It.IsAny<string>(), It.IsAny<string>()
+//    , It.IsAny<short>(), It.IsAny<short>(), It.IsAny<DateTime>()
+//    , It.IsAny<decimal>(), It.IsAny<string>(), It.IsAny<string>()
+//    , It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()
+//    , It.IsAny<int>())).Returns(testCar);

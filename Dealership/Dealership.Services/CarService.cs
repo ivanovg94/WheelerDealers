@@ -207,8 +207,22 @@ namespace Dealership.Services
         {
             var car = GetCar(id);
             this.unitOfWork.GetRepository<Car>().Delete(car);
-            this.unitOfWork.SaveChanges();
 
+            var usersCars = this.unitOfWork.GetRepository<UsersCars>().All().Where(uc => uc.CarId == id).ToList();
+
+            foreach (var userCar in usersCars)
+            {
+                this.unitOfWork.GetRepository<UsersCars>().Delete(userCar);
+            }
+
+            var carsExtras = this.unitOfWork.GetRepository<CarsExtras>().All().Where(uc => uc.CarId == id).ToList();
+
+            foreach (var carExtra in carsExtras)
+            {
+                this.unitOfWork.GetRepository<CarsExtras>().Delete(carExtra);
+            }
+
+            this.unitOfWork.SaveChanges();
             return car;
         }
     }

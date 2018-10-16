@@ -37,7 +37,7 @@ namespace Dealership.Tests.Service.Tests.EditCarService
 
             var editCarService = new Services.EditCarService(unitOfWorkStub.Object, carServiceStub.Object);
             //act&assert
-            Assert.ThrowsException<ArgumentNullException>(() => editCarService.EditModel(emptyArray));
+            Assert.ThrowsException<ArgumentException>(() => editCarService.EditModel(emptyArray));
         }
 
         [TestMethod]
