@@ -9,6 +9,7 @@ using System.Collections.Generic;
 
 namespace Dealership.Tests.Commands.Tests.FilterCarsCommandsTests
 {
+    [TestClass]
     public class FilterByYearsCommand_Should
     {
         [TestMethod]
@@ -50,7 +51,7 @@ namespace Dealership.Tests.Commands.Tests.FilterCarsCommandsTests
             var result = sut.Execute(parameters);
 
             // Assert
-            StringAssert.Contains(result, "Year: 2005");
+            StringAssert.Contains(result, "2005");
         }
 
         [TestMethod]
