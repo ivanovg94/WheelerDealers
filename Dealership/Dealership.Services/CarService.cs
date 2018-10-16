@@ -49,7 +49,7 @@ namespace Dealership.Services
             var bodyType = this.unitOfWork.GetRepository<BodyType>().All().FirstOrDefault(c => c.Name == bodyTypeName);
             if (bodyType == null)
             {
-                throw new ServiceException($"There is no body type with name \"{bodyTypeName}\".");
+                throw new ServiceException($"There is no body type with name {bodyTypeName}.");
             }
 
             var color = this.unitOfWork.GetRepository<Color>().All()
@@ -60,7 +60,7 @@ namespace Dealership.Services
                                        .FirstOrDefault(ct => ct.Name == colorType);
             if (colorTypeFromDatabase == null)
             {
-                throw new InvalidOperationException($"There is no color type with name \"{bodyTypeName}\".");
+                throw new InvalidOperationException($"There is no color type with name {colorType}.");
             }
 
             if (color == null)
@@ -74,7 +74,7 @@ namespace Dealership.Services
                                           .FirstOrDefault(f => f.Name == fuelTypeName);
             if (fuelType == null)
             {
-                throw new ServiceException($"There is no fuel with name \"{fuelTypeName}\".");
+                throw new ServiceException($"There is no fuel with name {fuelTypeName}.");
             }
 
             var gearbox = this.unitOfWork.GetRepository<Gearbox>().All()
