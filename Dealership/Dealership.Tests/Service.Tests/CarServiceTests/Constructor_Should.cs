@@ -5,7 +5,6 @@ using System;
 
 namespace Dealership.Tests.CarServiceTests
 {
-
     [TestClass]
     public class Constructor_Should
     {
