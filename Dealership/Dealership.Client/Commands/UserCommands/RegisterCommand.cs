@@ -16,14 +16,14 @@ namespace Dealership.Client.Commands.UserCommands
 
         public override string Execute(string[] parameters)
         {
+            if (parameters.Length != 4)
+            {
+                throw new ArgumentException("Invalid parameters!");
+            }
+
             if (base.UserSession.CurrentUser != null)
             {
                 throw new InvalidOperationException("There is logged in user. Logout first to register new user!");
-            }
-
-            if (parameters.Length != 4)
-            {
-                throw new ArgumentException("Invalid parameters.");
             }
 
             string username = parameters[0];
@@ -34,7 +34,7 @@ namespace Dealership.Client.Commands.UserCommands
             var user = this.userService.RegisterUser(username, password, confirmPassword, email);
             base.UserSession.CurrentUser = user;
 
-            return $"User {username} was registered succesfully";
+            return $"User {username} was registered succesfully.";
         }
     }
 }

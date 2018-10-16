@@ -18,7 +18,7 @@ namespace Dealership.Client.Commands.UserCommands
         {
             if (parameters.Length != 2)
             {
-                throw new ArgumentException("Invalid parameters");
+                throw new ArgumentException("Invalid parameters!");
             }
 
             string username = parameters[0];

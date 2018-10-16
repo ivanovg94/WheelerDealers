@@ -21,7 +21,7 @@ namespace Dealership.Client.Commands.UserCommands
 
             base.UserSession.CurrentUser = null;
 
-            return $"User {username} successfully logged out!";
+            return $"User {username} successfully logged out.";
         }
     }
 }

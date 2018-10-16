@@ -43,7 +43,6 @@ namespace Dealership.Client.Commands.UserCommands
                 NumberOfGears = c.GearBox.NumberOfGears,
                 Extras = c.CarsExtras.Select(ce => ce.Extra.Name).ToList()
             });
-
             return string.Join($"\r\n", result);
         }
     }

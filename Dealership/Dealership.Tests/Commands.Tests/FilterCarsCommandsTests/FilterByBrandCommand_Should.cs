@@ -45,9 +45,9 @@ namespace Dealership.Tests.Commands.Tests.FilterCarsCommandsTests
 
             brandServiceMock.Setup(b => b.GetBrand(It.IsAny<string>())).Returns(brand);
             carServiceMock.Setup(c => c.GetCars(It.IsAny<string>())).Returns(cars);
+            var parameters = new string[1] { "mercedes" };
 
             // Act
-            var parameters = new string[1] { "mercedes" };
             var result = sut.Execute(parameters);
 
             // Assert
@@ -87,9 +87,9 @@ namespace Dealership.Tests.Commands.Tests.FilterCarsCommandsTests
 
             brandServiceMock.Setup(b => b.GetBrand(It.IsAny<string>())).Returns(brand);
             carServiceMock.Setup(c => c.GetCars(It.IsAny<string>())).Returns(cars);
+            var parameters = new string[1] { "invalidBrand" };
 
             // Act
-            var parameters = new string[1] { "invalidBrand" };
             var result = sut.Execute(parameters);
 
             // Assert

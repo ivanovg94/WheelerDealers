@@ -18,7 +18,7 @@ namespace Dealership.Client.Commands.UserCommands
         {
             if (parameters.Length != 1)
             {
-                throw new ArgumentException("Invalid parameters");
+                throw new ArgumentException("Invalid parameters!");
             }
 
             int carId = int.Parse(parameters[0]);

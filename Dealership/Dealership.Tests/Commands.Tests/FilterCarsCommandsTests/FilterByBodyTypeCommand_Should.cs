@@ -45,9 +45,9 @@ namespace Dealership.Tests.Commands.Tests.FilterCarsCommandsTests
 
             bodyTypeServiceMock.Setup(b => b.GetBodyType(It.IsAny<string>())).Returns(bodyType);
             carServiceMock.Setup(c => c.GetCars(It.IsAny<string>())).Returns(cars);
+            var parameters = new string[1] { "coupe" };
 
             // Act
-            var parameters = new string[1] { "coupe" };
             var result = sut.Execute(parameters);
 
             // Assert
@@ -87,9 +87,9 @@ namespace Dealership.Tests.Commands.Tests.FilterCarsCommandsTests
 
             bodyTypeServiceMock.Setup(b => b.GetBodyType(It.IsAny<string>())).Returns(bodyType);
             carServiceMock.Setup(c => c.GetCars(It.IsAny<string>())).Returns(cars);
+            var parameters = new string[1] { "bodyType" };
 
             // Act
-            var parameters = new string[1] { "bodyType" };
             var result = sut.Execute(parameters);
 
             // Assert
@@ -110,7 +110,7 @@ namespace Dealership.Tests.Commands.Tests.FilterCarsCommandsTests
             var sut = new FilterByBodyTypeCommand(sessionMock.Object, bodyTypeServiceMock.Object, carServiceMock.Object);
 
             // Act && Assert
-            var parameters = new string[0] {};
+            var parameters = new string[0] { };
             Assert.ThrowsException<ArgumentException>(() => sut.Execute(parameters));
         }
     }

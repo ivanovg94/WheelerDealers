@@ -45,9 +45,9 @@ namespace Dealership.Tests.Commands.Tests.FilterCarsCommandsTests
             var cars = new List<Car>() { car };
 
             carServiceMock.Setup(c => c.GetCars(It.IsAny<string>())).Returns(cars);
+            var parameters = new string[2] { "2004", "2006" };
 
             // Act
-            var parameters = new string[2] { "2004", "2006" };
             var result = sut.Execute(parameters);
 
             // Assert
@@ -87,9 +87,9 @@ namespace Dealership.Tests.Commands.Tests.FilterCarsCommandsTests
             var cars = new List<Car>() { car };
 
             carServiceMock.Setup(c => c.GetCars(It.IsAny<string>())).Returns(cars);
+            var parameters = new string[2] { "2010", "2018" };
 
             // Act
-            var parameters = new string[2] { "2010", "2018" };
             var result = sut.Execute(parameters);
 
             // Assert
@@ -107,9 +107,9 @@ namespace Dealership.Tests.Commands.Tests.FilterCarsCommandsTests
             var carServiceMock = new Mock<ICarService>();
 
             var sut = new FilterByYearsCommand(sessionMock.Object, carServiceMock.Object);
+            var parameters = new string[2] { "2018", "2000" };
 
             // Act && Assert
-            var parameters = new string[2] { "2018", "2000" };
             Assert.ThrowsException<ArgumentException>(() => sut.Execute(parameters));
         }
 
@@ -124,9 +124,9 @@ namespace Dealership.Tests.Commands.Tests.FilterCarsCommandsTests
             var carServiceMock = new Mock<ICarService>();
 
             var sut = new FilterByYearsCommand(sessionMock.Object, carServiceMock.Object);
+            var parameters = new string[1] { "2000" };
 
             // Act && Assert
-            var parameters = new string[1] { "2000" };
             Assert.ThrowsException<ArgumentException>(() => sut.Execute(parameters));
         }
 

@@ -45,9 +45,9 @@ namespace Dealership.Tests.Commands.Tests.FilterCarsCommandsTests
             var cars = new List<Car>() { car };
 
             carServiceMock.Setup(c => c.GetCars(It.IsAny<string>())).Returns(cars);
+            var parameters = new string[2] { "1000", "2000" };
 
             // Act
-            var parameters = new string[2] { "1000", "2000" };
             var result = sut.Execute(parameters);
 
             // Assert
@@ -87,9 +87,9 @@ namespace Dealership.Tests.Commands.Tests.FilterCarsCommandsTests
             var cars = new List<Car>() { car };
 
             carServiceMock.Setup(c => c.GetCars(It.IsAny<string>())).Returns(cars);
+            var parameters = new string[2] { "1000", "2000" };
 
             // Act
-            var parameters = new string[2] { "1000", "2000" };
             var result = sut.Execute(parameters);
 
             // Assert

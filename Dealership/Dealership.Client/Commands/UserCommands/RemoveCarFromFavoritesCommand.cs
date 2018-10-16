@@ -5,7 +5,7 @@ using System;
 
 namespace Dealership.Client.Commands.UserCommands
 {
-    class RemoveCarFromFavoritesCommand : Command
+    public class RemoveCarFromFavoritesCommand : Command
     {
         private readonly IUserService userService;
 
@@ -18,7 +18,7 @@ namespace Dealership.Client.Commands.UserCommands
         {
             if (parameters.Length != 1)
             {
-                throw new ArgumentException("Invalid parameters");
+                throw new ArgumentException("Invalid parameters!");
             }
 
             int carId = int.Parse(parameters[0]);
