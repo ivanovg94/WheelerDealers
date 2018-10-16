@@ -12,6 +12,7 @@ namespace Dealership.Client.Core
         private readonly IExceptionLogging exceptionLogging;
         private readonly ICommandProcessor processor;
         private readonly IUserSession userSession;
+
         public DealershipEngine(IReader reader, IWriter writer, IUserSession userSession,
             IExceptionLogging exceptionLogging, ICommandProcessor commandProcessor)
         {
@@ -90,9 +91,6 @@ namespace Dealership.Client.Core
                     this.exceptionLogging.SendErrorToText(ex);
                 }
             }
-
         }
-
-
     }
 }

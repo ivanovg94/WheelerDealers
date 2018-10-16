@@ -10,8 +10,6 @@ namespace Dealership.Client.Commands
 {
     public class ExportCommand : Command
     {
-        //export sold asc
-        //export available 
         const string exportDirRes = @"..\..\..\..\Dealership.Data\DataProcessor\ExportResults\";
 
         public ExportCommand(IUserSession userSession) : base(userSession)

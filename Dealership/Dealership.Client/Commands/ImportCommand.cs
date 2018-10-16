@@ -13,7 +13,6 @@ namespace Dealership.Client.Commands
 {
     public class ImportCommand : AdminCommand
     {
-        //import {filename} --ex: cars
         const string datasetDir = @"..\..\..\..\Dealership.Data\DataProcessor\ImportDatasets\";
 
         public ImportCommand(IUserSession userSession) : base(userSession)
