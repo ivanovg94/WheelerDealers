@@ -17,7 +17,8 @@ namespace Dealership.Tests.Commands.Tests
         {
             //Arrange
             var sessionMock = new Mock<IUserSession>();
-            sessionMock.Setup(s => s.CurrentUser.UserType).Returns(UserType.Admin);
+            var user = new User() { UserType = UserType.Admin };
+            sessionMock.Setup(s => s.CurrentUser).Returns(user);
             var serviceMock = new Mock<IExtraService>();
             var sut = new GetExtrasForCarCommand(sessionMock.Object, serviceMock.Object);
             var args = new string[0];
@@ -30,7 +31,8 @@ namespace Dealership.Tests.Commands.Tests
         {
             //Arrange
             var sessionMock = new Mock<IUserSession>();
-            sessionMock.Setup(s => s.CurrentUser.UserType).Returns(UserType.Admin);
+            var user = new User() { UserType = UserType.Admin };
+            sessionMock.Setup(s => s.CurrentUser).Returns(user);
             var serviceMock = new Mock<IExtraService>();
             var sut = new GetExtrasForCarCommand(sessionMock.Object, serviceMock.Object);
             var args = new string[1] { "a" };
@@ -43,7 +45,8 @@ namespace Dealership.Tests.Commands.Tests
         {
             //Arrange
             var sessionMock = new Mock<IUserSession>();
-            sessionMock.Setup(s => s.CurrentUser.UserType).Returns(UserType.Admin);
+            var user = new User() { UserType = UserType.Admin };
+            sessionMock.Setup(s => s.CurrentUser).Returns(user);
             var serviceMock = new Mock<IExtraService>();
             var emptyCollection = new List<Extra>();
             serviceMock.Setup(s => s.GetExtrasForCar(It.IsAny<int>())).Returns(emptyCollection);
