@@ -28,21 +28,29 @@ namespace Dealership.Tests.CarServiceTests
             Assert.ThrowsException<ServiceException>(() => sut.AddCar(null));
         }
 
-        //[TestMethod]
-        //public void AddCarToDatabase_WhenValidParametersArePassed()
-        //{
-        //    var contexOptions = new DbContextOptionsBuilder<DealershipContext>()
-        //        .UseInMemoryDatabase(databaseName: "AddCarToDatabase_WhenValidParametersArePassed");
+        [TestMethod]
+        public void AddCarToDatabase_WhenValidParametersArePassed()
+        {
+            var contexOptions = new DbContextOptionsBuilder<DealershipContext>()
+                .UseInMemoryDatabase(databaseName: "AddCarToDatabase_WhenValidParametersArePassed").Options;
 
-        //    var dealershipContext = new DealershipContext(contexOptions);
-        //    var unitofWork = new UnitOfWork(dealershipContext);
-        //    var carService = new Services.CarService(unitofWork);
+            var testCar = new Mock<Car>();
 
-        //    var testCar = new Mock<ICar>();
+            DealershipContext dealershipContext;
 
-        //    carService.AddCar(testCar.Object);
+            using (dealershipContext = new DealershipContext(contexOptions))
+            {
+                var unitofWork = new UnitOfWork(dealershipContext);
+                var carService = new Services.CarService(unitofWork);
 
-        //    Assert.IsTrue(dealershipContext.Cars.Count() == 1);
-        //}
+
+                carService.AddCar(testCar.Object);
+            }
+            using (dealershipContext = new DealershipContext(contexOptions))
+            {
+                Assert.IsTrue(dealershipContext.Cars.Count() == 1);
+
+            }
+        }
     }
 }
