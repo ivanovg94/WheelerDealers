@@ -1,11 +1,8 @@
 ﻿using Dealership.Data.Models;
 using Dealership.Data.UnitOfWork;
 using Dealership.Services.Abstract;
-using Dealership.Services.Exceptions;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Dealership.Services
 {

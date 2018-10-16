@@ -1,15 +1,11 @@
 ﻿using Dealership.Data.Context;
 using Dealership.Data.Models;
-using Dealership.Data.Models.Contracts;
-using Dealership.Data.Repository;
 using Dealership.Data.UnitOfWork;
 using Dealership.Services.Abstract;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Dealership.Tests.Service.Tests.EditCarService
 {

@@ -7,8 +7,9 @@ namespace Dealership.Services.Abstract
 {
     public interface ICarService
     {
-        Car CreateCar(string brandName, string model, short horsePower, short engineCapacity
-           , DateTime productionDate, decimal price, string chassisName, string colorName, string colorType, string fuelTypeName, string gearboxTypeName, int numOfGears);
+        Car CreateCar(string brandName, string model, short horsePower, short engineCapacity,
+            DateTime productionDate, decimal price, string chassisName, string colorName,
+            string colorType, string fuelTypeName, string gearboxTypeName, int numOfGears);
 
         void AddCar(ICar car);
 

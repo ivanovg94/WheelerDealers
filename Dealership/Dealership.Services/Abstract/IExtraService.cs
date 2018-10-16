@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using Dealership.Data.Context;
-using Dealership.Data.Models;
-using Dealership.Services.Abstract;
+﻿using Dealership.Data.Models;
+using System.Collections.Generic;
 
 namespace Dealership.Services.Abstract
 {

@@ -1,9 +1,9 @@
 ﻿using Dealership.Data.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using Moq;
-using Dealership.Services.Abstract;
 using Dealership.Data.Models.Contracts;
+using Dealership.Services.Abstract;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
 
 namespace Dealership.Tests.Client.Tests.EditCommand.Tests
 {

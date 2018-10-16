@@ -15,7 +15,6 @@ namespace Dealership.Services
         private readonly IUnitOfWork unitOfWork;
         private readonly ICarService carService;
 
-        //public ICarService CarService { get; set; }
         public UserService()
         {
 

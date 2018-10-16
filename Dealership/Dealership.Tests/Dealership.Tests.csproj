@@ -5,6 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Command.Tests\**" />
+    <Compile Remove="Data.Tests\**" />
+    <EmbeddedResource Remove="Command.Tests\**" />
+    <EmbeddedResource Remove="Data.Tests\**" />
+    <None Remove="Command.Tests\**" />
+    <None Remove="Data.Tests\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.1.4" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="Moq" Version="4.10.0" />
@@ -17,11 +26,6 @@
     <ProjectReference Include="..\Dealership.Data\Dealership.Data.csproj" />
 
     <ProjectReference Include="..\Dealership.Services\Dealership.Services.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Command.Tests\" />
-    <Folder Include="Data.Tests\" />
   </ItemGroup>
 
 </Project>
