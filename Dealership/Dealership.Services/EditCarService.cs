@@ -178,9 +178,11 @@ namespace Dealership.Services
 
             var car = this.CarService.GetCar(id);
             car.Price = decimal.Parse(newValue);
+            this.unitOfWork.GetRepository<Car>().Update(car);
             UnitOfWork.SaveChanges();
 
             return $"Price of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
+            // return $"Price of car with ID:{id} edited successfully to {newValue}!";
         }
 
         public string EditProductionDate(string[] parameters)// not tested

@@ -18,6 +18,11 @@ namespace Dealership.Services
         }
         public Extra CreateExtra(string name)
         {
+            if (this.unitOfWork.GetRepository<Extra>().All().Any(e => e.Name == name))
+            {
+                throw new ArgumentException($"An extra with name {name} already exists!");
+            }
+
             var extra = new Extra() { Name = name };
             this.unitOfWork.GetRepository<Extra>().Add(extra);
             this.unitOfWork.SaveChanges();
