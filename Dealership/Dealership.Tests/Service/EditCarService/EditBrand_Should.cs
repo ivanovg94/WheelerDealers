@@ -71,11 +71,14 @@ namespace Dealership.Tests.Service.Tests.EditCarService
             using (var dealerShipContext = new DealershipContext(contextOptions))
             {
                 var testBrand = new Brand() { Name = "testBrand" };
+                var testNewBrand = new Brand() { Name = "newBrand" };
+                
+                dealerShipContext.Brands.Add(testNewBrand).Context.SaveChanges();
 
                 var unitOfWork = new UnitOfWork(dealerShipContext);
 
                 testCar = new Car() { Brand = testBrand };
-
+                dealerShipContext.Cars.Add(testCar).Context.SaveChanges();
                 var carServiceStub = new Mock<ICarService>();
 
                 carServiceStub.Setup(cs => cs.GetCar(1)).Returns(testCar);
