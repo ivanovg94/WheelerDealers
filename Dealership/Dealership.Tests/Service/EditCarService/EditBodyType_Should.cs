@@ -13,7 +13,7 @@ namespace Dealership.Tests.Service.Tests.EditCarService
     public class EditBodyType_Should
     {
         [TestMethod]
-        public void EditBrandCorrectly_WhenValidParametersArePassed()
+        public void EditBodyTypeCorrectly_WhenValidParametersArePassed()
         {
             //arrange
             var contextOptions = new DbContextOptionsBuilder<DealershipContext>()
@@ -36,6 +36,7 @@ namespace Dealership.Tests.Service.Tests.EditCarService
                                                          , Model = "test"
                                                          , BodyType = new BodyType() {Name = "Coupe" } };
 
+                dealerShipContext.Cars.Add(testCar);
                 dealerShipContext.Chassis.Add(testBody).Context.SaveChanges();
 
                 var carServiceStub = new Mock<ICarService>();
