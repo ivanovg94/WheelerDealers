@@ -12,7 +12,7 @@ There is information about available and sold cars. The admin can manipulate the
 
 ## Features
 * Register user
-* Login and  users
+* Login and logout users
 * Add and remove cars
 * Edit cars
 * List cars filtered by different parameters
