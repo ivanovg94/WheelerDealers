@@ -6,31 +6,41 @@ using System;
 using System.Linq;
 using System.Text;
 
-namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
+namespace Dealership.Client.Commands.CarCommands.FilterCarsCommands
 {
-    public class FilterByBrandCommand : Command
+    public class FilterByYearsCommand : Command
     {
-        private readonly IBrandService brandService;
         private readonly ICarService carService;
 
-        public FilterByBrandCommand(IUserSession userSession, IBrandService brandService,ICarService carService) : base(userSession)
+        public FilterByYearsCommand(IUserSession userSession, ICarService carService) : base(userSession)
         {
-            this.brandService = brandService;
             this.carService = carService;
         }
 
         public override string Execute(string[] parameters)
         {
-            if (parameters.Length != 1)
+            if (parameters.Length != 2)
             {
                 throw new ArgumentException("Invalid parameters.");
             }
+            
+            if (!DateTime.TryParse("01/01/" + parameters[0], out DateTime yearFrom))
+            {
+                throw new FormatException("Invalid value for the first year!");
+            }
 
-            string brandName = parameters[0];
-            var brand = this.brandService.GetBrand(brandName);
+            if (!DateTime.TryParse("31/12/" + parameters[1], out DateTime yearTo))
+            {
+                throw new FormatException("Invalid value for the second year!");
+            }
+
+            if (yearFrom > yearTo)
+            {
+                throw new ArgumentException("The value of the first year cannot exceed the value of the second year!");
+            }
 
             var cars = this.carService.GetCars("asc")
-                .Where(c => c.Brand.Name.ToLower() == brandName)
+                .Where(c => c.ProductionDate >= yearFrom && c.ProductionDate <= yearTo)
                 .Select(c => new CarVM
                 {
                     Id = c.Id,
@@ -49,11 +59,10 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
                     NumberOfGears = c.GearBox.NumberOfGears,
                     Extras = c.CarsExtras.Select(ce => ce.Extra.Name).ToList()
                 }).ToList();
-            ;
 
             if (!cars.Any())
             {
-                return $"There are no cars with brand {brandName}.";
+                return $"There are no cars with year between {yearFrom} and {yearTo}.";
             }
 
             var sb = new StringBuilder();
@@ -62,6 +71,7 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
             {
                 sb.AppendLine(car.ToString());
             }
+
             return sb.ToString().TrimEnd();
         }
     }

@@ -4,13 +4,13 @@ using Dealership.Services.Abstract;
 using System;
 using System.Linq;
 
-namespace Dealership.Client.Commands.CRUD.ExtrasCommands
+namespace Dealership.Client.Commands.CarCommands.ExtrasCommands
 {
-    public class GetExtrasForCarCommand : AdminCommand
+    public class AddExtraToCarCommand : AdminCommand
     {
         private readonly IExtraService extraService;
 
-        public GetExtrasForCarCommand(IUserSession userSession, IExtraService extraService) : base(userSession)
+        public AddExtraToCarCommand(IUserSession userSession, IExtraService extraService) : base(userSession)
         {
             this.extraService = extraService;
         }
@@ -27,12 +27,14 @@ namespace Dealership.Client.Commands.CRUD.ExtrasCommands
                 throw new FormatException("Invalid value for Id!");
             }
 
-            var extras = this.extraService.GetExtrasForCar(id);
-            if (extras.Count == 0)
+            var extrasNames = string.Join(" ", parameters.Skip(1));
+
+            if (string.IsNullOrEmpty(extrasNames))
             {
-                return "No extras.";
+                throw new ArgumentException("Invalid extra/s!");
             }
-            else { return $"Extras: {string.Join(", ", extras.Select(e => e.Name).ToList())}"; }
+            var extra = this.extraService.AddExtraToCar(id, extrasNames);
+            return $"Added extra {extra.Name} to car with Id {id}";
         }
     }
 }

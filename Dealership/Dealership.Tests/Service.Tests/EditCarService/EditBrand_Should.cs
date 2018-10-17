@@ -103,29 +103,45 @@ namespace Dealership.Tests.Service.Tests.EditCarService
             string[] validParameters = new string[2] { "1", "unexistingBrand" };
             string expectedBrandName = validParameters[1];
 
-            using (var dealerShipContext = new DealershipContext(contextOptions))
-            {
-                var testBrand = new Brand() { Name = "testBrand" };
+            //using (var dealerShipContext = new DealershipContext(contextOptions))
+            //{
+            //    var testBrand = new Brand() { Name = "testBrand" };
 
-                var unitOfWork = new UnitOfWork(dealerShipContext);
+            //    var unitOfWork = new UnitOfWork(dealerShipContext);
+
+            //    testCar = new Car() { Brand = testBrand };
+
+            //    var carServiceStub = new Mock<ICarService>();
+            //    carServiceStub.Setup(cs => cs.GetCar(1)).Returns(testCar);
+
+            //    var editCarService = new Services.EditCarService(unitOfWork, carServiceStub.Object);
+
+            //    result = editCarService.EditBrand(validParameters);
+            //}
+
+            using (var arrangeContext = new DealershipContext(contextOptions))
+            {
+
+                var unitOfWorkMock = new Mock<IUnitOfWork>();
+                var testBrand = new Brand() { Name = "testBrand" };
 
                 testCar = new Car() { Brand = testBrand };
 
                 var carServiceStub = new Mock<ICarService>();
                 carServiceStub.Setup(cs => cs.GetCar(1)).Returns(testCar);
 
-                var editCarService = new Services.EditCarService(unitOfWork, carServiceStub.Object);
+                var editCarService = new Services.EditCarService(unitOfWorkMock.Object, carServiceStub.Object);
 
                 result = editCarService.EditBrand(validParameters);
             }
 
+            using (var assertContext = new DealershipContext(contextOptions))
+            {
+                var unitOfWork = new UnitOfWork(assertContext);
             Assert.IsTrue(testCar.Brand.Name == expectedBrandName);
+
+            }
+    
         }
     }
 }
-
-//carServiceStub.Setup(cs => cs.CreateCar(It.IsAny<string>(), It.IsAny<string>()
-//    , It.IsAny<short>(), It.IsAny<short>(), It.IsAny<DateTime>()
-//    , It.IsAny<decimal>(), It.IsAny<string>(), It.IsAny<string>()
-//    , It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()
-//    , It.IsAny<int>())).Returns(testCar);

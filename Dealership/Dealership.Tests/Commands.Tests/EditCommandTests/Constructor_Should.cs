@@ -17,7 +17,7 @@ namespace Dealership.Tests.Commands.Tests.EditCommandTests
             UserSession invalidUserSession = null;
             var editCarServiceStub = new Mock<IEditCarService>();
             //act&assert
-            Assert.ThrowsException<ArgumentNullException>(() => new Dealership.Client.Commands.CRUD.EditCommand(invalidUserSession,editCarServiceStub.Object));
+            Assert.ThrowsException<ArgumentNullException>(() => new Dealership.Client.Commands.CarCommands.EditCommand(invalidUserSession,editCarServiceStub.Object));
         }
         [TestMethod]
         public void ThrowArgumentNullException_WhenNullEditCarServiceIsPassed()
@@ -26,7 +26,7 @@ namespace Dealership.Tests.Commands.Tests.EditCommandTests
             var validUserSessionStub = new Mock<IUserSession>();
             IEditCarService nullEditCarService = null;
             //act&assert
-            Assert.ThrowsException<ArgumentNullException>(() => new Dealership.Client.Commands.CRUD.EditCommand(validUserSessionStub.Object, nullEditCarService));
+            Assert.ThrowsException<ArgumentNullException>(() => new Dealership.Client.Commands.CarCommands.EditCommand(validUserSessionStub.Object, nullEditCarService));
         }
         [TestMethod]
         public void NotThrowException_WhenValidUserSessionPassed()
@@ -35,7 +35,7 @@ namespace Dealership.Tests.Commands.Tests.EditCommandTests
             var UserSessionMock = new Mock<IUserSession>();
             var editCarServiceMock = new Mock<IEditCarService>();
             //act&assert
-            new Dealership.Client.Commands.CRUD.EditCommand(UserSessionMock.Object, editCarServiceMock.Object);
+            new Dealership.Client.Commands.CarCommands.EditCommand(UserSessionMock.Object, editCarServiceMock.Object);
         }
         [TestMethod]
         public void AssignUserSessionCorrectly_WhenValidParametersArePassed()
@@ -44,7 +44,7 @@ namespace Dealership.Tests.Commands.Tests.EditCommandTests
             var UserSessionMock = new Mock<IUserSession>();
             var editCarServiceMock = new Mock<IEditCarService>();
             //act
-            var sut = new Dealership.Client.Commands.CRUD.EditCommand(UserSessionMock.Object, editCarServiceMock.Object);
+            var sut = new Dealership.Client.Commands.CarCommands.EditCommand(UserSessionMock.Object, editCarServiceMock.Object);
 
             Assert.IsInstanceOfType(sut.UserSession,typeof(IUserSession));
         }

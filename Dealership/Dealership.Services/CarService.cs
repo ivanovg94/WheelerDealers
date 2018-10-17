@@ -122,6 +122,7 @@ namespace Dealership.Services
             foreach (var car in cars)
             {
                 if (car != null)
+
                 {
                     this.unitOfWork.GetRepository<Car>().Add(car);
                 }

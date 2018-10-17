@@ -4,7 +4,7 @@ using Dealership.Services.Abstract;
 using System;
 using System.Linq;
 
-namespace Dealership.Client.Commands.CRUD
+namespace Dealership.Client.Commands.CarCommands
 {
     public class ViewCarDetailsCommand : Command
     {

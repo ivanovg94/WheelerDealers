@@ -8,7 +8,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-namespace Dealership.Client.Commands.CRUD
+namespace Dealership.Client.Commands.CarCommands
 {
     public class EditCommand : AdminCommand
     {

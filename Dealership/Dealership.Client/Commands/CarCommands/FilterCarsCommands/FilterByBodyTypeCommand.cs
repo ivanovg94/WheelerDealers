@@ -6,41 +6,31 @@ using System;
 using System.Linq;
 using System.Text;
 
-namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
+namespace Dealership.Client.Commands.CarCommands.FilterCarsCommands
 {
-    public class FilterByPriceCommand : Command
+    public class FilterByBodyTypeCommand : Command
     {
+        private readonly IBodyTypeService bodyTypeService;
         private readonly ICarService carService;
 
-        public FilterByPriceCommand(IUserSession userSession, ICarService carService) : base(userSession)
+        public FilterByBodyTypeCommand(IUserSession userSession, IBodyTypeService bodyTypeService, ICarService carService) : base(userSession)
         {
+            this.bodyTypeService = bodyTypeService;
             this.carService = carService;
         }
 
         public override string Execute(string[] parameters)
         {
-            if (parameters.Length != 2)
+            if (parameters.Length != 1)
             {
                 throw new ArgumentException("Invalid parameters.");
             }
-            
-            if (!int.TryParse(parameters[0], out int priceFrom))
-            {
-                throw new FormatException("Invalid value for the first price!");
-            }
 
-            if (!int.TryParse(parameters[1], out int priceTo))
-            {
-                throw new FormatException("Invalid value for the second price!");
-            }
-
-            if (priceFrom > priceTo)
-            {
-                throw new ArgumentException("The value of the first price cannot exceed the value of the second price!");
-            }
+            string bodyType = parameters[0];
+            var body = bodyTypeService.GetBodyType(bodyType);
 
             var cars = this.carService.GetCars("asc")
-                .Where(c => c.Price >= priceFrom && c.Price <= priceTo)
+                .Where(c => c.BodyType == body)
                 .Select(c => new CarVM
                 {
                     Id = c.Id,
@@ -59,12 +49,11 @@ namespace Dealership.Client.Commands.CRUD.FilterCarsCommands
                     NumberOfGears = c.GearBox.NumberOfGears,
                     Extras = c.CarsExtras.Select(ce => ce.Extra.Name).ToList()
                 })
-                 .OrderBy(c => c.Price)
                  .ToList();
 
-            if (cars.Count == 0)
+            if (!cars.Any())
             {
-                return $"There are no cars with price between {priceFrom} and {priceTo}.";
+                return $"There are no cars with body type {bodyType}";
             }
 
             var sb = new StringBuilder();

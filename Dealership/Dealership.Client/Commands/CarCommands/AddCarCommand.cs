@@ -3,7 +3,7 @@ using Dealership.Data.Models.Contracts;
 using Dealership.Services.Abstract;
 using System;
 
-namespace Dealership.Client.Commands.CRUD
+namespace Dealership.Client.Commands.CarCommands
 {
     public class AddCarCommand : AdminCommand
     {

@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Dealership.Client.Commands.CRUD
+namespace Dealership.Client.Commands.CarCommands
 {
     public class ListCommand : Command
     {

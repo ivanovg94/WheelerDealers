@@ -1,4 +1,4 @@
-﻿using Dealership.Client.Commands.CRUD.FilterCarsCommands;
+﻿using Dealership.Client.Commands.CarCommands.FilterCarsCommands;
 using Dealership.Data.Models;
 using Dealership.Data.Models.Contracts;
 using Dealership.Services.Abstract;
