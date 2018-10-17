@@ -28,8 +28,4 @@
     <ProjectReference Include="..\Dealership.Services\Dealership.Services.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Client.Tests\" />
-  </ItemGroup>
-
 </Project>

@@ -1,12 +1,8 @@
-﻿using Autofac;
-using Dealership.Client.Commands.Abstract;
-using Dealership.Client.Contracts.Abstract;
-using Dealership.Data.Models;
+﻿using Dealership.Client.Commands.Abstract;
 using Dealership.Data.Models.Contracts;
 using Dealership.Services.Abstract;
 using System;
 using System.Linq;
-using System.Reflection;
 
 namespace Dealership.Client.Commands.CarCommands
 {
