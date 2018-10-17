@@ -1,6 +1,8 @@
-﻿using Dealership.Data.Models;
+﻿using Dealership.Data.Context;
+using Dealership.Data.Models;
 using Dealership.Data.UnitOfWork;
 using Dealership.Services.Abstract;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -10,7 +12,7 @@ using System.Text;
 namespace Dealership.Tests.Service.Tests.EditCarService
 {
     [TestClass]
-   public class EditEngineCapacity_Should
+    public class EditEngineCapacity_Should
     {
         [TestMethod]
         public void ThrowArgumentException_WhenEmptyParametersArePassed()
@@ -65,15 +67,26 @@ namespace Dealership.Tests.Service.Tests.EditCarService
             var validParameters = new string[2] { "1", "4444" };
             var expectedValue = int.Parse(validParameters[1]);
 
+            var contextOptions = new DbContextOptionsBuilder<DealershipContext>()
+                .UseInMemoryDatabase(databaseName:
+                "EditModelCorrectly_WhenValidParametersArePassed").Options;
 
-            var unitOfWork = new Mock<IUnitOfWork>();
-            var carService = new Mock<Services.CarService>();
-            carService.Setup(x => x.GetCar(1)).Returns(testCar);
-
-            var sut = new Services.EditCarService(unitOfWork.Object, carService.Object);
-
+            DealershipContext context;
             string result;
-            result = sut.EditEngineCapacity(validParameters);
+
+            using (context = new DealershipContext(contextOptions))
+            {
+
+                var unitOfWork = new UnitOfWork(context);
+                var carService = new Mock<Services.CarService>();
+                carService.Setup(x => x.GetCar(1)).Returns(testCar);
+
+                context.Cars.Add(testCar).Context.SaveChanges();
+
+                var sut = new Services.EditCarService(unitOfWork, carService.Object);
+
+                result = sut.EditEngineCapacity(validParameters);
+            }
             //assert    
             Assert.IsTrue(result.Contains("edited"));
             Assert.IsTrue(testCar.EngineCapacity == expectedValue);

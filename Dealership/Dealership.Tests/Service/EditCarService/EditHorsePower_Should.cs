@@ -1,6 +1,9 @@
-﻿using Dealership.Data.Models;
+﻿using Dealership.Data.Context;
+using Dealership.Data.Models;
 using Dealership.Data.UnitOfWork;
+using Dealership.Services;
 using Dealership.Services.Abstract;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -55,6 +58,8 @@ namespace Dealership.Tests.Service.Tests.EditCarService
         [TestMethod]
         public void EditHorsePowerValueCorrectly_WhenValidParametersArePassed()
         {
+
+
             var testCar = new Car()
             {
                 Brand = new Brand() {Name= "test" },
@@ -65,15 +70,27 @@ namespace Dealership.Tests.Service.Tests.EditCarService
             var validParameters = new string[2] { "1", "333" };
             var expectedValue = int.Parse(validParameters[1]);
 
+            var contextOptions = new DbContextOptionsBuilder<DealershipContext>()
+               .UseInMemoryDatabase(databaseName:
+               "EditModelCorrectly_WhenValidParametersArePassed").Options;
+
+
             string result;
+            DealershipContext context;
+            using (context = new DealershipContext(contextOptions))
+            {
+                
+                var unitOfWork = new UnitOfWork(context);
 
-            var unitOfWork = new Mock<IUnitOfWork>();
-            var carService = new Mock<Services.CarService>();
-            carService.Setup(x => x.GetCar(1)).Returns(testCar);
+                context.Cars.Add(testCar).Context.SaveChanges();
 
-            var sut = new Services.EditCarService(unitOfWork.Object, carService.Object);
+                var carService = new Mock<Services.CarService>();
+                carService.Setup(x => x.GetCar(1)).Returns(testCar);
 
-            result = sut.EditHorsePower(validParameters);
+                var sut = new Services.EditCarService(unitOfWork, carService.Object);
+
+                result = sut.EditHorsePower(validParameters);
+            }
             //assert    
             Assert.IsTrue(result.Contains("edited"));
             Assert.IsTrue(testCar.HorsePower == expectedValue);

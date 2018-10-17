@@ -72,7 +72,7 @@ namespace Dealership.Tests.Service.Tests.EditCarService
             {
                 var testBrand = new Brand() { Name = "testBrand" };
                 var testNewBrand = new Brand() { Name = "newBrand" };
-                
+
                 dealerShipContext.Brands.Add(testNewBrand).Context.SaveChanges();
 
                 var unitOfWork = new UnitOfWork(dealerShipContext);
@@ -125,26 +125,26 @@ namespace Dealership.Tests.Service.Tests.EditCarService
             using (var arrangeContext = new DealershipContext(contextOptions))
             {
 
-                var unitOfWorkMock = new Mock<IUnitOfWork>();
+
+                var unitOfWork = new UnitOfWork(arrangeContext);
                 var testBrand = new Brand() { Name = "testBrand" };
 
-                testCar = new Car() { Brand = testBrand };
+
+                testCar = new Car() { Brand = testBrand, Model = "test" };
+                arrangeContext.Cars.Add(testCar).Context.SaveChanges();
 
                 var carServiceStub = new Mock<ICarService>();
                 carServiceStub.Setup(cs => cs.GetCar(1)).Returns(testCar);
 
-                var editCarService = new Services.EditCarService(unitOfWorkMock.Object, carServiceStub.Object);
+                var editCarService = new Services.EditCarService(unitOfWork, carServiceStub.Object);
 
                 result = editCarService.EditBrand(validParameters);
             }
 
-            using (var assertContext = new DealershipContext(contextOptions))
-            {
-                var unitOfWork = new UnitOfWork(assertContext);
+
             Assert.IsTrue(testCar.Brand.Name == expectedBrandName);
 
-            }
-    
+
         }
     }
 }

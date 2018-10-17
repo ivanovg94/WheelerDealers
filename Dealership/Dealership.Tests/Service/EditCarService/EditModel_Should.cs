@@ -1,6 +1,8 @@
-﻿using Dealership.Data.Models;
+﻿using Dealership.Data.Context;
+using Dealership.Data.Models;
 using Dealership.Data.UnitOfWork;
 using Dealership.Services.Abstract;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -53,13 +55,25 @@ namespace Dealership.Tests.Service.Tests.EditCarService
             var validParameters = new string[2] { "1", "330xi" };
             string result;
 
-            var unitOfWork = new Mock<IUnitOfWork>();
-            var carService = new Mock<Services.CarService>();
-            carService.Setup(x => x.GetCar(1)).Returns(testCar);
+            var contextOptions = new DbContextOptionsBuilder<DealershipContext>()
+               .UseInMemoryDatabase(databaseName:
+               "EditModelCorrectly_WhenValidParametersArePassed").Options;
 
-            var sut = new Services.EditCarService(unitOfWork.Object, carService.Object);
+            DealershipContext context;
+            using (context = new DealershipContext(contextOptions))
+            {
 
-            result = sut.EditModel(validParameters);
+                var unitOfWork = new UnitOfWork(context);
+
+                context.Cars.Add(testCar).Context.SaveChanges();
+
+                var carService = new Mock<Services.CarService>();
+                carService.Setup(x => x.GetCar(1)).Returns(testCar);
+
+                var sut = new Services.EditCarService(unitOfWork, carService.Object);
+
+                result = sut.EditModel(validParameters);
+            }
             //assert    
             Assert.IsTrue(result.Contains("edited"));
             Assert.IsTrue(testCar.Model == validParameters[1]);
