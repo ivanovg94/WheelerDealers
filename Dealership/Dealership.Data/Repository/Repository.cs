@@ -1,5 +1,4 @@
 ﻿using Dealership.Data.Context;
-using Dealership.Data.Context.Abstract;
 using Dealership.Data.Models.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -17,7 +16,7 @@ namespace Dealership.Data.Repository
 
         }
 
-        public Repository(IDealershipContext context)
+        public Repository(DealershipContext context)
         {
             this.context = (DealershipContext)context ?? throw new ArgumentNullException(nameof(context));
         }

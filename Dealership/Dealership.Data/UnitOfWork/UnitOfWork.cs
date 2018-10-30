@@ -1,4 +1,4 @@
-﻿using Dealership.Data.Context.Abstract;
+﻿using Dealership.Data.Context;
 using Dealership.Data.Models.Contracts;
 using Dealership.Data.Repository;
 using System;
@@ -8,14 +8,14 @@ namespace Dealership.Data.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly IDealershipContext context;
+        private readonly DealershipContext context;
         private readonly Dictionary<Type, object> repos = new Dictionary<Type, object>();
 
         public UnitOfWork()
         {
         }
 
-        public UnitOfWork(IDealershipContext context)
+        public UnitOfWork(DealershipContext context)
         {
             this.context = context;
         }

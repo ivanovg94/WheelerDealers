@@ -1,20 +1,16 @@
-﻿using Dealership.Data.Context.Abstract;
-using Dealership.Data.Context.Configurations;
+﻿using Dealership.Data.Context.Configurations;
 using Dealership.Data.Models;
 using Dealership.Data.Models.Contracts;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 
 namespace Dealership.Data.Context
 {
-    public class DealershipContext : DbContext, IDealershipContext
+    public class DealershipContext : IdentityDbContext<User>
     {
-        public DealershipContext()
-        {
-
-        }
-        public DealershipContext(DbContextOptions contextOptions) : base(contextOptions)
+        public DealershipContext(DbContextOptions<DealershipContext> contextOptions) : base(contextOptions)
         {
 
         }
@@ -38,23 +34,21 @@ namespace Dealership.Data.Context
 
         public DbSet<ColorType> ColorTypes { get; set; }
 
-        public DbSet<User> Users { get; set; }
-
         public DbSet<UsersCars> UsersCars { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder
-                    .UseSqlServer(ConnectionConfiguration.ConnectionString);
-            }
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    if (!optionsBuilder.IsConfigured)
+        //    {
+        //        optionsBuilder
+        //            .UseSqlServer(ConnectionConfiguration.ConnectionString);
+        //    }
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new CarsExtrasConfiguration());
-            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            //modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new UsersCarsConfiguration());
 
             SeedData(modelBuilder);
@@ -122,7 +116,7 @@ namespace Dealership.Data.Context
             modelBuilder.Entity<ColorType>().HasData(new ColorType { Id = 4, Name = "Matte" });
             modelBuilder.Entity<ColorType>().HasData(new ColorType { Id = 5, Name = "Xirallic" });
 
-            modelBuilder.Entity<User>().HasData(new User { Id = 1, Username = "admin", Password = "admin", Email = "wheelerDealer@gmail.com", UserType = Enum.Parse<UserType>("Admin") });
+            //      modelBuilder.Entity<User>().HasData(new User { Id = 1, Username = "admin", Password = "admin", Email = "wheelerDealer@gmail.com", UserType = Enum.Parse<UserType>("Admin") });
         }
     }
 }

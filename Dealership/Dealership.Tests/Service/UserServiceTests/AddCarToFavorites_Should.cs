@@ -57,7 +57,7 @@ namespace Dealership.Tests.Service.Tests.UserServiceTests
             string username = "username";
             int carId = 1;
 
-            var user = new User() { Username = username, };
+            var user = new User() { UserName = username };
             var users = new List<User>() { user };
 
             var car = new Car() { Id = 1 };
