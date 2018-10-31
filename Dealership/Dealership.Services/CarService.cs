@@ -175,7 +175,25 @@ namespace Dealership.Services
                 return querry.OrderBy(c => c.Id).ToList();
             }
         }
-        //TODO: ? virtual for unittesting
+
+        public IList<Car> GetCars(int skip, int take)
+        {
+            var querry = this.context.Cars
+                                            .Skip(skip)
+                                            .Take(take)
+                                            .Include(c => c.Brand)
+                                            .Include(c => c.CarsExtras)
+                                                 .ThenInclude(ce => ce.Extra)
+                                            .Include(c => c.BodyType)
+                                            .Include(c => c.Color)
+                                                .ThenInclude(co => co.ColorType)
+                                            .Include(c => c.FuelType)
+                                            .Include(c => c.GearBox)
+                                                .ThenInclude(gb => gb.GearType)
+                                            ;
+
+            return querry.ToList();
+        }
         public virtual Car GetCar(int id)
         {
             var car = this.context.Cars
@@ -219,6 +237,11 @@ namespace Dealership.Services
 
             this.context.SaveChanges();
             return car;
+        }
+
+        public int GetCarsCount()
+        {
+            return this.context.Cars.Count();
         }
     }
 }

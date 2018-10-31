@@ -1,5 +1,7 @@
 ﻿using Dealership.Data.Context;
 using Dealership.Data.Models;
+using Dealership.Services;
+using Dealership.Services.Abstract;
 using Dealership.Web.Models;
 using Dealership.Web.Services;
 using Microsoft.AspNetCore.Builder;
@@ -31,7 +33,7 @@ namespace Dealership.Web
             this.RegisterAuthentication(services);
             this.RegisterServices(services);
             this.RegisterInfrastructure(services);
-        //    services.AddScoped(<SignInManager<User>>)
+            //    services.AddScoped(<SignInManager<User>>)
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,6 +73,9 @@ namespace Dealership.Web
 
         private void RegisterServices(IServiceCollection services)
         {
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<ICarService, CarService>();
+            services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IEmailSender, EmailSender>();
         }
 
