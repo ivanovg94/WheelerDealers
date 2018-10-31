@@ -17,7 +17,7 @@ namespace Dealership.Tests.Commands.Tests.EditCommandTests
             UserSession invalidUserSession = null;
             var editCarServiceStub = new Mock<IEditCarService>();
             //act&assert
-            Assert.ThrowsException<ArgumentNullException>(() => new Dealership.Client.Commands.CarCommands.EditCommand(invalidUserSession,editCarServiceStub.Object));
+            Assert.ThrowsException<ArgumentNullException>(() => new Dealership.Client.Commands.CarCommands.EditCommand(invalidUserSession, editCarServiceStub.Object));
         }
         [TestMethod]
         public void ThrowArgumentNullException_WhenNullEditCarServiceIsPassed()
@@ -46,20 +46,8 @@ namespace Dealership.Tests.Commands.Tests.EditCommandTests
             //act
             var sut = new Dealership.Client.Commands.CarCommands.EditCommand(UserSessionMock.Object, editCarServiceMock.Object);
 
-            Assert.IsInstanceOfType(sut.UserSession,typeof(IUserSession));
+            Assert.IsInstanceOfType(sut.UserSession, typeof(IUserSession));
         }
 
-        //TODO: COMPILATION ERROR
-        //[TestMethod]
-        //public void AssignEditCarServiceCorrectly_WhenValidParametersArePassed()
-        //{
-        //    //arrange
-        //    var UserSessionMock = new Mock<IUserSession>();
-        //    var editCarServiceMock = new Mock<IEditCarService>();
-        //    //act
-        //    var sut = new Dealership.Client.Commands.CRUD.EditCommand(UserSessionMock.Object, editCarServiceMock.Object);
-
-        //    Assert.IsInstanceOfType(sut.EditCarService, typeof(IEditCarService));
-        //}
     }
 }
