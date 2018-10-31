@@ -1,0 +1,90 @@
+﻿@model Dealership.Web.Models.CarViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>CarViewModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CarModel)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CarModel)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.HorsePower)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.HorsePower)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EngineCapacity)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EngineCapacity)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductionDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProductionDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Brand)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Brand)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.BodyType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BodyType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Color)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Color)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ColorType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ColorType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FuelType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FuelType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.GearBoxType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.GearBoxType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NumberOfGears)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NumberOfGears)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>

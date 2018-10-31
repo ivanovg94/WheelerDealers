@@ -18,9 +18,7 @@ namespace Dealership.Services
         {
             this.context = context;
         }
-
-
-
+               
         public Car CreateCar(string brandName, string model, short horsePower, short engineCapacity,
             DateTime productionDate, decimal price, string bodyTypeName, string colorName, string colorType,
             string fuelTypeName, string gearboxTypeName, int numOfGears)

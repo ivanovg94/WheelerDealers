@@ -2,6 +2,7 @@
 using Dealership.Data.Models;
 using Dealership.Services.Abstract;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Dealership.Services
@@ -23,6 +24,11 @@ namespace Dealership.Services
                 throw new InvalidOperationException($"There is no body type with name {bodyName}.");
             }
             return bodyType;
+        }
+
+        public IList<BodyType> GetBodyTypes()
+        {
+            return this.context.BodyTypes.ToList();
         }
     }
 }
