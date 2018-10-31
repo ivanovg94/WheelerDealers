@@ -7,7 +7,6 @@
 
 
   <ItemGroup>
-    <PackageReference Include="Grid.AspNetCore.Mvc" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.4" PrivateAssets="all">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>

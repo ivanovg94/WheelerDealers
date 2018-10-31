@@ -1,6 +1,6 @@
 ﻿using Autofac;
 using Dealership.Client.Contracts.Abstract;
-using Dealership.Data.Context.Abstract;
+using Dealership.Data.Context;
 using Dealership.Data.Models.Contracts;
 using System;
 
@@ -8,7 +8,7 @@ namespace Dealership.Client.Commands.Abstract
 {
     public abstract class Command : ICommand
     {
-        public IDealershipContext Context { get; set; }
+        public DealershipContext Context { get; set; }
 
         public IComponentContext AutoFacContext { get; set; }
 

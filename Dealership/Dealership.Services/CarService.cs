@@ -18,9 +18,7 @@ namespace Dealership.Services
         {
             this.context = context;
         }
-
-
-
+        
         public Car CreateCar(string brandName, string model, short horsePower, short engineCapacity,
             DateTime productionDate, decimal price, string bodyTypeName, string colorName, string colorType,
             string fuelTypeName, string gearboxTypeName, int numOfGears)
@@ -118,7 +116,7 @@ namespace Dealership.Services
                 if (car != null)
 
                 {
-                    this.context.Add(car);
+                    this.context.Cars.Add(car);
                 }
             }
             this.context.SaveChanges();
@@ -197,17 +195,17 @@ namespace Dealership.Services
         public virtual Car GetCar(int id)
         {
             var car = this.context.Cars
-                                           .Where(c => c.Id == id)
-                                           .Include(c => c.Brand)
-                                           .Include(c => c.CarsExtras)
-                                                .ThenInclude(ce => ce.Extra)
-                                           .Include(c => c.BodyType)
-                                           .Include(c => c.Color)
-                                               .ThenInclude(co => co.ColorType)
-                                           .Include(c => c.FuelType)
-                                           .Include(c => c.GearBox)
-                                               .ThenInclude(gb => gb.GearType)
-                                           .FirstOrDefault();
+                                  .Where(c => c.Id == id)
+                                  .Include(c => c.Brand)
+                                  .Include(c => c.CarsExtras)
+                                       .ThenInclude(ce => ce.Extra)
+                                  .Include(c => c.BodyType)
+                                  .Include(c => c.Color)
+                                      .ThenInclude(co => co.ColorType)
+                                  .Include(c => c.FuelType)
+                                  .Include(c => c.GearBox)
+                                      .ThenInclude(gb => gb.GearType)
+                                  .FirstOrDefault();
 
             if (car == null)
             {
