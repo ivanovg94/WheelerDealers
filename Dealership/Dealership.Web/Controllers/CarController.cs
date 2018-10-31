@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Dealership.Data.Context;
+using Dealership.Data.Models;
 using Dealership.Services;
 using Dealership.Services.Abstract;
 using Microsoft.AspNetCore.Mvc;
@@ -20,8 +21,13 @@ namespace Dealership.Web.Controllers
 
         public IActionResult Index()
         {
-            var list = this.carService.GetCars("asc");
-            return View(list);
+            return View(carService);
+        }
+
+        public IActionResult Details(int id)
+        {
+            var car = this.carService.GetCar(id);
+            return View(car);
         }
     }
 }

@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewData["Title"] = "Details";
+}
+
+@model Dealership.Data.Models.Car
+
+<h2>Details</h2>
+
+<div>
+    <h3>Id: <strong>@Model.Id</strong></h3>
+    <p>Year:<strong> @Model.ProductionDate.Year</strong></p>
+    <p>Brand:<strong> @Model.Brand.Name</strong></p>
+    <p>Model:<strong> @Model.Model</strong></p>
+    <p>Body type:<strong> @Model.BodyType.Name</strong></p>
+    <p>Engine capacity:<strong> @Model.EngineCapacity</strong></p>
+    <p>Horse power:<strong> @Model.HorsePower</strong></p>
+    <p>Color:<strong> @Model.Color.Name (@Model.Color.ColorType.Name)</strong></p>
+    <p>Gearbox:<strong> @Model.GearBox.GearType.Name (@Model.GearBox.NumberOfGears) gears</strong></p>
+    <p>Price:<strong> @Model.Price $</strong></p>
+
+    <a asp-controller="Car" asp-action="Index">Back</a>
+</div>
+
