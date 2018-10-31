@@ -39,7 +39,7 @@ namespace Dealership.Services
                 this.context.SaveChanges();
             }
 
-            var bodyType = this.context.Chassis.FirstOrDefault(c => c.Name == bodyTypeName);
+            var bodyType = this.context.BodyTypes.FirstOrDefault(c => c.Name == bodyTypeName);
             if (bodyType == null)
             {
                 throw new ServiceException($"There is no body type with name {bodyTypeName}.");

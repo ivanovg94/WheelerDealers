@@ -20,7 +20,7 @@ namespace Dealership.Data.Context
 
         public DbSet<CarsExtras> CarsExtras { get; set; }
 
-        public DbSet<BodyType> Chassis { get; set; }
+        public DbSet<BodyType> BodyTypes { get; set; }
 
         public DbSet<Color> Colors { get; set; }
 

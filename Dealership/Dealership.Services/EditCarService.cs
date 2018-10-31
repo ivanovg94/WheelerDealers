@@ -210,7 +210,7 @@ namespace Dealership.Services
             }
             var newValue = parameters[1];
 
-            var newBodyType = this.context.Chassis.FirstOrDefault(ch => ch.Name == newValue);
+            var newBodyType = this.context.BodyTypes.FirstOrDefault(ch => ch.Name == newValue);
 
             if (newBodyType == null)
             {

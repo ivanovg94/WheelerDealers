@@ -17,7 +17,7 @@ namespace Dealership.Services
 
         public BodyType GetBodyType(string bodyName)
         {
-            var bodyType = this.context.Chassis.FirstOrDefault(b => b.Name.ToLower() == bodyName);
+            var bodyType = this.context.BodyTypes.FirstOrDefault(b => b.Name.ToLower() == bodyName);
             if (bodyType == null)
             {
                 throw new InvalidOperationException($"There is no body type with name {bodyName}.");
