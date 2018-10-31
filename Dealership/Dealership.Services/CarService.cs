@@ -1,6 +1,6 @@
-﻿using Dealership.Data.Models;
+﻿using Dealership.Data.Context;
+using Dealership.Data.Models;
 using Dealership.Data.Models.Contracts;
-using Dealership.Data.UnitOfWork;
 using Dealership.Services.Abstract;
 using Dealership.Services.Exceptions;
 using Microsoft.EntityFrameworkCore;
@@ -12,21 +12,14 @@ namespace Dealership.Services
 {
     public class CarService : ICarService
     {
-        private readonly IUnitOfWork unitOfWork;
+        private readonly DealershipContext context;
 
-        public CarService()
+        public CarService(DealershipContext context)
         {
-
+            this.context = context;
         }
 
-        public CarService(IUnitOfWork unitOfWork)
-        {
-            if (unitOfWork == null)
-            {
-                throw new ArgumentNullException("UnitOfWork cannot be null!");
-            }
-            this.unitOfWork = unitOfWork;
-        }
+
 
         public Car CreateCar(string brandName, string model, short horsePower, short engineCapacity,
             DateTime productionDate, decimal price, string bodyTypeName, string colorName, string colorType,
@@ -37,26 +30,27 @@ namespace Dealership.Services
                 throw new ServiceException("The name of brand cannot be less than 2 symbols or more than 25 symbols.");
             }
 
-            var brand = this.unitOfWork.GetRepository<Brand>().All().FirstOrDefault(b => b.Name == brandName);
+            var brand = this.context.Brands.FirstOrDefault(b => b.Name == brandName);
 
             if (brand == null)
             {
                 brand = new Brand() { Name = brandName };
-                this.unitOfWork.GetRepository<Brand>().Add(brand);
-                this.unitOfWork.SaveChanges();
+                this.context.Brands.Add(brand);
+                this.context.SaveChanges();
             }
 
-            var bodyType = this.unitOfWork.GetRepository<BodyType>().All().FirstOrDefault(c => c.Name == bodyTypeName);
+            var bodyType = this.context.Chassis.FirstOrDefault(c => c.Name == bodyTypeName);
             if (bodyType == null)
             {
                 throw new ServiceException($"There is no body type with name {bodyTypeName}.");
             }
 
-            var color = this.unitOfWork.GetRepository<Color>().All()
+            var color = this.context.Colors
                                                               .Include(c => c.ColorType)
                                                               .FirstOrDefault(c => c.Name == colorName
                                                                && c.ColorType.Name == colorType);
-            var colorTypeFromDatabase = this.unitOfWork.GetRepository<ColorType>().All()
+
+            var colorTypeFromDatabase = this.context.ColorTypes
                                        .FirstOrDefault(ct => ct.Name == colorType);
             if (colorTypeFromDatabase == null)
             {
@@ -66,18 +60,18 @@ namespace Dealership.Services
             if (color == null)
             {
                 color = new Color { Name = colorName, ColorType = colorTypeFromDatabase };
-                this.unitOfWork.GetRepository<Color>().Add(color);
-                this.unitOfWork.SaveChanges();
+                this.context.Colors.Add(color);
+                this.context.SaveChanges();
             }
 
-            var fuelType = this.unitOfWork.GetRepository<FuelType>().All()
+            var fuelType = this.context.FuelTypes
                                           .FirstOrDefault(f => f.Name == fuelTypeName);
             if (fuelType == null)
             {
                 throw new ServiceException($"There is no fuel with name {fuelTypeName}.");
             }
 
-            var gearbox = this.unitOfWork.GetRepository<Gearbox>().All()
+            var gearbox = this.context.Gearboxes
                 .FirstOrDefault(g => g.GearType.Name == gearboxTypeName
                                   && g.NumberOfGears == numOfGears);
             if (gearbox == null)
@@ -113,8 +107,8 @@ namespace Dealership.Services
             {
                 throw new ServiceException("Car doesn't exist!");
             }
-            this.unitOfWork.GetRepository<Car>().Add((Car)car);
-            this.unitOfWork.SaveChanges();
+            this.context.Cars.Add((Car)car);
+            this.context.SaveChanges();
         }
 
         public void AddCars(ICollection<Car> cars)
@@ -124,15 +118,15 @@ namespace Dealership.Services
                 if (car != null)
 
                 {
-                    this.unitOfWork.GetRepository<Car>().Add(car);
+                    this.context.Add(car);
                 }
             }
-            this.unitOfWork.SaveChanges();
+            this.context.SaveChanges();
         }
 
         public IList<Car> GetCars(bool filterSold, string order)
         {
-            var querry = this.unitOfWork.GetRepository<Car>().All()
+            var querry = this.context.Cars
                                             .Where(c => c.IsSold == filterSold)
                                             .Include(c => c.Brand)
                                             .Include(c => c.CarsExtras)
@@ -161,7 +155,7 @@ namespace Dealership.Services
 
         public IList<Car> GetCars(string direction)
         {
-            var querry = this.unitOfWork.GetRepository<Car>().All()
+            var querry = this.context.Cars
                                              .Include(c => c.Brand)
                                              .Include(c => c.CarsExtras)
                                                   .ThenInclude(ce => ce.Extra)
@@ -184,7 +178,7 @@ namespace Dealership.Services
         //TODO: ? virtual for unittesting
         public virtual Car GetCar(int id)
         {
-            var car = this.unitOfWork.GetRepository<Car>().All()
+            var car = this.context.Cars
                                            .Where(c => c.Id == id)
                                            .Include(c => c.Brand)
                                            .Include(c => c.CarsExtras)
@@ -207,23 +201,23 @@ namespace Dealership.Services
         public Car RemoveCar(int id)
         {
             var car = GetCar(id);
-            this.unitOfWork.GetRepository<Car>().Delete(car);
+            this.context.Cars.Remove(car);
 
-            var usersCars = this.unitOfWork.GetRepository<UsersCars>().All().Where(uc => uc.CarId == id).ToList();
+            var usersCars = this.context.UsersCars.Where(uc => uc.CarId == id).ToList();
 
             foreach (var userCar in usersCars)
             {
-                this.unitOfWork.GetRepository<UsersCars>().Delete(userCar);
+                this.context.UsersCars.Remove(userCar);
             }
 
-            var carsExtras = this.unitOfWork.GetRepository<CarsExtras>().All().Where(uc => uc.CarId == id).ToList();
+            var carsExtras = this.context.CarsExtras.Where(uc => uc.CarId == id).ToList();
 
             foreach (var carExtra in carsExtras)
             {
-                this.unitOfWork.GetRepository<CarsExtras>().Delete(carExtra);
+                this.context.CarsExtras.Remove(carExtra);
             }
 
-            this.unitOfWork.SaveChanges();
+            this.context.SaveChanges();
             return car;
         }
     }

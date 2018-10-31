@@ -1,5 +1,5 @@
-﻿using Dealership.Data.Models;
-using Dealership.Data.UnitOfWork;
+﻿using Dealership.Data.Context;
+using Dealership.Data.Models;
 using Dealership.Services.Abstract;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,33 +10,34 @@ namespace Dealership.Services
 {
     public class ExtraService : IExtraService
     {
-        private readonly IUnitOfWork unitOfWork;
+        private readonly DealershipContext context;
 
-        public ExtraService(IUnitOfWork unitOfWork)
+        public ExtraService(DealershipContext context)
         {
-            this.unitOfWork = unitOfWork;
+            this.context = context;
         }
+
         public Extra CreateExtra(string name)
         {
-            if (this.unitOfWork.GetRepository<Extra>().All().Any(e => e.Name == name))
+            if (this.context.Extras.Any(e => e.Name == name))
             {
                 throw new ArgumentException($"An extra with name {name} already exists!");
             }
 
             var extra = new Extra() { Name = name };
-            this.unitOfWork.GetRepository<Extra>().Add(extra);
-            this.unitOfWork.SaveChanges();
+            this.context.Extras.Add(extra);
+            this.context.SaveChanges();
             return extra;
         }
 
         public Extra AddExtraToCar(int carId, string extraName)
         {
-            if (!this.unitOfWork.GetRepository<Car>().All().Any(c => c.Id == carId))
+            if (!this.context.Cars.Any(c => c.Id == carId))
             {
                 throw new ArgumentException($"Car with Id {carId} does not exist");
             }
 
-            if (this.unitOfWork.GetRepository<Car>().All()
+            if (this.context.Cars
                                  .Include(c => c.CarsExtras)
                                    .ThenInclude(ce => ce.Extra)
                                  .FirstOrDefault(c => c.Id == carId)
@@ -49,39 +50,39 @@ namespace Dealership.Services
             if (extra == null)
             {
                 extra = new Extra() { Name = extraName };
-                this.unitOfWork.GetRepository<Extra>().Add(extra);
-                this.unitOfWork.SaveChanges();
+                this.context.Extras.Add(extra);
+                this.context.SaveChanges();
             }
 
             var newCarExtra = new CarsExtras() { CarId = carId, ExtraId = extra.Id };
-            this.unitOfWork.GetRepository<CarsExtras>().Add(newCarExtra);
+            this.context.CarsExtras.Add(newCarExtra);
 
-            this.unitOfWork.SaveChanges();
+            this.context.SaveChanges();
             return extra;
         }
 
         public Extra GetExtraById(int id)
         {
-            return this.unitOfWork.GetRepository<Extra>().All().FirstOrDefault(x => x.Id == id);
+            return this.context.Extras.FirstOrDefault(x => x.Id == id);
         }
 
         public Extra GetExtraByName(string name)
         {
-            return this.unitOfWork.GetRepository<Extra>().All().FirstOrDefault(e => e.Name == name);
+            return this.context.Extras.FirstOrDefault(e => e.Name == name);
         }
 
         public ICollection<Extra> GetAllExtras()
         {
-            return this.unitOfWork.GetRepository<Extra>().All().ToList();
+            return this.context.Extras.ToList();
         }
 
         public ICollection<Extra> GetExtrasForCar(int carId)
         {
-            if (!this.unitOfWork.GetRepository<Car>().All().Any(c => c.Id == carId))
+            if (!this.context.Cars.Any(c => c.Id == carId))
             {
                 throw new ArgumentException("Invalid car Id.");
             }
-            return this.unitOfWork.GetRepository<Car>().All()
+            return this.context.Cars
                                         .Include(c => c.CarsExtras)
                                         .ThenInclude(ce => ce.Extra)
                                         .First(c => c.Id == carId).CarsExtras
