@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+@model Dealership.Services.CarService
+@{
+    var list = Model.GetCars("asc");
+}
+<h1>Cars list</h1>
+@foreach (var car in list)
+{
+    <h3>@car.Id</h3>
+    <p>@car.Brand</p>
+    <p>@car.Model</p>
+}
+

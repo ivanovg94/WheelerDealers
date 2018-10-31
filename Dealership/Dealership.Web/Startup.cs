@@ -1,5 +1,7 @@
 ﻿using Dealership.Data.Context;
 using Dealership.Data.Models;
+using Dealership.Services;
+using Dealership.Services.Abstract;
 using Dealership.Web.Models;
 using Dealership.Web.Services;
 using Microsoft.AspNetCore.Builder;
@@ -72,6 +74,7 @@ namespace Dealership.Web
         private void RegisterServices(IServiceCollection services)
         {
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddScoped<ICarService, CarService>();
         }
 
         private void RegisterAuthentication(IServiceCollection services)
