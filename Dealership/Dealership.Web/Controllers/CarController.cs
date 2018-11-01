@@ -114,6 +114,20 @@ namespace Dealership.Web.Controllers
             return this.View(model);
         }
 
+        [Authorize]
+        public IActionResult Delete(int id)
+        {
+            return this.View(id);
+        }
+
+        [Authorize]
+        public IActionResult ConfirmDelete(int id)
+        {
+            this.carService.RemoveCar(id);
+
+            return RedirectToAction(nameof(Browse));
+        }
+
 
         private void AddImage(IFormFile avatarImage, int carId)
         {
