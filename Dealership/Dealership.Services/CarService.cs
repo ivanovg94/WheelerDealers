@@ -6,6 +6,7 @@ using Dealership.Services.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Dealership.Services
@@ -18,7 +19,7 @@ namespace Dealership.Services
         {
             this.context = context;
         }
-        
+
         public Car CreateCar(string brandName, string model, short horsePower, short engineCapacity,
             DateTime productionDate, decimal price, string bodyTypeName, string colorName, string colorType,
             string fuelTypeName, string gearboxTypeName, int numOfGears)
@@ -99,14 +100,16 @@ namespace Dealership.Services
             return newCar;
         }
 
-        public void AddCar(ICar car)
+        public ICar AddCar(ICar car)
         {
             if (car == null)
             {
                 throw new ServiceException("Car doesn't exist!");
             }
-            this.context.Cars.Add((Car)car);
+            car = this.context.Cars.Add((Car)car).Entity;
             this.context.SaveChanges();
+
+            return car;
         }
 
         public void AddCars(ICollection<Car> cars)
@@ -240,6 +243,27 @@ namespace Dealership.Services
         public int GetCarsCount()
         {
             return this.context.Cars.Count();
+        }
+
+        public void SaveAvatarImage(string root, string filename, Stream stream, int carId)
+        {
+            var car = GetCar(carId);
+
+            if (car == null)
+            {
+                throw new InvalidOperationException("Car not found");
+            }
+
+            var imageName = Guid.NewGuid().ToString() + Path.GetExtension(filename);
+            var path = Path.Combine(root, imageName);
+
+            using (var fileStream = File.Create(path))
+            {
+                stream.CopyTo(fileStream);
+            }
+
+            car.ImageName = imageName;
+            this.context.SaveChanges();
         }
     }
 }
