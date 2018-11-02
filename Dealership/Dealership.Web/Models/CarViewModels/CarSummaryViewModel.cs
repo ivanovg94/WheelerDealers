@@ -14,5 +14,7 @@ namespace Dealership.Web.Models.CarViewModels
         public string GearType { get; set; }
         public string Fuel { get; set; }
         public string Color { get; set; }
+        public string Price { get; set; }
+        public string Mileage { get; set; }
     }
 }
