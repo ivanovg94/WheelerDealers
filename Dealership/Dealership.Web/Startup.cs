@@ -2,7 +2,6 @@
 using Dealership.Data.Models;
 using Dealership.Services;
 using Dealership.Services.Abstract;
-using Dealership.Web.Models;
 using Dealership.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

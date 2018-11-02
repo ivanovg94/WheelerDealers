@@ -1,4 +1,5 @@
 ﻿using Dealership.Data.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace Dealership.Web.Models
 
         public CarViewModel(Car car)
         {
+            this.Id = car.Id;
             this.CarModel = car.Model;
             this.HorsePower = car.HorsePower;
             this.EngineCapacity = car.EngineCapacity;
@@ -26,7 +28,10 @@ namespace Dealership.Web.Models
             this.GearBoxType = car.GearBox.GearType.Name;
             this.NumberOfGears = car.GearBox.NumberOfGears;
             this.FuelType = car.FuelType.Name;
+            this.ImageUrl = car.ImageName;
         }
+        [Required]
+        public int Id { get; set; }
 
         [Required]
         [MaxLength(25)]
@@ -74,7 +79,9 @@ namespace Dealership.Web.Models
 
         public List<SelectListItem> FuelTypes { get; set; }
 
+        public IFormFile Image { get; set; }
 
+        public string ImageUrl { get; set; }
 
     }
 }

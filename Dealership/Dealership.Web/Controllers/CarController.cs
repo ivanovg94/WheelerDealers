@@ -2,10 +2,13 @@
 using Dealership.Web.Models;
 using Dealership.Web.Models.CarViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.IO;
 using System.Linq;
-
+using System.Threading.Tasks;
 
 namespace Dealership.Web.Controllers
 {
@@ -93,7 +96,9 @@ namespace Dealership.Web.Controllers
             {
                 var car = this.carService.CreateCar(model.Brand, model.CarModel, model.HorsePower, model.EngineCapacity, model.ProductionDate, model.Price, model.BodyType, model.Color, model.ColorType, model.FuelType, model.GearBoxType, model.NumberOfGears);
 
+
                 this.carService.AddCar(car);
+                AddImage(model.Image, car.Id);
                 this.TempData["Success-Message"] = "You published a new post!";
 
                 return RedirectToAction("Details", "Car", new { id = car.Id });
@@ -109,6 +114,62 @@ namespace Dealership.Web.Controllers
             var model = new CarViewModel(car);
 
             return this.View(model);
+        }
+
+        [Authorize]
+        public IActionResult Delete(int id)
+        {
+            return this.View(id);
+        }
+
+        [Authorize]
+        public IActionResult ConfirmDelete(int id)
+        {
+            this.carService.RemoveCar(id);
+
+            return RedirectToAction(nameof(Browse));
+        }
+
+
+        private void AddImage(IFormFile avatarImage, int carId)
+        {
+            if (avatarImage == null)
+            {
+                return; /*this.RedirectToAction(nameof(Index));*/
+
+            }
+
+            //if (!this.IsValidImage(avatarImage))
+            //{
+            //    this.StatusMessage = "Error: Please provide a .jpg or .png file smaller than 1MB";
+            //    throw this.RedirectToAction(nameof(Index));
+            //}
+
+            this.carService.SaveAvatarImage(
+                this.GetUploadsRoot(),
+                avatarImage.FileName,
+                avatarImage.OpenReadStream(),
+                carId                
+            );
+        }
+
+        private string GetUploadsRoot()
+        {
+            var environment = this.HttpContext.RequestServices
+                .GetService(typeof(IHostingEnvironment)) as IHostingEnvironment;
+
+            return Path.Combine(environment.WebRootPath, "images", "cars");
+        }
+
+        private bool IsValidImage(IFormFile image)
+        {
+            string type = image.ContentType;
+            if (type != "image/png" && type != "image/jpg" && type != "image/jpeg")
+            {
+                return false;
+            }
+
+            return image.Length <= 1024 * 1024;
         }
     }
 }

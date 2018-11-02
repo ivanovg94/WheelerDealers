@@ -53,6 +53,8 @@ namespace Dealership.Data.Models
         public int GearBoxId { get; set; }
         public Gearbox GearBox { get; set; }
 
+        public string ImageName { get; set; }   
+
         public ICollection<CarsExtras> CarsExtras
         {
             get { return this.carsExtras; }
