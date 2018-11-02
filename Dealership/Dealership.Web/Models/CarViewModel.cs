@@ -16,6 +16,7 @@ namespace Dealership.Web.Models
 
         public CarViewModel(Car car)
         {
+            this.Id = car.Id;
             this.CarModel = car.Model;
             this.HorsePower = car.HorsePower;
             this.EngineCapacity = car.EngineCapacity;
@@ -30,6 +31,8 @@ namespace Dealership.Web.Models
             this.FuelType = car.FuelType.Name;
             this.ImagesUrl = car.Images.Select(i => i.ImageName).ToList();
         }
+        [Required]
+        public int Id { get; set; }
 
         [Required]
         [MaxLength(25)]

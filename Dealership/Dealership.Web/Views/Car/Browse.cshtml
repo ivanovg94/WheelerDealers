@@ -5,30 +5,30 @@
 }
 
 <h2>Search Cars</h2>
+<div class="col-lg-12">
+    <div class="list-group col-lg-offset-1 col-lg-10">
 
-@foreach (var car in Model.Summaries)
-{
-    <partial name="_CarSummary" model="car" />
-
-    <a asp-controller="Car" asp-action="Delete" asp-route-id="@car.Id" class="danger">Delete</a>
-
-}
-
-<ul class="pagination pagination-sm">
-
-    @for (int i = 0; i < Model.Pages; i++)
-    {
-        if (Model.CurrentPage == i)
+        @foreach (var car in Model.Summaries)
         {
-            <li class="active"> <a asp-action="Browse" asp-route-page="@i">@(i + 1)</a></li>
+            <partial name="_CarSummary" model="car" />
         }
-        else
+    </div>
+</div>
+
+<div class="col-lg-offset-1 col-lg-11">
+    <ul class="pagination pagination-sm">
+
+        @for (int i = 0; i < Model.Pages; i++)
         {
-            <li> <a asp-action="Browse" asp-route-page="@i">@(i + 1)</a></li>
+            if (Model.CurrentPage == i)
+            {
+                <li class="active"> <a asp-action="Browse" asp-route-page="@i">@(i + 1)</a></li>
+            }
+            else
+            {
+                <li> <a asp-action="Browse" asp-route-page="@i">@(i + 1)</a></li>
+            }
         }
-    }
-</ul>
-
-
-
+    </ul>
+</div>
 

@@ -62,7 +62,9 @@ namespace Dealership.Web.Controllers
                     Capacity = c.EngineCapacity,
                     GearType = c.GearBox.GearType.Name,
                     Fuel = c.FuelType.Name,
-                    Color = c.Color.Name
+                    Color = c.Color.Name,
+                    Price = $"{c.Price}$",
+                    Mileage = $" XXXX miles"
                 }),
                 Pages = pageCount,
                 CurrentPage = page

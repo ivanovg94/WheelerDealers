@@ -99,5 +99,7 @@
 </div>
 <div>
     @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-controller="Car" asp-action="Delete" asp-route-id="@Model.Id" class="danger">Delete</a>
+
     <a asp-action="Browse">Back to List</a>
 </div>
