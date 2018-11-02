@@ -9,11 +9,13 @@ namespace Dealership.Data.Models
     {
         private ICollection<CarsExtras> carsExtras;
         private ICollection<UsersCars> usersCars;
+        private ICollection<Image> images;
 
         public Car()
         {
             this.carsExtras = new HashSet<CarsExtras>();
             this.usersCars = new HashSet<UsersCars>();
+            this.images = new HashSet<Image>();
         }
 
         [Required]
@@ -53,7 +55,15 @@ namespace Dealership.Data.Models
         public int GearBoxId { get; set; }
         public Gearbox GearBox { get; set; }
 
-        public string ImageName { get; set; }   
+        public ICollection<Image> Images
+        {
+            get { return this.images; }
+            set
+            {
+                this.images = value;
+            }
+        }
+
 
         public ICollection<CarsExtras> CarsExtras
         {

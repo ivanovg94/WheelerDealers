@@ -9,7 +9,9 @@
 @foreach (var car in Model.Summaries)
 {
     <partial name="_CarSummary" model="car" />
+
     <a asp-controller="Car" asp-action="Delete" asp-route-id="@car.Id" class="danger">Delete</a>
+
 }
 
 <ul class="pagination pagination-sm">

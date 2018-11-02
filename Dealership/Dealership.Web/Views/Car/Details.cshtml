@@ -7,7 +7,18 @@
 
 <h2>Details</h2>
 <div>
-    <img src="~/images/cars/@(Model.ImageUrl ?? "")" width="600"/>
+    @if (Model.ImagesUrl.Count != 0)
+    {
+        @foreach (var imageName in Model.ImagesUrl)
+        {
+            <img src="~/images/cars/@(imageName ?? "default.jpg")" width="600" />
+        }
+    }
+    else
+    {
+        <img src="~/images/cars/default.jpg" width="600" />
+
+    }
 
     <hr />
     <dl class="dl-horizontal">

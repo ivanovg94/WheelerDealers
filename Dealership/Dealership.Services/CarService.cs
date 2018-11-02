@@ -208,6 +208,7 @@ namespace Dealership.Services
                                   .Include(c => c.FuelType)
                                   .Include(c => c.GearBox)
                                       .ThenInclude(gb => gb.GearType)
+                                  .Include(c => c.Images)
                                   .FirstOrDefault();
 
             if (car == null)
@@ -245,7 +246,7 @@ namespace Dealership.Services
             return this.context.Cars.Count();
         }
 
-        public void SaveAvatarImage(string root, string filename, Stream stream, int carId)
+        public void SaveImage(string root, string filename, Stream stream, int carId)
         {
             var car = GetCar(carId);
 
@@ -262,7 +263,12 @@ namespace Dealership.Services
                 stream.CopyTo(fileStream);
             }
 
-            car.ImageName = imageName;
+            var image = new Image()
+            {
+                ImageName = imageName
+            };
+
+            car.Images.Add(image);
             this.context.SaveChanges();
         }
     }

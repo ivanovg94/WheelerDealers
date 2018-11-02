@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Dealership.Web.Controllers
 {
@@ -96,8 +96,9 @@ namespace Dealership.Web.Controllers
 
 
                 this.carService.AddCar(car);
-                AddImage(model.Image, car.Id);
-                this.TempData["Success-Message"] = "You published a new post!";
+
+                AddImages(model.Images, car.Id);
+
 
                 return RedirectToAction("Details", "Car", new { id = car.Id });
             }
@@ -129,12 +130,11 @@ namespace Dealership.Web.Controllers
         }
 
 
-        private void AddImage(IFormFile avatarImage, int carId)
+        private void AddImages(ICollection<IFormFile> images, int carId)
         {
-            if (avatarImage == null)
+            if (images == null)
             {
-                return; /*this.RedirectToAction(nameof(Index));*/
-
+                return;
             }
 
             //if (!this.IsValidImage(avatarImage))
@@ -143,12 +143,16 @@ namespace Dealership.Web.Controllers
             //    throw this.RedirectToAction(nameof(Index));
             //}
 
-            this.carService.SaveAvatarImage(
-                this.GetUploadsRoot(),
-                avatarImage.FileName,
-                avatarImage.OpenReadStream(),
-                carId                
-            );
+
+            foreach (var image in images)
+            {
+                this.carService.SaveImage(
+                     this.GetUploadsRoot(),
+                     image.FileName,
+                     image.OpenReadStream(),
+                     carId
+                 );
+            }
         }
 
         private string GetUploadsRoot()

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace Dealership.Web.Models
 {
@@ -27,7 +28,7 @@ namespace Dealership.Web.Models
             this.GearBoxType = car.GearBox.GearType.Name;
             this.NumberOfGears = car.GearBox.NumberOfGears;
             this.FuelType = car.FuelType.Name;
-            this.ImageUrl = car.ImageName;
+            this.ImagesUrl = car.Images.Select(i => i.ImageName).ToList();
         }
 
         [Required]
@@ -76,9 +77,8 @@ namespace Dealership.Web.Models
 
         public List<SelectListItem> FuelTypes { get; set; }
 
-        public IFormFile Image { get; set; }
+        public ICollection<IFormFile> Images { get; set; }
 
-        public string ImageUrl { get; set; }
-
+        public ICollection<string> ImagesUrl { get; set; }
     }
 }

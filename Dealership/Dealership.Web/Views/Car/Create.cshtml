@@ -75,15 +75,15 @@
                 </select>
 
             </div>
-            <div class="form-group">
-                <label asp-for="@Model.Image" class="control-label"></label>
-                <input asp-for="@Model.Image" class="form-control" />
-            </div>
-            
+
+            <span>Select File:</span>
+                <div>
+                    <label for="file">Choose file to upload</label>
+                    <input type="file" name="Images" multiple>
+                </div>
+
             <div class="form-group">
                 <button class="btn btn-success" type="submit">Create</button>
-
-                @*<input type="submit" value="Create" class="btn btn-default" />*@
             </div>
         </form>
     </div>

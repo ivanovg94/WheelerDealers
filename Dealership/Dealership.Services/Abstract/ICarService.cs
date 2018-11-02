@@ -28,6 +28,6 @@ namespace Dealership.Services.Abstract
 
         int GetCarsCount();
 
-        void SaveAvatarImage(string root, string filename, Stream stream, int carId);
+        void SaveImage(string root, string filename, Stream stream, int carId);
     }
 }
