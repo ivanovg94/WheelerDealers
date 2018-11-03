@@ -2,6 +2,8 @@
 using Dealership.Data.Models.Contracts;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace Dealership.Services.Abstract
 {
@@ -11,7 +13,7 @@ namespace Dealership.Services.Abstract
             DateTime productionDate, decimal price, string chassisName, string colorName,
             string colorType, string fuelTypeName, string gearboxTypeName, int numOfGears);
 
-        void AddCar(ICar car);
+        ICar AddCar(ICar car);
 
         void AddCars(ICollection<Car> cars);
 
@@ -20,6 +22,7 @@ namespace Dealership.Services.Abstract
         IList<Car> GetCars(bool filterSold, string direction);
 
         IList<Car> GetCars(string direction);
+
         IList<Car> GetCars(int skip, int take);
 
         Car RemoveCar(int carId);
@@ -27,5 +30,7 @@ namespace Dealership.Services.Abstract
         int GetCarsCount();
 
         void Update(ICar car);
+
+        void SaveAvatarImage(string root, string filename, Stream stream, int carId);
     }
 }

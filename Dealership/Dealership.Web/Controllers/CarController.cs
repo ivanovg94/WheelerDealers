@@ -3,12 +3,14 @@ using Dealership.Services.Abstract;
 using Dealership.Web.Models;
 using Dealership.Web.Models.CarViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
-using System.Collections;
+using System.IO;
 using System.Linq;
-
+using System.Threading.Tasks;
 
 namespace Dealership.Web.Controllers
 {
@@ -46,27 +48,8 @@ namespace Dealership.Web.Controllers
         public IActionResult Edit(int id)
         {
             var car = this.carService.GetCar(id);
-            var model = new CarViewModel
-            {
-                Id = car.Id,
-                ProductionDate = car.ProductionDate,
-                Brand = car.Brand.Name,
-                CarModel = car.Model,
-                BodyType = car.BodyType.Name,
-                Color = car.Color.Name,
-                ColorType = car.Color.ColorType.Name,
-                FuelType = car.FuelType.Name,
-                GearBoxType = car.GearBox.GearType.Name,
-                EngineCapacity = car.EngineCapacity,
-                HorsePower = car.HorsePower,
-                NumberOfGears = car.GearBox.NumberOfGears,
-                Price = car.Price,
-                CarsExtras = car.CarsExtras,
-                BodyTypes = this.bodyTypeService.GetBodyTypes().Select(x => new SelectListItem { Value = x.Name, Text = x.Name }).ToList(),
-                GearTypes = this.gearTypeService.GetGearTypes().Select(x => new SelectListItem { Value = x.Name, Text = x.Name }).ToList(),
-                ColorTypes = this.colorTypeService.GetColorTypes().Select(x => new SelectListItem { Value = x.Name, Text = x.Name }).ToList(),
-                FuelTypes = this.fuelTypeService.GetFuelTypes().Select(x => new SelectListItem { Value = x.Name, Text = x.Name }).ToList()
-            };
+            var model = new CarViewModel(car);
+
             return View(model);
         }
 
@@ -76,7 +59,7 @@ namespace Dealership.Web.Controllers
         {
             EditProductionDate(car);
 
-            return RedirectToAction("Edit", "Car", new { car.Id });
+            return RedirectToAction("Details", "Car", new { car.Id });
         }
 
         public IActionResult EditBrand(int id, CarViewModel car)
@@ -87,8 +70,19 @@ namespace Dealership.Web.Controllers
         }
         public void EditProductionDate(CarViewModel car)
         {
+            var realCar = carService.GetCar(car.Id);
+
             var newBody = bodyTypeService.GetBodyType(car.BodyType);
-            var newBrand = brandService.GetBrand(car.Brand);
+            Brand newBrand;
+            try
+            {
+                newBrand = brandService.GetBrand(car.Brand);
+            }
+            catch
+            {
+                newBrand = new Brand() { Name = car.Brand };
+            }
+
             var newColor = new Color() { Name = car.Color };
             newColor.ColorType = colorTypeService.GetColorTypes().FirstOrDefault(c => c.Name == car.ColorType);
             var newEngineCapacity = car.EngineCapacity;
@@ -104,32 +98,28 @@ namespace Dealership.Web.Controllers
             var newPrice = car.Price;
             var newProductionDate = car.ProductionDate;
 
+            realCar.Model = newModel;
+            realCar.BodyType = newBody;
+            realCar.BodyTypeId = newBody.Id;
+            realCar.Brand = newBrand;
+            realCar.BrandId = newBrand.Id;
+            realCar.CarsExtras = car.CarsExtras;
+            realCar.Color = newColor;
+            realCar.ColorId = newColor.Id;
+            realCar.EngineCapacity = newEngineCapacity;
+            realCar.FuelType = newFuelType;
+            realCar.FuelTypeId = newFuelType.Id;
+            realCar.GearBox = newGearbox;
+            realCar.GearBoxId = newGearbox.Id;
+            realCar.HorsePower = newHorsePower;
+            realCar.Model = newModel;
+            realCar.Price = newPrice;
+            realCar.ProductionDate = newProductionDate;
+            realCar.ModifiedOn = DateTime.Now;
 
-            var upCar = new Car()
-            {
-                Id = car.Id,
-                BodyType = newBody,
-                BodyTypeId = newBody.Id,
-                Brand = newBrand,
-                BrandId = newBrand.Id,
-                CarsExtras = car.CarsExtras,
-                Color = newColor,
-                ColorId = newColor.Id,
-                EngineCapacity = newEngineCapacity,
-                FuelType = newFuelType,
-                FuelTypeId = newFuelType.Id,
-                GearBox = newGearbox,
-                GearBoxId = newGearbox.Id,
-                HorsePower = newHorsePower,
-                Model = newModel,
-                Price = newPrice,
-                ProductionDate = newProductionDate,
-                ModifiedOn = DateTime.Now,
-                
-            };
-            
-            carService.Update(upCar);
-            
+
+            carService.Update(realCar);
+
         }
 
         [HttpGet]
@@ -186,7 +176,9 @@ namespace Dealership.Web.Controllers
             {
                 var car = this.carService.CreateCar(model.Brand, model.CarModel, model.HorsePower, model.EngineCapacity, model.ProductionDate, model.Price, model.BodyType, model.Color, model.ColorType, model.FuelType, model.GearBoxType, model.NumberOfGears);
 
+
                 this.carService.AddCar(car);
+                AddImage(model.Image, car.Id);
                 this.TempData["Success-Message"] = "You published a new post!";
 
                 return RedirectToAction("Details", "Car", new { id = car.Id });
@@ -202,6 +194,48 @@ namespace Dealership.Web.Controllers
             var model = new CarViewModel(car);
 
             return this.View(model);
+        }
+
+
+        private void AddImage(IFormFile avatarImage, int carId)
+        {
+            if (avatarImage == null)
+            {
+                return; /*this.RedirectToAction(nameof(Index));*/
+
+            }
+
+            //if (!this.IsValidImage(avatarImage))
+            //{
+            //    this.StatusMessage = "Error: Please provide a .jpg or .png file smaller than 1MB";
+            //    throw this.RedirectToAction(nameof(Index));
+            //}
+
+            this.carService.SaveAvatarImage(
+                this.GetUploadsRoot(),
+                avatarImage.FileName,
+                avatarImage.OpenReadStream(),
+                carId
+            );
+        }
+
+        private string GetUploadsRoot()
+        {
+            var environment = this.HttpContext.RequestServices
+                .GetService(typeof(IHostingEnvironment)) as IHostingEnvironment;
+
+            return Path.Combine(environment.WebRootPath, "images", "cars");
+        }
+
+        private bool IsValidImage(IFormFile image)
+        {
+            string type = image.ContentType;
+            if (type != "image/png" && type != "image/jpg" && type != "image/jpeg")
+            {
+                return false;
+            }
+
+            return image.Length <= 1024 * 1024;
         }
     }
 }

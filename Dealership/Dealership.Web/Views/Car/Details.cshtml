@@ -6,21 +6,104 @@
 }
 
 <h2>Car details</h2>
+<div class="row">
+    <div class="col-md-4">
+        <h3>Id: <strong>@Model.Id</strong></h3>
+        <p>Year:<strong> @Model.ProductionDate.Year</strong></p>
+        <p>Brand:<strong> @Model.Brand</strong></p>
+        <p>Model:<strong> @Model.CarModel</strong></p>
+        <p>Body type:<strong> @Model.BodyType</strong></p>
+        <p>Engine capacity:<strong> @Model.EngineCapacity</strong></p>
+        <p>Horse power:<strong> @Model.HorsePower</strong></p>
+        <p>Color:<strong> @Model.Color (@Model.Color)</strong></p>
+        <p>Gearbox:<strong> @Model.GearBoxType (@Model.NumberOfGears) gears</strong></p>
+        <p>Price:<strong> @Model.Price $</strong></p>
 
-<div>
-    <h3>Id: <strong>@Model.Id</strong></h3>
-    <p>Year:<strong> @Model.ProductionDate.Year</strong></p>
-    <p>Brand:<strong> @Model.Brand</strong></p>
-    <p>Model:<strong> @Model.CarModel</strong></p>
-    <p>Body type:<strong> @Model.BodyType</strong></p>
-    <p>Engine capacity:<strong> @Model.EngineCapacity</strong></p>
-    <p>Horse power:<strong> @Model.HorsePower</strong></p>
-    <p>Color:<strong> @Model.Color (@Model.Color)</strong></p>
-    <p>Gearbox:<strong> @Model.GearBoxType (@Model.GearBoxType) gears</strong></p>
-    <p>Price:<strong> @Model.Price $</strong></p>
-
-    <a class="btn btn-default" asp-controller="Car" asp-action="Index">Back</a>
+        <a class="btn btn-default" asp-controller="Car" asp-action="Index">Back</a>
+        <a class="btn btn-default" asp-controller="Car" asp-action="Edit/@Model.Id">Edit</a>
     </div>
+    <img class="col-md-4" src="~/images/cars/@(Model.ImageUrl ?? "")" width="500" />
+</div>
+    should choose between these two
+<hr />
+<div class="row">
+    <dl class="col-md-4">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CarModel)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CarModel)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.HorsePower)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.HorsePower)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EngineCapacity)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EngineCapacity)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductionDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProductionDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Brand)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Brand)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.BodyType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BodyType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Color)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Color)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ColorType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ColorType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FuelType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FuelType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.GearBoxType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.GearBoxType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NumberOfGears)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NumberOfGears)
+        </dd>
+    </dl>
+    <img class="col-md-4" src="~/images/cars/@(Model.ImageUrl ?? "")" width="500" />
+</div>
 <div>
     <a asp-controller="Car" asp-action="Edit/@Model.Id">Edit</a> |
     <a asp-action="Browse">Back to List</a>

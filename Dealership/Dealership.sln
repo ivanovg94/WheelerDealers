@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2047
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dealership.Client", "Dealership.Client\Dealership.Client.csproj", "{BA9746F5-2064-4308-9068-A41F9FA14441}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dealership.Data", "Dealership.Data\Dealership.Data.csproj", "{A89351F5-46DE-41C4-B6E9-CEE72B08B075}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dealership.Services", "Dealership.Services\Dealership.Services.csproj", "{8B00A526-E2C3-49B6-80B8-2586F5BFFA4C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dealership.Tests", "Dealership.Tests\Dealership.Tests.csproj", "{D66667F0-E5B9-497B-A740-51C36CB074FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dealership.Web", "Dealership.Web\Dealership.Web.csproj", "{499F0071-A009-4F5D-ADB7-C68139439954}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dealership.Web", "Dealership.Web\Dealership.Web.csproj", "{499F0071-A009-4F5D-ADB7-C68139439954}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BA9746F5-2064-4308-9068-A41F9FA14441}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BA9746F5-2064-4308-9068-A41F9FA14441}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BA9746F5-2064-4308-9068-A41F9FA14441}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BA9746F5-2064-4308-9068-A41F9FA14441}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A89351F5-46DE-41C4-B6E9-CEE72B08B075}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A89351F5-46DE-41C4-B6E9-CEE72B08B075}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A89351F5-46DE-41C4-B6E9-CEE72B08B075}.Release|Any CPU.ActiveCfg = Release|Any CPU
