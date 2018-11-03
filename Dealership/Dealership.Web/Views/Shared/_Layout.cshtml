@@ -33,7 +33,9 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    <li><a asp-area="" asp-controller="Car" asp-action="Index">Cars(or something else)</a></li>
+                    <li><a asp-area="" asp-controller="Car" asp-action="Browse">Browse</a></li>
+                    <li><a asp-area="" asp-controller="Car" asp-action="Create">Create</a></li>
+
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
@@ -66,6 +68,8 @@
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
+
+
     </environment>
 
     @RenderSection("Scripts", required: false)

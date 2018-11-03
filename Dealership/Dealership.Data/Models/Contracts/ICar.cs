@@ -11,7 +11,7 @@ namespace Dealership.Data.Models.Contracts
         int BodyTypeId { get; set; }
         Brand Brand { get; set; }
         int BrandId { get; set; }
-        ICollection<CarsExtras> CarsExtras { get; set; }
+        IEnumerable<CarsExtras> CarsExtras { get; set; }
         Color Color { get; set; }
         int ColorId { get; set; }
         short EngineCapacity { get; set; }

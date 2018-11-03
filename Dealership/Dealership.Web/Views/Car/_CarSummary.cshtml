@@ -1,0 +1,13 @@
+﻿@model Dealership.Web.Models.CarViewModels.CarSummaryViewModel
+
+<section>
+    <h3>
+        @Model.Brand @Model.CarModel
+    </h3>
+    <div>
+        Id: @Model.Id, Cap: @Model.Capacity, Gears: @Model.GearType, Fuel: @Model.Fuel, Color: @Model.Color
+    </div>
+    <div>
+        <a asp-action="Details" asp-route-id="@Model.Id ">More</a>
+    </div>
+</section>

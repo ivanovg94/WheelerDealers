@@ -41,7 +41,7 @@ namespace Dealership.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Chassis");
+                    b.ToTable("BodyTypes");
 
                     b.HasData(
                         new { Id = 1, IsDeleted = false, Name = "Sedan", NumberOfDoors = (byte)4 },

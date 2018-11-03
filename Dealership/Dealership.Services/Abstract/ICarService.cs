@@ -20,7 +20,12 @@ namespace Dealership.Services.Abstract
         IList<Car> GetCars(bool filterSold, string direction);
 
         IList<Car> GetCars(string direction);
+        IList<Car> GetCars(int skip, int take);
 
         Car RemoveCar(int carId);
+
+        int GetCarsCount();
+
+        void Update(ICar car);
     }
 }

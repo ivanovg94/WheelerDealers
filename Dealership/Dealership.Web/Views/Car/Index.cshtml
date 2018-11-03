@@ -1,15 +1,14 @@
-﻿
+﻿@model IEnumerable<Car>
+
 @{
     ViewData["Title"] = "Index";
 }
-@model Dealership.Services.CarService
-@{
-    var list = Model.GetCars("asc");
-}
+
 <h1>Cars list</h1>
- <a class="btn btn-default" asp-controller="Car" asp-action="Create">Create</a>
+<a class="btn btn-default" asp-controller="Car" asp-action="Create">Create</a>
+
 <div class="row">
-    @foreach (var car in list)
+    @foreach (var car in Model)
     {
         var currentId = car.Id;
 
@@ -22,7 +21,7 @@
             <p>Horse power: <strong> @car.HorsePower</strong> </p>
             <p>Fuel type: <strong> @car.FuelType.Name</strong> </p>
             <a class="btn btn-default" asp-controller="Car" asp-action="Details/@currentId">Details</a>
-            <a class="btn btn-default" asp-controller="Car" asp-action="Edit/@currentId">Edit(todo)</a>
+            <a class="btn btn-default" asp-controller="Car" asp-action="Edit/@currentId">Edit</a>
             <a class="btn btn-default" asp-controller="Car" asp-action="Delete/@currentId">Delete(todo)</a>
             <hr />
 
