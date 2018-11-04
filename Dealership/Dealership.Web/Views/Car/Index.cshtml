@@ -6,27 +6,3 @@
 @{
     var list = Model.GetCars("asc");
 }
-<h1>Cars list</h1>
-<button> <a asp-controller="Car" asp-action="Create">Create</a></button>
-<div class="row">
-    @foreach (var car in list)
-    {
-        var currentId = car.Id;
-
-        <div class="col-md-4">
-            <h3>@car.Id</h3>
-            <p>Brand: <strong>@car.Brand.Name</strong> </p>
-            <p>Model: <strong>@car.Model</strong> </p>
-            <p>Body type: <strong>  @car.BodyType.Name</strong> </p>
-            <p>Color: <strong> @car.Color.Name</strong> </p>
-            <p>Horse power: <strong> @car.HorsePower</strong> </p>
-            <p>Fuel type: <strong> @car.FuelType.Name</strong> </p>
-            <a asp-controller="Car" asp-action="Details/@currentId"><strong>Details</strong></a>
-            <a asp-controller="Car" asp-action="Edit/@currentId"><strong>Edit(todo)</strong></a>
-            <a asp-controller="Car" asp-action="Delete/@currentId"><strong>Delete(todo)</strong></a>
-            <hr />
-
-        </div>
-    }
-</div>
-

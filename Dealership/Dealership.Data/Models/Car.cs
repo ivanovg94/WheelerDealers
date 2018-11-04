@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Dealership.Data.Models
 {
-    public class Car : Entity, ICar
+    public class Car : Entity
     {
         private ICollection<CarsExtras> carsExtras;
         private ICollection<UsersCars> usersCars;
@@ -17,9 +17,7 @@ namespace Dealership.Data.Models
         }
 
         [Required]
-        [MaxLength(25)]
-        [MinLength(2)]
-        public string Model { get; set; }
+        public int Mileage { get; set; }
 
         [Required]
         [Range(1, int.MaxValue)]
@@ -41,6 +39,9 @@ namespace Dealership.Data.Models
         public int BrandId { get; set; }
         public Brand Brand { get; set; }
 
+        public int CarModelId { get; set; }
+        public CarModel CarModel { get; set; }
+
         public int BodyTypeId { get; set; }
         public BodyType BodyType { get; set; }
 
@@ -53,7 +54,7 @@ namespace Dealership.Data.Models
         public int GearBoxId { get; set; }
         public Gearbox GearBox { get; set; }
 
-        public string ImageName { get; set; }   
+        public string ImageName { get; set; }
 
         public ICollection<CarsExtras> CarsExtras
         {

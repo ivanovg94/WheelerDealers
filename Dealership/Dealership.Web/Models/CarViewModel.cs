@@ -16,7 +16,7 @@ namespace Dealership.Web.Models
         public CarViewModel(Car car)
         {
             this.Id = car.Id;
-            this.CarModel = car.Model;
+            this.CarModel = car.CarModel.Name;
             this.HorsePower = car.HorsePower;
             this.EngineCapacity = car.EngineCapacity;
             this.Price = car.Price;

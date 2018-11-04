@@ -2,6 +2,7 @@
 using Dealership.Data.Models;
 using Dealership.Services.Abstract;
 using Dealership.Services.Exceptions;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace Dealership.Services
@@ -17,7 +18,10 @@ namespace Dealership.Services
 
         public Brand GetBrand(string brandName)
         {
-            var brand = this.context.Brands.FirstOrDefault(b => b.Name == brandName);
+            var brand = this.context.Brands
+                                    .Include(b => b.Cars)
+                                    .Include(b => b.CarModels)
+                                    .FirstOrDefault(b => b.Name == brandName);
             if (brand == null)
             {
                 throw new ServiceException($"There is no brand with name {brandName}.");

@@ -20,7 +20,7 @@ namespace Dealership.Services
             this.context = context;
         }
 
-        public Car CreateCar(string brandName, string model, short horsePower, short engineCapacity,
+        public Car CreateCar(string brandName, string carModelName, short horsePower, short engineCapacity,
             DateTime productionDate, decimal price, string bodyTypeName, string colorName, string colorType,
             string fuelTypeName, string gearboxTypeName, int numOfGears)
         {
@@ -29,7 +29,7 @@ namespace Dealership.Services
                 throw new ServiceException("The name of brand cannot be less than 2 symbols or more than 25 symbols.");
             }
 
-            var brand = this.context.Brands.FirstOrDefault(b => b.Name == brandName);
+            var brand = this.context.Brands.Include(b => b.CarModels).FirstOrDefault(b => b.Name == brandName);
 
             if (brand == null)
             {
@@ -37,6 +37,17 @@ namespace Dealership.Services
                 this.context.Brands.Add(brand);
                 this.context.SaveChanges();
             }
+
+
+            var model = brand.CarModels.FirstOrDefault(m => m.Name == carModelName);
+            if (model == null)
+            {
+                model = new CarModel() { Name = carModelName, BrandId = brand.Id };
+                this.context.CarModels.Add(model);
+                this.context.SaveChanges();
+            }
+
+
 
             var bodyType = this.context.BodyTypes.FirstOrDefault(c => c.Name == bodyTypeName);
             if (bodyType == null)
@@ -82,7 +93,7 @@ namespace Dealership.Services
             {
                 BrandId = brand.Id,
                 Brand = brand,
-                Model = model,
+                CarModel = model,
                 HorsePower = horsePower,
                 EngineCapacity = engineCapacity,
                 ProductionDate = productionDate,
@@ -100,13 +111,13 @@ namespace Dealership.Services
             return newCar;
         }
 
-        public ICar AddCar(ICar car)
+        public Car AddCar(Car car)
         {
             if (car == null)
             {
                 throw new ServiceException("Car doesn't exist!");
             }
-            car = this.context.Cars.Add((Car)car).Entity;
+            car = this.context.Cars.Add(car).Entity;
             this.context.SaveChanges();
 
             return car;

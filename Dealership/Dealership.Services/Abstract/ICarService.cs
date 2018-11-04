@@ -13,7 +13,7 @@ namespace Dealership.Services.Abstract
             DateTime productionDate, decimal price, string chassisName, string colorName,
             string colorType, string fuelTypeName, string gearboxTypeName, int numOfGears);
 
-        ICar AddCar(ICar car);
+        Car AddCar(Car car);
 
         void AddCars(ICollection<Car> cars);
 

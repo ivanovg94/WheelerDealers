@@ -16,6 +16,8 @@ namespace Dealership.Data.Context
         }
         public DbSet<Brand> Brands { get; set; }
 
+        public DbSet<CarModel> CarModels { get; set; }
+
         public DbSet<Car> Cars { get; set; }
 
         public DbSet<CarsExtras> CarsExtras { get; set; }

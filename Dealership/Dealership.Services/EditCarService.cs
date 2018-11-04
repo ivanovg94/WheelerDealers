@@ -60,7 +60,7 @@ namespace Dealership.Services
             this.context.Cars.Update(car);
             this.context.SaveChanges();
 
-            return $"Brand of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
+            return $"Brand of {car.Brand.Name} {car.CarModel.Name} with ID:{car.Id} edited successfully!";
 
         }
 
@@ -77,12 +77,21 @@ namespace Dealership.Services
             var newValue = parameters[1];
 
             var car = this.carService.GetCar(id);
-            car.Model = newValue;
+
+            var model = car.Brand.CarModels.FirstOrDefault(m => m.Name == newValue);
+            if (model == null)
+            {
+                model = new CarModel() { Name = newValue, BrandId = car.Brand.Id };
+                this.context.CarModels.Add(model);
+              //  this.context.SaveChanges(); //TODO:TEST
+            }
+            //id??
+            car.CarModel = model;
 
             this.context.Cars.Update(car);
             this.context.SaveChanges();
 
-            return $"Model of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
+            return $"Model of {car.Brand.Name} {car.CarModel.Name} with ID:{car.Id} edited successfully!";
         }
 
         public string EditHorsePower(string[] parameters)
@@ -104,7 +113,7 @@ namespace Dealership.Services
             this.context.Cars.Update(car);
             this.context.SaveChanges();
 
-            return $"Horse power of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
+            return $"Horse power of {car.Brand.Name} {car.CarModel.Name} with ID:{car.Id} edited successfully!";
         }
 
         public string EditEngineCapacity(string[] parameters)
@@ -127,7 +136,7 @@ namespace Dealership.Services
             this.context.Cars.Update(car);
             this.context.SaveChanges();
 
-            return $"Engine capacity of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
+            return $"Engine capacity of {car.Brand.Name} {car.CarModel.Name} with ID:{car.Id} edited successfully!";
         }
 
         public string EditIsSold(string[] parameters)
@@ -150,7 +159,7 @@ namespace Dealership.Services
             this.context.Cars.Update(car);
             this.context.SaveChanges();
 
-            return $"IsSold of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
+            return $"IsSold of {car.Brand.Name} {car.CarModel.Name} with ID:{car.Id} edited successfully!";
         }
 
         public string EditPrice(string[] parameters)
@@ -172,7 +181,7 @@ namespace Dealership.Services
             this.context.Cars.Update(car);
             this.context.SaveChanges();
 
-            return $"Price of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
+            return $"Price of {car.Brand.Name} {car.CarModel.Name} with ID:{car.Id} edited successfully!";
         }
 
         public string EditProductionDate(string[] parameters)
@@ -194,7 +203,7 @@ namespace Dealership.Services
             this.context.Cars.Update(car);
             this.context.SaveChanges();
 
-            return $"Production date of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
+            return $"Production date of {car.Brand.Name} {car.CarModel.Name} with ID:{car.Id} edited successfully!";
         }
 
         public string EditBodyType(string[] parameters)
@@ -223,7 +232,7 @@ namespace Dealership.Services
             this.context.Cars.Update(car);
             this.context.SaveChanges();
 
-            return $"Body type of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
+            return $"Body type of {car.Brand.Name} {car.CarModel.Name} with ID:{car.Id} edited successfully!";
         }
 
         public string EditColor(string[] parameters)
@@ -274,7 +283,7 @@ namespace Dealership.Services
             this.context.Cars.Update(car);
             this.context.SaveChanges();
 
-            return $"Color of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
+            return $"Color of {car.Brand.Name} {car.CarModel.Name} with ID:{car.Id} edited successfully!";
         }
 
         public string EditColorType(string[] parameters)
@@ -316,7 +325,7 @@ namespace Dealership.Services
             this.context.Cars.Update(car);
             this.context.SaveChanges();
 
-            return $"Color type of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
+            return $"Color type of {car.Brand.Name} {car.CarModel.Name} with ID:{car.Id} edited successfully!";
         }
 
         public string EditFuelType(string[] parameters)
@@ -351,7 +360,7 @@ namespace Dealership.Services
                 throw new ArgumentException($"Fuel type :{newValue} not exist!");
             }
 
-            return $"Fuel type of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
+            return $"Fuel type of {car.Brand.Name} {car.CarModel.Name} with ID:{car.Id} edited successfully!";
 
         }
 
@@ -385,7 +394,7 @@ namespace Dealership.Services
             this.context.Cars.Update(car);
             this.context.SaveChanges();
 
-            return $"Gearbox of {car.Brand.Name} {car.Model} with ID:{car.Id} edited successfully!";
+            return $"Gearbox of {car.Brand.Name} {car.CarModel.Name} with ID:{car.Id} edited successfully!";
         }
     }
 }

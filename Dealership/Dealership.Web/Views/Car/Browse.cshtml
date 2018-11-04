@@ -5,6 +5,32 @@
 }
 
 <h2>Search Cars</h2>
+
+@*<div class="form-group">
+        <label asp-for="@Model.BodyType" class="control-label"></label>
+        <select asp-for="@Model.BodyType" asp-items="@Model.BodyTypes" class="form-control"></select>
+    </div>*@
+
+
+<div class="container">
+    <div class="col-lg-12">
+        <div class="form-group">
+            <label class="col-lg-2 col-lg-offset-1 control-label">Brand</label>
+            <div class="col-lg-9">
+                <div class="form-group">
+                    <div class="col-lg-3">
+                        @*<select asp-for="@Model.Brand" asp-items="@Model.BodyTypes" class="form-control"></select>*@
+                    </div>
+                    <div class="col-lg-3 col-lg-offset-1">
+                        <a asp-action="Browse">Search</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="col-lg-12">
     <div class="list-group col-lg-offset-1 col-lg-10">
 

@@ -1,4 +1,5 @@
-﻿using Dealership.Services.Abstract;
+﻿using Dealership.Data.Models;
+using Dealership.Services.Abstract;
 using Dealership.Web.Models;
 using Dealership.Web.Models.CarViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -6,8 +7,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Dealership.Web.Controllers
@@ -42,7 +45,6 @@ namespace Dealership.Web.Controllers
 
         [HttpGet]
         public IActionResult Browse(int page)
-
         {
             var nPerPage = 5;
             var pageCount = 0;
@@ -51,6 +53,9 @@ namespace Dealership.Web.Controllers
             if (reminder != 0) { pageCount = (totalCount / nPerPage) + 1; }
             else { pageCount = totalCount / nPerPage; }
 
+            //Expression<Func<Car, bool>> searchCriteria = (Car car) => true;
+            //searchCriteria = x => x.Brand.Name.Contains("");
+
             var model = new BrowseViewModel()
             {
                 Summaries = this.carService.GetCars(page * nPerPage, nPerPage)
@@ -58,7 +63,7 @@ namespace Dealership.Web.Controllers
                 {
                     Id = c.Id,
                     Brand = c.Brand.Name,
-                    CarModel = c.Model,
+                    CarModel = c.CarModel.Name,
                     Capacity = c.EngineCapacity,
                     GearType = c.GearBox.GearType.Name,
                     Fuel = c.FuelType.Name,
@@ -69,6 +74,12 @@ namespace Dealership.Web.Controllers
                 Pages = pageCount,
                 CurrentPage = page
             };
+            model.Brands
+                .AddRange(this.bodyTypeService.GetBodyTypes()
+                .Select(x => new SelectListItem { Value = x.Name, Text = x.Name }).ToList());
+            //model.CarModels
+            //   .AddRange(this.bodyTypeService.GetBodyTypes()
+            //   .Select(x => new SelectListItem { Value = x.Name, Text = x.Name }).ToList());
 
             return this.View(model);
         }
@@ -149,7 +160,7 @@ namespace Dealership.Web.Controllers
                 this.GetUploadsRoot(),
                 avatarImage.FileName,
                 avatarImage.OpenReadStream(),
-                carId                
+                carId
             );
         }
 
