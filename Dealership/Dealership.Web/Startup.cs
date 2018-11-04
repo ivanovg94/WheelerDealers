@@ -32,6 +32,7 @@ namespace Dealership.Web
             this.RegisterAuthentication(services);
             this.RegisterServices(services);
             this.RegisterInfrastructure(services);
+            services.AddScoped<IEditCarService, EditCarService>();
             //    services.AddScoped(<SignInManager<User>>)
         }
 

@@ -7,7 +7,7 @@ namespace Dealership.Data.Models
 {
     public class Car : Entity
     {
-        private ICollection<CarsExtras> carsExtras;
+        private IEnumerable<CarsExtras> carsExtras;
         private ICollection<UsersCars> usersCars;
 
         public Car()
@@ -56,7 +56,7 @@ namespace Dealership.Data.Models
 
         public string ImageName { get; set; }
 
-        public ICollection<CarsExtras> CarsExtras
+        public IEnumerable<CarsExtras> CarsExtras
         {
             get { return this.carsExtras; }
             set

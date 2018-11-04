@@ -1,0 +1,96 @@
+﻿@model CarViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+@{
+    var cBrand = Model.Brand;
+    var cMode = Model.CarModel;
+    var cProdDate = Model.ProductionDate;
+    var price = Model.Price;
+    var cHorserPower = Model.HorsePower;
+    var cNumberOfGears = Model.NumberOfGears;
+    var cEngineCapacity = Model.EngineCapacity;
+
+}
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ProductionDate" class="control-label">Production date</label>
+                <input asp-for="ProductionDate" class="form-control" />
+                <span asp-validation-for="ProductionDate" class="text-danger"></span>
+                <button type="submit" class="btn btn-default">Click</button>
+            </div>
+            <div class="form-group">
+                <label asp-for="Brand" class="control-label"></label>
+                <input asp-for="Brand" value="@cBrand" class="form-control" />
+                <span asp-validation-for="Brand" class="text-danger"></span>
+                <a asp-controller="Car" asp-action="Edit" class="btn btn-default">Brand change</a>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.CarModel" class="control-label">Model</label>
+                <input asp-for="@Model.CarModel" value="@Model.CarModel" class="form-control" />
+                <span asp-validation-for="@Model.CarModel" class="text-danger"></span>
+                <button type="submit" class="btn btn-default">Save</button>
+            </div>
+            <div class="form-group">
+                <label asp-for="EngineCapacity" class="control-label">Engine capacity</label>
+                <input asp-for="EngineCapacity" value="@cEngineCapacity" class="form-control" />
+                <span asp-validation-for="EngineCapacity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HorsePower" class="control-label">Horse power</label>
+                <input asp-for="HorsePower" value="@Model.HorsePower" class="form-control" />
+                <span asp-validation-for="HorsePower" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GearBoxType" class="control-label">Gearbox type</label>
+                <select asp-for="GearBoxType" asp-items="Model.GearTypes"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="NumberOfGears" class="control-label">Number of gears</label>
+                <input asp-for="NumberOfGears" class="form-control" />
+                <span asp-validation-for="NumberOfGears" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BodyType" class="control-label">Body type</label>
+                <select asp-for="BodyType" asp-items="Model.BodyTypes"></select>
+                <span asp-validation-for="BodyType" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Color" class="control-label"></label>
+                <select asp-for="Color" asp-items="Model.ColorTypes"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ColorType" class="control-label">Color type</label>
+                <input asp-for="ColorType" class="form-control" />
+                <span asp-validation-for="ColorType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FuelType" class="control-label">Fuel type</label>
+                <select asp-for="FuelType" asp-items="Model.FuelTypes"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-default">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

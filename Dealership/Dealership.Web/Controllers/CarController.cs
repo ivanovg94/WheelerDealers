@@ -18,17 +18,19 @@ namespace Dealership.Web.Controllers
     public class CarController : Controller
     {
         private readonly ICarService carService;
+        private readonly IEditCarService editCarService;
         private readonly IBrandService brandService;
         private readonly IBodyTypeService bodyTypeService;
         private readonly IColorTypeService colorTypeService;
         private readonly IFuelTypeService fuelTypeService;
         private readonly IGearTypeService gearTypeService;
 
-        public CarController(ICarService carService, IBrandService brandService,
+        public CarController(ICarService carService, IEditCarService editCarService, IBrandService brandService,
             IBodyTypeService bodyTypeService, IColorTypeService colorTypeService,
             IFuelTypeService fuelTypeService, IGearTypeService gearTypeService)
         {
             this.carService = carService;
+            this.editCarService = editCarService;
             this.brandService = brandService;
             this.bodyTypeService = bodyTypeService;
             this.colorTypeService = colorTypeService;
@@ -36,11 +38,89 @@ namespace Dealership.Web.Controllers
             this.gearTypeService = gearTypeService;
         }
 
-
-
         public IActionResult Index()
         {
+            var list = this.carService.GetCars("asc");
+
+            return View(list);
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var car = this.carService.GetCar(id);
+            var model = new CarViewModel(car);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(CarViewModel car)
+        {
+            EditProductionDate(car);
+
+            return RedirectToAction("Details", "Car", new { car.Id });
+        }
+
+        public IActionResult EditBrand(int id, CarViewModel car)
+        {
+            EditProductionDate(car);
+
             return View();
+        }
+        public void EditProductionDate(CarViewModel car)
+        {
+            var realCar = carService.GetCar(car.Id);
+
+            var newBody = bodyTypeService.GetBodyType(car.BodyType);
+            Brand newBrand;
+            try
+            {
+                newBrand = brandService.GetBrand(car.Brand);
+            }
+            catch
+            {
+                newBrand = new Brand() { Name = car.Brand };
+            }
+
+            var newColor = new Color() { Name = car.Color };
+            newColor.ColorType = colorTypeService.GetColorTypes().FirstOrDefault(c => c.Name == car.ColorType);
+            var newEngineCapacity = car.EngineCapacity;
+            var newFuelType = fuelTypeService.GetFuelTypes().FirstOrDefault(ft => ft.Name == car.FuelType);
+            var newGearbox = new Gearbox()
+            {
+                GearType = gearTypeService.GetGearTypes().FirstOrDefault(gt => gt.Name == car.GearBoxType)
+                ,
+                NumberOfGears = car.NumberOfGears
+            };
+            var newHorsePower = car.HorsePower;
+            var newModel = car.CarModel;
+            var newPrice = car.Price;
+            var newProductionDate = car.ProductionDate;
+
+            realCar.Model = newModel;
+            realCar.BodyType = newBody;
+            realCar.BodyTypeId = newBody.Id;
+            realCar.Brand = newBrand;
+            realCar.BrandId = newBrand.Id;
+            realCar.CarsExtras = car.CarsExtras;
+            realCar.Color = newColor;
+            realCar.ColorId = newColor.Id;
+            realCar.EngineCapacity = newEngineCapacity;
+            realCar.FuelType = newFuelType;
+            realCar.FuelTypeId = newFuelType.Id;
+            realCar.GearBox = newGearbox;
+            realCar.GearBoxId = newGearbox.Id;
+            realCar.HorsePower = newHorsePower;
+            realCar.Model = newModel;
+            realCar.Price = newPrice;
+            realCar.ProductionDate = newProductionDate;
+            realCar.ModifiedOn = DateTime.Now;
+
+
+            carService.Update(realCar);
+
         }
 
         [HttpGet]

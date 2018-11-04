@@ -206,6 +206,7 @@ namespace Dealership.Services
 
             return querry.ToList();
         }
+
         public virtual Car GetCar(int id)
         {
             var car = this.context.Cars
@@ -256,6 +257,11 @@ namespace Dealership.Services
             return this.context.Cars.Count();
         }
 
+        public void Update(ICar car)
+        {
+            this.context.Cars.Update(car as Car);
+            this.context.SaveChanges();
+        }
         public void SaveAvatarImage(string root, string filename, Stream stream, int carId)
         {
             var car = GetCar(carId);
@@ -278,3 +284,4 @@ namespace Dealership.Services
         }
     }
 }
+
