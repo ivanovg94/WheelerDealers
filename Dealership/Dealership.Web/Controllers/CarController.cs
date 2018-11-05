@@ -48,7 +48,13 @@ namespace Dealership.Web.Controllers
         public IActionResult Edit(int id)
         {
             var car = this.carService.GetCar(id);
-            var model = new CarViewModel(car);
+            var model = new CarViewModel(car)
+            {
+                BodyTypes = this.bodyTypeService.GetBodyTypes().Select(x => new SelectListItem { Value = x.Name, Text = x.Name }).ToList(),
+                GearTypes = this.gearTypeService.GetGearTypes().Select(x => new SelectListItem { Value = x.Name, Text = x.Name }).ToList(),
+                ColorTypes = this.colorTypeService.GetColorTypes().Select(x => new SelectListItem { Value = x.Name, Text = x.Name }).ToList(),
+                FuelTypes = this.fuelTypeService.GetFuelTypes().Select(x => new SelectListItem { Value = x.Name, Text = x.Name }).ToList()
+            };
 
             return View(model);
         }
@@ -57,18 +63,18 @@ namespace Dealership.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(CarViewModel car)
         {
-            EditProductionDate(car);
+            EditCar(car);
 
             return RedirectToAction("Details", "Car", new { car.Id });
         }
 
-        public IActionResult EditBrand(int id, CarViewModel car)
-        {
-            EditProductionDate(car);
+        //public IActionResult EditBrand(int id, CarViewModel car)
+        //{
+        //    EditCar(car);
 
-            return View();
-        }
-        public void EditProductionDate(CarViewModel car)
+        //    return View();
+        //}
+        public void EditCar(CarViewModel car)
         {
             var realCar = carService.GetCar(car.Id);
 
@@ -122,30 +128,52 @@ namespace Dealership.Web.Controllers
 
         }
 
+        public IActionResult Delete(int id)
+        {
+            var removedCar = carService.RemoveCar(id);
+
+            return RedirectToAction("Index", "Car");
+        }
+        public IActionResult DeleteAction(bool confirm, int id)
+        {
+            if (confirm)
+            {
+                var removedCar = carService.RemoveCar(id);
+            }
+            return RedirectToAction("Index", "Car");
+
+        }
+
         [HttpGet]
         public IActionResult Browse(int page)
-
         {
             var nPerPage = 5;
             var pageCount = 0;
             var totalCount = this.carService.GetCarsCount();
             var reminder = totalCount % nPerPage;
-            if (reminder != 0) { pageCount = (totalCount / nPerPage) + 1; }
-            else { pageCount = totalCount / nPerPage; }
+
+            if (reminder != 0)
+            {
+                pageCount = (totalCount / nPerPage) + 1;
+            }
+            else
+            {
+                pageCount = totalCount / nPerPage;
+            }
 
             var model = new BrowseViewModel()
             {
                 Summaries = this.carService.GetCars(page * nPerPage, nPerPage)
-                .Select(c => new CarSummaryViewModel()
-                {
-                    Id = c.Id,
-                    Brand = c.Brand.Name,
-                    CarModel = c.Model,
-                    Capacity = c.EngineCapacity,
-                    GearType = c.GearBox.GearType.Name,
-                    Fuel = c.FuelType.Name,
-                    Color = c.Color.Name
-                }),
+                                                    .Select(c => new CarSummaryViewModel()
+                                                    {
+                                                        Id = c.Id,
+                                                        Brand = c.Brand.Name,
+                                                        CarModel = c.Model,
+                                                        Capacity = c.EngineCapacity,
+                                                        GearType = c.GearBox.GearType.Name,
+                                                        Fuel = c.FuelType.Name,
+                                                        Color = c.Color.Name
+                                                    }),
                 Pages = pageCount,
                 CurrentPage = page
             };
@@ -174,7 +202,9 @@ namespace Dealership.Web.Controllers
         {
             if (this.ModelState.IsValid)
             {
-                var car = this.carService.CreateCar(model.Brand, model.CarModel, model.HorsePower, model.EngineCapacity, model.ProductionDate, model.Price, model.BodyType, model.Color, model.ColorType, model.FuelType, model.GearBoxType, model.NumberOfGears);
+                var car = this.carService.CreateCar(model.Brand, model.CarModel, model.HorsePower, model.EngineCapacity,
+                    model.ProductionDate, model.Price, model.BodyType, model.Color,
+                    model.ColorType, model.FuelType, model.GearBoxType, model.NumberOfGears);
 
 
                 this.carService.AddCar(car);
