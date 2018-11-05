@@ -17,18 +17,20 @@
     var cGearboxes = Model.GearTypes;
     var cColorTypes = Model.ColorTypes;
     var cColor = Model.Color;
+    var cImageURL = Model.ImageUrl;
 
 }
 <hr />
+
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-4 col-md-offset-3">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="ProductionDate" class="control-label">Production date</label>
                 <input asp-for="ProductionDate.Date" value="@cProdDate" class="form-control" />
                 <span asp-validation-for="ProductionDate" class="text-danger"></span>
-                
+
             </div>
             <div class="form-group">
                 <label asp-for="Brand" class="control-label"></label>
@@ -56,7 +58,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="NumberOfGears" class="control-label">Number of gears</label>
-                <input asp-for="NumberOfGears"  value="@cNumberOfGears" class="form-control" />
+                <input asp-for="NumberOfGears" value="@cNumberOfGears" class="form-control" />
                 <span asp-validation-for="NumberOfGears" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -85,15 +87,18 @@
                 <input asp-for="Price" value="@Model.Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
-
             <div class="form-group">
-                <button type="submit" class="btn btn-default">Save</button>
+                <label asp-for="@Model.ImageUrl" class="control-label"></label>
+                <input asp-for="@Model.ImageUrl" class="form-control" />
+                <input type="file" name="Image" />
             </div>
+            <div class="form-group">
+                <a class="btn btn-toolbar" asp-action="Index">Back</a>
+                <button type="submit" class="btn btn-success">Save</button>
+            </div>
+           
         </form>
-    </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+    </div>
 </div>
 

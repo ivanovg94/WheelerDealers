@@ -22,13 +22,14 @@
             <p>Horse power: <strong> @car.HorsePower</strong> </p>
             <p>Fuel type: <strong> @car.FuelType.Name</strong> </p>
             <p>Price: <strong> @car.Price $</strong> </p>
-
             <a class="btn btn-primary" asp-controller="Car" asp-action="Details/@currentId">Details</a>
-            <a class="btn btn-default"  asp-controller="Car" asp-action="Edit/@currentId">Edit</a>
-            @Html.ActionLink( "Delete", "DeleteAction", "Car", new { confirm = true, id =car.Id }, new { @class = "btn btn-danger", onclick = "return confirm('Do you really want to delete this product?')" })
+            <a class="btn btn-default" asp-controller="Car" asp-action="Edit/@currentId">Edit</a>
+            @Html.ActionLink("Delete", "DeleteAction", "Car", new { confirm = true, id = car.Id }, new { @class = "btn btn-danger", onclick = "return confirm('Do you really want to delete this product?')" })
             <hr />
-
+            
         </div>
+
+
     }
 </div>
 

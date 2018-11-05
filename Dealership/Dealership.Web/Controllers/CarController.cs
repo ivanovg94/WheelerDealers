@@ -103,6 +103,8 @@ namespace Dealership.Web.Controllers
             var newModel = car.CarModel;
             var newPrice = car.Price;
             var newProductionDate = car.ProductionDate;
+            var newImageName = car.ImageUrl;
+            
 
             realCar.Model = newModel;
             realCar.BodyType = newBody;
@@ -122,7 +124,7 @@ namespace Dealership.Web.Controllers
             realCar.Price = newPrice;
             realCar.ProductionDate = newProductionDate;
             realCar.ModifiedOn = DateTime.Now;
-
+            realCar.ImageName = newImageName;
 
             carService.Update(realCar);
 

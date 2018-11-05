@@ -7,7 +7,7 @@
 
 <h2>Car details</h2>
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-5">
         <h3>Id: <strong>@Model.Id</strong></h3>
         <p>Year:<strong> @Model.ProductionDate.Year</strong></p>
         <p>Brand:<strong> @Model.Brand</strong></p>
@@ -15,16 +15,17 @@
         <p>Body type:<strong> @Model.BodyType</strong></p>
         <p>Engine capacity:<strong> @Model.EngineCapacity</strong></p>
         <p>Horse power:<strong> @Model.HorsePower</strong></p>
-        <p>Color:<strong> @Model.Color (@Model.Color)</strong></p>
+        <p>Color:<strong> @Model.Color (@Model.ColorType)</strong></p>
         <p>Gearbox:<strong> @Model.GearBoxType (@Model.NumberOfGears) gears</strong></p>
         <p>Price:<strong> @Model.Price $</strong></p>
 
         <a class="btn btn-default" asp-controller="Car" asp-action="Index">Back</a>
         <a class="btn btn-default" asp-controller="Car" asp-action="Edit/@Model.Id">Edit</a>
     </div>
-    <img class="col-md-4" src="~/images/cars/@(Model.ImageUrl ?? "")" width="500" />
+    <img class="col-md-6" src="@Model.ImageUrl" @*src="~/images/cars/@(Model.ImageUrl ?? " ")" />
+    
 </div>
-    should choose between these two
+   should choose between these two
 <hr />
 <div class="row">
     <dl class="col-md-4">
@@ -102,7 +103,7 @@
             @Html.DisplayFor(model => model.NumberOfGears)
         </dd>
     </dl>
-    <img class="col-md-4" src="~/images/cars/@(Model.ImageUrl ?? "")" width="500" />
+    <img class="col-md-4"  @src="~/images/cars/@(Model.ImageUrl ?? "")" width="500" />
 </div>
 <div>
     <a asp-controller="Car" asp-action="Edit/@Model.Id">Edit</a> |

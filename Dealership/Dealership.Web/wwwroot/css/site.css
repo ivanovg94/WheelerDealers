@@ -2,6 +2,8 @@
     padding-top: 50px;
     padding-bottom: 20px;
     /*background-color: silver;*/
+    background-image: url(../images/pattern.svg);
+    background-size: cover;
 }
 
 /* Wrapping element */
