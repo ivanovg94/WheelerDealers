@@ -19,5 +19,10 @@ namespace Dealership.Services
         {
             return this.context.GearTypes.ToList();
         }
+
+        public IList<GearType> GetNumberOfGearsTypes()
+        {
+            return this.context.GearTypes. ToList();
+        }
     }
 }

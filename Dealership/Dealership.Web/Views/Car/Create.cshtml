@@ -4,47 +4,45 @@
     ViewData["Title"] = "Create";
 }
 
-<h2>Create</h2>
+<h2>Create a car</h2>
 
-<h4>CarViewModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-controller="Car" asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="@Model.CarModel" class="control-label"></label>
-                <input asp-for="@Model.CarModel" class="form-control" value="A3" />
-                <span asp-validation-for="@Model.CarModel" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.HorsePower" class="control-label"></label>
-                <input asp-for="@Model.HorsePower" class="form-control" value="110" />
-                <span asp-validation-for="@Model.HorsePower" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.EngineCapacity" class="control-label"></label>
-                <input asp-for="@Model.EngineCapacity" class="form-control" value="2000" />
-                <span asp-validation-for="@Model.EngineCapacity" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Price" class="control-label"></label>
-                <input asp-for="@Model.Price" class="form-control" value="7999" />
-                <span asp-validation-for="@Model.Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.ProductionDate" class="control-label"></label>
-                <input asp-for="@Model.ProductionDate" class="form-control" />
-                <span asp-validation-for="@Model.ProductionDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="@Model.Brand" class="control-label"></label>
                 <input asp-for="@Model.Brand" class="form-control" value="Audi" />
                 <span asp-validation-for="@Model.Brand" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="@Model.CarModel" class="control-label">Model</label>
+                <input asp-for="@Model.CarModel" class="form-control" value="A3" />
+                <span asp-validation-for="@Model.CarModel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.ProductionDate" class="control-label">Production date</label>
+                <input asp-for="@Model.ProductionDate" class="form-control" />
+                <span asp-validation-for="@Model.ProductionDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.FuelType" class="control-label"></label>
+                <select asp-for="@Model.FuelType" asp-items="@Model.FuelTypes" class="form-control"></select>
+            </div>
+            <div class="form-group">
                 <label asp-for="@Model.BodyType" class="control-label"></label>
                 <select asp-for="@Model.BodyType" asp-items="@Model.BodyTypes" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.HorsePower" class="control-label">Horsepower</label>
+                <input asp-for="@Model.HorsePower" class="form-control" value="110" />
+                <span asp-validation-for="@Model.HorsePower" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.EngineCapacity" class="control-label">Engine capacity</label>
+                <input asp-for="@Model.EngineCapacity" class="form-control" value="2000" />
+                <span asp-validation-for="@Model.EngineCapacity" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="@Model.Color" class="control-label"></label>
@@ -52,35 +50,57 @@
                 <span asp-validation-for="@Model.Color" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.ColorType" class="control-label"></label>
+                <label asp-for="@Model.ColorType" class="control-label">Color type</label>
                 <select asp-for="@Model.ColorType" asp-items="@Model.ColorTypes" class="form-control"></select>
-
             </div>
             <div class="form-group">
-                <label asp-for="@Model.FuelType" class="control-label"></label>
-                <select asp-for="@Model.FuelType" asp-items="@Model.FuelTypes" class="form-control"></select>
-
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.GearBoxType" class="control-label"></label>
+                <label asp-for="@Model.GearBoxType" class="control-label">Gearbox</label>
                 <select asp-for="@Model.GearBoxType" asp-items="@Model.GearTypes" class="form-control"></select>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.NumberOfGears" class="control-label"></label>
+                <label asp-for="@Model.NumberOfGears" class="control-label">Number of gears</label>
                 <select asp-for="@Model.NumberOfGears" class="form-control">
                     <option value="4">4</option>
                     <option value="5">5</option>
                     <option value="6">6</option>
-                    <option value="7">7</option>
                 </select>
-
             </div>
 
-            <span>Select File:</span>
-                <div>
-                    <label for="file">Choose file to upload</label>
-                    <input type="file" name="Images" multiple>
+            <div class="form-group">
+                <label asp-for="@Model.Price" class="control-label"></label>
+                <input asp-for="@Model.Price" class="form-control" value="7999" />
+                <span asp-validation-for="@Model.Price" class="text-danger"></span>
+            </div>
+
+            <div class="btn-block">
+                <label for="file">Choose images to upload</label>
+                <input type="file" name="Images" multiple>
+            </div>
+
+            @*upload modal*@
+            <div id="upload-modal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                       
+                            <div class="modal-body">
+                                <label class="avatar-upload-label">
+                                    Drag or click to upload..
+                                    <input type="file" name="Images" multiple />
+                                </label>
+                                <img class="img-rounded avatar-img-preview hidden" />
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" id="remove-img" class="btn btn-danger">Discard</button>
+                                <button type="submit" class="btn btn-success">Save Changes</button>
+                            </div>
+
+                    </div>
+
                 </div>
+            </div>
+
 
             <div class="form-group">
                 <button class="btn btn-success" type="submit">Create</button>
@@ -89,8 +109,8 @@
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div>   
+    <a asp-action="Browse">Back to List</a>
 </div>
 
 @section Scripts {

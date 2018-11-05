@@ -5,101 +5,113 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
-<div>
+<div class="container">
     @if (Model.ImagesUrl.Count != 0)
     {
-        @foreach (var imageName in Model.ImagesUrl)
-        {
-            <img src="~/images/cars/@(imageName ?? "default.jpg")" width="600" />
-        }
+        <div id="carousel-generic" class="carousel col-sm-6" data-ride="carousel">
+            <ol class="carousel-indicators">
+                @for (int i = 0; i < Model.ImagesUrl.Count; i++)
+                {
+                    <li data-target="#myCarousel" data-slide-to="@i"></li>
+                }
+
+            </ol>
+            <div class="carousel-inner">
+                @{bool first = true; }
+
+                @foreach (var imageUrl in Model.ImagesUrl)
+                {
+                    <div class="item @(first ? "active" : "" )">
+                        <img src="~/images/cars/@(imageUrl)" alt="" class="img-responsive center-align" width="600" />
+                        <div class="carousel-caption" role="option">
+                            <p>
+                                <a class="glyphicon glyphicon-fullscreen pull-right" href="~/images/cars/@(imageUrl)">
+                                </a>
+                            </p>
+
+                        </div>
+                    </div>
+                    first = false;
+                }
+            </div>
+
+            <!-- Controls -->
+            <a class="left carousel-control" href="#carousel-generic" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+            </a>
+            <a class="right carousel-control" href="#carousel-generic" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+            </a>
+        </div> <!-- Carousel -->
     }
     else
     {
-        <img src="~/images/cars/default.jpg" width="600" />
-
+        <div class="col-sm-6">
+            <img src="~/images/cars/default.jpg" class="img-responsive" width="600"/>
+        </div>
     }
 
-    <hr />
-    <dl class="dl-horizontal">
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CarModel)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CarModel)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.HorsePower)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.HorsePower)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.EngineCapacity)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.EngineCapacity)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ProductionDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ProductionDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Brand)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Brand)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.BodyType)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.BodyType)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Color)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Color)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ColorType)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ColorType)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.FuelType)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.FuelType)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GearBoxType)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GearBoxType)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.NumberOfGears)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.NumberOfGears)
-        </dd>
-    </dl>
+    <div class="info col-sm-6">
+        <div class="row center-align">
+            <h2>@Model.Brand @Model.CarModel</h2>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">Price</div>
+            <div class="col-sm-3">@Model.Price</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">First registration</div>
+            <div class="col-sm-3">@Model.ProductionDate.ToShortDateString()</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">Мileage</div>
+            <div class="col-sm-3">TODO Mileage</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">Fuel type</div>
+            <div class="col-sm-3">@Model.FuelType</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">Gearbox</div>
+            <div class="col-sm-3">@Model.GearBoxType</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">Number of gears</div>
+            <div class="col-sm-3">@Model.NumberOfGears</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">Power</div>
+            <div class="col-sm-3">@Model.HorsePower hp</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">Engine capacity</div>
+            <div class="col-sm-3">@Model.EngineCapacity</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">Body type</div>
+            <div class="col-sm-3">@Model.BodyType</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">Number of doors</div>
+            <div class="col-sm-3">TODO doors</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">Color</div>
+            <div class="col-sm-3">@Model.Color</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">Color type</div>
+            <div class="col-sm-3">@Model.ColorType</div>
+        </div>
+    </div>
 </div>
+
 <div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-controller="Car" asp-action="Delete" asp-route-id="@Model.Id" class="danger">Delete</a>
-
-    <a asp-action="Browse">Back to List</a>
+    <a asp-controller="Car" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+    <a asp-controller="Car" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+    <a asp-controller="Car" asp-action="Browse" class="btn btn-block">Back to List</a>
 </div>
+
+
+
+    

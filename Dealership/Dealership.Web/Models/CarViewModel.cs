@@ -80,6 +80,8 @@ namespace Dealership.Web.Models
 
         public List<SelectListItem> FuelTypes { get; set; }
 
+        public List<SelectListItem> NumberOfGearsTypes { get; set; }
+
         public ICollection<IFormFile> Images { get; set; }
 
         public ICollection<string> ImagesUrl { get; set; }
