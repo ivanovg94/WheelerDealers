@@ -20,7 +20,60 @@ namespace Dealership.Services
             this.context = context;
         }
 
-        public Car CreateCar(string brandName, string carModelName, short horsePower, short engineCapacity,
+        //from form with ddl values
+        public Car CreateCar(int brandId, int carModelId, int mileage, short horsePower,
+            short engineCapacity, DateTime productionDate, decimal price, int bodyTypeId,
+            string colorName, int colorTypeId, int fuelTypeId, int gearBoxTypeId, byte numberOfGears)
+        {
+
+            var color = this.context.Colors
+                                                    .Include(c => c.ColorType)
+                                                    .FirstOrDefault(c => c.Name == colorName
+                                                     && c.ColorTypeId == colorTypeId);
+
+            var colorTypeFromDatabase = this.context.ColorTypes
+                                       .FirstOrDefault(ct => ct.Id == colorTypeId);
+
+            if (color == null)
+            {
+                color = new Color { Name = colorName, ColorType = colorTypeFromDatabase };
+                this.context.Colors.Add(color);
+                this.context.SaveChanges();
+            }
+
+            var fuelType = this.context.FuelTypes
+                                          .FirstOrDefault(f => f.Id == fuelTypeId);
+            
+
+            var gearbox = this.context.Gearboxes
+                .FirstOrDefault(g => g.GearType.Id == gearBoxTypeId
+                                  && g.NumberOfGears == numberOfGears);
+         
+            if (mileage < 0)
+            {
+                throw new ServiceException($"Mileage must be greater than 0.");
+            }
+            var newCar = new Car()
+            {
+                BrandId = brandId,
+                CarModelId = carModelId,
+                HorsePower = horsePower,
+                EngineCapacity = engineCapacity,
+                ProductionDate = productionDate,
+                Price = price,
+                Mileage = mileage,
+                BodyTypeId = bodyTypeId,
+                Color = color,
+                ColorId = color.Id,
+                FuelTypeId = fuelTypeId,
+                GearBox = gearbox,
+                GearBoxId = gearbox.Id
+            };
+
+            return newCar;
+        }
+
+        public Car CreateCar(string brandName, string carModelName, int mileage, short horsePower, short engineCapacity,
             DateTime productionDate, decimal price, string bodyTypeName, string colorName, string colorType,
             string fuelTypeName, string gearboxTypeName, int numOfGears)
         {
@@ -89,6 +142,10 @@ namespace Dealership.Services
                 throw new ServiceException($"There is no such a gearbox.");
             }
 
+            if (mileage < 0)
+            {
+                throw new ServiceException($"Mileage must be greater than 0.");
+            }
             var newCar = new Car()
             {
                 BrandId = brand.Id,
@@ -98,6 +155,7 @@ namespace Dealership.Services
                 EngineCapacity = engineCapacity,
                 ProductionDate = productionDate,
                 Price = price,
+                Mileage = mileage,
                 BodyType = bodyType,
                 BodyTypeId = bodyType.Id,
                 Color = color,
@@ -212,6 +270,7 @@ namespace Dealership.Services
             var car = this.context.Cars
                                   .Where(c => c.Id == id)
                                   .Include(c => c.Brand)
+                                  .Include(c=>c.CarModel)
                                   .Include(c => c.CarsExtras)
                                        .ThenInclude(ce => ce.Extra)
                                   .Include(c => c.BodyType)
@@ -257,7 +316,7 @@ namespace Dealership.Services
             return this.context.Cars.Count();
         }
 
-        public void Update(ICar car)
+        public void Update(Car car)
         {
             this.context.Cars.Update(car as Car);
             this.context.SaveChanges();
@@ -282,6 +341,8 @@ namespace Dealership.Services
             car.ImageName = imageName;
             this.context.SaveChanges();
         }
+
+
     }
 }
 

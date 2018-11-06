@@ -184,6 +184,31 @@ namespace Dealership.Services
             return $"Price of {car.Brand.Name} {car.CarModel.Name} with ID:{car.Id} edited successfully!";
         }
 
+        public string EditMileAge(string[] parameters)
+        {
+            if (parameters == null || parameters.Length == 0)
+            {
+                throw new ArgumentNullException("Invalid amount of parameters!");
+            }
+
+            if (!int.TryParse(parameters[0], out int id))
+            {
+                throw new ArgumentException("Invalid ID!");
+            }
+
+            if (!int.TryParse(parameters[1], out int newValue))
+            {
+                throw new ArgumentException("Invalid mileage value!");
+            }
+            var car = this.carService.GetCar(id);
+            car.Mileage = newValue;
+
+            this.context.Cars.Update(car);
+            this.context.SaveChanges();
+
+            return $"Mileage of {car.Brand.Name} {car.CarModel.Name} with ID:{car.Id} edited successfully!";
+        }
+
         public string EditProductionDate(string[] parameters)
         {
             if (parameters == null || parameters.Length == 0)

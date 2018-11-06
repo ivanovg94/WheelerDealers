@@ -38,17 +38,14 @@ namespace Dealership.Data.Context
 
         public DbSet<UsersCars> UsersCars { get; set; }
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    if (!optionsBuilder.IsConfigured)
-        //    {
-        //        optionsBuilder
-        //            .UseSqlServer(ConnectionConfiguration.ConnectionString);
-        //    }
-        //}
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            modelBuilder.Entity<Car>()
+                .HasOne(c => c.Brand)
+                .WithMany(b => b.Cars)
+                .Metadata.DeleteBehavior = DeleteBehavior.Restrict;
+
             modelBuilder.ApplyConfiguration(new CarsExtrasConfiguration());
             //modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new UsersCarsConfiguration());
@@ -86,12 +83,12 @@ namespace Dealership.Data.Context
 
         private void SeedData(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BodyType>().HasData(new BodyType { Id = 1, Name = "Sedan", NumberOfDoors = 4 });
-            modelBuilder.Entity<BodyType>().HasData(new BodyType { Id = 2, Name = "Coupe", NumberOfDoors = 2 });
-            modelBuilder.Entity<BodyType>().HasData(new BodyType { Id = 3, Name = "Cabrio", NumberOfDoors = 2 });
-            modelBuilder.Entity<BodyType>().HasData(new BodyType { Id = 4, Name = "Touring", NumberOfDoors = 4 });
-            modelBuilder.Entity<BodyType>().HasData(new BodyType { Id = 5, Name = "Suv", NumberOfDoors = 5 });
-            modelBuilder.Entity<BodyType>().HasData(new BodyType { Id = 6, Name = "Hatchback", NumberOfDoors = 5 });
+            modelBuilder.Entity<BodyType>().HasData(new BodyType { Id = 1, Name = "Sedan" });
+            modelBuilder.Entity<BodyType>().HasData(new BodyType { Id = 2, Name = "Coupe" });
+            modelBuilder.Entity<BodyType>().HasData(new BodyType { Id = 3, Name = "Cabrio" });
+            modelBuilder.Entity<BodyType>().HasData(new BodyType { Id = 4, Name = "Touring" });
+            modelBuilder.Entity<BodyType>().HasData(new BodyType { Id = 5, Name = "Suv" });
+            modelBuilder.Entity<BodyType>().HasData(new BodyType { Id = 6, Name = "Hatchback" });
 
             modelBuilder.Entity<GearType>().HasData(new GearType { Id = 1, Name = "Automatic" });
             modelBuilder.Entity<GearType>().HasData(new GearType { Id = 2, Name = "Manual" });

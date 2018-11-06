@@ -1,28 +1,24 @@
-﻿using Dealership.Data.Models;
-using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Dealership.Web.Models
 {
     public class EditCarViewModel
     {
-        public string Brand { get; set; }
+        public CarViewModel Car { get; set; }
 
-        public string Model { get; set; }
+        public List<SelectListItem> Brands { get; set; }
 
-        public Color Color { get; set; }
+        public List<SelectListItem> CarModels { get; set; }
 
-        public int EngineCapacity { get; set; }
+        public List<SelectListItem> GearTypes { get; set; }
 
-        public int Price { get; set; }
+        public List<SelectListItem> NumberOfGears { get; set; }
 
-        public DateTime ProductionDate { get; set; }
+        public List<SelectListItem> BodyTypes { get; set; }
 
-        public EditCarViewModel()
-        {
+        public List<SelectListItem> ColorTypes { get; set; }
 
-        }
+        public List<SelectListItem> FuelTypes { get; set; }
     }
 }

@@ -6,5 +6,7 @@ namespace Dealership.Services.Abstract
     public interface IGearTypeService
     {
         IList<GearType> GetGearTypes();
+        IList<Gearbox> GetGearboxesDependingOnGearType(int id);
+
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Dealership.Data.Migrations
 {
-    public partial class Initial : Migration
+    public partial class SolvedCycleConflict : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -52,6 +52,24 @@ namespace Dealership.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BodyTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedOn = table.Column<DateTime>(nullable: true),
+                    CreatedOn = table.Column<DateTime>(nullable: true),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                    Name = table.Column<string>(maxLength: 25, nullable: false),
+                    NumberOfDoors = table.Column<byte>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BodyTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Brands",
                 columns: table => new
                 {
@@ -66,24 +84,6 @@ namespace Dealership.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Brands", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Chassis",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    IsDeleted = table.Column<bool>(nullable: false),
-                    DeletedOn = table.Column<DateTime>(nullable: true),
-                    CreatedOn = table.Column<DateTime>(nullable: true),
-                    ModifiedOn = table.Column<DateTime>(nullable: true),
-                    Name = table.Column<string>(maxLength: 25, nullable: false),
-                    NumberOfDoors = table.Column<byte>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Chassis", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -261,6 +261,26 @@ namespace Dealership.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CarModels",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    BrandId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CarModels", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CarModels_Brands_BrandId",
+                        column: x => x.BrandId,
+                        principalTable: "Brands",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Colors",
                 columns: table => new
                 {
@@ -318,31 +338,39 @@ namespace Dealership.Data.Migrations
                     DeletedOn = table.Column<DateTime>(nullable: true),
                     CreatedOn = table.Column<DateTime>(nullable: true),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
-                    Model = table.Column<string>(maxLength: 25, nullable: false),
+                    Mileage = table.Column<int>(nullable: false),
                     HorsePower = table.Column<short>(nullable: false),
                     EngineCapacity = table.Column<short>(nullable: false),
                     IsSold = table.Column<bool>(nullable: false),
                     Price = table.Column<decimal>(nullable: false),
                     ProductionDate = table.Column<DateTime>(nullable: false),
                     BrandId = table.Column<int>(nullable: false),
+                    CarModelId = table.Column<int>(nullable: false),
                     BodyTypeId = table.Column<int>(nullable: false),
                     ColorId = table.Column<int>(nullable: false),
                     FuelTypeId = table.Column<int>(nullable: false),
-                    GearBoxId = table.Column<int>(nullable: false)
+                    GearBoxId = table.Column<int>(nullable: false),
+                    ImageName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cars", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Cars_Chassis_BodyTypeId",
+                        name: "FK_Cars_BodyTypes_BodyTypeId",
                         column: x => x.BodyTypeId,
-                        principalTable: "Chassis",
+                        principalTable: "BodyTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Cars_Brands_BrandId",
                         column: x => x.BrandId,
                         principalTable: "Brands",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Cars_CarModels_CarModelId",
+                        column: x => x.CarModelId,
+                        principalTable: "CarModels",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -422,7 +450,7 @@ namespace Dealership.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Chassis",
+                table: "BodyTypes",
                 columns: new[] { "Id", "CreatedOn", "DeletedOn", "IsDeleted", "ModifiedOn", "Name", "NumberOfDoors" },
                 values: new object[,]
                 {
@@ -523,6 +551,11 @@ namespace Dealership.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CarModels_BrandId",
+                table: "CarModels",
+                column: "BrandId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Cars_BodyTypeId",
                 table: "Cars",
                 column: "BodyTypeId");
@@ -531,6 +564,11 @@ namespace Dealership.Data.Migrations
                 name: "IX_Cars_BrandId",
                 table: "Cars",
                 column: "BrandId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cars_CarModelId",
+                table: "Cars",
+                column: "CarModelId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cars_ColorId",
@@ -604,10 +642,10 @@ namespace Dealership.Data.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Chassis");
+                name: "BodyTypes");
 
             migrationBuilder.DropTable(
-                name: "Brands");
+                name: "CarModels");
 
             migrationBuilder.DropTable(
                 name: "Colors");
@@ -617,6 +655,9 @@ namespace Dealership.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Gearboxes");
+
+            migrationBuilder.DropTable(
+                name: "Brands");
 
             migrationBuilder.DropTable(
                 name: "ColorTypes");

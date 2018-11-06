@@ -76,6 +76,7 @@ namespace Dealership.Web
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<ICarService, CarService>();
             services.AddTransient<IBrandService, BrandService>();
+            services.AddTransient<IModelService, ModelService>();
             services.AddTransient<IBodyTypeService, BodyTypeService>();
             services.AddTransient<IColorTypeService, ColorTypeService>();
             services.AddTransient<IFuelTypeService, FuelTypeService>();

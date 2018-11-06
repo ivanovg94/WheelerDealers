@@ -1,4 +1,4 @@
-﻿@model Dealership.Web.Models.CarViewModel
+﻿@model Dealership.Web.Models.EditCarViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -8,93 +8,21 @@
 
 <h4>CarViewModel</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-controller="Car" asp-action="Create" method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="@Model.CarModel" class="control-label"></label>
-                <input asp-for="@Model.CarModel" class="form-control" value="A3" />
-                <span asp-validation-for="@Model.CarModel" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.HorsePower" class="control-label"></label>
-                <input asp-for="@Model.HorsePower" class="form-control" value="110" />
-                <span asp-validation-for="@Model.HorsePower" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.EngineCapacity" class="control-label"></label>
-                <input asp-for="@Model.EngineCapacity" class="form-control" value="2000" />
-                <span asp-validation-for="@Model.EngineCapacity" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Price" class="control-label"></label>
-                <input asp-for="@Model.Price" class="form-control" value="7999" />
-                <span asp-validation-for="@Model.Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.ProductionDate" class="control-label"></label>
-                <input asp-for="@Model.ProductionDate" class="form-control" />
-                <span asp-validation-for="@Model.ProductionDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Brand" class="control-label"></label>
-                <input asp-for="@Model.Brand" class="form-control" value="Audi" />
-                <span asp-validation-for="@Model.Brand" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.BodyType" class="control-label"></label>
-                <select asp-for="@Model.BodyType" asp-items="@Model.BodyTypes" class="form-control"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Color" class="control-label"></label>
-                <input asp-for="@Model.Color" class="form-control" value="Red" />
-                <span asp-validation-for="@Model.Color" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.ColorType" class="control-label"></label>
-                <select asp-for="@Model.ColorType" asp-items="@Model.ColorTypes" class="form-control"></select>
+<div class="col-lg-4">
+    <form asp-controller="Car" asp-action="Create" method="post" enctype="multipart/form-data">
 
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.FuelType" class="control-label"></label>
-                <select asp-for="@Model.FuelType" asp-items="@Model.FuelTypes" class="form-control"></select>
+        <partial name="_EditCarPartial" model="@Model" />
 
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.GearBoxType" class="control-label"></label>
-                <select asp-for="@Model.GearBoxType" asp-items="@Model.GearTypes" class="form-control"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.NumberOfGears" class="control-label"></label>
-                <select asp-for="@Model.NumberOfGears" class="form-control">
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                </select>
-
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Image" class="control-label"></label>
-                <input asp-for="@Model.Image" class="form-control" />
-            </div>
-            
-            <div class="form-group">
-                <button class="btn btn-success" type="submit">Create</button>
-
-                @*<input type="submit" value="Create" class="btn btn-default" />*@
-            </div>
-        </form>
-    </div>
+        <div class="form-group">
+            <input type="submit" name="save" value="Save" class="btn btn-success" />
+        </div>
+    </form>
 </div>
-
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="~/js/upload.js"></script>
-
+    <script src="~/js/createcar.js"></script>
 }

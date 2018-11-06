@@ -7,13 +7,10 @@ namespace Dealership.Data.Models
 {
     public class Car : Entity
     {
-        private IEnumerable<CarsExtras> carsExtras;
-        private ICollection<UsersCars> usersCars;
-
         public Car()
         {
-            this.carsExtras = new HashSet<CarsExtras>();
-            this.usersCars = new HashSet<UsersCars>();
+            this.CarsExtras = new HashSet<CarsExtras>();
+            this.UsersCars = new HashSet<UsersCars>();
         }
 
         [Required]
@@ -56,22 +53,8 @@ namespace Dealership.Data.Models
 
         public string ImageName { get; set; }
 
-        public IEnumerable<CarsExtras> CarsExtras
-        {
-            get { return this.carsExtras; }
-            set
-            {
-                this.carsExtras = value;
-            }
-        }
+        public IEnumerable<CarsExtras> CarsExtras { get; set; }
 
-        public ICollection<UsersCars> UsersCars
-        {
-            get { return this.usersCars; }
-            set
-            {
-                this.usersCars = value;
-            }
-        }
+        public ICollection<UsersCars> UsersCars { get; set; }
     }
 }

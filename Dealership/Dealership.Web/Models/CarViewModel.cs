@@ -1,6 +1,5 @@
 ﻿using Dealership.Data.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -18,6 +17,7 @@ namespace Dealership.Web.Models
             this.Id = car.Id;
             this.CarModel = car.CarModel.Name;
             this.HorsePower = car.HorsePower;
+            this.Mileage = car.Mileage;
             this.EngineCapacity = car.EngineCapacity;
             this.Price = car.Price;
             this.BodyType = car.BodyType.Name;
@@ -30,13 +30,14 @@ namespace Dealership.Web.Models
             this.FuelType = car.FuelType.Name;
             this.ImageUrl = car.ImageName;
         }
-        [Required]
+
         public int Id { get; set; }
 
         [Required]
         [MaxLength(25)]
         [MinLength(2)]
         public string CarModel { get; set; }
+        public int CarModelId { get; set; }
 
         [Required]
         [Range(1, int.MaxValue)]
@@ -55,29 +56,28 @@ namespace Dealership.Web.Models
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime ProductionDate { get; set; }
 
+        public int BrandId { get; set; }
         public string Brand { get; set; }
 
+        public int BodyTypeId { get; set; }
         public string BodyType { get; set; }
+
 
         public string Color { get; set; }
 
+        public int ColorTypeId { get; set; }
         public string ColorType { get; set; }
 
+        public int FuelTypeId { get; set; }
         public string FuelType { get; set; }
 
+        public int GearBoxTypeId { get; set; }
         public string GearBoxType { get; set; }
+        public byte NumberOfGears { get; set; }
 
-        public int NumberOfGears { get; set; }
+        public int Mileage { get; set; }
 
-        public ICollection<string> CarsExtras { get; set; }
-
-        public List<SelectListItem> GearTypes { get; set; }
-
-        public List<SelectListItem> BodyTypes { get; set; }
-
-        public List<SelectListItem> ColorTypes { get; set; }
-
-        public List<SelectListItem> FuelTypes { get; set; }
+        public IEnumerable<string> CarsExtras { get; set; }
 
         public IFormFile Image { get; set; }
 
