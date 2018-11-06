@@ -1,0 +1,27 @@
+﻿@model UsersViewModel
+@{
+    ViewData["Title"] = "AdminView";
+}
+
+<h2>Admin stuff panel</h2>
+<form asp-action="Index" asp-controller="Admin" method="post">
+    <div class="row btn-group btn-group-toggle" data-toggle="buttons">
+        @*<label class=" btn btn-primary">
+            <input type="radio" name="options" id="1" autocomplete="off" checked=""> Brand
+        </label>
+        <label class="btn btn-primary">
+            <input type="radio" name="options" id="2" autocomplete="off"> Model
+        </label>
+        <label class="btn btn-primary active">
+            <input type="radio" name="options" id="3" autocomplete="off"> Car extra
+        </label>*@
+        @Html.RadioButtonFor(m => m.SelectedAnswer, "Brand")Brand
+        @Html.RadioButtonFor(m => m.SelectedAnswer, "Model")Model
+        @Html.RadioButtonFor(m => m.SelectedAnswer, "Extra")Extra
+    </div>
+    <input type="text" id="value" placeholder="new value" name="value"  />
+    <button type="submit" class="btn btn-success">Add</button>
+</form>
+
+
+

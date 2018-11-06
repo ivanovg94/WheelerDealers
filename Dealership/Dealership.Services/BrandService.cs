@@ -24,5 +24,20 @@ namespace Dealership.Services
             }
             return brand;
         }
+
+        public Brand Add(Brand brand)
+        {
+            this.context.Brands.Add(brand);
+            this.context.SaveChanges();
+
+            return brand;
+        }
+
+        public Brand Create(string brand)
+        {
+            var newBrand = new Brand() { Name = brand };
+
+            return newBrand;
+        }
     }
 }

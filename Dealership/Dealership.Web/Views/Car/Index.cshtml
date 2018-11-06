@@ -26,7 +26,7 @@
             <a class="btn btn-default" asp-controller="Car" asp-action="Edit/@currentId">Edit</a>
             @Html.ActionLink("Delete", "DeleteAction", "Car", new { confirm = true, id = car.Id }, new { @class = "btn btn-danger", onclick = "return confirm('Do you really want to delete this product?')" })
             <hr />
-            
+
         </div>
 
 
