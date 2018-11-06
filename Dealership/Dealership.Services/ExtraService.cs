@@ -25,6 +25,13 @@ namespace Dealership.Services
             }
 
             var extra = new Extra() { Name = name };
+            //this.context.Extras.Add(extra);
+            //this.context.SaveChanges();
+            return extra;
+        }
+
+        public Extra AddExtra(Extra extra)
+        {
             this.context.Extras.Add(extra);
             this.context.SaveChanges();
             return extra;

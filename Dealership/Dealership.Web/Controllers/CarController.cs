@@ -51,7 +51,6 @@ namespace Dealership.Web.Controllers
         {
             var car = this.carService.GetCar(id);
             var carVm = new CarViewModel(car);
-
             var model = new EditCarViewModel
             {
                 Brands = this.brandService.GetBrands()
@@ -77,11 +76,22 @@ namespace Dealership.Web.Controllers
 
                 Car = carVm
             };
-            return this.View(model);
+            return View(model);
+
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+
+        public IActionResult Edit(CarViewModel car)
+        {
+            EditCar(car);
+
+            return RedirectToAction("Details", "Car", new { car.Id });
+        }
+
+
+        //method
         public void EditCar(CarViewModel car)
         {
             var realCar = carService.GetCar(car.Id);
@@ -121,6 +131,8 @@ namespace Dealership.Web.Controllers
             var newHorsePower = car.HorsePower;
             var newPrice = car.Price;
             var newProductionDate = car.ProductionDate;
+            var newImageName = car.ImageUrl;
+
 
             realCar.BodyType = newBody;
             realCar.BodyTypeId = newBody.Id;
@@ -139,18 +151,26 @@ namespace Dealership.Web.Controllers
             realCar.Price = newPrice;
             realCar.ProductionDate = newProductionDate;
             realCar.ModifiedOn = DateTime.Now;
+            realCar.ImageName = newImageName;
 
             carService.Update(realCar);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(CarViewModel car)
-        {
-            EditCar(car);
-            return RedirectToAction("Details", "Car", new { car.Id });
-        }
+        //public IActionResult Delete(int id)
+        //{
+        //    var removedCar = carService.RemoveCar(id);
 
+        //    return RedirectToAction("Index", "Car");
+        //}
+        public IActionResult DeleteAction(bool confirm, int id)
+        {
+            if (confirm)
+            {
+                var removedCar = carService.RemoveCar(id);
+            }
+            return RedirectToAction("Index", "Car");
+
+        }
 
         [HttpGet]
         public IActionResult Browse(int page)
@@ -269,11 +289,6 @@ namespace Dealership.Web.Controllers
             return this.View(model);
         }
 
-        [Authorize]
-        public IActionResult Delete(int id)
-        {
-            return this.View(id);
-        }
 
         [Authorize]
         public IActionResult ConfirmDelete(int id)

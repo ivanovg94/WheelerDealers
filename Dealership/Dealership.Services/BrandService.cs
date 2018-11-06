@@ -17,8 +17,22 @@ namespace Dealership.Services
             this.context = context;
         }
 
+        public Brand Add(Brand newBrand)
+        {
+            this.context.Brands.Add(newBrand);
+            this.context.SaveChanges();
+            return newBrand;
+        }
+
+        public Brand Create(string brandName)
+        {
+            var newBrand = new Brand() { Name = brandName };
+            return newBrand;
+        }
+
         public Brand GetBrand(string brandName)
         {
+            //var brand = this.context.Brands.FirstOrDefault(b => b.Name == brandName);
             var brand = this.context.Brands
                                     .Include(b => b.Cars)
                                     .Include(b => b.CarModels)
@@ -42,15 +56,14 @@ namespace Dealership.Services
             return brand;
         }
 
-        public IList<Brand> GetBrands()
-        {
-            return this.context.Brands
-                                                .Include(b => b.Cars)
-                                                .Include(b => b.CarModels).ToList();
-        }
         public IList<CarModel> GetBrandModels(string brandName)
         {
             return this.GetBrand(brandName).CarModels.ToList();
+        }
+
+        public IList<Brand> GetBrands()
+        {
+            return this.context.Brands.Include(b => b.Cars).Include(b => b.CarModels).ToList();
         }
     }
 }

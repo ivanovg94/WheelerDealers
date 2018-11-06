@@ -321,6 +321,7 @@ namespace Dealership.Services
             this.context.Cars.Update(car);
             this.context.SaveChanges();
         }
+
         public void SaveAvatarImage(string root, string filename, Stream stream, int carId)
         {
             var car = GetCar(carId);
@@ -341,8 +342,6 @@ namespace Dealership.Services
             car.ImageName = imageName;
             this.context.SaveChanges();
         }
-
-
     }
 }
 

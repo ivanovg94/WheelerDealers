@@ -59,7 +59,12 @@ namespace Dealership.Web
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapRoute(
+                  name: "areaRoute",
+                  template: "{area:exists}/{controller=Admin}/{action=Index}/{id?}");
             });
+
         }
 
         private void RegisterData(IServiceCollection services)
@@ -81,6 +86,7 @@ namespace Dealership.Web
             services.AddTransient<IColorTypeService, ColorTypeService>();
             services.AddTransient<IFuelTypeService, FuelTypeService>();
             services.AddTransient<IGearTypeService, GearTypeService>();
+            services.AddTransient<IExtraService, ExtraService>();
         }
 
         private void RegisterAuthentication(IServiceCollection services)
