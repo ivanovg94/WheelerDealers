@@ -8,11 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace Dealership.Web.Controllers
 {
@@ -59,6 +56,12 @@ namespace Dealership.Web.Controllers
                 Brands = this.brandService.GetBrands()
                 .Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList(),
 
+                CarModels = this.modelService.GetAllModelsByBrandId(car.BrandId)
+                .Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Name }).ToList(),
+
+                NumberOfGears = this.gearTypeService.GetGearboxesDependingOnGearType(id)
+               .Select(x => new SelectListItem { Value = x.NumberOfGears.ToString(), Text = x.NumberOfGears.ToString() }).ToList(),
+
                 BodyTypes = this.bodyTypeService.GetBodyTypes()
                 .Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList(),
 
@@ -79,6 +82,7 @@ namespace Dealership.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public IActionResult Edit(CarViewModel car)
         {
             EditCar(car);
@@ -87,7 +91,7 @@ namespace Dealership.Web.Controllers
         }
 
 
-
+        //method
         public void EditCar(CarViewModel car)
         {
             var realCar = carService.GetCar(car.Id);
@@ -103,8 +107,7 @@ namespace Dealership.Web.Controllers
                 newBrand = new Brand() { Name = car.Brand };
             }
 
-
-
+            //Todo:fix
             CarModel newModel;
             try
             {
@@ -114,9 +117,6 @@ namespace Dealership.Web.Controllers
             {
                 newModel = new CarModel() { Name = car.CarModel, BrandId = newBrand.Id };
             };
-
-
-
 
             var newColor = new Color() { Name = car.Color };
             newColor.ColorType = colorTypeService.GetColorTypes().FirstOrDefault(c => c.Name == car.ColorType);
@@ -221,6 +221,12 @@ namespace Dealership.Web.Controllers
             {
                 Brands = this.brandService.GetBrands()
                 .Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList(),
+
+                CarModels = this.modelService.GetAllModelsByBrandId(this.brandService.GetBrands().FirstOrDefault().Id)
+                .Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Name }).ToList(),
+
+                NumberOfGears = this.gearTypeService.GetGearboxesDependingOnGearType(this.gearTypeService.GetGearTypes().FirstOrDefault().Id)
+               .Select(x => new SelectListItem { Value = x.NumberOfGears.ToString(), Text = x.NumberOfGears.ToString() }).ToList(),
 
                 BodyTypes = this.bodyTypeService.GetBodyTypes()
                 .Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList(),

@@ -57,7 +57,7 @@ namespace Dealership.Web.Areas.Admin.Controllers
             this.ExtraService.AddExtra(newExtra);
             return Redirect("~/Index");
         }
-
+        
         //public IActionResult DeleteAction(bool confirm, int id)
         //{
         //    if (confirm)
