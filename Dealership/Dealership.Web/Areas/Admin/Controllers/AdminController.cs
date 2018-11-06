@@ -58,6 +58,14 @@ namespace Dealership.Web.Areas.Admin.Controllers
             return Redirect("~/Index");
         }
 
+        //public IActionResult DeleteAction(bool confirm, int id)
+        //{
+        //    if (confirm)
+        //    {
+        //        var removedCar = carService.RemoveCar(id);
+        //    }
+        //    return RedirectToAction("Index", "Car");
 
+        //}
     }
 }

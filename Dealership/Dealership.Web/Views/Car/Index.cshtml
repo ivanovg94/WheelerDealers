@@ -1,5 +1,6 @@
-﻿
-@*@{
+﻿@model IList<Car>
+
+@{
     ViewData["Title"] = "Index";
 }
 
@@ -15,7 +16,7 @@
         <div class="col-md-4">
             <h3>@car.Id</h3>
             <p>Brand: <strong>@car.Brand.Name</strong> </p>
-            <p>Model: <strong>@car.Model</strong> </p>
+            <p>Model: <strong>@car.CarModel.Name</strong> </p>
             <p>Body type: <strong>  @car.BodyType.Name</strong> </p>
             <p>Color: <strong> @car.Color.Name</strong> </p>
             <p>Horse power: <strong> @car.HorsePower</strong> </p>
@@ -33,7 +34,3 @@
 </div>
 
 
-@model Dealership.Services.CarService
-@{
-    var list = Model.GetCars("asc");
-}*@

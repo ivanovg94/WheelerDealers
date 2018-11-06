@@ -5,6 +5,7 @@
 <h2>Car details</h2>
 <div class="container">
     <partial name="_CarInfoDisplayPartial" model="@Model" />
+    
 </div>
 <div>
     <a asp-controller="Car" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>

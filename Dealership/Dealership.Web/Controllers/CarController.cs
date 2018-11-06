@@ -156,12 +156,12 @@ namespace Dealership.Web.Controllers
             carService.Update(realCar);
         }
 
-        public IActionResult Delete(int id)
-        {
-            var removedCar = carService.RemoveCar(id);
+        //public IActionResult Delete(int id)
+        //{
+        //    var removedCar = carService.RemoveCar(id);
 
-            return RedirectToAction("Index", "Car");
-        }
+        //    return RedirectToAction("Index", "Car");
+        //}
         public IActionResult DeleteAction(bool confirm, int id)
         {
             if (confirm)
