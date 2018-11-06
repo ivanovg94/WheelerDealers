@@ -36,3 +36,12 @@
         display: none;
     }
 }
+
+.panelPadding{
+    padding-bottom:2%;
+}
+
+.center-align {
+    margin-right: auto;
+    margin-left: auto;
+}

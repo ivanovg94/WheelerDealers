@@ -2,7 +2,6 @@
 using Dealership.Data.Models;
 using Dealership.Services;
 using Dealership.Services.Abstract;
-using Dealership.Web.Models;
 using Dealership.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -82,6 +81,7 @@ namespace Dealership.Web
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<ICarService, CarService>();
             services.AddTransient<IBrandService, BrandService>();
+            services.AddTransient<IModelService, ModelService>();
             services.AddTransient<IBodyTypeService, BodyTypeService>();
             services.AddTransient<IColorTypeService, ColorTypeService>();
             services.AddTransient<IFuelTypeService, FuelTypeService>();

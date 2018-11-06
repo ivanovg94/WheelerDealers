@@ -17,9 +17,6 @@ namespace Dealership.Data.Models
         [MinLength(2)]
         public string Name { get; set; }
 
-        [Range(2, 7)]
-        public byte NumberOfDoors { get; set; }
-
         public ICollection<Car> Cars
         {
             get { return this.cars; }

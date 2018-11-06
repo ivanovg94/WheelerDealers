@@ -37,19 +37,17 @@ namespace Dealership.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(25);
 
-                    b.Property<byte>("NumberOfDoors");
-
                     b.HasKey("Id");
 
                     b.ToTable("BodyTypes");
 
                     b.HasData(
-                        new { Id = 1, IsDeleted = false, Name = "Sedan", NumberOfDoors = (byte)4 },
-                        new { Id = 2, IsDeleted = false, Name = "Coupe", NumberOfDoors = (byte)2 },
-                        new { Id = 3, IsDeleted = false, Name = "Cabrio", NumberOfDoors = (byte)2 },
-                        new { Id = 4, IsDeleted = false, Name = "Touring", NumberOfDoors = (byte)4 },
-                        new { Id = 5, IsDeleted = false, Name = "Suv", NumberOfDoors = (byte)5 },
-                        new { Id = 6, IsDeleted = false, Name = "Hatchback", NumberOfDoors = (byte)5 }
+                        new { Id = 1, IsDeleted = false, Name = "Sedan" },
+                        new { Id = 2, IsDeleted = false, Name = "Coupe" },
+                        new { Id = 3, IsDeleted = false, Name = "Cabrio" },
+                        new { Id = 4, IsDeleted = false, Name = "Touring" },
+                        new { Id = 5, IsDeleted = false, Name = "Suv" },
+                        new { Id = 6, IsDeleted = false, Name = "Hatchback" }
                     );
                 });
 
@@ -86,6 +84,8 @@ namespace Dealership.Data.Migrations
 
                     b.Property<int>("BrandId");
 
+                    b.Property<int>("CarModelId");
+
                     b.Property<int>("ColorId");
 
                     b.Property<DateTime?>("CreatedOn");
@@ -106,9 +106,7 @@ namespace Dealership.Data.Migrations
 
                     b.Property<bool>("IsSold");
 
-                    b.Property<string>("Model")
-                        .IsRequired()
-                        .HasMaxLength(25);
+                    b.Property<int>("Mileage");
 
                     b.Property<DateTime?>("ModifiedOn");
 
@@ -122,6 +120,8 @@ namespace Dealership.Data.Migrations
 
                     b.HasIndex("BrandId");
 
+                    b.HasIndex("CarModelId");
+
                     b.HasIndex("ColorId");
 
                     b.HasIndex("FuelTypeId");
@@ -129,6 +129,23 @@ namespace Dealership.Data.Migrations
                     b.HasIndex("GearBoxId");
 
                     b.ToTable("Cars");
+                });
+
+            modelBuilder.Entity("Dealership.Data.Models.CarModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BrandId");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
+
+                    b.ToTable("CarModels");
                 });
 
             modelBuilder.Entity("Dealership.Data.Models.CarsExtras", b =>
@@ -529,6 +546,11 @@ namespace Dealership.Data.Migrations
                     b.HasOne("Dealership.Data.Models.Brand", "Brand")
                         .WithMany("Cars")
                         .HasForeignKey("BrandId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Dealership.Data.Models.CarModel", "CarModel")
+                        .WithMany("Cars")
+                        .HasForeignKey("CarModelId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Dealership.Data.Models.Color", "Color")
@@ -544,6 +566,14 @@ namespace Dealership.Data.Migrations
                     b.HasOne("Dealership.Data.Models.Gearbox", "GearBox")
                         .WithMany("Cars")
                         .HasForeignKey("GearBoxId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Dealership.Data.Models.CarModel", b =>
+                {
+                    b.HasOne("Dealership.Data.Models.Brand")
+                        .WithMany("CarModels")
+                        .HasForeignKey("BrandId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

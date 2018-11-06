@@ -1,4 +1,5 @@
 ﻿using Dealership.Data.Models;
+using System.Collections.Generic;
 
 namespace Dealership.Services.Abstract
 {
@@ -6,6 +7,10 @@ namespace Dealership.Services.Abstract
     {
         Brand GetBrand(string brandName);
         Brand Add(Brand newBrand);
-        Brand Create(string brand);
+        Brand GetBrand(int brandId);
+        IList<CarModel> GetBrandModels(string brandName);
+        IList<Brand> GetBrands();
+        Brand Create(string brandName);
+
     }
 }

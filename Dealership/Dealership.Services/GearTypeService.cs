@@ -19,5 +19,15 @@ namespace Dealership.Services
         {
             return this.context.GearTypes.ToList();
         }
+
+        public IList<Gearbox> GetGearboxesDependingOnGearType(int id)
+        {
+            return this.context.Gearboxes.Where(g => g.GearTypeId == id).ToList();
+        }
+
+        public IList<GearType> GetNumberOfGearsTypes()
+        {
+            return this.context.GearTypes.ToList();
+        }
     }
 }

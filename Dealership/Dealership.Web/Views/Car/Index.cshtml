@@ -1,6 +1,5 @@
-﻿@model IEnumerable<Car>
-
-@{
+﻿
+@*@{
     ViewData["Title"] = "Index";
 }
 
@@ -33,3 +32,8 @@
     }
 </div>
 
+
+@model Dealership.Services.CarService
+@{
+    var list = Model.GetCars("asc");
+}*@

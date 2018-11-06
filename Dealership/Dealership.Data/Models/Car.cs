@@ -5,21 +5,17 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Dealership.Data.Models
 {
-    public class Car : Entity, ICar
+    public class Car : Entity
     {
-        private IEnumerable<CarsExtras> carsExtras;
-        private ICollection<UsersCars> usersCars;
-
         public Car()
         {
-            this.carsExtras = new HashSet<CarsExtras>();
-            this.usersCars = new HashSet<UsersCars>();
+            this.CarsExtras = new HashSet<CarsExtras>();
+            this.UsersCars = new HashSet<UsersCars>();
+
         }
 
         [Required]
-        [MaxLength(25)]
-        [MinLength(2)]
-        public string Model { get; set; }
+        public int Mileage { get; set; }
 
         [Required]
         [Range(1, int.MaxValue)]
@@ -41,6 +37,9 @@ namespace Dealership.Data.Models
         public int BrandId { get; set; }
         public Brand Brand { get; set; }
 
+        public int CarModelId { get; set; }
+        public CarModel CarModel { get; set; }
+
         public int BodyTypeId { get; set; }
         public BodyType BodyType { get; set; }
 
@@ -55,22 +54,9 @@ namespace Dealership.Data.Models
 
         public string ImageName { get; set; }
 
-        public IEnumerable<CarsExtras> CarsExtras
-        {
-            get { return this.carsExtras; }
-            set
-            {
-                this.carsExtras = value;
-            }
-        }
+ 
+        public IEnumerable<CarsExtras> CarsExtras { get; set; }
 
-        public ICollection<UsersCars> UsersCars
-        {
-            get { return this.usersCars; }
-            set
-            {
-                this.usersCars = value;
-            }
-        }
+        public ICollection<UsersCars> UsersCars { get; set; }
     }
 }
