@@ -238,13 +238,13 @@ namespace Dealership.Web.Controllers
                 model.Car.GearBoxTypeId, model.Car.NumberOfGears);
 
             this.carService.AddCar(car);
-            //   this.AddImage(model.Car.Image, car.Id);
             this.TempData["Success-Message"] = "Car registration is successful!";
 
+
+            //TODO: FIX
+               AddImage(model.Car.Image, car.Id);
+
             return RedirectToAction("Details", "Car", new { id = car.Id });
-
-
-            //    return this.View(model);
         }
 
         public JsonResult GetModelsByBrandId(int brandId)

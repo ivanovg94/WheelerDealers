@@ -318,7 +318,7 @@ namespace Dealership.Services
 
         public void Update(Car car)
         {
-            this.context.Cars.Update(car as Car);
+            this.context.Cars.Update(car);
             this.context.SaveChanges();
         }
         public void SaveAvatarImage(string root, string filename, Stream stream, int carId)

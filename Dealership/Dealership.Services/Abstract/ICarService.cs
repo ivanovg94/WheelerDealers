@@ -1,9 +1,7 @@
 ﻿using Dealership.Data.Models;
-using Dealership.Data.Models.Contracts;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 
 namespace Dealership.Services.Abstract
 {
@@ -32,9 +30,9 @@ namespace Dealership.Services.Abstract
         Car RemoveCar(int carId);
 
         int GetCarsCount();
-
         void Update(Car car);
 
         void SaveAvatarImage(string root, string filename, Stream stream, int carId);
+
     }
 }

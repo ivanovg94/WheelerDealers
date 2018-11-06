@@ -1,8 +1,10 @@
 ﻿using Dealership.Data.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace Dealership.Web.Models
 {
@@ -82,6 +84,5 @@ namespace Dealership.Web.Models
         public IFormFile Image { get; set; }
 
         public string ImageUrl { get; set; }
-
     }
 }

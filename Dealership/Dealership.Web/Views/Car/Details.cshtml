@@ -8,7 +8,9 @@
 <div class="container">
     <partial name="_CarInfoDisplayPartial" model="@Model" />
 </div>
-<div class="col-lg-12">
-    <a asp-controller="Car" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a> |
-    <a asp-action="Browse">Back to List</a>
+
+<div>
+    <a asp-controller="Car" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+    <a asp-controller="Car" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+    <a asp-controller="Car" asp-action="Browse" class="btn btn-block">Back to List</a>
 </div>

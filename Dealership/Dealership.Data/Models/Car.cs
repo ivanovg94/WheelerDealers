@@ -11,6 +11,7 @@ namespace Dealership.Data.Models
         {
             this.CarsExtras = new HashSet<CarsExtras>();
             this.UsersCars = new HashSet<UsersCars>();
+
         }
 
         [Required]
@@ -53,6 +54,7 @@ namespace Dealership.Data.Models
 
         public string ImageName { get; set; }
 
+ 
         public IEnumerable<CarsExtras> CarsExtras { get; set; }
 
         public ICollection<UsersCars> UsersCars { get; set; }
