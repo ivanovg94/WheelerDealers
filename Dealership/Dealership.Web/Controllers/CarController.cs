@@ -94,6 +94,7 @@ namespace Dealership.Web.Controllers
         //method
         public void EditCar(CarViewModel car)
         {
+
             var realCar = carService.GetCar(car.Id);
 
             var newBody = bodyTypeService.GetBodyType(car.BodyType);
@@ -156,19 +157,14 @@ namespace Dealership.Web.Controllers
             carService.Update(realCar);
         }
 
-        //public IActionResult Delete(int id)
-        //{
-        //    var removedCar = carService.RemoveCar(id);
-
-        //    return RedirectToAction("Index", "Car");
-        //}
+        [HttpGet]
         public IActionResult DeleteAction(bool confirm, int id)
         {
             if (confirm)
             {
                 var removedCar = carService.RemoveCar(id);
             }
-            return RedirectToAction("Index", "Car");
+            return RedirectToAction("Browse", "Car");
 
         }
 

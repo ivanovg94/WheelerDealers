@@ -260,8 +260,7 @@ namespace Dealership.Services
                                                 .ThenInclude(co => co.ColorType)
                                             .Include(c => c.FuelType)
                                             .Include(c => c.GearBox)
-                                                .ThenInclude(gb => gb.GearType)
-                                            ;
+                                                .ThenInclude(gb => gb.GearType);
 
             return querry.ToList();
         }

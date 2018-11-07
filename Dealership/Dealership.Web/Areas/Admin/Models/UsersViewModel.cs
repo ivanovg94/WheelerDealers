@@ -8,18 +8,13 @@ namespace Dealership.Web.Areas.Admin.Models
 {
     public class UsersViewModel
     {
-        public IEnumerable<string> Options { get; set; }
+        public int Id { get; set; }
         public string Value { get; set; }
-        public int Selection { get; set; }
         public string SelectedAnswer { get; set; }
 
         public UsersViewModel()
         {
 
-        }
-        public UsersViewModel(IEnumerable<string> options)
-        {
-            this.Options = options;
         }
     }
 }
