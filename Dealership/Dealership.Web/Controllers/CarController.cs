@@ -51,7 +51,7 @@ namespace Dealership.Web.Controllers
         public IActionResult Edit(int id)
         {
             var car = this.carService.GetCar(id);
-            var carVm = new CarViewModel(car);
+            var carVm = new CarViewModel(car,this.modelService);
             var model = new EditCarViewModel
             {
                 Brands = this.brandService.GetBrands()
@@ -280,7 +280,7 @@ namespace Dealership.Web.Controllers
         public IActionResult Details(int id)
         {
             var car = this.carService.GetCar(id);
-            var model = new CarViewModel(car);
+            var model = new CarViewModel(car,this.modelService);
 
             return this.View(model);
         }

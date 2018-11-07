@@ -6,31 +6,36 @@
     string extraRadioBtnText = "Extra";
 }
 
-<h2>Admin stuff panel</h2>
-<form asp-action="Add" asp-controller="Admin" method="post">
-    <div class="btn-group col-md-4 col-md-offset-1" data-toggle="buttons-radio" style="padding-bottom:10px">
-        <label>
-            <input type="radio" value="brand" asp-for="@Model.SelectedAnswer" autocomplete="off">@brandRadioBtnText
-        </label>
-        <label>
-            <input type="radio" value="extra" asp-for="@Model.SelectedAnswer" autocomplete="off">@extraRadioBtnText
-        </label>
-    </div>
-    <div class="col-md-4 col-md-offset-1">
-        <input type="text" id="value" placeholder="new value" name="value" />
-        <button type="submit" class="btn btn-success">Add</button>
-    </div>
-</form>
-<form asp-action="Index" method="post">
-
-    <div class="row">
-        <div class="col-md-4">
-            
-            @Html.ActionLink("Delete", "Delete", "Admin", new { area = "Admin", confirm = true, id = Model.Id }, new { @class = "btn btn-danger", onclick = "return confirm('Do you really want to delete this product?')" })
-
+<h2 >Admin stuff panel</h2>
+<div class="row">
+        <h4 class="col-md-offset-4 " >Add brands or extras...</h4>
+    <form asp-action="Add" asp-controller="Admin" method="post">
+        <div class="btn-group col-md-4 col-md-offset-1" data-toggle="buttons-radio" style="padding-bottom:10px">
+            <label>
+                <input type="radio" value="brand" asp-for="@Model.SelectedAnswer" autocomplete="off">@brandRadioBtnText
+            </label>
+            <label>
+                <input type="radio" value="extra" asp-for="@Model.SelectedAnswer" autocomplete="off">@extraRadioBtnText
+            </label>
         </div>
-    </div>
-</form>
+        <div class="col-md-4 col-md-offset-1">
+            <input type="text" id="value" placeholder="new value" name="value" />
+            <button type="submit" class="btn btn-success">Add</button>
+        </div>
+    </form>
+</div>
+
+<hr />
+<a asp-action="ManageCars" class="btn btn-group-lg">Manage cars</a>
+@*<form asp-action="Index" method="post">
+
+        <div class="row">
+            <div class="col-md-4">
+
+                @Html.ActionLink("Delete", "Delete", "Admin", new { area = "Admin", confirm = true, id = Model.Id }, new { @class = "btn btn-danger", onclick = "return confirm('Do you really want to delete this product?')" })
+                </div>
+        </div>
+    </form>*@
 
 
 

@@ -2,6 +2,7 @@
 using Dealership.Data.Models;
 using Dealership.Services.Abstract;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Dealership.Services
 {
@@ -19,6 +20,11 @@ namespace Dealership.Services
         public ICollection<CarModel> GetAllModelsByBrandId(int brandId)
         {
             return this.brandService.GetBrand(brandId).CarModels;
+        }
+
+        public CarModel GetModel(int id)
+        {
+            return this.context.CarModels.FirstOrDefault(m => m.Id == id);
         }
 
     }
