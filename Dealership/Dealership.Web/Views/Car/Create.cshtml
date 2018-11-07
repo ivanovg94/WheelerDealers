@@ -5,44 +5,18 @@
 
 <h2>Create a car</h2>
 
+@await Html.PartialAsync("_StatusMessage", Model.Car.StatusMessage)
+
 <hr />
 <div class="col-lg-4">
     <form asp-controller="Car" asp-action="Create" method="post" enctype="multipart/form-data">
 
         <partial name="_EditCarPartial" model="@Model" />
 
-        @*<div class="btn-block">
+        <div class="btn-block">
             <label for="file">Choose images to upload</label>
-            <input type="text" name="Images" multiple>
-        </div>*@
-
-
-
-        @*upload modal*@
-        <div id="upload-modal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-
-                    <div class="modal-body">
-                        <label class="avatar-upload-label">
-                            Drag or click to upload..
-                            <input type="file" name="Images" multiple />
-                        </label>
-                        <img class="img-rounded avatar-img-preview hidden" />
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" id="remove-img" class="btn btn-danger">Discard</button>
-                        <button type="submit" class="btn btn-success">Save Changes</button>
-                    </div>
-
-                </div>
-
-            </div>
+            <input type="file" name="Images" multiple class="btn btn-default">
         </div>
-
-
 
         <div class="form-group">
             <input type="submit" name="save" value="Save" class="btn btn-success" />

@@ -24,7 +24,7 @@
                 <p>Price: <strong> @car.Price $</strong> </p>
                 <a class="btn btn-primary" asp-controller="Car" asp-action="Details/@currentId">Details</a>
                 <a class="btn btn-default" asp-controller="Car" asp-action="Edit/@currentId">Edit</a>
-                @Html.ActionLink("Delete", "DeleteAction", "Car", new { confirm = true, id = car.Id }, new { @class = "btn btn-danger", onclick = "return confirm('Do you really want to delete this product?')" })
+                @Html.ActionLink("Delete", "DeleteAction", "Admin", new { confirm = true, id = car.Id }, new { @class = "btn btn-danger", onclick = "return confirm('Do you really want to delete this product?')" })
                 <hr />
 
                 <div class="col-md-4">
