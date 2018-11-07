@@ -280,6 +280,7 @@ namespace Dealership.Services
                                   .Include(c => c.FuelType)
                                   .Include(c => c.GearBox)
                                       .ThenInclude(gb => gb.GearType)
+                                      .Include(c => c.Images)
                                   .FirstOrDefault();
 
             if (car == null)
@@ -323,7 +324,7 @@ namespace Dealership.Services
             this.context.SaveChanges();
         }
 
-        public void SaveAvatarImage(string root, string filename, Stream stream, int carId)
+        public void SaveImages(string root, IList<string> fileNames, IList<Stream> stream, int carId)
         {
             var car = GetCar(carId);
 
@@ -332,15 +333,25 @@ namespace Dealership.Services
                 throw new InvalidOperationException("Car not found");
             }
 
-            var imageName = Guid.NewGuid().ToString() + Path.GetExtension(filename);
-            var path = Path.Combine(root, imageName);
-
-            using (var fileStream = File.Create(path))
+            for (int i = 0; i < fileNames.Count; i++)
             {
-                stream.CopyTo(fileStream);
+                var fileName = fileNames[i];
+                var imageName = Guid.NewGuid().ToString() + Path.GetExtension(fileName);
+                var path = Path.Combine(root, imageName);
+
+                using (var fileStream = File.Create(path))
+                {
+                    stream[i].CopyTo(fileStream);
+                }
+
+                var image = new Image()
+                {
+                    ImageName = imageName
+                };
+
+                car.Images.Add(image);
             }
 
-            car.ImageName = imageName;
             this.context.SaveChanges();
         }
     }

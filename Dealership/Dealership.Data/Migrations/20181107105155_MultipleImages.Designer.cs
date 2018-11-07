@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dealership.Data.Migrations
 {
     [DbContext(typeof(DealershipContext))]
-    [Migration("20181106140634_MergeInitial")]
-    partial class MergeInitial
+    [Migration("20181107105155_MultipleImages")]
+    partial class MultipleImages
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -101,8 +101,6 @@ namespace Dealership.Data.Migrations
                     b.Property<int>("GearBoxId");
 
                     b.Property<short>("HorsePower");
-
-                    b.Property<string>("ImageName");
 
                     b.Property<bool>("IsDeleted");
 
@@ -346,6 +344,31 @@ namespace Dealership.Data.Migrations
                         new { Id = 1, IsDeleted = false, Name = "Automatic" },
                         new { Id = 2, IsDeleted = false, Name = "Manual" }
                     );
+                });
+
+            modelBuilder.Entity("Dealership.Data.Models.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CarId");
+
+                    b.Property<DateTime?>("CreatedOn");
+
+                    b.Property<DateTime?>("DeletedOn");
+
+                    b.Property<string>("ImageName");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("ModifiedOn");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("Dealership.Data.Models.User", b =>
@@ -605,6 +628,14 @@ namespace Dealership.Data.Migrations
                     b.HasOne("Dealership.Data.Models.GearType", "GearType")
                         .WithMany("Gearboxes")
                         .HasForeignKey("GearTypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Dealership.Data.Models.Image", b =>
+                {
+                    b.HasOne("Dealership.Data.Models.Car", "Car")
+                        .WithMany("Images")
+                        .HasForeignKey("CarId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
