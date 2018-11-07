@@ -1,8 +1,5 @@
 ﻿using Dealership.Data.Models;
-using Dealership.Services;
-using Dealership.Services.Abstract;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,22 +9,21 @@ namespace Dealership.Web.Models
 {
     public class CarViewModel
     {
-        private readonly IModelService modelService;
+      //  private readonly IModelService modelService;
         private DateTime _productionDate;
 
         public CarViewModel()
         {
-
         }
 
-        public CarViewModel(Car car, IModelService modelService)
+        public CarViewModel(Car car/*, IModelService modelService*/)
         {
-            this.modelService = modelService;
+          //  this.modelService = modelService;
 
             this.Id = car.Id;
             this.CarModelId = car.CarModelId;
-            CarModel model = this.modelService.GetModel(CarModelId);
-            this.CarModel = model.Name;
+         //   CarModel model = this.modelService.GetModel(CarModelId);
+            this.CarModel = car.CarModel.Name;
             this.HorsePower = car.HorsePower;
             this.Mileage = car.Mileage;
             this.EngineCapacity = car.EngineCapacity;
@@ -70,7 +66,6 @@ namespace Dealership.Web.Models
 
         [Required]
         [DataType(DataType.Date)]
-        //  [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime ProductionDate
         {
             get

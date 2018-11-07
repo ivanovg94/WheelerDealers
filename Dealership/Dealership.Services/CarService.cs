@@ -42,12 +42,12 @@ namespace Dealership.Services
 
             var fuelType = this.context.FuelTypes
                                           .FirstOrDefault(f => f.Id == fuelTypeId);
-            
+
 
             var gearbox = this.context.Gearboxes
                 .FirstOrDefault(g => g.GearType.Id == gearBoxTypeId
                                   && g.NumberOfGears == numberOfGears);
-         
+
             if (mileage < 0)
             {
                 throw new ServiceException($"Mileage must be greater than 0.");
@@ -72,7 +72,7 @@ namespace Dealership.Services
             return newCar;
         }
 
-    
+
         public Car AddCar(Car car)
         {
             if (car == null)
@@ -121,7 +121,7 @@ namespace Dealership.Services
             var car = this.context.Cars
                                   .Where(c => c.Id == id)
                                   .Include(c => c.Brand)
-                                  .Include(c=>c.CarModel)
+                                  .Include(c => c.CarModel)
                                   .Include(c => c.CarsExtras)
                                        .ThenInclude(ce => ce.Extra)
                                   .Include(c => c.BodyType)
@@ -130,7 +130,7 @@ namespace Dealership.Services
                                   .Include(c => c.FuelType)
                                   .Include(c => c.GearBox)
                                       .ThenInclude(gb => gb.GearType)
-                                      .Include(c => c.Images)
+                                  .Include(c => c.Images)
                                   .FirstOrDefault();
 
             if (car == null)

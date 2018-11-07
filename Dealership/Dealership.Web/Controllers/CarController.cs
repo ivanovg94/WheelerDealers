@@ -181,12 +181,8 @@ namespace Dealership.Web.Controllers
             };
             model.Brands
                 .AddRange(this.brandService.GetBrands()
-                .Select(x => new SelectListItem { Value = x.Name, Text = x.Name }).ToList());
+                .Select(b => new SelectListItem { Value = b.Id.ToString(), Text = b.Name }).ToList());
 
-
-            //model.CarModels
-            //   .AddRange(this.brandService.GetBrandModels(model.)
-            //   .Select(x => new SelectListItem { Value = x.Name, Text = x.Name }).ToList());
 
             return this.View(model);
         }
