@@ -57,12 +57,12 @@ namespace Dealership.Web
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
+                  name: "areaRoute",
+                  template: "{area:exists}/{controller=Admin}/{action=Index}/{id?}");
+                routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
 
-                routes.MapRoute(
-                  name: "areaRoute",
-                  template: "{area:exists}/{controller=Admin}/{action=Index}/{id?}");
             });
 
         }
@@ -87,6 +87,7 @@ namespace Dealership.Web
             services.AddTransient<IFuelTypeService, FuelTypeService>();
             services.AddTransient<IGearTypeService, GearTypeService>();
             services.AddTransient<IExtraService, ExtraService>();
+            services.AddTransient<IUserService, UserService>();
         }
 
         private void RegisterAuthentication(IServiceCollection services)
