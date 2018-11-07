@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -40,6 +39,9 @@ namespace Dealership.Web.Controllers
             this.modelService = modelService;
         }
 
+        [TempData]
+        public string StatusMessage { get; set; }
+
         public IActionResult Index()
         {
             var list = this.carService.GetCars("asc");
@@ -51,7 +53,7 @@ namespace Dealership.Web.Controllers
         public IActionResult Edit(int id)
         {
             var car = this.carService.GetCar(id);
-            var carVm = new CarViewModel(car,this.modelService);
+            var carVm = new CarViewModel(car);
             var model = new EditCarViewModel
             {
                 Brands = this.brandService.GetBrands()
@@ -90,7 +92,6 @@ namespace Dealership.Web.Controllers
 
             return RedirectToAction("Details", "Car", new { car.Id });
         }
-
 
         //method
         public void EditCar(CarViewModel car)
@@ -239,7 +240,11 @@ namespace Dealership.Web.Controllers
                 .Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList(),
 
                 Car = new CarViewModel()
+                {
+                    StatusMessage = this.StatusMessage
+                }
             };
+
             return this.View(model);
         }
 
@@ -248,19 +253,34 @@ namespace Dealership.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(EditCarViewModel model)
         {
-
             var car = this.carService.CreateCar(
                 model.Car.BrandId, model.Car.CarModelId, model.Car.Mileage, model.Car.HorsePower,
                 model.Car.EngineCapacity, model.Car.ProductionDate, model.Car.Price,
                 model.Car.BodyTypeId, model.Car.Color, model.Car.ColorTypeId, model.Car.FuelTypeId,
                 model.Car.GearBoxTypeId, model.Car.NumberOfGears);
 
-
             this.carService.AddCar(car);
-            this.TempData["Success-Message"] = "Car registration is successful!";
 
-            AddImages(model.Images, car.Id);
+            if (model.Images != null)
+            {
+                foreach (var image in model.Images)
+                {
+                    if (!this.IsValidImage(image))
+                    {
+                        this.StatusMessage = "Error: Please provide a.jpg or .png file smaller than 5MB";
+                        return this.RedirectToAction(nameof(Create));
+                    }
+                }
 
+                this.carService.SaveImages(
+                         this.GetUploadsRoot(),
+                         model.Images.Select(i => i.FileName).ToList(),
+                         model.Images.Select(i => i.OpenReadStream()).ToList(),
+                         car.Id
+                     );
+            }
+
+            this.StatusMessage = "Car registration is successful!";
             return RedirectToAction("Details", "Car", new { id = car.Id });
         }
 
@@ -280,11 +300,13 @@ namespace Dealership.Web.Controllers
         public IActionResult Details(int id)
         {
             var car = this.carService.GetCar(id);
-            var model = new CarViewModel(car,this.modelService);
+            var model = new CarViewModel(car)
+            {
+                StatusMessage = this.StatusMessage
+            };
 
             return this.View(model);
         }
-
 
         [Authorize]
         public IActionResult ConfirmDelete(int id)
@@ -292,33 +314,6 @@ namespace Dealership.Web.Controllers
             this.carService.RemoveCar(id);
 
             return RedirectToAction(nameof(Browse));
-        }
-
-
-        private void AddImages(ICollection<IFormFile> images, int carId)
-        {
-            if (images == null)
-            {
-                return;
-            }
-
-            foreach (var image in images)
-            {
-                //if (!this.IsValidImage(image))
-                //{
-                //    this.StatusMessage = "Error: Please provide a .jpg or .png file smaller than 5MB";
-                //    throw this.RedirectToAction(nameof(Index));
-                //}
-
-            }
-
-         
-            this.carService.SaveImages(
-                     this.GetUploadsRoot(),
-                     images.Select(i => i.FileName).ToList(),
-                     images.Select(i => i.OpenReadStream()).ToList(),
-                     carId
-                 );
         }
 
         private string GetUploadsRoot()

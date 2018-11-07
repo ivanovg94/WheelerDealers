@@ -114,5 +114,7 @@ namespace Dealership.Web.Models
         public ICollection<IFormFile> Images { get; set; }
 
         public ICollection<string> ImagesUrl { get; set; }
+
+        public string StatusMessage { get; set; }
     }
 }
