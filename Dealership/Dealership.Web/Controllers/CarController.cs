@@ -164,7 +164,7 @@ namespace Dealership.Web.Controllers
             var model = new BrowseViewModel()
             {
                 Summaries = this.carService.GetCars(page * nPerPage, nPerPage)
-                .Select(c => new CarSummaryViewModel()
+                .Select(c => new CarSummaryViewModel(c)
                 {
                     Id = c.Id,
                     Brand = c.Brand.Name,
@@ -184,6 +184,7 @@ namespace Dealership.Web.Controllers
                 .Select(b => new SelectListItem { Value = b.Id.ToString(), Text = b.Name }).ToList());
 
 
+            var imag = model.Summaries.First().ImageUrl;
             return this.View(model);
         }
 
