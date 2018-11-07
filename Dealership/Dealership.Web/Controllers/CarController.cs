@@ -160,7 +160,6 @@ namespace Dealership.Web.Controllers
         }
 
         [HttpGet]
-
         public IActionResult DeleteAction(bool confirm, int id)
         {
             if (confirm)
@@ -187,7 +186,7 @@ namespace Dealership.Web.Controllers
             var model = new BrowseViewModel()
             {
                 Summaries = this.carService.GetCars(page * nPerPage, nPerPage)
-                .Select(c => new CarSummaryViewModel()
+                .Select(c => new CarSummaryViewModel(c)
                 {
                     Id = c.Id,
                     Brand = c.Brand.Name,
@@ -209,6 +208,7 @@ namespace Dealership.Web.Controllers
             //   .AddRange(this.brandService.GetBrandModels(model.)
             //   .Select(x => new SelectListItem { Value = x.Name, Text = x.Name }).ToList());
 
+            var imag = model.Summaries.First().ImageUrl;
             return this.View(model);
         }
 

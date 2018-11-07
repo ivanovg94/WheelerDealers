@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dealership.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,16 @@ namespace Dealership.Web.Models.CarViewModels
 {
     public class CarSummaryViewModel
     {
+        public CarSummaryViewModel()
+        {
+        }
+
+        public CarSummaryViewModel(Car car)
+        {
+            this.ImageUrl = car.Images.First().ImageName;
+            this.ImagesUrl = car.Images.Select(i => i.ImageName).ToList();
+        }
+
         public int Id { get; set; }
         public string Brand { get; set; }
         public string CarModel { get; set; }
@@ -17,5 +28,6 @@ namespace Dealership.Web.Models.CarViewModels
         public string Price { get; set; }
         public string Mileage { get; set; }
         public string ImageUrl { get; set; }
+        public ICollection<string> ImagesUrl { get; set; }
     }
 }
