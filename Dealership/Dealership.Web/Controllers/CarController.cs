@@ -1,5 +1,4 @@
-﻿using Dealership.Data.Models;
-using Dealership.Services.Abstract;
+﻿using Dealership.Services.Abstract;
 using Dealership.Web.Models;
 using Dealership.Web.Models.CarViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -23,11 +22,12 @@ namespace Dealership.Web.Controllers
         private readonly IFuelTypeService fuelTypeService;
         private readonly IGearTypeService gearTypeService;
         private readonly IModelService modelService;
+        private readonly IColorService colorService;
 
         public CarController(ICarService carService, IEditCarService editCarService, IBrandService brandService,
             IBodyTypeService bodyTypeService, IColorTypeService colorTypeService,
             IFuelTypeService fuelTypeService, IGearTypeService gearTypeService,
-            IModelService modelService)
+            IModelService modelService, IColorService colorService)
         {
             this.carService = carService;
             this.editCarService = editCarService;
@@ -37,6 +37,7 @@ namespace Dealership.Web.Controllers
             this.fuelTypeService = fuelTypeService;
             this.gearTypeService = gearTypeService;
             this.modelService = modelService;
+            this.colorService = colorService;
         }
 
         [TempData]
@@ -44,9 +45,10 @@ namespace Dealership.Web.Controllers
 
         public IActionResult Index()
         {
-            var list = this.carService.GetCars("asc");
+            //var list = this.carService.GetCars("asc");
 
-            return View(list);
+            //return View(list);
+            return null;
         }
 
         [HttpGet]
@@ -85,63 +87,39 @@ namespace Dealership.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-
-        public IActionResult Edit(CarViewModel car)
+        public IActionResult Edit(EditCarViewModel model)
         {
-            EditCar(car);
+            EditCar(model.Car);
 
-            return RedirectToAction("Details", "Car", new { car.Id });
+            return RedirectToAction("Details", "Car", new { model.Car.Id });
         }
 
         //method
-        public void EditCar(CarViewModel car)
+        public void EditCar(CarViewModel model)
         {
+            var realCar = carService.GetCar(model.Id);
 
-            var realCar = carService.GetCar(car.Id);
+            var newBody = bodyTypeService.GetBodyType(model.BodyTypeId);
+            var newBrand = brandService.GetBrand(model.BrandId);
+            var newModel = brandService.GetModeldOfBrand(model.BrandId, model.CarModelId);
 
-            var newBody = bodyTypeService.GetBodyType(car.BodyType);
-            Brand newBrand;
-            try
+            var newColor = this.colorService.GetColor(model.Color, model.ColorTypeId);
+            if (newColor == null)
             {
-                newBrand = brandService.GetBrand(car.Brand);
+                newColor = this.colorService.AddColor(model.Color, model.ColorTypeId);
             }
-            catch
-            {
-                newBrand = new Brand() { Name = car.Brand };
-            }
-
-            //Todo:fix
-            CarModel newModel;
-            try
-            {
-                newModel = brandService.GetBrandModels(car.Brand).First(m => m.Name == car.CarModel);
-            }
-            catch
-            {
-                newModel = new CarModel() { Name = car.CarModel, BrandId = newBrand.Id };
-            };
-
-            var newColor = new Color() { Name = car.Color };
-            newColor.ColorType = colorTypeService.GetColorTypes().FirstOrDefault(c => c.Name == car.ColorType);
-            var newEngineCapacity = car.EngineCapacity;
-            var newFuelType = fuelTypeService.GetFuelTypes().FirstOrDefault(ft => ft.Name == car.FuelType);
-            var newGearbox = new Gearbox()
-            {
-                GearType = gearTypeService.GetGearTypes().FirstOrDefault(gt => gt.Name == car.GearBoxType),
-                NumberOfGears = car.NumberOfGears
-            };
-
-            var newHorsePower = car.HorsePower;
-            var newPrice = car.Price;
-            var newProductionDate = car.ProductionDate;
-            //var newImageName = car.ImageUrl;
-
+            var newEngineCapacity = model.EngineCapacity;
+            var newFuelType = fuelTypeService.GetFuelType(model.FuelTypeId);
+            var newGearbox = this.gearTypeService.GetGearBox(model.GearBoxTypeId, model.NumberOfGears);
+            var newHorsePower = model.HorsePower;
+            var newPrice = model.Price;
+            var newProductionDate = model.ProductionDate;
+            //    var newImageName = model.ImageUrl;
 
             realCar.BodyType = newBody;
             realCar.BodyTypeId = newBody.Id;
             realCar.Brand = newBrand;
             realCar.BrandId = newBrand.Id;
-            //   realCar.CarsExtras = car.CarsExtras.Select(ce=>ce.);
             realCar.Color = newColor;
             realCar.ColorId = newColor.Id;
             realCar.EngineCapacity = newEngineCapacity;
@@ -150,11 +128,11 @@ namespace Dealership.Web.Controllers
             realCar.GearBox = newGearbox;
             realCar.GearBoxId = newGearbox.Id;
             realCar.HorsePower = newHorsePower;
+            realCar.CarModelId = newModel.Id;
             realCar.CarModel = newModel;
             realCar.Price = newPrice;
             realCar.ProductionDate = newProductionDate;
             realCar.ModifiedOn = DateTime.Now;
-
 
             carService.Update(realCar);
         }
@@ -204,6 +182,8 @@ namespace Dealership.Web.Controllers
             model.Brands
                 .AddRange(this.brandService.GetBrands()
                 .Select(x => new SelectListItem { Value = x.Name, Text = x.Name }).ToList());
+
+
             //model.CarModels
             //   .AddRange(this.brandService.GetBrandModels(model.)
             //   .Select(x => new SelectListItem { Value = x.Name, Text = x.Name }).ToList());

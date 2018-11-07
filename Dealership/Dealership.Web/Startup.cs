@@ -84,10 +84,13 @@ namespace Dealership.Web
             services.AddTransient<IModelService, ModelService>();
             services.AddTransient<IBodyTypeService, BodyTypeService>();
             services.AddTransient<IColorTypeService, ColorTypeService>();
+            services.AddTransient<IColorService, ColorService>();
             services.AddTransient<IFuelTypeService, FuelTypeService>();
             services.AddTransient<IGearTypeService, GearTypeService>();
             services.AddTransient<IExtraService, ExtraService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IModelService, ModelService>();
+
         }
 
         private void RegisterAuthentication(IServiceCollection services)
