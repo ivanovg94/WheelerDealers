@@ -38,7 +38,7 @@ namespace Dealership.Web.Models
             this.NumberOfGears = car.GearBox.NumberOfGears;
             this.FuelTypeId = car.FuelTypeId;
             this.FuelType = car.FuelType.Name;
-            this.ImageUrl = car.ImageName;
+            this.ImagesUrl = car.Images.Select(i => i.ImageName).ToList();
         }
 
         public int Id { get; set; }
@@ -104,8 +104,8 @@ namespace Dealership.Web.Models
 
         public IEnumerable<string> CarsExtras { get; set; }
 
-        public IFormFile Image { get; set; }
+        public ICollection<IFormFile> Images { get; set; }
 
-        public string ImageUrl { get; set; }
+        public ICollection<string> ImagesUrl { get; set; }
     }
 }

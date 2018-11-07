@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Dealership.Data.Migrations
 {
-    public partial class MergeInitial : Migration
+    public partial class MultipleImages : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -348,8 +348,7 @@ namespace Dealership.Data.Migrations
                     BodyTypeId = table.Column<int>(nullable: false),
                     ColorId = table.Column<int>(nullable: false),
                     FuelTypeId = table.Column<int>(nullable: false),
-                    GearBoxId = table.Column<int>(nullable: false),
-                    ImageName = table.Column<string>(nullable: true)
+                    GearBoxId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -416,6 +415,30 @@ namespace Dealership.Data.Migrations
                         name: "FK_CarsExtras_Extras_ExtraId",
                         column: x => x.ExtraId,
                         principalTable: "Extras",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Images",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedOn = table.Column<DateTime>(nullable: true),
+                    CreatedOn = table.Column<DateTime>(nullable: true),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                    ImageName = table.Column<string>(nullable: true),
+                    CarId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Images", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Images_Cars_CarId",
+                        column: x => x.CarId,
+                        principalTable: "Cars",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -600,6 +623,11 @@ namespace Dealership.Data.Migrations
                 column: "GearTypeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Images_CarId",
+                table: "Images",
+                column: "CarId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UsersCars_CarId",
                 table: "UsersCars",
                 column: "CarId");
@@ -624,6 +652,9 @@ namespace Dealership.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "CarsExtras");
+
+            migrationBuilder.DropTable(
+                name: "Images");
 
             migrationBuilder.DropTable(
                 name: "UsersCars");

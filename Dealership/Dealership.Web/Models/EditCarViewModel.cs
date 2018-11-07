@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 
 namespace Dealership.Web.Models
@@ -20,5 +21,17 @@ namespace Dealership.Web.Models
         public List<SelectListItem> ColorTypes { get; set; }
 
         public List<SelectListItem> FuelTypes { get; set; }
+
+        public ICollection<IFormFile> Images
+        {
+            get
+            {
+                return this.Car.Images;
+            }
+            set
+            {
+                this.Car.Images = value;
+            }
+        }
     }
 }

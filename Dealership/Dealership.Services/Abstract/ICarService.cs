@@ -32,7 +32,7 @@ namespace Dealership.Services.Abstract
         int GetCarsCount();
         void Update(Car car);
 
-        void SaveAvatarImage(string root, string filename, Stream stream, int carId);
+        void SaveImages(string root, IList<string> fileNames, IList<Stream> stream, int carId);
 
     }
 }

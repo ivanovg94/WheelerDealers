@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -132,7 +133,7 @@ namespace Dealership.Web.Controllers
             var newHorsePower = car.HorsePower;
             var newPrice = car.Price;
             var newProductionDate = car.ProductionDate;
-            var newImageName = car.ImageUrl;
+            //var newImageName = car.ImageUrl;
 
 
             realCar.BodyType = newBody;
@@ -152,12 +153,13 @@ namespace Dealership.Web.Controllers
             realCar.Price = newPrice;
             realCar.ProductionDate = newProductionDate;
             realCar.ModifiedOn = DateTime.Now;
-            realCar.ImageName = newImageName;
+
 
             carService.Update(realCar);
         }
 
         [HttpGet]
+
         public IActionResult DeleteAction(bool confirm, int id)
         {
             if (confirm)
@@ -257,9 +259,7 @@ namespace Dealership.Web.Controllers
             this.carService.AddCar(car);
             this.TempData["Success-Message"] = "Car registration is successful!";
 
-
-            //TODO: FIX
-            AddImage(model.Car.Image, car.Id);
+            AddImages(model.Images, car.Id);
 
             return RedirectToAction("Details", "Car", new { id = car.Id });
         }
@@ -295,26 +295,30 @@ namespace Dealership.Web.Controllers
         }
 
 
-        private void AddImage(IFormFile avatarImage, int carId)
+        private void AddImages(ICollection<IFormFile> images, int carId)
         {
-            if (avatarImage == null)
+            if (images == null)
             {
-                return; /*this.RedirectToAction(nameof(Index));*/
+                return;
+            }
+
+            foreach (var image in images)
+            {
+                //if (!this.IsValidImage(image))
+                //{
+                //    this.StatusMessage = "Error: Please provide a .jpg or .png file smaller than 5MB";
+                //    throw this.RedirectToAction(nameof(Index));
+                //}
 
             }
 
-            //if (!this.IsValidImage(avatarImage))
-            //{
-            //    this.StatusMessage = "Error: Please provide a .jpg or .png file smaller than 1MB";
-            //    throw this.RedirectToAction(nameof(Index));
-            //}
-
-            this.carService.SaveAvatarImage(
-                this.GetUploadsRoot(),
-                avatarImage.FileName,
-                avatarImage.OpenReadStream(),
-                carId
-            );
+         
+            this.carService.SaveImages(
+                     this.GetUploadsRoot(),
+                     images.Select(i => i.FileName).ToList(),
+                     images.Select(i => i.OpenReadStream()).ToList(),
+                     carId
+                 );
         }
 
         private string GetUploadsRoot()
@@ -332,8 +336,7 @@ namespace Dealership.Web.Controllers
             {
                 return false;
             }
-
-            return image.Length <= 1024 * 1024;
+            return image.Length <= 5242880;
         }
     }
 }

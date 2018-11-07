@@ -3,10 +3,107 @@
     ViewData["Title"] = "Details";
 }
 <h2>Car details</h2>
-<div class="container">
+@*<div class="container">
     <partial name="_CarInfoDisplayPartial" model="@Model" />
-    
+
+</div>*@
+
+<div class="container">
+    @if (Model.ImagesUrl.Count != 0)
+    {
+        <div id="carousel-generic" class="carousel col-sm-6" data-ride="carousel">
+            <ol class="carousel-indicators">
+                @for (int i = 0; i < Model.ImagesUrl.Count; i++)
+                {
+                    <li data-target="#myCarousel" data-slide-to="@i"></li>
+                }
+            </ol>
+            <div class="carousel-inner">
+                @{bool first = true; }
+                @foreach (var imageUrl in Model.ImagesUrl)
+                {
+                    <div class="item @(first ? "active" : "" )">
+                        <img src="~/images/cars/@(imageUrl)" alt="" class="img-responsive center-align" width="600" />
+                        <div class="carousel-caption" role="option">
+                            <p>
+                                <a class="glyphicon glyphicon-fullscreen pull-right" href="~/images/cars/@(imageUrl)">
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                    first = false;
+                }
+            </div>
+            <!-- Controls -->
+            <a class="left carousel-control" href="#carousel-generic" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+            </a>
+            <a class="right carousel-control" href="#carousel-generic" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+            </a>
+        </div> <!-- Carousel -->
+    }
+    else
+    {
+        <div class="col-sm-6">
+            <img src="~/images/cars/default.jpg" class="img-responsive" width="600" />
+        </div>
+    }
+    <div class="info col-sm-6">
+        <div class="row center-align">
+            <h2>@Model.Brand @Model.CarModel</h2>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">Price</div>
+            <div class="col-sm-3">@Model.Price</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">First registration</div>
+            <div class="col-sm-3">@Model.ProductionDate.ToShortDateString()</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">Мileage</div>
+            <div class="col-sm-3">TODO Mileage</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">Fuel type</div>
+            <div class="col-sm-3">@Model.FuelType</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">Gearbox</div>
+            <div class="col-sm-3">@Model.GearBoxType</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">Number of gears</div>
+            <div class="col-sm-3">@Model.NumberOfGears</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">Power</div>
+            <div class="col-sm-3">@Model.HorsePower hp</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">Engine capacity</div>
+            <div class="col-sm-3">@Model.EngineCapacity</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">Body type</div>
+            <div class="col-sm-3">@Model.BodyType</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">Number of doors</div>
+            <div class="col-sm-3">TODO doors</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">Color</div>
+            <div class="col-sm-3">@Model.Color</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">Color type</div>
+            <div class="col-sm-3">@Model.ColorType</div>
+        </div>
+    </div>
 </div>
+
 <div>
     <a asp-controller="Car" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
     @Html.ActionLink("Delete", "DeleteAction", "Car", new { confirm = true, id = Model.Id }, new { @class = "btn btn-danger", onclick = "return confirm('Do you really want to delete this product?')" })
