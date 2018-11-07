@@ -7,9 +7,6 @@ namespace Dealership.Services.Abstract
 {
     public interface ICarService
     {
-        Car CreateCar(string brandName, string model, int mileage, short horsePower, short engineCapacity,
-            DateTime productionDate, decimal price, string chassisName, string colorName,
-            string colorType, string fuelTypeName, string gearboxTypeName, int numOfGears);
 
         Car CreateCar(int brandId, int carModelId, int mileage, short horsePower, short engineCapacity,
             DateTime productionDate, decimal price, int bodyTypeId, string colorName, int colorTypeId,
@@ -20,10 +17,6 @@ namespace Dealership.Services.Abstract
         void AddCars(ICollection<Car> cars);
 
         Car GetCar(int id);
-
-        IList<Car> GetCars(bool filterSold, string direction);
-
-        IList<Car> GetCars(string direction);
 
         IList<Car> GetCars(int skip, int take);
 
