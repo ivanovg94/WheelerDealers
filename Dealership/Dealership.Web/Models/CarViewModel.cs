@@ -1,4 +1,6 @@
 ﻿using Dealership.Data.Models;
+using Dealership.Services;
+using Dealership.Services.Abstract;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -10,17 +12,22 @@ namespace Dealership.Web.Models
 {
     public class CarViewModel
     {
+        private readonly IModelService modelService;
         private DateTime _productionDate;
 
         public CarViewModel()
         {
+
         }
 
-        public CarViewModel(Car car)
+        public CarViewModel(Car car, IModelService modelService)
         {
+            this.modelService = modelService;
+
             this.Id = car.Id;
             this.CarModelId = car.CarModelId;
-            this.CarModel = car.CarModel.Name;
+            CarModel model = this.modelService.GetModel(CarModelId);
+            this.CarModel = model.Name;
             this.HorsePower = car.HorsePower;
             this.Mileage = car.Mileage;
             this.EngineCapacity = car.EngineCapacity;

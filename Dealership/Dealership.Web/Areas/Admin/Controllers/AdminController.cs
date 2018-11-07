@@ -6,6 +6,7 @@ using Dealership.Data.Models;
 using Dealership.Services;
 using Dealership.Services.Abstract;
 using Dealership.Web.Areas.Admin.Models;
+using Dealership.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dealership.Web.Areas.Admin.Controllers
@@ -13,13 +14,16 @@ namespace Dealership.Web.Areas.Admin.Controllers
     [Area("Admin")]
     public class AdminController : Controller
     {
+        private readonly IModelService modelService;
+
         public IUserService UserService { get; }
         public ICarService CarService { get; }
         public IBrandService BrandService { get; set; }
         public IExtraService ExtraService { get; set; }
 
-        public AdminController(IUserService userService, ICarService carService, IBrandService brandService, IExtraService extraService)
+        public AdminController(IModelService modelService, IUserService userService, ICarService carService, IBrandService brandService, IExtraService extraService)
         {
+            this.modelService = modelService;
             UserService = userService;
             CarService = carService;
             BrandService = brandService;
@@ -63,6 +67,13 @@ namespace Dealership.Web.Areas.Admin.Controllers
             return View();
         }
 
+        public IActionResult ManageCars()
+        {
+            var carViewModels = CarService.GetCars(false, "asc").Select(c => new CarViewModel(c, this.modelService)).ToList();
+
+            return View(carViewModels);
+        }
+
         public IActionResult AddExtra(string extra)
         {
             var newExtra = this.ExtraService.CreateExtra(extra);
@@ -74,6 +85,6 @@ namespace Dealership.Web.Areas.Admin.Controllers
         {
             return View();
         }
-       
+
     }
 }

@@ -2,7 +2,7 @@
 
 <section>
     <div class="panelPadding">
-        <a asp-action="Details" asp-route-id="@Model.Id " class="list-group-item">
+        <a asp-controller="Car" asp-action="Details" asp-route-id="@Model.Id " class="list-group-item">
 
             <div class="well">@Model.Brand @Model.CarModel</div>
             <div class="panel-body">
