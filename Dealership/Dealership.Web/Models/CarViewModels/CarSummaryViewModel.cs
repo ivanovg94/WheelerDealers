@@ -14,7 +14,6 @@ namespace Dealership.Web.Models.CarViewModels
 
         public CarSummaryViewModel(Car car)
         {
-            this.ImageUrl = car.Images.FirstOrDefault() == null ? "default.jpg" : car.Images.FirstOrDefault().ImageName;
         }
 
         public int Id { get; set; }

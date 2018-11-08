@@ -8,6 +8,7 @@ using Dealership.Services.Abstract;
 using Dealership.Web.Areas.Admin.Models;
 using Dealership.Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Dealership.Web.Areas.Admin.Controllers
 {
@@ -54,6 +55,12 @@ namespace Dealership.Web.Areas.Admin.Controllers
             }
             return View();
         }
+        [HttpGet]
+        public IActionResult AddBrandsAndExtras()
+        {
+            var model = new UsersViewModel();
+            return View(model);
+        }
 
         public IActionResult AddBrand(string brand)
         {
@@ -61,16 +68,31 @@ namespace Dealership.Web.Areas.Admin.Controllers
             this.BrandService.Add(newBrand);
             return Redirect("~/Index");
         }
-
-        public IActionResult AddModel(string model)
+        [HttpGet]
+        public IActionResult AddModel()
         {
+            var model = new ModelViewModel()
+            {
+                Brands = this.BrandService.GetBrands()
+               .Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList()
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult AddModel(int brandId, string modelName)
+        {
+
+            //validation todo
+            this.modelService.Add(brandId, modelName);
+
             return View();
         }
 
         public IActionResult ManageCars()
         {
-            var carViewModels = CarService.GetCars(0, 5).Select(c => new CarViewModel(c)).ToList();
-            return this.View(carViewModels);
+            var carViewModels = CarService.GetCars(0, int.MaxValue).Select(c => new CarViewModel(c)).ToList();
+            return View(carViewModels);
         }
 
         public IActionResult AddExtra(string extra)
@@ -80,8 +102,9 @@ namespace Dealership.Web.Areas.Admin.Controllers
             return Redirect("~/Index");
         }
 
-        public IActionResult Delete(string confirm, int id)
+        public IActionResult Delete(int id)
         {
+            this.CarService.RemoveCar(id);
             return View();
         }
 

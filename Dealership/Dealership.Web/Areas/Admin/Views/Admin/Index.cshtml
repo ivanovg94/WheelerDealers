@@ -2,31 +2,14 @@
 @{
     ViewData["Title"] = "AdminView";
     string brandRadioBtnText = "Brand";
-    string carModelRadioBtnText = "Model";
     string extraRadioBtnText = "Extra";
 }
 
-<h2 >Admin stuff panel</h2>
-<div class="row">
-        <h4 class="col-md-offset-4 " >Add brands or extras...</h4>
-    <form asp-action="Add" asp-controller="Admin" method="post">
-        <div class="btn-group col-md-4 col-md-offset-1" data-toggle="buttons-radio" style="padding-bottom:10px">
-            <label>
-                <input type="radio" value="brand" asp-for="@Model.SelectedAnswer" autocomplete="off">@brandRadioBtnText
-            </label>
-            <label>
-                <input type="radio" value="extra" asp-for="@Model.SelectedAnswer" autocomplete="off">@extraRadioBtnText
-            </label>
-        </div>
-        <div class="col-md-4 col-md-offset-1">
-            <input type="text" id="value" placeholder="new value" name="value" />
-            <button type="submit" class="btn btn-success">Add</button>
-        </div>
-    </form>
-</div>
-
+<h2>Admin stuff panel</h2>
 <hr />
 <a asp-action="ManageCars" class="btn btn-group-lg">Manage cars</a>
+<a asp-action="AddBrandsAndExtras" class="btn btn-group-lg">Add Brands and Extras</a>
+<a asp-action="AddModel" class="btn btn-group-lg">Add Model</a>
 @*<form asp-action="Index" method="post">
 
         <div class="row">

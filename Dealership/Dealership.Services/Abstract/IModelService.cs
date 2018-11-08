@@ -7,5 +7,6 @@ namespace Dealership.Services.Abstract
     {
         ICollection<CarModel> GetAllModelsByBrandId(int brandId);
         CarModel GetModel(int id);
+        void Add(int brandId, string modelName);
     }
 }
