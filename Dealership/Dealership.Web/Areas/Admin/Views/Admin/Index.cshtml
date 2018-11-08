@@ -1,36 +1,13 @@
 ﻿@model UsersViewModel
 @{
     ViewData["Title"] = "AdminView";
-    string brandRadioBtnText = "Brand";
-    string extraRadioBtnText = "Extra";
 }
 
 <h2>Admin stuff panel</h2>
 <hr />
 <a asp-action="ManageCars" class="btn btn-group-lg">Manage cars</a>
-<a asp-action="AddBrandsAndExtras" class="btn btn-group-lg">Add Brands and Extras</a>
-<a asp-action="AddModel" class="btn btn-group-lg">Add Model</a>
-@*<form asp-action="Index" method="post">
-
-        <div class="row">
-            <div class="col-md-4">
-
-                @Html.ActionLink("Delete", "Delete", "Admin", new { area = "Admin", confirm = true, id = Model.Id }, new { @class = "btn btn-danger", onclick = "return confirm('Do you really want to delete this product?')" })
-                </div>
-        </div>
-    </form>*@
-
-
-
-@*<label class="btn btn-primary">
-
-    @Html.RadioButtonFor(m => m.SelectedAnswer, carModelRadioBtnText)@carModelRadioBtnText
-    @*</label>*@
-
-
-@*<label class="btn btn-primary">
-    <input type="radio" value="model" asp-for="@Model.SelectedAnswer" autocomplete="off">Model
-    @Html.RadioButtonFor(m => m.SelectedAnswer, brandRadioBtnText)@brandRadioBtnText*@
-@*</label>*@
+<a asp-action="AddBrandsExtrasModels" class="btn btn-group-lg">Add Brands, Extras, Models</a>
+@*<a asp-action="AddModel" class="btn btn-group-lg">Add Model</a>*@
+<a asp-action="CreateCar" class="btn btn-group-lg">Create car</a>
 
 
