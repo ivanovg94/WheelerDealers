@@ -1,4 +1,4 @@
-﻿@model ModelViewModel
+﻿@*@model AddViewModel
 @{
     ViewData["Title"] = "AddModel";
 
@@ -14,11 +14,11 @@
             <div class="form-group">
                 <label asp-for="@Model.Brands" class="control-label">Brands</label>
                 <select asp-for="@Model.BrandId" asp-items="@Model.Brands" class="form-control model-scriptSelect"></select>
-                <span asp-validation-for="@Model.ModelName" class="text-danger"></span>
+                <span asp-validation-for="@Model.Model" class="text-danger"></span>
             </div>
 
-            <input asp-for="ModelName" type="text" placeholder="value" />
+            <input asp-for="Model" type="text" placeholder="value" />
             <button type="submit" class="btn btn-success">Add</button>
         </div>
     </form>
-</div>
+</div>*@

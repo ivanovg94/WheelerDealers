@@ -51,10 +51,10 @@ namespace Dealership.Web.Controllers
 
         public IActionResult Index()
         {
-            //var list = this.carService.GetCars("asc");
+            var list = this.carService.GetCars(0,99);
 
-            //return View(list);
-            return null;
+            return View(list);
+           
         }
 
         [HttpGet]
