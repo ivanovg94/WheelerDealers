@@ -77,14 +77,13 @@
 </div>
 
 <div>
-    <a asp-controller="Car" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-
-    @Html.ActionLink("Delete", "DeleteAction", "Car", new { confirm = true, id = Model.Id }, new { @class = "btn btn-danger", onclick = "return confirm('Do you really want to delete this product?')" })
-
-
-
+        @if (User.Identity.IsAuthenticated)
+        {
+            @if (User.IsInRole("Admin"))
+            {
+                <a asp-controller="Car" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+                <a asp-controller="Admin" asp-action="Delete" asp-route-id="@Model.Id" asp-route-confirm ="true" asp-area="Admin" onclick="return confirm('Do you really want to delete this product?')" class="btn btn-danger">Delete</a>              
+            }
+        }
     <a asp-controller="Car" asp-action="Browse" class="btn btn-block">Back to List</a>
-
-    <i class=""></i>
-
 </div>
