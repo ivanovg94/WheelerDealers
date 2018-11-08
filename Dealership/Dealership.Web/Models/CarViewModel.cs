@@ -104,5 +104,7 @@ namespace Dealership.Web.Models
         public ICollection<string> ImagesUrl { get; set; }
 
         public string StatusMessage { get; set; }
+
+        public bool IsFavorite { get; set; }
     }
 }

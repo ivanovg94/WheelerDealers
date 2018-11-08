@@ -2,6 +2,8 @@
 @{
     ViewData["Title"] = "Details";
 }
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
 <h2>Car details</h2>
 
 @await Html.PartialAsync("_StatusMessage", Model.StatusMessage)
@@ -13,7 +15,19 @@
 
     <div class="info col-sm-6">
         <div class="row center-align">
-            <h2>@Model.Brand @Model.CarModel</h2>
+            <div class="col-sm-4 h3"> @Model.Brand @Model.CarModel</div>
+            <div class="col-sm-2">
+                @if (Model.IsFavorite)
+                {
+                    <a asp-controller="User" asp-action="RemoveFromFavorites" asp-route-id="@Model.Id" class="fas fa-star fa-2x center-align"></a>
+                    <label for="RemoveFromFavorites">Remove</label>
+                }
+                else
+                {
+                    <a asp-controller="User" asp-action="AddToFavorites" asp-route-id="@Model.Id" class="far fa-star fa-2x center-align"></a>
+                    <label for="RemoveFromFavorites">Save</label>
+                }
+            </div>
         </div>
         <div class="row">
             <div class="col-sm-3">Price</div>
@@ -64,7 +78,13 @@
 
 <div>
     <a asp-controller="Car" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+
     @Html.ActionLink("Delete", "DeleteAction", "Car", new { confirm = true, id = Model.Id }, new { @class = "btn btn-danger", onclick = "return confirm('Do you really want to delete this product?')" })
 
+
+
     <a asp-controller="Car" asp-action="Browse" class="btn btn-block">Back to List</a>
+
+    <i class=""></i>
+
 </div>

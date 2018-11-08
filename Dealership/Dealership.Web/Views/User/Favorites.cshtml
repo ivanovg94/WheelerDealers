@@ -1,0 +1,17 @@
+﻿@model IEnumerable<CarSummaryViewModel>
+
+@{
+    ViewData["Title"] = "Favorites";
+}
+
+<h2>Favorites</h2>
+
+<div class="col-lg-12">
+    <div class="list-group col-lg-offset-1 col-lg-10">
+
+        @foreach (var car in Model)
+        {
+            <partial name="_CarSummary" model="car" />
+        }
+    </div>
+</div>
