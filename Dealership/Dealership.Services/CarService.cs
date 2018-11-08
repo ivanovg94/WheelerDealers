@@ -104,6 +104,7 @@ namespace Dealership.Services
                                             .Skip(skip)
                                             .Take(take)
                                             .Include(c => c.Brand)
+                                            .Include(c=>c.CarModel)
                                             .Include(c => c.CarsExtras)
                                                  .ThenInclude(ce => ce.Extra)
                                             .Include(c => c.BodyType)

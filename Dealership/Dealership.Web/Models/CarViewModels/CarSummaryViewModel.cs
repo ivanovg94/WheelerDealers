@@ -14,7 +14,7 @@ namespace Dealership.Web.Models.CarViewModels
 
         public CarSummaryViewModel(Car car)
         {
-            this.ImageUrl = car.Images.First().ImageName;
+            this.ImageUrl = car.Images.FirstOrDefault().ImageName;
             this.ImagesUrl = car.Images.Select(i => i.ImageName).ToList();
         }
 
