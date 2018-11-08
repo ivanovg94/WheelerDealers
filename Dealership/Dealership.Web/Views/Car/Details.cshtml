@@ -15,8 +15,8 @@
 
     <div class="info col-sm-6">
         <div class="row center-align">
-            <div class="col-sm-4 h3"> @Model.Brand @Model.CarModel</div>
-            <div class="col-sm-2">
+            <div class="col-sm-5 h3 text-uppercase"> @Model.Brand @Model.CarModel</div>
+            <div class="col-sm-1">
                 @if (Model.IsFavorite)
                 {
                     <a asp-controller="User" asp-action="RemoveFromFavorites" asp-route-id="@Model.Id" class="fas fa-star fa-2x center-align"></a>
