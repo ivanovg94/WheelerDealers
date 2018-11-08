@@ -56,9 +56,13 @@ namespace Dealership.Services
             return brand;
         }
 
-        public IList<CarModel> GetBrandModels(string brandName)
+        public IList<CarModel> GetAllModelsForBrand(int brandId)
         {
-            return this.GetBrand(brandName).CarModels.ToList();
+            return this.GetBrand(brandId).CarModels.ToList();
+        }
+        public CarModel GetModeldOfBrand(int brandId, int modelId)
+        {
+            return this.context.CarModels.FirstOrDefault(m => m.Id == modelId && m.BrandId == brandId);
         }
 
         public IList<Brand> GetBrands()

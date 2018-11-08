@@ -6,6 +6,8 @@ namespace Dealership.Services.Abstract
     public interface IBodyTypeService
     {
         BodyType GetBodyType(string bodyName);
+        BodyType GetBodyType(int id);
+
 
         IList<BodyType> GetBodyTypes();
     }

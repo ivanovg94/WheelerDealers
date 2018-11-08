@@ -84,6 +84,7 @@ namespace Dealership.Web
             services.AddTransient<IModelService, ModelService>();
             services.AddTransient<IBodyTypeService, BodyTypeService>();
             services.AddTransient<IColorTypeService, ColorTypeService>();
+            services.AddTransient<IColorService, ColorService>();
             services.AddTransient<IFuelTypeService, FuelTypeService>();
             services.AddTransient<IGearTypeService, GearTypeService>();
             services.AddTransient<IExtraService, ExtraService>();

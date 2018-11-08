@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Dealership.Web.Models.CarViewModels
 {
@@ -10,8 +7,13 @@ namespace Dealership.Web.Models.CarViewModels
     {
         public BrowseViewModel()
         {
-            Brands = new List<SelectListItem>() { new SelectListItem { Value = "all", Text = "All" } };
-            CarModels = new List<SelectListItem>() { new SelectListItem { Value = "all", Text = "All" } };
+            Brands = new List<SelectListItem>() { new SelectListItem { Value = "-1", Text = "All" } };
+            CarModels = new List<SelectListItem>() { new SelectListItem { Value = "-1", Text = "All" } };
+            SortCriterias = new List<SelectListItem>() {
+                new SelectListItem { Value = "-1", Text = "Published" },
+                new SelectListItem { Value = "1", Text = "Price Ascending" },
+                new SelectListItem { Value = "-1", Text = "Price Descending" },
+            };
         }
 
         public IEnumerable<CarSummaryViewModel> Summaries { get; set; }
@@ -20,7 +22,13 @@ namespace Dealership.Web.Models.CarViewModels
 
         public int CurrentPage { get; set; }
 
+        public int SelectedBrandId { get; set; }
+        public int SelectedModelId { get; set; }
+
+        public string SelectedSort { get; set; }
+
         public List<SelectListItem> Brands { get; set; }
         public List<SelectListItem> CarModels { get; set; }
+        public List<SelectListItem> SortCriterias { get; set; }
     }
 }

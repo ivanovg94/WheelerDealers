@@ -5,10 +5,10 @@
 
 <h2>Create a car</h2>
 
-@await Html.PartialAsync("_StatusMessage", Model.Car.StatusMessage)
-
 <hr />
-<div class="col-lg-4">
+<div class="container col-lg-4">
+    <partial name="_StatusMessage" model="@Model.Car.StatusMessage" />
+
     <form asp-controller="Car" asp-action="Create" method="post" enctype="multipart/form-data">
 
         <partial name="_EditCarPartial" model="@Model" />
@@ -23,6 +23,13 @@
         </div>
     </form>
 </div>
+
+
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/createcar.js"></script>
+}
