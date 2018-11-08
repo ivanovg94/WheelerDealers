@@ -1,34 +1,40 @@
 ﻿using Dealership.Data.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace Dealership.Web.Models
 {
     public class CarViewModel
-    {
+    {        private DateTime _productionDate;
+
         public CarViewModel()
         {
         }
 
-        public CarViewModel(Car car)
-        {
+        public CarViewModel(Car car)        {
             this.Id = car.Id;
-            this.Brand = car.Brand.Name;
-            this.CarModel = car.Model;
-            this.HorsePower = car.HorsePower;
+            this.CarModelId = car.CarModelId;
+            this.CarModel = car.CarModel.Name;            this.HorsePower = car.HorsePower;
+            this.Mileage = car.Mileage;
             this.EngineCapacity = car.EngineCapacity;
             this.Price = car.Price;
+            this.BodyTypeId = car.BodyTypeId;
             this.BodyType = car.BodyType.Name;
+            this.BrandId = car.BrandId;
+            this.Brand = car.Brand.Name;
             this.Color = car.Color.Name;
+            this.ColorTypeId = car.Color.ColorTypeId;
             this.ColorType = car.Color.ColorType.Name;
             this.ProductionDate = car.ProductionDate;
+            this.GearBoxTypeId = car.GearBox.GearTypeId;
             this.GearBoxType = car.GearBox.GearType.Name;
             this.NumberOfGears = car.GearBox.NumberOfGears;
+            this.FuelTypeId = car.FuelTypeId;
             this.FuelType = car.FuelType.Name;
-            this.ImageUrl = car.ImageName;
+            this.ImagesUrl = car.Images.Select(i => i.ImageName).ToList();
         }
 
         public int Id { get; set; }
@@ -37,8 +43,7 @@ namespace Dealership.Web.Models
         [MaxLength(25)]
         [MinLength(2)]
         public string CarModel { get; set; }
-
-        public string Brand { get; set; }
+        public int CarModelId { get; set; }
 
         [Required]
         [Range(1, int.MaxValue)]
@@ -54,34 +59,52 @@ namespace Dealership.Web.Models
 
         [Required]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime ProductionDate { get; set; }
+        public DateTime ProductionDate
+        {
+            get
+            {
+                return this._productionDate == DateTime.MinValue ? DateTime.Now : _productionDate;
+            }
+            set
+            {
+                _productionDate = value;
+            }
+        }
+
+        public int BrandId { get; set; }
+
+        public string Brand { get; set; }
+
+        public int BodyTypeId { get; set; }
 
         public string BodyType { get; set; }
 
         public string Color { get; set; }
 
+        public int ColorTypeId { get; set; }
+
         public string ColorType { get; set; }
 
+        public int FuelTypeId { get; set; }
+
         public string FuelType { get; set; }
+
+        public int GearBoxTypeId { get; set; }
 
         public string GearBoxType { get; set; }
 
         public byte NumberOfGears { get; set; }
 
-        public IEnumerable<CarsExtras> CarsExtras { get; set; }
+        public int Mileage { get; set; }
 
-        public List<SelectListItem> GearTypes { get; set; }
+        public IEnumerable<string> CarsExtras { get; set; }
 
-        public List<SelectListItem> BodyTypes { get; set; }
+        public ICollection<IFormFile> Images { get; set; }
 
-        public List<SelectListItem> ColorTypes { get; set; }
+        public ICollection<string> ImagesUrl { get; set; }
 
-        public List<SelectListItem> FuelTypes { get; set; }
+        public string StatusMessage { get; set; }
 
-        public IFormFile Image { get; set; }
-
-        public string ImageUrl { get; set; }
-
+        public bool IsFavorite { get; set; }
     }
 }

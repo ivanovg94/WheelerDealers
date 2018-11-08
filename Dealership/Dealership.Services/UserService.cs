@@ -1,196 +1,88 @@
-﻿//using Dealership.Data.Models;
-//using Dealership.Data.UnitOfWork;
-//using Dealership.Services.Abstract;
-//using Dealership.Services.Exceptions;
-//using Microsoft.EntityFrameworkCore;
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text.RegularExpressions;
+﻿using Dealership.Data.Context;
+using Dealership.Data.Models;
+using Dealership.Services.Abstract;
+using Dealership.Services.Exceptions;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 
-//namespace Dealership.Services
-//{
-//    public class UserService : IUserService
-//    {
-//        private readonly IUnitOfWork unitOfWork;
-//        private readonly ICarService carService;
+namespace Dealership.Services
+{
+    public class UserService : IUserService
+    {
+        private readonly ICarService carService;
+        private readonly DealershipContext dealershipContext;
 
-//        public UserService()
-//        {
+        public UserService(ICarService carService, DealershipContext dealershipContext)
+        {
+            this.carService = carService;
+            this.dealershipContext = dealershipContext;
+        }
 
-//        }
+        public ICollection<User> GetUsers()
+        {
+            var users = this.dealershipContext.Users.Include(u => u.UsersCars)
+                                                    .ToList();
+            return users;
+        }
 
-//        public UserService(IUnitOfWork unitOfWork, ICarService carService)
-//        {
-//            this.unitOfWork = unitOfWork;
-//            this.carService = carService;
-//        }
+        public Car AddCarToFavorites(int carId, User user)
+        {
+            Car car = this.carService.GetCar(carId);
 
-//        public User RegisterUser(string username, string password, string confirmPassword, string email)
-//        {
-//            if (IsUserExisting(username))
-//            {
-//                throw new ServiceException("There is already registered user with that username.");
-//            }
+            var isCarFavorite = IsCarFavorite(carId, user);
 
-//            if (IsEmailExisting(email))
-//            {
-//                throw new ServiceException("There is already registered user with that email.");
-//            }
+            if (isCarFavorite)
+            {
+                throw new ServiceException("This car is already added to favorites.");
+            }
 
-//            if (password != confirmPassword)
-//            {
-//                throw new ServiceException("Password does not match the confirm password.");
-//            }
+            var newUserCar = new UsersCars() { CarId = carId, User = user };
+            this.dealershipContext.UsersCars.Add(newUserCar);
+            this.dealershipContext.SaveChanges();
+            return car;
+        }
 
-//            if (password.Length < 3)
-//            {
-//                throw new ArgumentException("The length of the password cannot be less than 3 symbols");
-//            }
+        public Car RemoveCarFromFavorites(int carId, User user)
+        {
+            Car car = this.carService.GetCar(carId);
 
-//            if (username.Length < 3 || username.Length > 25)
-//            {
-//                throw new ArgumentException("The length of the username cannot be less than 3 and more than 25 symbols.");
-//            }
+            var usersCars = this.dealershipContext.UsersCars.FirstOrDefault(uc => uc.CarId == carId && uc.User == user);
 
-//            Regex regex = new Regex(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$");
+            if (usersCars == null)
+            {
+                throw new ServiceException("This car is not added to favorites.");
+            }
 
-//            Match match = regex.Match(email);
-//            if (!match.Success)
-//            {
-//                throw new ArgumentException("Invalid email address.");
-//            }
+            this.dealershipContext.UsersCars.Remove(usersCars);
+            this.dealershipContext.SaveChanges();
+            return car;
+        }
 
-//            var user = new User()
-//            {
-//                Username = username,
-//                Password = password,
-//                Email = email,
-//                UserType = Enum.Parse<UserType>("User")
-//            };
+        public IList<Car> GetFavorites(User user)
+        {
+            var userCars = this.dealershipContext.Users
+                                        .Include(u => u.UsersCars)
+                                        .ThenInclude(uc => uc.Car)
+                                        .FirstOrDefault(u => u == user)
+                                        .UsersCars;
 
-//            this.unitOfWork.GetRepository<User>().Add(user);
-//            this.unitOfWork.SaveChanges();
+            var cars = new List<Car>();
+            foreach (var uc in userCars)
+            {
+                if (uc.IsDeleted == false)
+                {
+                    var car = this.carService.GetCar(uc.CarId);
+                    cars.Add(car);
+                }
+            }
 
-//            return user;
-//        }
+            return cars;
+        }
 
-//        public User GetUserByCredentials(string username, string password)
-//        {
-//            User user = GetUserByUsername(username);
-
-//            if (user == null || user.Password != password)
-//            {
-//                throw new ServiceException("Invalid username or password.");
-//            }
-
-//            return user;
-//        }
-
-//        private User GetUserByUsername(string username)
-//        {
-//            var user = this.unitOfWork
-//                .GetRepository<User>()
-//                .All()
-//                .FirstOrDefault(u => u.UserName == username);
-
-//            return user;
-//        }
-
-//        public User DeleteUser(string username, string password)
-//        {
-//            var user = GetUserByCredentials(username, password);
-
-//            this.unitOfWork
-//                .GetRepository<User>()
-//                .Delete(user);
-//            this.unitOfWork.SaveChanges();
-
-//            return user;
-//        }
-
-//        public Car AddCarToFavorites(int carId, string username)
-//        {
-//            Car car = this.carService.GetCar(carId);
-//            User user = GetUserByUsername(username);
-
-//            var isCarExists = this.unitOfWork.GetRepository<UsersCars>().All().Any(uc => uc.CarId == car.Id && uc.UserId == user.Id);
-
-//            if (isCarExists)
-//            {
-//                throw new ServiceException("This car is already added to favorites.");
-//            }
-
-//            var isUserCarDeleted = this.unitOfWork.GetRepository<UsersCars>().AllAndDeleted().FirstOrDefault(uc => uc.CarId == carId && uc.User == user);
-
-//            if (isUserCarDeleted == null)
-//            {
-//                var newUserCar = new UsersCars() { CarId = carId, User = user };
-//                this.unitOfWork.GetRepository<UsersCars>().Add(newUserCar);
-//                this.unitOfWork.SaveChanges();
-//            }
-//            else
-//            {
-//                isUserCarDeleted.IsDeleted = false;
-//                this.unitOfWork.SaveChanges();
-//            }
-
-//            return car;
-//        }
-
-//        public Car RemoveCarFromFavorites(int carId, string username)
-//        {
-//            Car car = this.carService.GetCar(carId);
-            
-//            var usersCars = this.unitOfWork.GetRepository<UsersCars>().All().FirstOrDefault(uc => uc.CarId == carId && uc.User.Username == username);
-
-//            if (usersCars == null)
-//            {
-//                throw new ServiceException("This car is not added to favorites.");
-//            }
-
-//            this.unitOfWork.GetRepository<UsersCars>().Delete(usersCars);
-//            this.unitOfWork.SaveChanges();
-
-//            return car;
-//        }
-
-//        public IList<Car> ListFavorites(string username)
-//        {
-//            var userCars = this.unitOfWork.GetRepository<User>().All()
-//                                        .Include(u => u.UsersCars)
-//                                        .ThenInclude(uc => uc.Car)
-//                                        .FirstOrDefault(u => u.Username == username)
-//                                        .UsersCars;
-
-//            var cars = new List<Car>();
-
-//            foreach (var uc in userCars)
-//            {
-//                if (uc.IsDeleted == false)
-//                {
-//                    var car = this.carService.GetCar(uc.CarId);
-//                    cars.Add(car);
-//                }
-//            }
-
-//            return cars;
-//        }
-
-//        private bool IsUserExisting(string username)
-//        {
-//            return this.unitOfWork
-//                    .GetRepository<User>()
-//                    .All()
-//                    .Any(u => u.Username == username);
-//        }
-
-//        private bool IsEmailExisting(string email)
-//        {
-//            return this.unitOfWork
-//                    .GetRepository<User>()
-//                    .All()
-//                    .Any(u => u.Email == email);
-//        }
-//    }
-//}
+        public bool IsCarFavorite(int carId, User user)
+        {
+            return this.dealershipContext.UsersCars.Any(uc => uc.CarId == carId && uc.UserId == user.Id);
+        }
+    }
+}

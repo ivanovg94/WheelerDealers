@@ -1,0 +1,34 @@
+﻿
+@{
+    ViewData["Title"] = "CreateCar";
+}
+
+<h2>Create a car</h2>
+
+<div class="container col-lg-4">
+    <partial name="_StatusMessage" model="@Model.Car.StatusMessage" />
+
+    <form asp-area="Admin" asp-controller="Admin" asp-action="CreateCar" method="post" enctype="multipart/form-data">
+
+        <partial name="_EditCarPartial" model="@Model" />
+
+        <div class="btn-block">
+            <label for="file">Choose images to upload</label>
+            <input type="file" name="Images" multiple class="btn btn-default">
+        </div>
+
+        <div class="form-group">
+            <input type="submit" name="save" value="Save" class="btn btn-success" />
+        </div>
+    </form>
+</div>
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/createcar.js"></script>
+}

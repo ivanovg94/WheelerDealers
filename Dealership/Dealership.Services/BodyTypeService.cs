@@ -16,12 +16,23 @@ namespace Dealership.Services
             this.context = context;
         }
 
+
         public BodyType GetBodyType(string bodyName)
         {
             var bodyType = this.context.BodyTypes.FirstOrDefault(b => b.Name.ToLower() == bodyName);
             if (bodyType == null)
             {
                 throw new InvalidOperationException($"There is no body type with name {bodyName}.");
+            }
+            return bodyType;
+        }
+
+        public BodyType GetBodyType(int id)
+        {
+            var bodyType = this.context.BodyTypes.FirstOrDefault(b => b.Id == id);
+            if (bodyType == null)
+            {
+                throw new InvalidOperationException($"There is no body type with id {id}.");
             }
             return bodyType;
         }

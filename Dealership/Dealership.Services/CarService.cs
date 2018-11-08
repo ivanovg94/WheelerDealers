@@ -20,41 +20,18 @@ namespace Dealership.Services
             this.context = context;
         }
 
-        public Car CreateCar(string brandName, string model, short horsePower, short engineCapacity,
-            DateTime productionDate, decimal price, string bodyTypeName, string colorName, string colorType,
-            string fuelTypeName, string gearboxTypeName, int numOfGears)
+        public Car CreateCar(int brandId, int carModelId, int mileage, short horsePower,
+            short engineCapacity, DateTime productionDate, decimal price, int bodyTypeId,
+            string colorName, int colorTypeId, int fuelTypeId, int gearBoxTypeId, byte numberOfGears)
         {
-            if (brandName.Length < 2 || brandName.Length > 25)
-            {
-                throw new ServiceException("The name of brand cannot be less than 2 symbols or more than 25 symbols.");
-            }
-
-            var brand = this.context.Brands.FirstOrDefault(b => b.Name == brandName);
-
-            if (brand == null)
-            {
-                brand = new Brand() { Name = brandName };
-                this.context.Brands.Add(brand);
-                this.context.SaveChanges();
-            }
-
-            var bodyType = this.context.BodyTypes.FirstOrDefault(c => c.Name == bodyTypeName);
-            if (bodyType == null)
-            {
-                throw new ServiceException($"There is no body type with name {bodyTypeName}.");
-            }
 
             var color = this.context.Colors
-                                                              .Include(c => c.ColorType)
-                                                              .FirstOrDefault(c => c.Name == colorName
-                                                               && c.ColorType.Name == colorType);
+                                                    .Include(c => c.ColorType)
+                                                    .FirstOrDefault(c => c.Name == colorName
+                                                     && c.ColorTypeId == colorTypeId);
 
             var colorTypeFromDatabase = this.context.ColorTypes
-                                       .FirstOrDefault(ct => ct.Name == colorType);
-            if (colorTypeFromDatabase == null)
-            {
-                throw new InvalidOperationException($"There is no color type with name {colorType}.");
-            }
+                                       .FirstOrDefault(ct => ct.Id == colorTypeId);
 
             if (color == null)
             {
@@ -64,35 +41,30 @@ namespace Dealership.Services
             }
 
             var fuelType = this.context.FuelTypes
-                                          .FirstOrDefault(f => f.Name == fuelTypeName);
-            if (fuelType == null)
-            {
-                throw new ServiceException($"There is no fuel with name {fuelTypeName}.");
-            }
+                                          .FirstOrDefault(f => f.Id == fuelTypeId);
+
 
             var gearbox = this.context.Gearboxes
-                .FirstOrDefault(g => g.GearType.Name == gearboxTypeName
-                                  && g.NumberOfGears == numOfGears);
-            if (gearbox == null)
-            {
-                throw new ServiceException($"There is no such a gearbox.");
-            }
+                .FirstOrDefault(g => g.GearType.Id == gearBoxTypeId
+                                  && g.NumberOfGears == numberOfGears);
 
+            if (mileage < 0)
+            {
+                throw new ServiceException($"Mileage must be greater than 0.");
+            }
             var newCar = new Car()
             {
-                BrandId = brand.Id,
-                Brand = brand,
-                Model = model,
+                BrandId = brandId,
+                CarModelId = carModelId,
                 HorsePower = horsePower,
                 EngineCapacity = engineCapacity,
                 ProductionDate = productionDate,
                 Price = price,
-                BodyType = bodyType,
-                BodyTypeId = bodyType.Id,
+                Mileage = mileage,
+                BodyTypeId = bodyTypeId,
                 Color = color,
                 ColorId = color.Id,
-                FuelType = fuelType,
-                FuelTypeId = fuelType.Id,
+                FuelTypeId = fuelTypeId,
                 GearBox = gearbox,
                 GearBoxId = gearbox.Id
             };
@@ -100,13 +72,14 @@ namespace Dealership.Services
             return newCar;
         }
 
-        public ICar AddCar(ICar car)
+
+        public Car AddCar(Car car)
         {
             if (car == null)
             {
                 throw new ServiceException("Car doesn't exist!");
             }
-            car = this.context.Cars.Add((Car)car).Entity;
+            car = this.context.Cars.Add(car).Entity;
             this.context.SaveChanges();
 
             return car;
@@ -125,64 +98,13 @@ namespace Dealership.Services
             this.context.SaveChanges();
         }
 
-        public IList<Car> GetCars(bool filterSold, string order)
-        {
-            var querry = this.context.Cars
-                                            .Where(c => c.IsSold == filterSold)
-                                            .Include(c => c.Brand)
-                                            .Include(c => c.CarsExtras)
-                                                 .ThenInclude(ce => ce.Extra)
-                                            .Include(c => c.BodyType)
-                                            .Include(c => c.Color)
-                                                .ThenInclude(co => co.ColorType)
-                                            .Include(c => c.FuelType)
-                                            .Include(c => c.GearBox)
-                                                .ThenInclude(gb => gb.GearType);
-
-            if (order.ToLower() == "asc")
-            {
-                return querry.OrderBy(c => c.Id).ToList();
-            }
-
-            else if (order.ToLower() == "desc")
-            {
-                return querry.OrderByDescending(c => c.Id).ToList();
-            }
-            else
-            {
-                return querry.ToList();
-            }
-        }
-
-        public IList<Car> GetCars(string direction)
-        {
-            var querry = this.context.Cars
-                                             .Include(c => c.Brand)
-                                             .Include(c => c.CarsExtras)
-                                                  .ThenInclude(ce => ce.Extra)
-                                             .Include(c => c.BodyType)
-                                             .Include(c => c.Color)
-                                                 .ThenInclude(co => co.ColorType)
-                                             .Include(c => c.FuelType)
-                                             .Include(c => c.GearBox)
-                                                 .ThenInclude(gb => gb.GearType);
-
-            if (direction.ToLower() == "desc")
-            {
-                return querry.OrderByDescending(c => c.Id).ToList();
-            }
-            else
-            {
-                return querry.OrderBy(c => c.Id).ToList();
-            }
-        }
-
         public IList<Car> GetCars(int skip, int take)
         {
             var querry = this.context.Cars
                                             .Skip(skip)
                                             .Take(take)
                                             .Include(c => c.Brand)
+                                            .Include(c=>c.CarModel)
                                             .Include(c => c.CarsExtras)
                                                  .ThenInclude(ce => ce.Extra)
                                             .Include(c => c.BodyType)
@@ -191,7 +113,25 @@ namespace Dealership.Services
                                             .Include(c => c.FuelType)
                                             .Include(c => c.GearBox)
                                                 .ThenInclude(gb => gb.GearType)
-                                            ;
+                                            .Include(c => c.Images);
+
+            return querry.ToList();
+        }
+
+        public IList<Car> GetCars()
+        {
+            var querry = this.context.Cars
+                                            .Include(c => c.Brand)
+                                            .Include(c => c.CarModel)
+                                            .Include(c => c.CarsExtras)
+                                                 .ThenInclude(ce => ce.Extra)
+                                            .Include(c => c.BodyType)
+                                            .Include(c => c.Color)
+                                                .ThenInclude(co => co.ColorType)
+                                            .Include(c => c.FuelType)
+                                            .Include(c => c.GearBox)
+                                                .ThenInclude(gb => gb.GearType)
+                                            .Include(c => c.Images);
 
             return querry.ToList();
         }
@@ -201,6 +141,7 @@ namespace Dealership.Services
             var car = this.context.Cars
                                   .Where(c => c.Id == id)
                                   .Include(c => c.Brand)
+                                  .Include(c => c.CarModel)
                                   .Include(c => c.CarsExtras)
                                        .ThenInclude(ce => ce.Extra)
                                   .Include(c => c.BodyType)
@@ -209,6 +150,7 @@ namespace Dealership.Services
                                   .Include(c => c.FuelType)
                                   .Include(c => c.GearBox)
                                       .ThenInclude(gb => gb.GearType)
+                                  .Include(c => c.Images)
                                   .FirstOrDefault();
 
             if (car == null)
@@ -246,12 +188,13 @@ namespace Dealership.Services
             return this.context.Cars.Count();
         }
 
-        public void Update(ICar car)
+        public void Update(Car car)
         {
-            this.context.Cars.Update(car as Car);
+            this.context.Cars.Update(car);
             this.context.SaveChanges();
         }
-        public void SaveAvatarImage(string root, string filename, Stream stream, int carId)
+
+        public void SaveImages(string root, IList<string> fileNames, IList<Stream> stream, int carId)
         {
             var car = GetCar(carId);
 
@@ -260,15 +203,25 @@ namespace Dealership.Services
                 throw new InvalidOperationException("Car not found");
             }
 
-            var imageName = Guid.NewGuid().ToString() + Path.GetExtension(filename);
-            var path = Path.Combine(root, imageName);
-
-            using (var fileStream = File.Create(path))
+            for (int i = 0; i < fileNames.Count; i++)
             {
-                stream.CopyTo(fileStream);
+                var fileName = fileNames[i];
+                var imageName = Guid.NewGuid().ToString() + Path.GetExtension(fileName);
+                var path = Path.Combine(root, imageName);
+
+                using (var fileStream = File.Create(path))
+                {
+                    stream[i].CopyTo(fileStream);
+                }
+
+                var image = new Image()
+                {
+                    ImageName = imageName
+                };
+
+                car.Images.Add(image);
             }
 
-            car.ImageName = imageName;
             this.context.SaveChanges();
         }
     }

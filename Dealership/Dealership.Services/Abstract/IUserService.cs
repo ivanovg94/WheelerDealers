@@ -1,20 +1,19 @@
 ﻿using Dealership.Data.Models;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Dealership.Services.Abstract
 {
     public interface IUserService
     {
-        User RegisterUser(string username, string password, string confirmPassword, string email);
+        ICollection<User> GetUsers();
 
-        User GetUserByCredentials(string username, string password);
+        Car AddCarToFavorites(int carId, User user);
 
-        User DeleteUser(string username, string password);
+        Car RemoveCarFromFavorites(int carId, User user);
 
-        Car AddCarToFavorites(int carId, string username);
+        IList<Car> GetFavorites(User user);
 
-        Car RemoveCarFromFavorites(int carId, string username);
-
-        IList<Car> ListFavorites(string username);
+        bool IsCarFavorite(int carId, User user);
     }
 }
