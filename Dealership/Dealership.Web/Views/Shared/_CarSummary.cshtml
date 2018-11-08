@@ -2,13 +2,12 @@
 
 <section>
     <div class="panelPadding">
-        <a asp-controller="Car" asp-action="Details" asp-route-id="@Model.Id " class="list-group-item">
+        <a asp-controller="Car" asp-action="Details" asp-route-id="@Model.Id" class="list-group-item">
 
             <div class="well">@Model.Brand @Model.CarModel</div>
             <div class="panel-body">
                 <div class="col-lg-12">
                     <div class="col-lg-4 img-responsive">
-                        @*@await Html.PartialAsync("_CarCarouselPartial", Model.ImagesUrl)*@
                         <img class="img-responsive img-rounded" src="~/images/cars/@(Model.ImageUrl ?? "default.jpg")" alt="Not Found." />
                     </div>
 

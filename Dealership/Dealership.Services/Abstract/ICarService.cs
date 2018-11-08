@@ -18,6 +18,7 @@ namespace Dealership.Services.Abstract
 
         Car GetCar(int id);
 
+        IList<Car> GetCars();
         IList<Car> GetCars(int skip, int take);
 
         Car RemoveCar(int carId);

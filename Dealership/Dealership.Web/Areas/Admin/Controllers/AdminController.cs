@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Dealership.Data.Models;
-using Dealership.Services;
-using Dealership.Services.Abstract;
+﻿using Dealership.Services.Abstract;
 using Dealership.Web.Areas.Admin.Models;
 using Dealership.Web.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
+using System.IO;
+using System.Linq;
 
 namespace Dealership.Web.Areas.Admin.Controllers
 {
@@ -16,19 +14,18 @@ namespace Dealership.Web.Areas.Admin.Controllers
     public class AdminController : Controller
     {
         private readonly IModelService modelService;
-
-        public IUserService UserService { get; }
-        public ICarService CarService { get; }
-        public IBrandService BrandService { get; set; }
-        public IExtraService ExtraService { get; set; }
+        private readonly IUserService userService;
+        private readonly ICarService carService;
+        private readonly IBrandService brandService;
+        private readonly IExtraService extraService;
 
         public AdminController(IModelService modelService, IUserService userService, ICarService carService, IBrandService brandService, IExtraService extraService)
         {
             this.modelService = modelService;
-            UserService = userService;
-            CarService = carService;
-            BrandService = brandService;
-            ExtraService = extraService;
+            this.userService = userService;
+            this.carService = carService;
+            this.brandService = brandService;
+            this.extraService = extraService;
         }
 
         [HttpGet]
@@ -64,8 +61,8 @@ namespace Dealership.Web.Areas.Admin.Controllers
 
         public IActionResult AddBrand(string brand)
         {
-            var newBrand = this.BrandService.Create(brand);
-            this.BrandService.Add(newBrand);
+            var newBrand = this.brandService.Create(brand);
+            this.brandService.Add(newBrand);
             return Redirect("~/Index");
         }
         [HttpGet]
@@ -73,7 +70,7 @@ namespace Dealership.Web.Areas.Admin.Controllers
         {
             var model = new ModelViewModel()
             {
-                Brands = this.BrandService.GetBrands()
+                Brands = this.brandService.GetBrands()
                .Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList()
             };
             return View(model);
@@ -91,22 +88,46 @@ namespace Dealership.Web.Areas.Admin.Controllers
 
         public IActionResult ManageCars()
         {
-            var carViewModels = CarService.GetCars(0, int.MaxValue).Select(c => new CarViewModel(c)).ToList();
+            var carViewModels = carService.GetCars(0, int.MaxValue).Select(c => new CarViewModel(c)).ToList();
             return View(carViewModels);
         }
 
         public IActionResult AddExtra(string extra)
         {
-            var newExtra = this.ExtraService.CreateExtra(extra);
-            this.ExtraService.AddExtra(newExtra);
+            var newExtra = this.extraService.CreateExtra(extra);
+            this.extraService.AddExtra(newExtra);
             return Redirect("~/Index");
         }
 
         public IActionResult Delete(int id)
         {
-            this.CarService.RemoveCar(id);
+            this.carService.RemoveCar(id);
             return View();
         }
 
+        //public IActionResult ExportJson()
+        //{
+        //    var cars = carService.GetCars();
+
+        //    var result = cars.Select(c => new CarViewModel
+        //    {
+        //        Id = c.Id,
+        //        Brand = c.Brand.Name,
+        //        CarModel = c.CarModel.Name,
+        //        EngineCapacity = c.EngineCapacity,
+        //        HorsePower = c.HorsePower,
+        //        ProductionDate = c.ProductionDate,
+        //        Price = c.Price,
+        //        BodyType = c.BodyType.Name,
+        //        Color = c.Color.Name,
+        //        ColorType = c.Color.ColorType.Name,
+        //        FuelType = c.FuelType.Name,
+        //        GearBoxType = c.GearBox.GearType.Name,
+        //        NumberOfGears = c.GearBox.NumberOfGears,
+        //        CarsExtras = c.CarsExtras.Select(ce => ce.Extra.Name).ToList()
+        //    }).ToList();
+
+        //    var json = JsonConvert.SerializeObject(result, Formatting.Indented);
+        //}
     }
 }
