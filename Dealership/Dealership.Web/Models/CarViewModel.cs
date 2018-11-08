@@ -8,23 +8,16 @@ using System.Linq;
 namespace Dealership.Web.Models
 {
     public class CarViewModel
-    {
-      //  private readonly IModelService modelService;
-        private DateTime _productionDate;
+    {        private DateTime _productionDate;
 
         public CarViewModel()
         {
         }
 
-        public CarViewModel(Car car/*, IModelService modelService*/)
-        {
-          //  this.modelService = modelService;
-
-            this.Id = car.Id;
+        public CarViewModel(Car car)        {
+             this.Id = car.Id;
             this.CarModelId = car.CarModelId;
-         //   CarModel model = this.modelService.GetModel(CarModelId);
-            this.CarModel = car.CarModel.Name;
-            this.HorsePower = car.HorsePower;
+            this.CarModel = car.CarModel.Name;            this.HorsePower = car.HorsePower;
             this.Mileage = car.Mileage;
             this.EngineCapacity = car.EngineCapacity;
             this.Price = car.Price;
@@ -108,7 +101,7 @@ namespace Dealership.Web.Models
 
         public ICollection<IFormFile> Images { get; set; }
 
-        public IList<string> ImagesUrl { get; set; }
+        public ICollection<string> ImagesUrl { get; set; }
 
         public string StatusMessage { get; set; }
 
