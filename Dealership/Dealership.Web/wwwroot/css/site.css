@@ -58,3 +58,11 @@ html {
 }
 
 
+#carouselImages {
+    width: 640px;
+}
+
+.fa-star {
+color:red;
+
+}

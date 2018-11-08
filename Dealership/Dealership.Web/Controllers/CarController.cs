@@ -1,9 +1,11 @@
-﻿using Dealership.Services.Abstract;
+﻿using Dealership.Data.Models;
+using Dealership.Services.Abstract;
 using Dealership.Web.Models;
 using Dealership.Web.Models.CarViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -23,11 +25,13 @@ namespace Dealership.Web.Controllers
         private readonly IGearTypeService gearTypeService;
         private readonly IModelService modelService;
         private readonly IColorService colorService;
+        private readonly IUserService userService;
+        private readonly UserManager<User> userManager;
 
         public CarController(ICarService carService, IEditCarService editCarService, IBrandService brandService,
             IBodyTypeService bodyTypeService, IColorTypeService colorTypeService,
             IFuelTypeService fuelTypeService, IGearTypeService gearTypeService,
-            IModelService modelService, IColorService colorService)
+            IModelService modelService, IColorService colorService, IUserService userService, UserManager<User> userManager)
         {
             this.carService = carService;
             this.editCarService = editCarService;
@@ -38,6 +42,8 @@ namespace Dealership.Web.Controllers
             this.gearTypeService = gearTypeService;
             this.modelService = modelService;
             this.colorService = colorService;
+            this.userService = userService;
+            this.userManager = userManager;
         }
 
         [TempData]
@@ -183,8 +189,6 @@ namespace Dealership.Web.Controllers
                 .AddRange(this.brandService.GetBrands()
                 .Select(b => new SelectListItem { Value = b.Id.ToString(), Text = b.Name }).ToList());
 
-
-            var imag = model.Summaries.First().ImageUrl;
             return this.View(model);
         }
 
@@ -276,8 +280,11 @@ namespace Dealership.Web.Controllers
         public IActionResult Details(int id)
         {
             var car = this.carService.GetCar(id);
+            var user = this.userManager.GetUserAsync(HttpContext.User).Result;
+
             var model = new CarViewModel(car)
             {
+                IsFavorite = userService.IsCarFavorite(id, user),
                 StatusMessage = this.StatusMessage
             };
 
@@ -291,7 +298,7 @@ namespace Dealership.Web.Controllers
 
             return RedirectToAction(nameof(Browse));
         }
-
+               
         private string GetUploadsRoot()
         {
             var environment = this.HttpContext.RequestServices

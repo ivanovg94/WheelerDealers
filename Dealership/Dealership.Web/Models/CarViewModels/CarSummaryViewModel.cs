@@ -14,8 +14,7 @@ namespace Dealership.Web.Models.CarViewModels
 
         public CarSummaryViewModel(Car car)
         {
-            this.ImageUrl = car.Images.First().ImageName;
-            this.ImagesUrl = car.Images.Select(i => i.ImageName).ToList();
+            this.ImageUrl = car.Images.FirstOrDefault() == null ? "default.jpg" : car.Images.FirstOrDefault().ImageName;
         }
 
         public int Id { get; set; }
@@ -28,6 +27,5 @@ namespace Dealership.Web.Models.CarViewModels
         public string Price { get; set; }
         public string Mileage { get; set; }
         public string ImageUrl { get; set; }
-        public ICollection<string> ImagesUrl { get; set; }
     }
 }
