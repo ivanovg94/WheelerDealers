@@ -69,7 +69,7 @@ namespace Dealership.Web.Areas.Admin.Controllers
 
         public IActionResult ManageCars()
         {
-            var carViewModels = CarService.GetCars(false, "asc").Select(c => new CarViewModel(c, this.modelService)).ToList();
+            var carViewModels = CarService.GetCars(false, "asc").Select(c => new CarViewModel(c)).ToList();
 
             return View(carViewModels);
         }

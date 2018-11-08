@@ -12,7 +12,6 @@ namespace Dealership.Web.Models
 {
     public class CarViewModel
     {
-        private readonly IModelService modelService;
         private DateTime _productionDate;
 
         public CarViewModel()
@@ -20,14 +19,11 @@ namespace Dealership.Web.Models
 
         }
 
-        public CarViewModel(Car car, IModelService modelService)
+        public CarViewModel(Car car)
         {
-            this.modelService = modelService;
-
             this.Id = car.Id;
             this.CarModelId = car.CarModelId;
-            CarModel model = this.modelService.GetModel(CarModelId);
-            this.CarModel = model.Name;
+            this.CarModel = car.CarModel.Name;
             this.HorsePower = car.HorsePower;
             this.Mileage = car.Mileage;
             this.EngineCapacity = car.EngineCapacity;
