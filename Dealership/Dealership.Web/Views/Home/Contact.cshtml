@@ -3,22 +3,36 @@
 }
 <h2>@ViewData["Title"]</h2>
 
-<div class="col-sm-6">
-    <address>
-        One Microsoft Way<br />
-        Redmond, WA 98052-6399<br />
-        <abbr title="Phone">P:</abbr>
-        425.555.0100
-    </address>
+<div class="container">
+    <div class="col-sm-6">
+        <h4>Address</h4>
+        <address>
+            Between 2nd & 3rd Interchange, Exit 45 Sheikh Zayed Road<br />
+            Dubai,UAE PO<br />
+        </address>
 
-    <address>
-        <strong>Support:</strong> <a href="mailto:Support@example.com">Support@example.com</a><br />
-        <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-    </address>
-</div>
+        <h4>For information</h4>
+        <p>
+            <ul>
+                <li><abbr title="Phone">+359/ 899 999 999</abbr></li>
+                <li><abbr title="Phone">+359/ 888 888 888</abbr></li>
+                <li>Email:<a href="mailto:wheelerdealers@wheelerdealerrs.com">wheelerdealers@wheelerdealers.com</a></li>
+            </ul>
+        </p>
 
-<div class="col-sm-6">
-    <div id="mapDiv" style="width: 400px; height: 400px"></div>
+        <h4>Working time</h4>
+        <p>
+            <ul>
+                <li>Monday - Friday: 09:00 - 18:00</li>
+                <li>Saturday: 09:00 - 14:00</li>
+                <li>Sunday: By prior arrangement</li>
+            </ul>
+        </p>
+    </div>
+
+    <div class="col-sm-6">
+        <div id="mapDiv" style="width: 400px; height: 400px"></div>
+    </div>
 </div>
 
 <script>
@@ -36,4 +50,3 @@
     // add popup to the marker
     marker.bindPopup("<b>Wheeler Dealers CO.</b><br />Alexander Malinov 31<br />Sofia").openPopup();
 </script>
-
