@@ -9,81 +9,88 @@
 @await Html.PartialAsync("_StatusMessage", Model.StatusMessage)
 
 <div class="container">
-    <div class="col-sm-6">
-        @await Html.PartialAsync("_CarImagesPartial", Model.ImagesUrl)
-    </div>
+    <div id="printableArea">
+        <div class="col-sm-6">
+            @await Html.PartialAsync("_CarImagesPartial", Model.ImagesUrl)
+        </div>
 
-    <div class="info col-sm-6">
-        <div class="row center-align">
-            <div class="col-sm-5 h3 text-uppercase"> @Model.Brand @Model.CarModel</div>
-            <div class="col-sm-1">
-                @if (Model.IsFavorite)
+        <div class="info col-sm-6 text-capitalize">
+            <div class="row center-align">
+                <div class="col-sm-5 h3"><strong>@Model.Brand @Model.CarModel</strong></div>
+                <div class="col-sm-1 hidden-print">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        @if (Model.IsFavorite)
+                        {
+                            <a asp-controller="User" asp-action="RemoveFromFavorites" asp-route-id="@Model.Id" class="btn btn-default fas fa-star fa-1x center-align">Remove</a>
+                        }
+                        else
+                        {
+                            <a asp-controller="User" asp-action="AddToFavorites" asp-route-id="@Model.Id" class="btn btn-default far fa-star fa-1x center-align">Save</a>
+                        }
+                    }
+                    <button type="button" class="btn btn-default btn-sm" id="printBtn" onclick="window.print()"> <span class="glyphicon glyphicon-print"></span> Print</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">Price</div>
+                <div class="col-sm-3">@Model.Price</div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">Registration</div>
+                <div class="col-sm-3">@Model.ProductionDate.ToShortDateString()</div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">Мileage</div>
+                <div class="col-sm-3">@Model.Mileage</div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">Fuel type</div>
+                <div class="col-sm-3">@Model.FuelType</div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">Gearbox</div>
+                <div class="col-sm-3">@Model.GearBoxType</div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">Gears</div>
+                <div class="col-sm-3">@Model.NumberOfGears</div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">Power</div>
+                <div class="col-sm-3">@Model.HorsePower hp</div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">Engine capacity</div>
+                <div class="col-sm-3">@Model.EngineCapacity</div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">Body type</div>
+                <div class="col-sm-3">@Model.BodyType</div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">Color</div>
+                <div class="col-sm-3">@Model.Color</div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">Color type</div>
+                <div class="col-sm-3">@Model.ColorType</div>
+            </div>
+
+            <div class="hidden-print">
+                @if (User.Identity.IsAuthenticated)
                 {
-                    <a asp-controller="User" asp-action="RemoveFromFavorites" asp-route-id="@Model.Id" class="fas fa-star fa-2x center-align"></a>
-                    <label for="RemoveFromFavorites">Remove</label>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-controller="Car" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+                        <a asp-controller="Admin" asp-action="Delete" asp-route-id="@Model.Id" asp-route-confirm="true" asp-area="Admin" onclick="return confirm('Do you really want to delete this product?')" class="btn btn-danger">Delete</a>
+                    }
                 }
-                else
-                {
-                    <a asp-controller="User" asp-action="AddToFavorites" asp-route-id="@Model.Id" class="far fa-star fa-2x center-align"></a>
-                    <label for="RemoveFromFavorites">Save</label>
-                }
+                <a asp-controller="Car" asp-action="Browse" class="btn btn-info">Back to List</a>
             </div>
         </div>
-        <div class="row">
-            <div class="col-sm-3">Price</div>
-            <div class="col-sm-3">@Model.Price</div>
-        </div>
-        <div class="row">
-            <div class="col-sm-3">First registration</div>
-            <div class="col-sm-3">@Model.ProductionDate.ToShortDateString()</div>
-        </div>
-        <div class="row">
-            <div class="col-sm-3">Мileage</div>
-            <div class="col-sm-3">@Model.Mileage</div>
-        </div>
-        <div class="row">
-            <div class="col-sm-3">Fuel type</div>
-            <div class="col-sm-3">@Model.FuelType</div>
-        </div>
-        <div class="row">
-            <div class="col-sm-3">Gearbox</div>
-            <div class="col-sm-3">@Model.GearBoxType</div>
-        </div>
-        <div class="row">
-            <div class="col-sm-3">Gears</div>
-            <div class="col-sm-3">@Model.NumberOfGears</div>
-        </div>
-        <div class="row">
-            <div class="col-sm-3">Power</div>
-            <div class="col-sm-3">@Model.HorsePower hp</div>
-        </div>
-        <div class="row">
-            <div class="col-sm-3">Engine capacity</div>
-            <div class="col-sm-3">@Model.EngineCapacity</div>
-        </div>
-        <div class="row">
-            <div class="col-sm-3">Body type</div>
-            <div class="col-sm-3">@Model.BodyType</div>
-        </div>
-        <div class="row">
-            <div class="col-sm-3">Color</div>
-            <div class="col-sm-3">@Model.Color</div>
-        </div>
-        <div class="row">
-            <div class="col-sm-3">Color type</div>
-            <div class="col-sm-3">@Model.ColorType</div>
-        </div>
     </div>
 </div>
 
-<div>
-        @if (User.Identity.IsAuthenticated)
-        {
-            @if (User.IsInRole("Admin"))
-            {
-                <a asp-controller="Car" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-                <a asp-controller="Admin" asp-action="Delete" asp-route-id="@Model.Id" asp-route-confirm ="true" asp-area="Admin" onclick="return confirm('Do you really want to delete this product?')" class="btn btn-danger">Delete</a>              
-            }
-        }
-    <a asp-controller="Car" asp-action="Browse" class="btn btn-block">Back to List</a>
-</div>
+<script src="~/js/site.js"></script>

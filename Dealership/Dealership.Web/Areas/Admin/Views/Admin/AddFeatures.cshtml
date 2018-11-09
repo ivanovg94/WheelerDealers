@@ -6,11 +6,15 @@
 <h2>AddBrandsAndExtras</h2>
 <div class="container">
     <partial name="_StatusMessage" model="@Model.StatusMessage" />
+
+    <div asp-validation-summary="All" class="text-danger"></div>
     <div class="row">
         <div class="col-md-4">
             <label>Extra</label>
             <form asp-area="Admin" asp-action="AddExtra" asp-controller="Admin" method="post">
                 <input asp-for="Extra" type="text" id="value" placeholder="new extra" />
+                <span asp-validation-for="Extra" class="text-danger"></span>
+
                 <div>
                     <button type="submit" class="btn btn-success">Add</button>
                 </div>
@@ -20,6 +24,8 @@
             <label>Brand</label>
             <form asp-area="Admin" asp-action="AddBrand" asp-controller="Admin" method="post">
                 <input type="text" placeholder="new brand" asp-for="Brand">
+                <span asp-validation-for="Brand" class="text-danger"></span>
+
                 <div>
                     <button type="submit" class="btn btn-success">Add</button>
                 </div>
@@ -35,9 +41,15 @@
                     </div>
 
                     <input asp-for="Model" type="text" placeholder="new model" />
+                    <span asp-validation-for="Model" class="text-danger"></span>
                     <button type="submit" class="btn btn-success">Add</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+@section Scripts
+    {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

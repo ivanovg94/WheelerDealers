@@ -67,6 +67,7 @@ namespace Dealership.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult AddExtra(AddViewModel model)
         {
             string extra = model.Extra;
@@ -78,6 +79,7 @@ namespace Dealership.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult AddBrand(AddViewModel model)
         {
             var brand = model.Brand;
@@ -100,6 +102,7 @@ namespace Dealership.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult AddModel(string model, int brandId)
         {
             //validation todo
@@ -154,7 +157,6 @@ namespace Dealership.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
         public IActionResult CreateCar(EditCarViewModel model)
         {
@@ -221,7 +223,6 @@ namespace Dealership.Web.Areas.Admin.Controllers
                 Car = carVm
             };
             return View(model);
-
         }
 
         [HttpPost]
