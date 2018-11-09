@@ -103,9 +103,6 @@ namespace Dealership.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult ManageCars()
         {
-            //var carViewModels = this.carService.GetCars(0, int.MaxValue).Select(c => new CarViewModel(c)).ToList();
-            //return View(carViewModels);
-
             return RedirectToAction("Browse", "Car", new { area = "" });
         }
 

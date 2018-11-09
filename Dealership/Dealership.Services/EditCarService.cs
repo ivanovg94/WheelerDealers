@@ -18,6 +18,10 @@ namespace Dealership.Services
             {
                 throw new ArgumentNullException("CarService cannot be null!");
             }
+            if (context == null)
+            {
+                throw new ArgumentNullException("CarService cannot be null!");
+            }
             this.context = context;
             this.carService = carService;
         }
@@ -50,12 +54,7 @@ namespace Dealership.Services
             var car = this.carService.GetCar(id);
 
             Brand newBrand = this.context.Brands.FirstOrDefault(b => b.Name == newValue);
-
-            if (newBrand == null)
-            {
-                newBrand = new Brand() { Name = newValue };
-            }
-            car.Brand = newBrand;
+            car.Brand = newBrand ?? throw new InvalidOperationException();
 
             this.context.Cars.Update(car);
             this.context.SaveChanges();
@@ -83,7 +82,7 @@ namespace Dealership.Services
             {
                 model = new CarModel() { Name = newValue, BrandId = car.Brand.Id };
                 this.context.CarModels.Add(model);
-              //  this.context.SaveChanges(); //TODO:TEST
+                //  this.context.SaveChanges(); //TODO:TEST
             }
             //id??
             car.CarModel = model;

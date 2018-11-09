@@ -17,6 +17,10 @@ namespace Dealership.Services
 
         public CarService(DealershipContext context)
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException("Context cannot be null!");
+            }
             this.context = context;
         }
 
@@ -104,7 +108,7 @@ namespace Dealership.Services
                                             .Skip(skip)
                                             .Take(take)
                                             .Include(c => c.Brand)
-                                            .Include(c=>c.CarModel)
+                                            .Include(c => c.CarModel)
                                             .Include(c => c.CarsExtras)
                                                  .ThenInclude(ce => ce.Extra)
                                             .Include(c => c.BodyType)
@@ -134,6 +138,8 @@ namespace Dealership.Services
                                       .ThenInclude(gb => gb.GearType)
                                   .Include(c => c.Images)
                                   .FirstOrDefault();
+                // testing purposes
+            //var asd = context.Cars.Where(c => c.Id == id).FirstOrDefault();
 
             if (car == null)
             {
