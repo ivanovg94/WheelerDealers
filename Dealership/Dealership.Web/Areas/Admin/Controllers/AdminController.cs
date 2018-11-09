@@ -237,7 +237,7 @@ namespace Dealership.Web.Areas.Admin.Controllers
         {
             var realCar = await carService.GetCar(model.Id);
 
-            var newBody = bodyTypeService.GetBodyType(model.BodyTypeId);
+            var newBody =  await bodyTypeService.GetBodyType(model.BodyTypeId);
             var newBrand = brandService.GetBrand(model.BrandId);
             var newModel = brandService.GetModeldOfBrand(model.BrandId, model.CarModelId);
 

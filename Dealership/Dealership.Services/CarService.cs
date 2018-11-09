@@ -159,9 +159,18 @@ namespace Dealership.Services
 
         public async Task<Car> GetCar(int id)
         {
-            var cars = await this.GetCarsAsync();
-            var car = cars.Where(c => c.Id == id).FirstOrDefault();
-
+            
+            var car = await context.Cars.Include(c => c.Brand)
+                                 .Include(c => c.CarModel)
+                                 .Include(c => c.CarsExtras)
+                                      .ThenInclude(ce => ce.Extra)
+                                 .Include(c => c.BodyType)
+                                 .Include(c => c.Color)
+                                     .ThenInclude(co => co.ColorType)
+                                 .Include(c => c.FuelType)
+                                 .Include(c => c.GearBox)
+                                     .ThenInclude(gb => gb.GearType)
+                                 .Include(c => c.Images).FirstOrDefaultAsync(x => x.Id == id);
             return car;
         }
 

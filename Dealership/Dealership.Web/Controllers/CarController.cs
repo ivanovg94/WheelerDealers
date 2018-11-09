@@ -57,7 +57,7 @@ namespace Dealership.Web.Controllers
             return View(list);
 
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> Browse(int page)
         {
@@ -121,7 +121,7 @@ namespace Dealership.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var car =await this.carService.GetCar(id);
+            var car = await this.carService.GetCar(id);
             var user = this.userManager.GetUserAsync(HttpContext.User).Result;
             CarViewModel model;
             if (user == null)

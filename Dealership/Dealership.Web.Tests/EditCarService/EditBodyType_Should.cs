@@ -14,7 +14,7 @@ namespace Dealership.Web.Tests.EditCarService
     public class EditBodyType_Should
     {
         [TestMethod]
-        public void EditBodyTypeCorrectly_WhenValidParametersArePassed()
+        public async void EditBodyTypeCorrectly_WhenValidParametersArePassed()
         {
             //arrange
             var contextOptions = new DbContextOptionsBuilder<DealershipContext>()
@@ -43,13 +43,11 @@ namespace Dealership.Web.Tests.EditCarService
                 dealerShipContext.Cars.Add(testCar);
                 dealerShipContext.BodyTypes.Add(testBody).Context.SaveChanges();
 
-                var carServiceStub = new Mock<ICarService>();
+                var carServiceStub = new Services.CarService(dealerShipContext);
+                
+                var editCarService = new Services.EditCarService(dealerShipContext, carServiceStub);
 
-                carServiceStub.Setup(cs => cs.GetCar(1)).Returns(testCar);
-
-                var editCarService = new Services.EditCarService(dealerShipContext, carServiceStub.Object);
-
-                result = editCarService.EditBodyType(validParameters);
+                result = await editCarService.EditBodyType(validParameters);
             }
 
             Assert.IsTrue(result.Contains("edited"));
