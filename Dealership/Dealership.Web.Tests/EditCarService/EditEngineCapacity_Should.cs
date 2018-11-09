@@ -94,7 +94,7 @@ namespace Dealership.Web.Tests.EditCarService
             using (var dealershipContext = new DealershipContext(contextOptions))
             {
                 var carService = new Mock<ICarService>();
-                carService.Setup(x => x.GetCar(1)).Returns(testCar);
+                carService.Setup(x => x.GetCarAsync(1)).Returns(testCar);
 
                 dealershipContext.Cars.Add(testCar).Context.SaveChanges();
 

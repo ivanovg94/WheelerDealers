@@ -27,7 +27,7 @@ namespace Dealership.Services
             this.extraService = extraService;
         }
 
-        public Car CreateCar(int brandId, int carModelId, int mileage, short horsePower,
+        public Car AddCar(int brandId, int carModelId, int mileage, short horsePower,
             short engineCapacity, DateTime productionDate, decimal price, int bodyTypeId,
             string colorName, int colorTypeId, int fuelTypeId, int gearBoxTypeId, byte numberOfGears, ICollection<int> extrasIds)
         {
@@ -83,19 +83,6 @@ namespace Dealership.Services
             return newCar;
         }
 
-        public void AddCars(ICollection<Car> cars)
-        {
-            foreach (var car in cars)
-            {
-                if (car != null)
-
-                {
-                    this.context.Cars.Add(car);
-                }
-            }
-            this.context.SaveChanges();
-        }
-
         public async Task<IList<Car>> GetCarsAsync(int skip, int take)
         {
             return await this.context.Cars
@@ -130,7 +117,7 @@ namespace Dealership.Services
                                  .Include(c => c.Images).ToListAsync();
         }
 
-        public async Task<Car> GetCar(int id)
+        public async Task<Car> GetCarAsync(int id)
         {
             var car = await context.Cars.Include(c => c.Brand)
                                 .Include(c => c.CarModel)
@@ -148,7 +135,7 @@ namespace Dealership.Services
 
         public async Task<Car> RemoveCar(int id)
         {
-            var car = await GetCar(id);
+            var car = await GetCarAsync(id);
             this.context.Cars.Remove(car);
 
             var usersCars = this.context.UsersCars.Where(uc => uc.CarId == id).ToList();
@@ -174,15 +161,17 @@ namespace Dealership.Services
             return this.context.Cars.Count();
         }
 
-        public void Update(Car car)
+        public Car Update(Car car)
         {
             this.context.Cars.Update(car);
             this.context.SaveChanges();
+
+            return car;
         }
 
-        public async void SaveImages(string root, IList<string> fileNames, IList<Stream> stream, int carId)
+        public void SaveImages(string root, IList<string> fileNames, IList<Stream> stream, int carId)
         {
-            var car = await GetCar(carId);
+            var car = GetCarAsync(carId).Result;
 
             if (car == null)
             {

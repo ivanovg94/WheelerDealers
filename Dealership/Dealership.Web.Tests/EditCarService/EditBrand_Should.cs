@@ -98,7 +98,7 @@ namespace Dealership.Web.Tests.EditCarService
                 dealerShipContext.Cars.Add(testCar).Context.SaveChanges();
                 var carServiceStub = new Mock<ICarService>();
 
-                carServiceStub.Setup(cs => cs.GetCar(1)).Returns(testCar);
+                carServiceStub.Setup(cs => cs.GetCarAsync(1)).Returns(testCar);
 
                 var editCarService = new Services.EditCarService(dealerShipContext, carServiceStub.Object);
 
@@ -135,7 +135,7 @@ namespace Dealership.Web.Tests.EditCarService
                 dealerShipContext.Cars.Add(testCar).Context.SaveChanges();
                 var carServiceStub = new Mock<ICarService>();
 
-                carServiceStub.Setup(cs => cs.GetCar(1)).Returns(testCar);
+                carServiceStub.Setup(cs => cs.GetCarAsync(1)).Returns(testCar);
 
             }
 

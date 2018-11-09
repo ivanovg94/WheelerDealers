@@ -9,13 +9,11 @@ namespace Dealership.Services.Abstract
     public interface ICarService
     {
 
-        Car CreateCar(int brandId, int carModelId, int mileage, short horsePower, short engineCapacity,
+        Car AddCar(int brandId, int carModelId, int mileage, short horsePower, short engineCapacity,
             DateTime productionDate, decimal price, int bodyTypeId, string colorName, int colorTypeId,
             int fuelTypeId, int gearBoxTypeId, byte numberOfGears, ICollection<int> extrasIds);
 
-        void AddCars(ICollection<Car> cars);
-
-        Task<Car> GetCar(int id);
+        Task<Car> GetCarAsync(int id);
 
         Task<IList<Car>> GetCarsAsync();
 
@@ -25,9 +23,8 @@ namespace Dealership.Services.Abstract
 
         int GetCarsCount();
 
-        void Update(Car car);
+        Car Update(Car car);
 
         void SaveImages(string root, IList<string> fileNames, IList<Stream> stream, int carId);
-
     }
 }

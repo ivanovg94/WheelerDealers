@@ -170,7 +170,7 @@ namespace Dealership.Web.Areas.Admin.Controllers
         public IActionResult CreateCar(EditCarViewModel model)
         {
             var extrasIds = model.Extras.Where(e => e.Selected == true).Select(e => e.Id).ToList();
-            var car = this.carService.CreateCar(
+            var car = this.carService.AddCar(
                            model.Car.BrandId, model.Car.CarModelId, model.Car.Mileage, model.Car.HorsePower,
                            model.Car.EngineCapacity, model.Car.ProductionDate, model.Car.Price,
                            model.Car.BodyTypeId, model.Car.Color, model.Car.ColorTypeId, model.Car.FuelTypeId,
@@ -203,7 +203,7 @@ namespace Dealership.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var car = await this.carService.GetCar(id);
+            var car = await this.carService.GetCarAsync(id);
             var allExtras = this.extraService.GetAllExtras();
 
             var model = new EditCarViewModel
@@ -254,9 +254,11 @@ namespace Dealership.Web.Areas.Admin.Controllers
         }
 
         //method
+        //TODO: Mileage doesn't change... Move this method to carService
+
         public void EditCar(CarViewModel model, IEnumerable<ExtraCheckBox> extrasCB)
         {
-            var realCar = carService.GetCar(model.Id).Result;
+            var realCar = carService.GetCarAsync(model.Id).Result;
 
             var newBody = bodyTypeService.GetBodyType(model.BodyTypeId);
             var newBrand = brandService.GetBrand(model.BrandId);
