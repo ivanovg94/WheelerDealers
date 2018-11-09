@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dealership.Tests", "Dealers
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dealership.Web", "Dealership.Web\Dealership.Web.csproj", "{499F0071-A009-4F5D-ADB7-C68139439954}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dealership.Web.Tests", "Dealership.Web.Tests\Dealership.Web.Tests.csproj", "{772F1E80-8D60-4365-94BF-9431E67E34A5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{499F0071-A009-4F5D-ADB7-C68139439954}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{499F0071-A009-4F5D-ADB7-C68139439954}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{499F0071-A009-4F5D-ADB7-C68139439954}.Release|Any CPU.Build.0 = Release|Any CPU
+		{772F1E80-8D60-4365-94BF-9431E67E34A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{772F1E80-8D60-4365-94BF-9431E67E34A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{772F1E80-8D60-4365-94BF-9431E67E34A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{772F1E80-8D60-4365-94BF-9431E67E34A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

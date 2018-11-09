@@ -5,6 +5,7 @@ using Dealership.Services.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Dealership.Services
 {
@@ -26,9 +27,9 @@ namespace Dealership.Services
             return users;
         }
 
-        public Car AddCarToFavorites(int carId, User user)
+        public async Task<Car> AddCarToFavorites(int carId, User user)
         {
-            Car car = this.carService.GetCar(carId);
+            Car car = await this.carService.GetCar(carId);
 
             var isCarFavorite = IsCarFavorite(carId, user);
 
@@ -43,9 +44,9 @@ namespace Dealership.Services
             return car;
         }
 
-        public Car RemoveCarFromFavorites(int carId, User user)
+        public async Task<Car> RemoveCarFromFavorites(int carId, User user)
         {
-            Car car = this.carService.GetCar(carId);
+            Car car = await this.carService.GetCar(carId);
 
             var usersCars = this.dealershipContext.UsersCars.FirstOrDefault(uc => uc.CarId == carId && uc.User == user);
 
@@ -59,7 +60,7 @@ namespace Dealership.Services
             return car;
         }
 
-        public IList<Car> GetFavorites(User user)
+        public async Task<IList<Car>> GetFavorites(User user)
         {
             var userCars = this.dealershipContext.Users
                                         .Include(u => u.UsersCars)
@@ -72,7 +73,7 @@ namespace Dealership.Services
             {
                 if (uc.IsDeleted == false)
                 {
-                    var car = this.carService.GetCar(uc.CarId);
+                    var car = await this.carService.GetCar(uc.CarId);
                     cars.Add(car);
                 }
             }

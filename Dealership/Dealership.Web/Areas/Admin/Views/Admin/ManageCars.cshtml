@@ -20,7 +20,7 @@
             <p>Fuel type: <strong> @car.FuelType </strong> </p>
             <p>Price: <strong> @car.Price $</strong> </p>
             <a class="btn btn-primary" asp-area="" asp-controller="Car" asp-action="Details" asp-route-id="@car.Id">Details</a>
-            <a class="btn btn-default" asp-area="" asp-controller="Car" asp-action="Edit" asp-route-id="@currentId">Edit</a>
+            <a class="btn btn-default" asp-area="Admin" asp-controller="Admin" asp-action="Edit" asp-route-id="@currentId">Edit</a>
             <a asp-area="Admin" asp-controller="Admin" asp-action="Delete" asp-route-id="@car.Id" onclick="return confirm('Are you sure?')" class="btn btn-danger">Delete</a>
             <hr />
         </div>
