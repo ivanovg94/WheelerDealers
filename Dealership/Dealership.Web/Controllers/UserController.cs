@@ -40,10 +40,10 @@ namespace Dealership.Web.Controllers
 
         [Authorize]
         [HttpGet]
-        public IActionResult Favorites()
+        public async Task<IActionResult> Favorites()
         {
             var user = this.userManager.GetUserAsync(HttpContext.User).Result;
-            var cars = this.userService.GetFavorites(user);
+            var cars = await this.userService.GetFavorites(user);
 
             var model = cars.Select(c => new CarSummaryViewModel(c)
             {

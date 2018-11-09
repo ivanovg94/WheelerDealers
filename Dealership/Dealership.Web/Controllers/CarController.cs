@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Dealership.Web.Controllers
 {
@@ -51,28 +52,36 @@ namespace Dealership.Web.Controllers
 
         public IActionResult Index()
         {
-            var list = this.carService.GetCars(0,99);
+            var list = this.carService.GetCarsAsync(0, 99);
 
             return View(list);
-           
-        }      
 
+        }
+        
         [HttpGet]
-        public IActionResult Browse(int page)
+        public async Task<IActionResult> Browse(int page)
         {
             var nPerPage = 5;
             var pageCount = 0;
             var totalCount = this.carService.GetCarsCount();
             var reminder = totalCount % nPerPage;
-            if (reminder != 0) { pageCount = (totalCount / nPerPage) + 1; }
-            else { pageCount = totalCount / nPerPage; }
+
+            if (reminder != 0)
+            {
+                pageCount = (totalCount / nPerPage) + 1;
+            }
+            else
+            {
+                pageCount = totalCount / nPerPage;
+            }
 
             //Expression<Func<Car, bool>> searchCriteria = (Car car) => true;
             //searchCriteria = x => x.Brand.Name.Contains("");
 
+            var summarys = await this.carService.GetCarsAsync(page * nPerPage, nPerPage);
             var model = new BrowseViewModel()
             {
-                Summaries = this.carService.GetCars(page * nPerPage, nPerPage)
+                Summaries = summarys
                 .Select(c => new CarSummaryViewModel(c)
                 {
                     Id = c.Id,
@@ -83,11 +92,13 @@ namespace Dealership.Web.Controllers
                     Fuel = c.FuelType.Name,
                     Color = c.Color.Name,
                     Price = $"{c.Price}$",
-                    Mileage = $"{c.Mileage} miles"
+                    Mileage = $"{c.Mileage} miles",
+
                 }),
-                Pages = pageCount,
-                CurrentPage = page
+                Pages = page,
+                CurrentPage = pageCount
             };
+
             model.Brands
                 .AddRange(this.brandService.GetBrands()
                 .Select(b => new SelectListItem { Value = b.Id.ToString(), Text = b.Name }).ToList());
@@ -108,9 +119,9 @@ namespace Dealership.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var car = this.carService.GetCar(id);
+            var car =await this.carService.GetCar(id);
             var user = this.userManager.GetUserAsync(HttpContext.User).Result;
             CarViewModel model;
             if (user == null)

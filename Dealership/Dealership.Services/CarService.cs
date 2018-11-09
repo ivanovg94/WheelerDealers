@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Dealership.Services
 {
@@ -102,9 +103,26 @@ namespace Dealership.Services
             this.context.SaveChanges();
         }
 
-        public IList<Car> GetCars(int skip, int take)
+        public async Task<IList<Car>> GetCarsAsync(int skip, int take)
         {
-            var querry = this.context.Cars
+            //var querry = this.context.Cars
+            //                                .Skip(skip)
+            //                                .Take(take)
+            //                                .Include(c => c.Brand)
+            //                                .Include(c => c.CarModel)
+            //                                .Include(c => c.CarsExtras)
+            //                                     .ThenInclude(ce => ce.Extra)
+            //                                .Include(c => c.BodyType)
+            //                                .Include(c => c.Color)
+            //                                    .ThenInclude(co => co.ColorType)
+            //                                .Include(c => c.FuelType)
+            //                                .Include(c => c.GearBox)
+            //                                    .ThenInclude(gb => gb.GearType)
+            //                                .Include(c => c.Images);
+
+            //return querry.ToList();
+
+            return await this.context.Cars
                                             .Skip(skip)
                                             .Take(take)
                                             .Include(c => c.Brand)
@@ -117,58 +135,39 @@ namespace Dealership.Services
                                             .Include(c => c.FuelType)
                                             .Include(c => c.GearBox)
                                                 .ThenInclude(gb => gb.GearType)
-                                            .Include(c => c.Images);
+                                            .Include(c => c.Images).ToListAsync();
 
-            return querry.ToList();
+
         }
 
-        public IList<Car> GetCars()
+        public async Task<IList<Car>> GetCarsAsync()
         {
-            var querry = this.context.Cars
-                                            .Include(c => c.Brand)
-                                            .Include(c => c.CarModel)
-                                            .Include(c => c.CarsExtras)
-                                                 .ThenInclude(ce => ce.Extra)
-                                            .Include(c => c.BodyType)
-                                            .Include(c => c.Color)
-                                                .ThenInclude(co => co.ColorType)
-                                            .Include(c => c.FuelType)
-                                            .Include(c => c.GearBox)
-                                                .ThenInclude(gb => gb.GearType)
-                                            .Include(c => c.Images);
+            return await this.context.Cars
+                                 .Include(c => c.Brand)
+                                 .Include(c => c.CarModel)
+                                 .Include(c => c.CarsExtras)
+                                      .ThenInclude(ce => ce.Extra)
+                                 .Include(c => c.BodyType)
+                                 .Include(c => c.Color)
+                                     .ThenInclude(co => co.ColorType)
+                                 .Include(c => c.FuelType)
+                                 .Include(c => c.GearBox)
+                                     .ThenInclude(gb => gb.GearType)
+                                 .Include(c => c.Images).ToListAsync();
 
-            return querry.ToList();
         }
 
-        public virtual Car GetCar(int id)
+        public async Task<Car> GetCar(int id)
         {
-            var car = this.context.Cars
-                                  .Where(c => c.Id == id)
-                                  .Include(c => c.Brand)
-                                  .Include(c => c.CarModel)
-                                  .Include(c => c.CarsExtras)
-                                       .ThenInclude(ce => ce.Extra)
-                                  .Include(c => c.BodyType)
-                                  .Include(c => c.Color)
-                                      .ThenInclude(co => co.ColorType)
-                                  .Include(c => c.FuelType)
-                                  .Include(c => c.GearBox)
-                                      .ThenInclude(gb => gb.GearType)
-                                  .Include(c => c.Images)
-                                  .FirstOrDefault();
-                // testing purposes
-            //var asd = context.Cars.Where(c => c.Id == id).FirstOrDefault();
+            var cars = await this.GetCarsAsync();
+            var car = cars.Where(c => c.Id == id).FirstOrDefault();
 
-            if (car == null)
-            {
-                throw new ServiceException($"There is no car with ID {id}.");
-            }
             return car;
         }
 
-        public Car RemoveCar(int id)
+        public async Task<Car> RemoveCar(int id)
         {
-            var car = GetCar(id);
+            var car = await GetCar(id);
             this.context.Cars.Remove(car);
 
             var usersCars = this.context.UsersCars.Where(uc => uc.CarId == id).ToList();
@@ -200,9 +199,9 @@ namespace Dealership.Services
             this.context.SaveChanges();
         }
 
-        public void SaveImages(string root, IList<string> fileNames, IList<Stream> stream, int carId)
+        public async void SaveImages(string root, IList<string> fileNames, IList<Stream> stream, int carId)
         {
-            var car = GetCar(carId);
+            var car = await GetCar(carId);
 
             if (car == null)
             {

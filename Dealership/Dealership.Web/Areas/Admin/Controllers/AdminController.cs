@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Dealership.Web.Areas.Admin.Controllers
 {
@@ -190,9 +191,9 @@ namespace Dealership.Web.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var car = this.carService.GetCar(id);
+            var car = await this.carService.GetCar(id);
             var carVm = new CarViewModel(car);
             var model = new EditCarViewModel
             {
@@ -232,9 +233,9 @@ namespace Dealership.Web.Areas.Admin.Controllers
         }
 
         //method
-        public void EditCar(CarViewModel model)
+        public async void EditCar(CarViewModel model)
         {
-            var realCar = carService.GetCar(model.Id);
+            var realCar = await carService.GetCar(model.Id);
 
             var newBody = bodyTypeService.GetBodyType(model.BodyTypeId);
             var newBrand = brandService.GetBrand(model.BrandId);

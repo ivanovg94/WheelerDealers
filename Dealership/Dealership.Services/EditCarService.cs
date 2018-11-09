@@ -4,6 +4,7 @@ using Dealership.Services.Abstract;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Dealership.Services
 {
@@ -26,7 +27,7 @@ namespace Dealership.Services
             this.carService = carService;
         }
 
-        public virtual string EditBrand(string[] parameters)
+        public async Task<string> EditBrand(string[] parameters)
         {
             if (parameters == null)
             {
@@ -51,7 +52,7 @@ namespace Dealership.Services
                 secondNewValue = parameters[2];
             }
 
-            var car = this.carService.GetCar(id);
+            var car = await this.carService.GetCar(id);
 
             Brand newBrand = this.context.Brands.FirstOrDefault(b => b.Name == newValue);
             car.Brand = newBrand ?? throw new InvalidOperationException();
@@ -63,7 +64,7 @@ namespace Dealership.Services
 
         }
 
-        public string EditModel(string[] parameters)
+        public async Task<string> EditModel(string[] parameters)
         {
             if (parameters == null || parameters.Length == 0)
             {
@@ -75,7 +76,7 @@ namespace Dealership.Services
             }
             var newValue = parameters[1];
 
-            var car = this.carService.GetCar(id);
+            var car = await this.carService.GetCar(id);
 
             var model = car.Brand.CarModels.FirstOrDefault(m => m.Name == newValue);
             if (model == null)
@@ -93,7 +94,7 @@ namespace Dealership.Services
             return $"Model of {car.Brand.Name} {car.CarModel.Name} with ID:{car.Id} edited successfully!";
         }
 
-        public string EditHorsePower(string[] parameters)
+        public async Task<string> EditHorsePower(string[] parameters)
         {
             if (parameters == null || parameters.Length == 0)
             {
@@ -106,7 +107,7 @@ namespace Dealership.Services
             }
             var newValue = parameters[1];
 
-            var car = this.carService.GetCar(id);
+            var car = await this.carService.GetCar(id);
             car.HorsePower = short.Parse(newValue);
 
             this.context.Cars.Update(car);
@@ -115,7 +116,7 @@ namespace Dealership.Services
             return $"Horse power of {car.Brand.Name} {car.CarModel.Name} with ID:{car.Id} edited successfully!";
         }
 
-        public string EditEngineCapacity(string[] parameters)
+        public async Task<string> EditEngineCapacity(string[] parameters)
         {
             if (parameters == null || parameters.Length == 0)
             {
@@ -129,7 +130,7 @@ namespace Dealership.Services
 
             var newValue = parameters[1];
 
-            var car = this.carService.GetCar(id);
+            var car = await this.carService.GetCar(id);
             car.EngineCapacity = short.Parse(newValue);
 
             this.context.Cars.Update(car);
@@ -138,7 +139,7 @@ namespace Dealership.Services
             return $"Engine capacity of {car.Brand.Name} {car.CarModel.Name} with ID:{car.Id} edited successfully!";
         }
 
-        public string EditIsSold(string[] parameters)
+        public async Task<string> EditIsSold(string[] parameters)
         {
             if (parameters == null || parameters.Length == 0)
             {
@@ -152,7 +153,7 @@ namespace Dealership.Services
 
             var newValue = parameters[1];
 
-            var car = this.carService.GetCar(id);
+            var car = await this.carService.GetCar(id);
             car.IsSold = bool.Parse(newValue);
 
             this.context.Cars.Update(car);
@@ -161,7 +162,7 @@ namespace Dealership.Services
             return $"IsSold of {car.Brand.Name} {car.CarModel.Name} with ID:{car.Id} edited successfully!";
         }
 
-        public string EditPrice(string[] parameters)
+        public async Task<string> EditPrice(string[] parameters)
         {
             if (parameters == null || parameters.Length == 0)
             {
@@ -174,7 +175,7 @@ namespace Dealership.Services
             }
             var newValue = parameters[1];
 
-            var car = this.carService.GetCar(id);
+            var car = await this.carService.GetCar(id);
             car.Price = decimal.Parse(newValue);
 
             this.context.Cars.Update(car);
@@ -183,7 +184,7 @@ namespace Dealership.Services
             return $"Price of {car.Brand.Name} {car.CarModel.Name} with ID:{car.Id} edited successfully!";
         }
 
-        public string EditMileAge(string[] parameters)
+        public async Task<string> EditMileAge(string[] parameters)
         {
             if (parameters == null || parameters.Length == 0)
             {
@@ -199,7 +200,7 @@ namespace Dealership.Services
             {
                 throw new ArgumentException("Invalid mileage value!");
             }
-            var car = this.carService.GetCar(id);
+            var car = await this.carService.GetCar(id);
             car.Mileage = newValue;
 
             this.context.Cars.Update(car);
@@ -208,7 +209,7 @@ namespace Dealership.Services
             return $"Mileage of {car.Brand.Name} {car.CarModel.Name} with ID:{car.Id} edited successfully!";
         }
 
-        public string EditProductionDate(string[] parameters)
+        public async Task<string> EditProductionDate(string[] parameters)
         {
             if (parameters == null || parameters.Length == 0)
             {
@@ -221,7 +222,7 @@ namespace Dealership.Services
             }
             var newValue = parameters[1];
 
-            var car = this.carService.GetCar(id);
+            var car = await this.carService.GetCar(id);
             car.ProductionDate = DateTime.Parse(newValue);
 
             this.context.Cars.Update(car);
@@ -230,7 +231,7 @@ namespace Dealership.Services
             return $"Production date of {car.Brand.Name} {car.CarModel.Name} with ID:{car.Id} edited successfully!";
         }
 
-        public string EditBodyType(string[] parameters)
+        public async Task<string> EditBodyType(string[] parameters)
         {
             if (parameters == null || parameters.Length == 0)
             {
@@ -250,7 +251,7 @@ namespace Dealership.Services
                 throw new ArgumentException("Invalid body type!");
             }
 
-            var car = this.carService.GetCar(id);
+            var car = await this.carService.GetCar(id);
             car.BodyType = newBodyType;
 
             this.context.Cars.Update(car);
@@ -259,7 +260,7 @@ namespace Dealership.Services
             return $"Body type of {car.Brand.Name} {car.CarModel.Name} with ID:{car.Id} edited successfully!";
         }
 
-        public string EditColor(string[] parameters)
+        public async Task<string> EditColor(string[] parameters)
         {
             if (parameters == null)
             {
@@ -281,7 +282,7 @@ namespace Dealership.Services
             {
                 newColorTypeName = parameters[2];
             }
-            var car = this.carService.GetCar(id);
+            var car = await this.carService.GetCar(id);
 
             var newType = this.context.ColorTypes.FirstOrDefault(gt => gt.Name == newColorTypeName);
             if (newType == null)
@@ -310,7 +311,7 @@ namespace Dealership.Services
             return $"Color of {car.Brand.Name} {car.CarModel.Name} with ID:{car.Id} edited successfully!";
         }
 
-        public string EditColorType(string[] parameters)
+        public async Task<string> EditColorType(string[] parameters)
         {
             if (parameters == null)
             {
@@ -327,7 +328,7 @@ namespace Dealership.Services
             }
             var newValue = parameters[1];
 
-            var car = this.carService.GetCar(id);
+            var car = await this.carService.GetCar(id);
             var colorName = car.Color.Name;
             var newColorType = this.context.ColorTypes.FirstOrDefault(ct => ct.Name == newValue);
             if (newColorType == null) { throw new ArgumentNullException("Color type not exist!"); }
@@ -352,7 +353,7 @@ namespace Dealership.Services
             return $"Color type of {car.Brand.Name} {car.CarModel.Name} with ID:{car.Id} edited successfully!";
         }
 
-        public string EditFuelType(string[] parameters)
+        public async Task<string> EditFuelType(string[] parameters)
         {
             if (parameters == null)
             {
@@ -369,7 +370,7 @@ namespace Dealership.Services
             }
             var newValue = parameters[1];
 
-            var car = this.carService.GetCar(id);
+            var car = await this.carService.GetCar(id);
 
             var newFuelType = this.context.FuelTypes.FirstOrDefault(ft => ft.Name == newValue);
 
@@ -388,7 +389,7 @@ namespace Dealership.Services
 
         }
 
-        public string EditGearbox(string[] parameters)
+        public async Task<string> EditGearbox(string[] parameters)
         {
             if (parameters == null)
             {
@@ -405,7 +406,7 @@ namespace Dealership.Services
             }
             var newValue = parameters[1];
 
-            var car = this.carService.GetCar(id);
+            var car = await this.carService.GetCar(id);
 
             GearType newGearType = this.context.GearTypes.First(gt => gt.Name == newValue);
 

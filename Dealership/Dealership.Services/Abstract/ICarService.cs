@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Dealership.Services.Abstract
 {
@@ -16,14 +17,16 @@ namespace Dealership.Services.Abstract
 
         void AddCars(ICollection<Car> cars);
 
-        Car GetCar(int id);
+        Task<Car> GetCar(int id);
 
-        IList<Car> GetCars();
-        IList<Car> GetCars(int skip, int take);
+        Task<IList<Car>> GetCarsAsync();
 
-        Car RemoveCar(int carId);
+        Task<IList<Car>> GetCarsAsync(int skip, int take);
+
+        Task<Car> RemoveCar(int carId);
 
         int GetCarsCount();
+
         void Update(Car car);
 
         void SaveImages(string root, IList<string> fileNames, IList<Stream> stream, int carId);
