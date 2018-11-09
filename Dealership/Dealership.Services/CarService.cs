@@ -122,6 +122,24 @@ namespace Dealership.Services
             return querry.ToList();
         }
 
+        public IList<Car> GetCars()
+        {
+            var querry = this.context.Cars
+                                            .Include(c => c.Brand)
+                                            .Include(c => c.CarModel)
+                                            .Include(c => c.CarsExtras)
+                                                 .ThenInclude(ce => ce.Extra)
+                                            .Include(c => c.BodyType)
+                                            .Include(c => c.Color)
+                                                .ThenInclude(co => co.ColorType)
+                                            .Include(c => c.FuelType)
+                                            .Include(c => c.GearBox)
+                                                .ThenInclude(gb => gb.GearType)
+                                            .Include(c => c.Images);
+
+            return querry.ToList();
+        }
+
         public virtual Car GetCar(int id)
         {
             var car = this.context.Cars

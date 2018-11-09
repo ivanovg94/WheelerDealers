@@ -8,16 +8,19 @@ using System.Linq;
 namespace Dealership.Web.Models
 {
     public class CarViewModel
-    {        private DateTime _productionDate;
+    {
+        private DateTime productionDate;
 
         public CarViewModel()
         {
         }
 
-        public CarViewModel(Car car)        {
-             this.Id = car.Id;
+        public CarViewModel(Car car)
+        {
+            this.Id = car.Id;
             this.CarModelId = car.CarModelId;
-            this.CarModel = car.CarModel.Name;            this.HorsePower = car.HorsePower;
+            this.CarModel = car.CarModel.Name;
+            this.HorsePower = car.HorsePower;
             this.Mileage = car.Mileage;
             this.EngineCapacity = car.EngineCapacity;
             this.Price = car.Price;
@@ -63,11 +66,11 @@ namespace Dealership.Web.Models
         {
             get
             {
-                return this._productionDate == DateTime.MinValue ? DateTime.Now : _productionDate;
+                return this.productionDate == DateTime.MinValue ? DateTime.Now : productionDate;
             }
             set
             {
-                _productionDate = value;
+                productionDate = value;
             }
         }
 

@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Threading.Tasks;
 
 namespace Dealership.Web
 {
@@ -37,7 +38,7 @@ namespace Dealership.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, IServiceProvider serviceProvider)
         {
             if (this.Environment.IsDevelopment())
             {
@@ -65,6 +66,7 @@ namespace Dealership.Web
 
             });
 
+            CreateUserRoles(serviceProvider).Wait();
         }
 
         private void RegisterData(IServiceCollection services)
@@ -121,6 +123,30 @@ namespace Dealership.Web
         private void RegisterInfrastructure(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+        }
+
+        private async Task CreateUserRoles(IServiceProvider serviceProvider)
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+
+            string[] roleNames = { "Admin", "User" };
+            IdentityResult roleResult;
+
+            foreach (var roleName in roleNames)
+            {
+                var roleExist = await roleManager.RoleExistsAsync(roleName);
+                if (!roleExist)
+                {
+                    //create the roles and seed them to the database: Question 2
+                    roleResult = await roleManager.CreateAsync(new IdentityRole(roleName));
+                }
+            }
+
+            //Assign Admin role to the main User here we have given our newly registered 
+            //login id for Admin management
+            User user = await userManager.FindByEmailAsync("admin@admin.com");
+            await userManager.AddToRoleAsync(user, "Admin");
         }
     }
 }

@@ -2,16 +2,9 @@
 @{
     ViewData["Title"] = "CreateCar";
 }
-@model Dealership.Web.Models.EditCarViewModel
-@{
-    if (TempData["notice"] != null)
-    {
-        <p> @TempData["notice"]</p>
-    }
-}
+
 <h2>Create a car</h2>
 
-<hr />
 <div class="container col-lg-4">
     <partial name="_StatusMessage" model="@Model.Car.StatusMessage" />
 

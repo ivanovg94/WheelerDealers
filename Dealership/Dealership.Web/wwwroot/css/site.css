@@ -1,5 +1,4 @@
 ﻿body {
-   
     /*background-color: silver;*/
     /*background-image: url(../images/pattern.svg);*/
     background-size: cover;
@@ -13,6 +12,7 @@ body {
     padding-top: 50px;
     padding-bottom: 20px;
 }
+
 html {
     font-size: 15px;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -48,8 +48,8 @@ html {
     }
 }
 
-.panelPadding{
-    padding-bottom:2%;
+.panelPadding {
+    padding-bottom: 2%;
 }
 
 .center-align {
@@ -63,6 +63,34 @@ html {
 }
 
 .fa-star {
-color:red;
+    color: red;
+    width: 120px;
+}
 
+#printBtn {
+    width: 120px;
+}
+
+
+@media print {
+    .noprint {
+        display: none;
+    }
+}
+
+#logoImg {
+    height: 40px;
+}
+
+.btn-over-homebox {
+    width: 160px;
+    border: 1px solid #fff;
+    font-weight: bold;
+    background-color: dimgray;
+    color:white;
+}
+
+.btn-over-homebox:hover {
+    background-color: white;
+    color: black;
 }
