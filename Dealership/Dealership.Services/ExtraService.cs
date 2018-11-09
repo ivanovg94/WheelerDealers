@@ -25,8 +25,6 @@ namespace Dealership.Services
             }
 
             var extra = new Extra() { Name = name };
-            //this.context.Extras.Add(extra);
-            //this.context.SaveChanges();
             return extra;
         }
 
@@ -68,21 +66,26 @@ namespace Dealership.Services
             return extra;
         }
 
-        public void AddExtrasToCar(Car car, ICollection<Extra> extras)
+        public void AddExtrasToCar(Car car, ICollection<int> extrasIds)
         {
-            foreach (var extra in extras)
+            foreach (var id in extrasIds)
             {
-                //if (this.context.Cars
-                //                .Include(c => c.CarsExtras)
-                //                  .ThenInclude(ce => ce.Extra)
-                //                .FirstOrDefault(c => c == car)
-                //                .CarsExtras.Any(ce => ce.Extra == extra))
-                //{
-                //    throw new ArgumentException($"Car with Id {car.Id} already has extra with name {extra.Name}.");
-                //}
-
-                var newCarExtra = new CarsExtras() { CarId = car.Id, ExtraId = extra.Id };
+                var newCarExtra = new CarsExtras() { CarId = car.Id, ExtraId = id };
                 this.context.CarsExtras.Add(newCarExtra);
+            }
+
+            this.context.SaveChanges();
+        }
+
+        public void DeleteExtrasFromCar(Car car, ICollection<int> extrasIds)
+        {
+            foreach (var id in extrasIds)
+            {
+                var carExtra = this.context.CarsExtras.FirstOrDefault(ce => ce.ExtraId == id && ce.Car == car);
+                if (carExtra != null)
+                {
+                    this.context.CarsExtras.Remove(carExtra);
+                }
             }
 
             this.context.SaveChanges();

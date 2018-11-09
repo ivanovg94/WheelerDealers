@@ -29,7 +29,7 @@ namespace Dealership.Services
 
         public Car CreateCar(int brandId, int carModelId, int mileage, short horsePower,
             short engineCapacity, DateTime productionDate, decimal price, int bodyTypeId,
-            string colorName, int colorTypeId, int fuelTypeId, int gearBoxTypeId, byte numberOfGears, ICollection<Extra> extras)
+            string colorName, int colorTypeId, int fuelTypeId, int gearBoxTypeId, byte numberOfGears, ICollection<int> extrasIds)
         {
 
             var color = this.context.Colors
@@ -77,29 +77,10 @@ namespace Dealership.Services
             };
 
             this.context.Cars.Add(newCar);
-
-            foreach (var extra in extras)
-            {
-                var newCarExtra = new CarsExtras() { Car = newCar, ExtraId = extra.Id };
-                this.context.CarsExtras.Add(newCarExtra);
-            }
+            this.extraService.AddExtrasToCar(newCar, extrasIds);
 
             this.context.SaveChanges();
-            // extraService.AddExtrasToCar(newCar, extras);
             return newCar;
-        }
-
-
-        public Car AddCar(Car car)
-        {
-            if (car == null)
-            {
-                throw new ServiceException("Car doesn't exist!");
-            }
-            car = this.context.Cars.Add(car).Entity;
-            this.context.SaveChanges();
-
-            return car;
         }
 
         public void AddCars(ICollection<Car> cars)
@@ -117,23 +98,6 @@ namespace Dealership.Services
 
         public async Task<IList<Car>> GetCarsAsync(int skip, int take)
         {
-            //var querry = this.context.Cars
-            //                                .Skip(skip)
-            //                                .Take(take)
-            //                                .Include(c => c.Brand)
-            //                                .Include(c => c.CarModel)
-            //                                .Include(c => c.CarsExtras)
-            //                                     .ThenInclude(ce => ce.Extra)
-            //                                .Include(c => c.BodyType)
-            //                                .Include(c => c.Color)
-            //                                    .ThenInclude(co => co.ColorType)
-            //                                .Include(c => c.FuelType)
-            //                                .Include(c => c.GearBox)
-            //                                    .ThenInclude(gb => gb.GearType)
-            //                                .Include(c => c.Images);
-
-            //return querry.ToList();
-
             return await this.context.Cars
                                             .Skip(skip)
                                             .Take(take)
@@ -148,8 +112,6 @@ namespace Dealership.Services
                                             .Include(c => c.GearBox)
                                                 .ThenInclude(gb => gb.GearType)
                                             .Include(c => c.Images).ToListAsync();
-
-
         }
 
         public async Task<IList<Car>> GetCarsAsync()
@@ -166,14 +128,21 @@ namespace Dealership.Services
                                  .Include(c => c.GearBox)
                                      .ThenInclude(gb => gb.GearType)
                                  .Include(c => c.Images).ToListAsync();
-
         }
 
         public async Task<Car> GetCar(int id)
         {
-            var cars = await this.GetCarsAsync();
-            var car = cars.Where(c => c.Id == id).FirstOrDefault();
-
+            var car = await context.Cars.Include(c => c.Brand)
+                                .Include(c => c.CarModel)
+                                .Include(c => c.CarsExtras)
+                                     .ThenInclude(ce => ce.Extra)
+                                .Include(c => c.BodyType)
+                                .Include(c => c.Color)
+                                    .ThenInclude(co => co.ColorType)
+                                .Include(c => c.FuelType)
+                                .Include(c => c.GearBox)
+                                    .ThenInclude(gb => gb.GearType)
+                                .Include(c => c.Images).FirstOrDefaultAsync(x => x.Id == id);
             return car;
         }
 
