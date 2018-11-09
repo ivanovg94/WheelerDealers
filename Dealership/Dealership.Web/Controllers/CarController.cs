@@ -121,7 +121,7 @@ namespace Dealership.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var car = await this.carService.GetCar(id);
+            var car =await this.carService.GetCarAsync(id);
             var user = this.userManager.GetUserAsync(HttpContext.User).Result;
             CarViewModel model;
             if (user == null)

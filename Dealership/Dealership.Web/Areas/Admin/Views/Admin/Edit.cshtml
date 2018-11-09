@@ -9,10 +9,7 @@
         <form asp-controller="Admin" asp-action="Edit" method="post" enctype="multipart/form-data">
             <partial name="_EditCarPartial" model="@Model" />
             <div class="form-group">
-
-                @*<a asp-controller="Car" asp-action="Edit" asp-route-id="@Model.Car.Id" class="btn btn-danger">Cancel</a>*@
-                <input type="submit" name="save" value="Save" class="btn btn-warning" />|
-
+                <input type="submit" name="save" value="Save" class="btn btn-warning" />
                 <a asp-controller="Car" asp-action="Details" asp-route-id="@Model.Car.Id" class="btn btn-danger">Cancel</a>
             </div>
         </form>

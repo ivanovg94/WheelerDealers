@@ -7,6 +7,10 @@ namespace Dealership.Services.Abstract
     {
         Extra AddExtraToCar(int carId, string extraName);
 
+        void AddExtrasToCar(Car car, ICollection<int> extrasIds);
+
+        void DeleteExtrasFromCar(Car car, ICollection<int> extrasIds);
+
         Extra CreateExtra(string name);
 
         Extra GetExtraById(int id);

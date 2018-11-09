@@ -70,11 +70,21 @@
             <input asp-for="@Model.Car.Mileage" class="form-control" />
             <span asp-validation-for="@Model.Car.Mileage" class="text-danger"></span>
         </div>
-        @*<div class="form-group">
-            <label asp-for="@Model.Car.ImageUrl" class="control-label"></label>
-            <input asp-for="@Model.Car.ImageUrl" class="form-control" />
-            <span asp-validation-for="@Model.Car.ImageUrl" class="text-danger"></span>
-        </div>*@
+
+        <div class="form-group">
+            <label asp-for="@Model.Extras" class="control-label h4 text-primary font-weight-bold"></label>
+            <ul>
+                @for (var i = 0; i < Model.Extras.Length; i++)
+                {
+                    <li>
+                        <input type="checkbox" class="custom-control-input" asp-for="@Model.Extras[i].Selected" />
+                        <label asp-for="@Model.Extras[i].Selected" class="custom-control-label">@Model.Extras[i].Name</label>
+                        <input type="hidden" asp-for="@Model.Extras[i].Id" />
+                        <input type="hidden" asp-for="@Model.Extras[i].Name" />
+                    </li>
+                }
+            </ul>
+        </div>
     </div>
 
 </section>

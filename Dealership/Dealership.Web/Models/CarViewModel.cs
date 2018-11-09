@@ -38,6 +38,7 @@ namespace Dealership.Web.Models
             this.FuelTypeId = car.FuelTypeId;
             this.FuelType = car.FuelType.Name;
             this.ImagesUrl = car.Images.Select(i => i.ImageName).ToList();
+            this.CarsExtras = car.CarsExtras.Select(ce => ce.Extra.Name);
         }
 
         public int Id { get; set; }

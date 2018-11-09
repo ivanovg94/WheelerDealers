@@ -52,7 +52,7 @@ namespace Dealership.Services
                 secondNewValue = parameters[2];
             }
 
-            var car = await this.carService.GetCar(id);
+            var car = await this.carService.GetCarAsync(id);
 
             Brand newBrand = this.context.Brands.FirstOrDefault(b => b.Name == newValue);
             car.Brand = newBrand ?? throw new InvalidOperationException();
@@ -76,7 +76,7 @@ namespace Dealership.Services
             }
             var newValue = parameters[1];
 
-            var car = await this.carService.GetCar(id);
+            var car = await this.carService.GetCarAsync(id);
 
             var model = car.Brand.CarModels.FirstOrDefault(m => m.Name == newValue);
             if (model == null)
@@ -107,7 +107,7 @@ namespace Dealership.Services
             }
             var newValue = parameters[1];
 
-            var car = await this.carService.GetCar(id);
+            var car = await this.carService.GetCarAsync(id);
             car.HorsePower = short.Parse(newValue);
 
             this.context.Cars.Update(car);
@@ -130,7 +130,7 @@ namespace Dealership.Services
 
             var newValue = parameters[1];
 
-            var car = await this.carService.GetCar(id);
+            var car = await this.carService.GetCarAsync(id);
             car.EngineCapacity = short.Parse(newValue);
 
             this.context.Cars.Update(car);
@@ -153,7 +153,7 @@ namespace Dealership.Services
 
             var newValue = parameters[1];
 
-            var car = await this.carService.GetCar(id);
+            var car = await this.carService.GetCarAsync(id);
             car.IsSold = bool.Parse(newValue);
 
             this.context.Cars.Update(car);
@@ -175,7 +175,7 @@ namespace Dealership.Services
             }
             var newValue = parameters[1];
 
-            var car = await this.carService.GetCar(id);
+            var car = await this.carService.GetCarAsync(id);
             car.Price = decimal.Parse(newValue);
 
             this.context.Cars.Update(car);
@@ -200,7 +200,7 @@ namespace Dealership.Services
             {
                 throw new ArgumentException("Invalid mileage value!");
             }
-            var car = await this.carService.GetCar(id);
+            var car = await this.carService.GetCarAsync(id);
             car.Mileage = newValue;
 
             this.context.Cars.Update(car);
@@ -222,7 +222,7 @@ namespace Dealership.Services
             }
             var newValue = parameters[1];
 
-            var car = await this.carService.GetCar(id);
+            var car = await this.carService.GetCarAsync(id);
             car.ProductionDate = DateTime.Parse(newValue);
 
             this.context.Cars.Update(car);
@@ -251,7 +251,7 @@ namespace Dealership.Services
                 throw new ArgumentException("Invalid body type!");
             }
 
-            var car = await this.carService.GetCar(id);
+            var car = await this.carService.GetCarAsync(id);
             car.BodyType = newBodyType;
 
             this.context.Cars.Update(car);
@@ -282,7 +282,7 @@ namespace Dealership.Services
             {
                 newColorTypeName = parameters[2];
             }
-            var car = await this.carService.GetCar(id);
+            var car = await this.carService.GetCarAsync(id);
 
             var newType = this.context.ColorTypes.FirstOrDefault(gt => gt.Name == newColorTypeName);
             if (newType == null)
@@ -328,7 +328,7 @@ namespace Dealership.Services
             }
             var newValue = parameters[1];
 
-            var car = await this.carService.GetCar(id);
+            var car = await this.carService.GetCarAsync(id);
             var colorName = car.Color.Name;
             var newColorType = this.context.ColorTypes.FirstOrDefault(ct => ct.Name == newValue);
             if (newColorType == null) { throw new ArgumentNullException("Color type not exist!"); }
@@ -370,7 +370,7 @@ namespace Dealership.Services
             }
             var newValue = parameters[1];
 
-            var car = await this.carService.GetCar(id);
+            var car = await this.carService.GetCarAsync(id);
 
             var newFuelType = this.context.FuelTypes.FirstOrDefault(ft => ft.Name == newValue);
 
@@ -406,7 +406,7 @@ namespace Dealership.Services
             }
             var newValue = parameters[1];
 
-            var car = await this.carService.GetCar(id);
+            var car = await this.carService.GetCarAsync(id);
 
             GearType newGearType = this.context.GearTypes.First(gt => gt.Name == newValue);
 

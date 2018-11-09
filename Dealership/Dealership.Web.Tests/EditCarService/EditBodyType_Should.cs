@@ -43,11 +43,12 @@ namespace Dealership.Web.Tests.EditCarService
                 dealerShipContext.Cars.Add(testCar);
                 dealerShipContext.BodyTypes.Add(testBody).Context.SaveChanges();
 
-                var carServiceStub = new Services.CarService(dealerShipContext);
-                
-                var editCarService = new Services.EditCarService(dealerShipContext, carServiceStub);
 
-                result = await editCarService.EditBodyType(validParameters);
+                carServiceStub.Setup(cs => cs.GetCarAsync(1)).Returns(testCar);
+
+                var editCarService = new Services.EditCarService(dealerShipContext, carServiceStub.Object);
+
+                result = editCarService.EditBodyType(validParameters);
             }
 
             Assert.IsTrue(result.Contains("edited"));

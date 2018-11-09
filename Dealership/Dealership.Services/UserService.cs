@@ -29,7 +29,7 @@ namespace Dealership.Services
 
         public async Task<Car> AddCarToFavorites(int carId, User user)
         {
-            Car car = await this.carService.GetCar(carId);
+            Car car = await this.carService.GetCarAsync(carId);
 
             var isCarFavorite = IsCarFavorite(carId, user);
 
@@ -46,7 +46,7 @@ namespace Dealership.Services
 
         public async Task<Car> RemoveCarFromFavorites(int carId, User user)
         {
-            Car car = await this.carService.GetCar(carId);
+            Car car = await this.carService.GetCarAsync(carId);
 
             var usersCars = this.dealershipContext.UsersCars.FirstOrDefault(uc => uc.CarId == carId && uc.User == user);
 
@@ -73,7 +73,7 @@ namespace Dealership.Services
             {
                 if (uc.IsDeleted == false)
                 {
-                    var car = await this.carService.GetCar(uc.CarId);
+                    var car = await this.carService.GetCarAsync(uc.CarId);
                     cars.Add(car);
                 }
             }
