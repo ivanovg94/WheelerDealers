@@ -1,4 +1,5 @@
-﻿body {
+﻿
+body {
     /*background-color: silver;*/
     /*background-image: url(../images/pattern.svg);*/
     background-size: cover;
@@ -71,7 +72,6 @@ html {
     width: 120px;
 }
 
-
 @media print {
     .noprint {
         display: none;
@@ -93,4 +93,13 @@ html {
 .btn-over-homebox:hover {
     background-color: white;
     color: black;
+}
+
+#extraList{
+    padding:0;
+    margin:0;
+}
+
+.default-image{
+    width:600px;
 }

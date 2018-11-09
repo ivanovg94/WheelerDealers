@@ -4,7 +4,7 @@
 }
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 
-<h2>Car details</h2>
+<h2>Car Details</h2>
 
 @await Html.PartialAsync("_StatusMessage", Model.StatusMessage)
 
@@ -77,7 +77,17 @@
                 <div class="col-sm-3">Color type</div>
                 <div class="col-sm-3">@Model.ColorType</div>
             </div>
-
+            <div class="row">
+                <div class="col-sm-3">Extras</div>
+                <div class="col-sm-3">
+                    <ul id="extraList">
+                        @foreach (var extra in Model.CarsExtras)
+                        {
+                            <li>@extra</li>
+                        }
+                    </ul>
+                </div>
+            </div>
             <div class="hidden-print">
                 @if (User.Identity.IsAuthenticated)
                 {

@@ -68,6 +68,26 @@ namespace Dealership.Services
             return extra;
         }
 
+        public void AddExtrasToCar(Car car, ICollection<Extra> extras)
+        {
+            foreach (var extra in extras)
+            {
+                //if (this.context.Cars
+                //                .Include(c => c.CarsExtras)
+                //                  .ThenInclude(ce => ce.Extra)
+                //                .FirstOrDefault(c => c == car)
+                //                .CarsExtras.Any(ce => ce.Extra == extra))
+                //{
+                //    throw new ArgumentException($"Car with Id {car.Id} already has extra with name {extra.Name}.");
+                //}
+
+                var newCarExtra = new CarsExtras() { CarId = car.Id, ExtraId = extra.Id };
+                this.context.CarsExtras.Add(newCarExtra);
+            }
+
+            this.context.SaveChanges();
+        }
+
         public Extra GetExtraById(int id)
         {
             return this.context.Extras.FirstOrDefault(x => x.Id == id);

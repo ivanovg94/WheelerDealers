@@ -14,15 +14,17 @@ namespace Dealership.Services
     public class CarService : ICarService
     {
         private readonly DealershipContext context;
+        private readonly IExtraService extraService;
 
-        public CarService(DealershipContext context)
+        public CarService(DealershipContext context, IExtraService extraService)
         {
             this.context = context;
+            this.extraService = extraService;
         }
 
         public Car CreateCar(int brandId, int carModelId, int mileage, short horsePower,
             short engineCapacity, DateTime productionDate, decimal price, int bodyTypeId,
-            string colorName, int colorTypeId, int fuelTypeId, int gearBoxTypeId, byte numberOfGears)
+            string colorName, int colorTypeId, int fuelTypeId, int gearBoxTypeId, byte numberOfGears, ICollection<Extra> extras)
         {
 
             var color = this.context.Colors
@@ -66,9 +68,19 @@ namespace Dealership.Services
                 ColorId = color.Id,
                 FuelTypeId = fuelTypeId,
                 GearBox = gearbox,
-                GearBoxId = gearbox.Id
+                GearBoxId = gearbox.Id,               
             };
 
+            this.context.Cars.Add(newCar);
+
+            foreach (var extra in extras)
+            {
+                var newCarExtra = new CarsExtras() { Car = newCar, ExtraId = extra.Id };
+                this.context.CarsExtras.Add(newCarExtra);
+            }
+
+            this.context.SaveChanges();
+            // extraService.AddExtrasToCar(newCar, extras);
             return newCar;
         }
 

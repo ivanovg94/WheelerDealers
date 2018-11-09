@@ -1,4 +1,5 @@
-﻿using Dealership.Services.Abstract;
+﻿using Dealership.Data.Models;
+using Dealership.Services.Abstract;
 using Dealership.Web.Areas.Admin.Models;
 using Dealership.Web.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -124,6 +126,8 @@ namespace Dealership.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult CreateCar()
         {
+            var allExtras = this.extraService.GetAllExtras();
+
             var model = new EditCarViewModel
             {
                 Brands = this.brandService.GetBrands()
@@ -150,7 +154,14 @@ namespace Dealership.Web.Areas.Admin.Controllers
                 Car = new CarViewModel()
                 {
                     StatusMessage = this.StatusMessage
-                }
+                },
+
+                Extras = allExtras.Select(e => new ExtraCheckBox
+                {
+                    Id = e.Id,
+                    Name = e.Name,
+                    Selected = false
+                }).ToArray()             
             };
 
             return this.View(model);
@@ -160,14 +171,21 @@ namespace Dealership.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult CreateCar(EditCarViewModel model)
         {
+            var extrasIds = model.Extras.Where(e => e.Selected == true).Select(e => e.Id).ToList();
+            var extras = new List<Extra>();
+
+            foreach (var id in extrasIds)
+            {
+                var extra = extraService.GetExtraById(id);
+                extras.Add(extra);
+            }
+
             var car = this.carService.CreateCar(
                            model.Car.BrandId, model.Car.CarModelId, model.Car.Mileage, model.Car.HorsePower,
                            model.Car.EngineCapacity, model.Car.ProductionDate, model.Car.Price,
                            model.Car.BodyTypeId, model.Car.Color, model.Car.ColorTypeId, model.Car.FuelTypeId,
-                           model.Car.GearBoxTypeId, model.Car.NumberOfGears);
-
-            this.carService.AddCar(car);
-
+                           model.Car.GearBoxTypeId, model.Car.NumberOfGears, extras);
+          
             if (model.Images != null)
             {
                 foreach (var image in model.Images)
