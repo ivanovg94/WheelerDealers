@@ -57,7 +57,7 @@ namespace Dealership.Web.Controllers
             return View(list);
 
         }
-
+        
         [HttpGet]
         public async Task<IActionResult> Browse(int page)
         {

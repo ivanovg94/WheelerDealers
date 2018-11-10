@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dealership.Data.Migrations
 {
     [DbContext(typeof(DealershipContext))]
-    [Migration("20181107105155_MultipleImages")]
-    partial class MultipleImages
+    [Migration("20181110133819_RolesFixInitial")]
+    partial class RolesFixInitial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

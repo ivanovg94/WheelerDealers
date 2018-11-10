@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Dealership.Data.Migrations
 {
-    public partial class MultipleImages : Migration
+    public partial class RolesFixInitial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

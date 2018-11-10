@@ -1,11 +1,9 @@
 ﻿using Dealership.Data.Context;
 using Dealership.Data.Models;
 using Dealership.Services.Abstract;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Dealership.Services
 {
@@ -29,9 +27,9 @@ namespace Dealership.Services
             return bodyType;
         }
 
-        public async Task<BodyType> GetBodyType(int id)
+        public BodyType GetBodyType(int id)
         {
-            var bodyType = await context.BodyTypes.FirstOrDefaultAsync(x => x.Id == id);
+            var bodyType = this.context.BodyTypes.FirstOrDefault(b => b.Id == id);
             if (bodyType == null)
             {
                 throw new InvalidOperationException($"There is no body type with id {id}.");
