@@ -25,6 +25,6 @@ namespace Dealership.Services.Abstract
 
         Car Update(Car car);
 
-        Task SaveImages(string root, IList<string> fileNames, IList<Stream> stream, int carId);
+        void SaveImages(string root, IList<string> fileNames, IList<Stream> stream, int carId);
     }
 }

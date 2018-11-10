@@ -7,7 +7,6 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Dealership.Web.Tests.EditCarService
 {
@@ -15,7 +14,7 @@ namespace Dealership.Web.Tests.EditCarService
     public class EditHorsePower_Should
     {
         [TestMethod]
-        public async Task ThrowArgumentException_WhenEmptyParametersArePassed()
+        public void ThrowArgumentException_WhenEmptyParametersArePassed()
         {
             var contextOptions = new DbContextOptionsBuilder<DealershipContext>()
                             .UseInMemoryDatabase(databaseName:
@@ -30,11 +29,11 @@ namespace Dealership.Web.Tests.EditCarService
                 sut = new Dealership.Services.EditCarService(dealershipContext, carServiceStub.Object);
             }
 
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await sut.EditHorsePower(invalidParameters));
+            Assert.ThrowsException<ArgumentNullException>(() => sut.EditHorsePower(invalidParameters));
         }
 
         [TestMethod]
-        public async Task ThrowArgumentNullException_WhenNullValueIsPassed()
+        public void ThrowArgumentNullException_WhenNullValueIsPassed()
         {
             var contextOptions = new DbContextOptionsBuilder<DealershipContext>()
                              .UseInMemoryDatabase(databaseName:
@@ -49,11 +48,11 @@ namespace Dealership.Web.Tests.EditCarService
                 sut = new Dealership.Services.EditCarService(dealershipContext, carServiceStub.Object);
             }
 
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await sut.EditHorsePower(invalidParameters));
+            Assert.ThrowsException<ArgumentNullException>(() => sut.EditHorsePower(invalidParameters));
         }
 
         [TestMethod]
-        public async Task ThowArgumentException_WhenInvalidIDIsPassed()
+        public void ThowArgumentException_WhenInvalidIDIsPassed()
         {
 
             var contextOptions = new DbContextOptionsBuilder<DealershipContext>()
@@ -65,15 +64,15 @@ namespace Dealership.Web.Tests.EditCarService
 
             using (var dealershipContext = new DealershipContext(contextOptions))
             {
-                var carServiceStub = new Services.CarService(dealershipContext);
+                var carServiceStub = new Mock<ICarService>();
 
-                sut = new Services.EditCarService(dealershipContext, carServiceStub);
+                sut = new Services.EditCarService(dealershipContext, carServiceStub.Object);
             }
-            await Assert.ThrowsExceptionAsync<ArgumentException>(async () => await sut.EditHorsePower(validParameters));
+            Assert.ThrowsException<ArgumentException>(() => sut.EditHorsePower(validParameters));
         }
 
         [TestMethod]
-        public async void EditHorsePowerValueCorrectly_WhenValidParametersArePassed()
+        public void EditHorsePowerValueCorrectly_WhenValidParametersArePassed()
         {
 
 
@@ -90,18 +89,19 @@ namespace Dealership.Web.Tests.EditCarService
             var contextOptions = new DbContextOptionsBuilder<DealershipContext>()
                .UseInMemoryDatabase(databaseName:
                "EditModelCorrectly_WhenValidParametersArePassed").Options;
-
+            
             string result;
 
             using (var dealershipContext = new DealershipContext(contextOptions))
             {
                 dealershipContext.Cars.Add(testCar).Context.SaveChanges();
 
-                var carService = new Services.CarService(dealershipContext);
+                var carService = new Mock<ICarService>();
+                carService.Setup(x => x.GetCarAsync(1)).Returns(testCar);
 
-                var sut = new Services.EditCarService(dealershipContext, carService);
+                var sut = new Services.EditCarService(dealershipContext, carService.Object);
 
-                result = await sut.EditHorsePower(validParameters);
+                result = sut.EditHorsePower(validParameters);
             }
             //assert    
             Assert.IsTrue(result.Contains("edited"));

@@ -92,6 +92,7 @@ namespace Dealership.Web
             services.AddTransient<IExtraService, ExtraService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IModelService, ModelService>();
+
         }
 
         private void RegisterAuthentication(IServiceCollection services)

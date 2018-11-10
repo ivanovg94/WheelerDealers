@@ -122,7 +122,7 @@ namespace Dealership.Web.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddCar()
+        public IActionResult CreateCar()
         {
             var allExtras = this.extraService.GetAllExtras();
 
@@ -167,7 +167,7 @@ namespace Dealership.Web.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddCar(EditCarViewModel model)
+        public IActionResult CreateCar(EditCarViewModel model)
         {
             var extrasIds = model.Extras.Where(e => e.Selected == true).Select(e => e.Id).ToList();
             var car = this.carService.AddCar(
@@ -183,7 +183,7 @@ namespace Dealership.Web.Areas.Admin.Controllers
                     if (!this.IsValidImage(image))
                     {
                         this.StatusMessage = "Error: Please provide a.jpg or .png file smaller than 5MB";
-                        return this.RedirectToAction(nameof(AddCar));
+                        return this.RedirectToAction(nameof(CreateCar));
                     }
                 }
 
@@ -248,7 +248,7 @@ namespace Dealership.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(EditCarViewModel model)
         {
-           var car = EditCar(model.Car, model.Extras);
+            EditCar(model.Car, model.Extras);
 
             return RedirectToAction("Details", "Car", new { area = "", model.Car.Id });
         }
@@ -256,11 +256,11 @@ namespace Dealership.Web.Areas.Admin.Controllers
         //method
         //TODO: Mileage doesn't change... Move this method to carService
 
-        public async Task<Car> EditCar(CarViewModel model, IEnumerable<ExtraCheckBox> extrasCB)
+        public void EditCar(CarViewModel model, IEnumerable<ExtraCheckBox> extrasCB)
         {
             var realCar = carService.GetCarAsync(model.Id).Result;
 
-            var newBody = await bodyTypeService.GetBodyType(model.BodyTypeId);
+            var newBody = bodyTypeService.GetBodyType(model.BodyTypeId);
             var newBrand = brandService.GetBrand(model.BrandId);
             var newModel = brandService.GetModeldOfBrand(model.BrandId, model.CarModelId);
 
@@ -304,7 +304,6 @@ namespace Dealership.Web.Areas.Admin.Controllers
             this.extraService.AddExtrasToCar(realCar, extrasIdsToAdd);
 
             carService.Update(realCar);
-            return realCar;
         }
 
         [HttpGet]
@@ -312,7 +311,7 @@ namespace Dealership.Web.Areas.Admin.Controllers
         {
             if (confirm)
             {
-                var removedCar = carService.RemoveCar(id);
+                var removedCar = carService.RemoveCar(id).Result;
             }
             return RedirectToAction("Browse", "Car", new { area = "" });
         }

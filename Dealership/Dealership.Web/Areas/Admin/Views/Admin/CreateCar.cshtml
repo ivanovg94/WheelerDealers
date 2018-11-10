@@ -1,7 +1,7 @@
 ﻿@model Dealership.Web.Models.EditCarViewModel
 
 @{
-    ViewData["Title"] = "AddCar";
+    ViewData["Title"] = "CreateCar";
 }
 
 <h2>Add a car</h2>
@@ -9,7 +9,7 @@
 <div class="container">
     <partial name="_StatusMessage" model="@Model.Car.StatusMessage" />
     <div class="col-sm-4">
-        <form asp-area="Admin" asp-controller="Admin" asp-action="AddCar" method="post" enctype="multipart/form-data">
+        <form asp-area="Admin" asp-controller="Admin" asp-action="CreateCar" method="post" enctype="multipart/form-data">
 
             <partial name="_EditCarPartial" model="@Model" />
 

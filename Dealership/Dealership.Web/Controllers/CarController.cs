@@ -2,10 +2,14 @@
 using Dealership.Services.Abstract;
 using Dealership.Web.Models;
 using Dealership.Web.Models.CarViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -53,7 +57,7 @@ namespace Dealership.Web.Controllers
             return View(list);
 
         }
-
+        
         [HttpGet]
         public async Task<IActionResult> Browse(int page)
         {
@@ -117,7 +121,7 @@ namespace Dealership.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var car = await this.carService.GetCarAsync(id);
+            var car =await this.carService.GetCarAsync(id);
             var user = this.userManager.GetUserAsync(HttpContext.User).Result;
             CarViewModel model;
             if (user == null)
@@ -135,6 +139,7 @@ namespace Dealership.Web.Controllers
                     StatusMessage = this.StatusMessage
                 };
             }
+
 
             return this.View(model);
         }

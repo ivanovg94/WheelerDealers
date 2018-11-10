@@ -74,7 +74,7 @@ namespace Dealership.Web.Tests.EditCarService
         }
 
         [TestMethod]
-        public async void EditBrandCorrectly_WhenValidParametersArePassed()
+        public void EditBrandCorrectly_WhenValidParametersArePassed()
         {
             //arrange
             var contextOptions = new DbContextOptionsBuilder<DealershipContext>()
@@ -96,11 +96,13 @@ namespace Dealership.Web.Tests.EditCarService
 
                 testCar = new Car() { Brand = testBrand, CarModel = carModel };
                 dealerShipContext.Cars.Add(testCar).Context.SaveChanges();
-                var carServiceStub = new Services.CarService(dealerShipContext);
-                var editCarService = new Services.EditCarService(dealerShipContext, carServiceStub);
-                
+                var carServiceStub = new Mock<ICarService>();
 
-                result = await editCarService.EditBrand(validParameters);
+                carServiceStub.Setup(cs => cs.GetCarAsync(1)).Returns(testCar);
+
+                var editCarService = new Services.EditCarService(dealerShipContext, carServiceStub.Object);
+
+                result = editCarService.EditBrand(validParameters);
             }
 
             Assert.IsTrue(result.Contains("edited"));
@@ -131,14 +133,16 @@ namespace Dealership.Web.Tests.EditCarService
 
                 testCar = new Car() { Brand = testBrand, CarModel = carModel };
                 dealerShipContext.Cars.Add(testCar).Context.SaveChanges();
-                
-                
+                var carServiceStub = new Mock<ICarService>();
+
+                carServiceStub.Setup(cs => cs.GetCarAsync(1)).Returns(testCar);
+
             }
 
             using (var dealerShipContext = new DealershipContext(contextOptions))
             {
-                var carServiceStub = new Services.CarService(dealerShipContext);
-                sut = new Services.EditCarService(dealerShipContext, carServiceStub);
+                var carServiceStub = new Mock<ICarService>();
+                sut = new Services.EditCarService(dealerShipContext, carServiceStub.Object);
                 Assert.ThrowsException<InvalidOperationException>(() => sut.EditBrand(validParameters));
             }
         }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using System.IO;
 
 namespace Dealership.Web
 {
@@ -12,8 +11,8 @@ namespace Dealership.Web
         }
 
         public static IWebHost BuildWebHost(string[] args) =>
-             WebHost.CreateDefaultBuilder(args)
-                 .UseStartup<Startup>()
-                 .Build();
+            WebHost.CreateDefaultBuilder(args)
+                .UseStartup<Startup>()
+                .Build();
     }
 }

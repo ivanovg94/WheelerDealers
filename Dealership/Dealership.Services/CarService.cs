@@ -1,4 +1,4 @@
-using Dealership.Data.Context;
+﻿using Dealership.Data.Context;
 using Dealership.Data.Models;
 using Dealership.Data.Models.Contracts;
 using Dealership.Services.Abstract;
@@ -15,14 +15,16 @@ namespace Dealership.Services
     public class CarService : ICarService
     {
         private readonly DealershipContext context;
+        private readonly IExtraService extraService;
 
-        public CarService(DealershipContext context)
+        public CarService(DealershipContext context, IExtraService extraService)
         {
             if (context == null)
             {
                 throw new ArgumentNullException("Context cannot be null!");
             }
             this.context = context;
+            this.extraService = extraService;
         }
 
         public Car AddCar(int brandId, int carModelId, int mileage, short horsePower,
@@ -40,11 +42,7 @@ namespace Dealership.Services
 
             if (color == null)
             {
-                color = new Color
-                {
-                    Name = colorName,
-                    ColorType = colorTypeFromDatabase
-                };
+                color = new Color { Name = colorName, ColorType = colorTypeFromDatabase };
                 this.context.Colors.Add(color);
                 this.context.SaveChanges();
             }
@@ -75,60 +73,18 @@ namespace Dealership.Services
                 ColorId = color.Id,
                 FuelTypeId = fuelTypeId,
                 GearBox = gearbox,
-                GearBoxId = gearbox.Id
+                GearBoxId = gearbox.Id,               
             };
 
             this.context.Cars.Add(newCar);
-            this.context.SaveChanges();
+            this.extraService.AddExtrasToCar(newCar, extrasIds);
 
+            this.context.SaveChanges();
             return newCar;
-        }
-
-
-        public Car AddCar(Car car)
-        {
-            if (car == null)
-            {
-                throw new ServiceException("Car doesn't exist!");
-            }
-            car = this.context.Cars.Add(car).Entity;
-            this.context.SaveChanges();
-
-            return car;
-        }
-
-        public void AddCars(ICollection<Car> cars)
-        {
-            foreach (var car in cars)
-            {
-                if (car != null)
-
-                {
-                    this.context.Cars.Add(car);
-                }
-            }
-            this.context.SaveChanges();
         }
 
         public async Task<IList<Car>> GetCarsAsync(int skip, int take)
         {
-            //var querry = this.context.Cars
-            //                                .Skip(skip)
-            //                                .Take(take)
-            //                                .Include(c => c.Brand)
-            //                                .Include(c => c.CarModel)
-            //                                .Include(c => c.CarsExtras)
-            //                                     .ThenInclude(ce => ce.Extra)
-            //                                .Include(c => c.BodyType)
-            //                                .Include(c => c.Color)
-            //                                    .ThenInclude(co => co.ColorType)
-            //                                .Include(c => c.FuelType)
-            //                                .Include(c => c.GearBox)
-            //                                    .ThenInclude(gb => gb.GearType)
-            //                                .Include(c => c.Images);
-
-            //return querry.ToList();
-
             return await this.context.Cars
                                             .Skip(skip)
                                             .Take(take)
@@ -143,8 +99,6 @@ namespace Dealership.Services
                                             .Include(c => c.GearBox)
                                                 .ThenInclude(gb => gb.GearType)
                                             .Include(c => c.Images).ToListAsync();
-
-
         }
 
         public async Task<IList<Car>> GetCarsAsync()
@@ -161,23 +115,21 @@ namespace Dealership.Services
                                  .Include(c => c.GearBox)
                                      .ThenInclude(gb => gb.GearType)
                                  .Include(c => c.Images).ToListAsync();
-
         }
 
         public async Task<Car> GetCarAsync(int id)
         {
-
             var car = await context.Cars.Include(c => c.Brand)
-                                 .Include(c => c.CarModel)
-                                 .Include(c => c.CarsExtras)
-                                      .ThenInclude(ce => ce.Extra)
-                                 .Include(c => c.BodyType)
-                                 .Include(c => c.Color)
-                                     .ThenInclude(co => co.ColorType)
-                                 .Include(c => c.FuelType)
-                                 .Include(c => c.GearBox)
-                                     .ThenInclude(gb => gb.GearType)
-                                 .Include(c => c.Images).FirstOrDefaultAsync(x => x.Id == id);
+                                .Include(c => c.CarModel)
+                                .Include(c => c.CarsExtras)
+                                     .ThenInclude(ce => ce.Extra)
+                                .Include(c => c.BodyType)
+                                .Include(c => c.Color)
+                                    .ThenInclude(co => co.ColorType)
+                                .Include(c => c.FuelType)
+                                .Include(c => c.GearBox)
+                                    .ThenInclude(gb => gb.GearType)
+                                .Include(c => c.Images).FirstOrDefaultAsync(x => x.Id == id);
             return car;
         }
 
@@ -213,12 +165,13 @@ namespace Dealership.Services
         {
             this.context.Cars.Update(car);
             this.context.SaveChanges();
+
             return car;
         }
 
-        public async Task SaveImages(string root, IList<string> fileNames, IList<Stream> stream, int carId)
+        public void SaveImages(string root, IList<string> fileNames, IList<Stream> stream, int carId)
         {
-            var car = await GetCarAsync(carId);
+            var car = GetCarAsync(carId).Result;
 
             if (car == null)
             {
@@ -248,3 +201,4 @@ namespace Dealership.Services
         }
     }
 }
+

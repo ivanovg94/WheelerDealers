@@ -15,23 +15,23 @@ namespace Dealership.Web.Tests.CarService
     [TestClass]
     public class AddCar_Should
     {
-        //[TestMethod]
-        //public void ThrowServiceExcpetion_WhenNullArgumentIsPassed()
-        //{
-        //    //arrange
-        //    var contextOptions = new DbContextOptionsBuilder<DealershipContext>()
-        //      .UseInMemoryDatabase(databaseName:
-        //      "EditModelCorrectly_WhenValidParametersArePassed").Options;
+        [TestMethod]
+        public void ThrowServiceExcpetion_WhenNullArgumentIsPassed()
+        {
+            //arrange
+            var contextOptions = new DbContextOptionsBuilder<DealershipContext>()
+              .UseInMemoryDatabase(databaseName:
+              "EditModelCorrectly_WhenValidParametersArePassed").Options;
 
-        //    ICarService sut;
-        //    using (var dealershipContext = new DealershipContext(contextOptions))
-        //    {
-        //        sut = new Services.CarService(dealershipContext);
-        //    }
-        //    //act
-        //    //assert
-        //    Assert.ThrowsException<ServiceException>(() => sut.AddCar(0,0,0,0,0,DateTime.Now,0,0,null,0,0,0,0,null));
-        //}
+            ICarService sut;
+            using (var dealershipContext = new DealershipContext(contextOptions))
+            {
+                sut = new Services.CarService(dealershipContext);
+            }
+            //act
+            //assert
+            Assert.ThrowsException<ServiceException>(() => sut.AddCar(null));
+        }
 
         [TestMethod]
         public void AddCarToDatabase_WhenValidParametersArePassed()

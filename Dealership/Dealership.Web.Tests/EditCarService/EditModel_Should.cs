@@ -7,7 +7,6 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Dealership.Web.Tests.EditCarService
 {
@@ -15,7 +14,7 @@ namespace Dealership.Web.Tests.EditCarService
     public class EditModel_Should
     {
         [TestMethod]
-        public async Task ThrowArgumentNullException_WhenNullArgumentIsPassed()
+        public void ThrowArgumentNullException_WhenNullArgumentIsPassed()
         {
             //arrange
 
@@ -31,10 +30,10 @@ namespace Dealership.Web.Tests.EditCarService
             }
 
             //act&assert
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await sut.EditModel(null));
+            Assert.ThrowsException<ArgumentNullException>(() => sut.EditModel(null));
         }
         [TestMethod]
-        public async Task ThrowArgumentNullException_WhenNoArgumentArePassed()
+        public void ThrowArgumentNullException_WhenNoArgumentArePassed()
         {
             //arrange
             var contextOptions = new DbContextOptionsBuilder<DealershipContext>()
@@ -50,11 +49,11 @@ namespace Dealership.Web.Tests.EditCarService
             }
 
             //act&assert
-            await Assert.ThrowsExceptionAsync<ArgumentException>(async () => await sut.EditModel(emptyArray));
+            Assert.ThrowsException<ArgumentException>(() => sut.EditModel(emptyArray));
         }
 
         [TestMethod]
-        public async void EditModelCorrectly_WhenValidParametersArePassed()
+        public void EditModelCorrectly_WhenValidParametersArePassed()
         {
             var testCar = new Car()
             {
@@ -68,16 +67,17 @@ namespace Dealership.Web.Tests.EditCarService
             var contextOptions = new DbContextOptionsBuilder<DealershipContext>()
                .UseInMemoryDatabase(databaseName:
                "EditModelCorrectly_WhenValidParametersArePassed").Options;
-
+            
             using (var dealershipContext = new DealershipContext(contextOptions))
             {
                 dealershipContext.Cars.Add(testCar).Context.SaveChanges();
 
-                var carService = new Services.CarService(dealershipContext);
+                var carService = new Mock<ICarService>();
+                carService.Setup(x => x.GetCarAsync(1)).Returns(testCar);
 
-                var sut = new Services.EditCarService(dealershipContext, carService);
+                var sut = new Services.EditCarService(dealershipContext, carService.Object);
 
-                result = await sut.EditModel(validParameters);
+                result = sut.EditModel(validParameters);
             }
             //assert    
             Assert.IsTrue(result.Contains("edited"));
