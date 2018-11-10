@@ -1,6 +1,5 @@
 ﻿using Dealership.Data.Context;
 using Dealership.Data.Models;
-using Dealership.Data.Models.Contracts;
 using Dealership.Services.Abstract;
 using Dealership.Services.Exceptions;
 using Microsoft.EntityFrameworkCore;
@@ -73,7 +72,7 @@ namespace Dealership.Services
                 ColorId = color.Id,
                 FuelTypeId = fuelTypeId,
                 GearBox = gearbox,
-                GearBoxId = gearbox.Id,               
+                GearBoxId = gearbox.Id,
             };
 
             this.context.Cars.Add(newCar);
