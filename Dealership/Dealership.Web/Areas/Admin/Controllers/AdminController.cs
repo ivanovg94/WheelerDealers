@@ -50,13 +50,6 @@ namespace Dealership.Web.Areas.Admin.Controllers
         public string StatusMessage { get; set; }
 
         [HttpGet]
-        public IActionResult Index()
-        {
-            var vm = new UsersViewModel();
-            return View(vm);
-        }
-
-        [HttpGet]
         public IActionResult AddFeatures()
         {
             var model = new AddViewModel()
@@ -93,16 +86,16 @@ namespace Dealership.Web.Areas.Admin.Controllers
             return RedirectToAction("AddFeatures");
         }
 
-        [HttpGet]
-        public IActionResult AddModel()
-        {
-            var model = new ModelViewModel()
-            {
-                Brands = this.brandService.GetBrands()
-               .Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList()
-            };
-            return RedirectToAction("AddFeatures");
-        }
+        //[HttpGet]
+        //public IActionResult AddModel()
+        //{
+        //    var model = new ModelViewModel()
+        //    {
+        //        Brands = this.brandService.GetBrands()
+        //       .Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList()
+        //    };
+        //    return RedirectToAction("AddFeatures");
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -115,11 +108,6 @@ namespace Dealership.Web.Areas.Admin.Controllers
             return RedirectToAction("AddFeatures");
         }
 
-        [HttpGet]
-        public IActionResult ManageCars()
-        {
-            return RedirectToAction("Browse", "Car", new { area = "" });
-        }
 
         [HttpGet]
         public IActionResult CreateCar()
