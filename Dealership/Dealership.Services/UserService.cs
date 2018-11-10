@@ -1,11 +1,9 @@
 ﻿using Dealership.Data.Context;
 using Dealership.Data.Models;
 using Dealership.Services.Abstract;
-using Dealership.Services.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Dealership.Services
 {
@@ -27,40 +25,38 @@ namespace Dealership.Services
             return users;
         }
 
-        public async Task<Car> AddCarToFavorites(int carId, User user)
+        public Car AddCarToFavorites(int carId, User user)
         {
-            Car car = await this.carService.GetCarAsync(carId);
+            Car car = this.carService.GetCarAsync(carId).Result;
 
             var isCarFavorite = IsCarFavorite(carId, user);
 
-            if (isCarFavorite)
+            if (!isCarFavorite)
             {
-                throw new ServiceException("This car is already added to favorites.");
+                var newUserCar = new UsersCars() { CarId = carId, User = user };
+                this.dealershipContext.UsersCars.Add(newUserCar);
+                this.dealershipContext.SaveChanges();
             }
 
-            var newUserCar = new UsersCars() { CarId = carId, User = user };
-            this.dealershipContext.UsersCars.Add(newUserCar);
-            this.dealershipContext.SaveChanges();
             return car;
         }
 
-        public async Task<Car> RemoveCarFromFavorites(int carId, User user)
+        public Car RemoveCarFromFavorites(int carId, User user)
         {
-            Car car = await this.carService.GetCarAsync(carId);
+            Car car = this.carService.GetCarAsync(carId).Result;
 
             var usersCars = this.dealershipContext.UsersCars.FirstOrDefault(uc => uc.CarId == carId && uc.User == user);
 
-            if (usersCars == null)
+            if (usersCars != null)
             {
-                throw new ServiceException("This car is not added to favorites.");
+                this.dealershipContext.UsersCars.Remove(usersCars);
+                this.dealershipContext.SaveChanges();
             }
 
-            this.dealershipContext.UsersCars.Remove(usersCars);
-            this.dealershipContext.SaveChanges();
             return car;
         }
 
-        public async Task<IList<Car>> GetFavorites(User user)
+        public IList<Car> GetFavorites(User user)
         {
             var userCars = this.dealershipContext.Users
                                         .Include(u => u.UsersCars)
@@ -69,13 +65,10 @@ namespace Dealership.Services
                                         .UsersCars;
 
             var cars = new List<Car>();
-            foreach (var uc in userCars)
+            foreach (var uc in userCars.Where(uc => uc.IsDeleted == false))
             {
-                if (uc.IsDeleted == false)
-                {
-                    var car = await this.carService.GetCarAsync(uc.CarId);
-                    cars.Add(car);
-                }
+                var car = this.carService.GetCarAsync(uc.CarId).Result;
+                cars.Add(car);
             }
 
             return cars;
