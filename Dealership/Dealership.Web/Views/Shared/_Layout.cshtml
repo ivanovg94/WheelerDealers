@@ -33,10 +33,22 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    <li><a asp-area="" asp-controller="Car" asp-action="Browse">Browse</a></li>
+                    <li>
+                        <a asp-area="" asp-controller="Car" asp-action="Browse"
+                           asp-route-brandId="0"
+                           asp-route-modelId="0"
+                           asp-route-sort="0"
+                           asp-route-page="0">
+                            Browse
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="Car" asp-action="Search">
+                            Search
+                        </a>
+                    </li>
                     <li><a asp-area="" asp-controller="Car" asp-action="Create">Create</a></li>
                     <li><a asp-area="admin" asp-controller="Admin" asp-action="Index">Admin stuff</a></li>
-
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>

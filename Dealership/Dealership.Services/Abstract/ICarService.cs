@@ -1,7 +1,9 @@
-﻿using Dealership.Data.Models;
+﻿using Dealership.Data.CompositeModels;
+using Dealership.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq.Expressions;
 
 namespace Dealership.Services.Abstract
 {
@@ -18,14 +20,20 @@ namespace Dealership.Services.Abstract
 
         Car GetCar(int id);
 
-        IList<Car> GetCars(int skip, int take);
-
         Car RemoveCar(int carId);
 
-        int GetCarsCount();
+        CarSearchResult GetCarSearchResult(int brandId, int modelId, int sortKey, int page);
+
+        int GetAllCarsCount();
+
+        int GetCountWithCriteria(Expression<Func<Car, bool>> filterCriteria);
+
         void Update(Car car);
 
         void SaveImages(string root, IList<string> fileNames, IList<Stream> stream, int carId);
 
+        IList<Car> GetCars(int skip, int take, int sort);
+
+        IList<Car> GetCars(int skip, int take, Expression<Func<Car, bool>> filterCriteria, int sort);
     }
 }

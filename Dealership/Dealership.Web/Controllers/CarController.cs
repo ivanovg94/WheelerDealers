@@ -1,4 +1,6 @@
-﻿using Dealership.Services.Abstract;
+﻿using Dealership.Data.CompositeModels;
+using Dealership.Data.Models;
+using Dealership.Services.Abstract;
 using Dealership.Web.Models;
 using Dealership.Web.Models.CarViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -7,8 +9,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Dealership.Web.Controllers
 {
@@ -51,6 +55,85 @@ namespace Dealership.Web.Controllers
             return null;
         }
 
+
+        public IActionResult LoadCars(int brandId, int modelId, int sort, int page)
+        {
+            var cars = this.carService
+               .GetCarSearchResult(brandId, modelId, sort, page);
+
+            var nPerPage = 5;
+            var totalCount = cars.TotalCount;
+            var reminder = totalCount % nPerPage;
+            var pageCount = reminder != 0 ? (totalCount / nPerPage) + 1 : totalCount / nPerPage;
+
+            var summaries = this.PopulateSummaries(cars.FoundCars);
+
+            var searchResultVm = new SearchResultViewModel()
+            {
+                Summaries = summaries,
+                NumberOfPages = pageCount,
+                CurrentPage = page,
+                SelectedBrandId = brandId,
+                SelectedModelId = modelId,
+                Sort = sort
+            };
+
+            // var summaries = this.PopulateSummaries(cars.FoundCars);
+            return this.PartialView("_SearchResultPartial", searchResultVm);
+        }
+
+        public IActionResult Search(int brandId, int modelId, int sort, int page = 0)
+        {
+            var cars = this.carService.GetCarSearchResult(brandId, modelId, sort, page);
+
+            var nPerPage = 5;
+            var reminder = cars.TotalCount % nPerPage;
+            var pageCount = reminder != 0 ? (cars.TotalCount / nPerPage) + 1 : cars.TotalCount / nPerPage;
+
+            var searchVm = new SearchViewModel
+            {
+                SearchResult = new SearchResultViewModel()
+                {
+                    Summaries = this.PopulateSummaries(cars.FoundCars),
+                    NumberOfPages = pageCount,
+                    CurrentPage = 0,
+                    SelectedBrandId = brandId,
+                    SelectedModelId = modelId,
+                    Sort = sort
+                },
+
+                Brands = new List<SelectListItem>() { new SelectListItem { Value = "0", Text = "All" } },
+                CarModels = new List<SelectListItem>() { new SelectListItem { Value = "0", Text = "All" } },
+                SortCriterias = new List<SelectListItem>() {
+                     new SelectListItem { Value = "0", Text = "Published" },
+                     new SelectListItem { Value = "1", Text = "Price Ascending" },
+                     new SelectListItem { Value = "2", Text = "Price Descending" },
+                     },
+            };
+
+            searchVm.Brands.AddRange(this.brandService.GetBrands()
+                           .Select(b => new SelectListItem { Value = b.Id.ToString(), Text = b.Name }).ToList());
+
+            return this.View(searchVm);
+        }
+
+        private IEnumerable<CarSummaryViewModel> PopulateSummaries(IEnumerable<CarSummary> cars)
+        {
+            return cars.Select(c => new CarSummaryViewModel()
+            {
+                Id = c.Id,
+                Brand = c.Brand,
+                CarModel = c.CarModel,
+                Capacity = c.Capacity,
+                GearType = c.GearType,
+                Fuel = c.Fuel,
+                Color = c.Color,
+                Price = c.Price,
+                Mileage = c.Mileage,
+                ImageUrl = c.ImageUrl
+            });
+        }
+
         [HttpGet]
         public IActionResult Edit(int id)
         {
@@ -82,7 +165,6 @@ namespace Dealership.Web.Controllers
                 Car = carVm
             };
             return View(model);
-
         }
 
         [HttpPost]
@@ -148,44 +230,95 @@ namespace Dealership.Web.Controllers
 
         }
 
+
         [HttpGet]
-        public IActionResult Browse(int page)
+        public IActionResult Browse(int brandId, int modelId, int sort, int page)
         {
+            var viewModel = PopulateBrowseViewModel(brandId, modelId, sort, page);
+
+            return this.View(viewModel);
+        }
+
+
+        [HttpPost]
+        public IActionResult Browse(BrowseViewModel model)
+        {
+            return RedirectToAction("Browse", "Car",
+                new
+                {
+                    brandId = model.SelectedBrandId,
+                    modelId = model.SelectedModelId,
+                    sort = model.Sort,
+                    page = 0
+                });
+        }
+        private BrowseViewModel PopulateBrowseViewModel(int brandId, int modelId, int sort, int page)
+        {
+
+            var viewModel = new BrowseViewModel
+            {
+                Brands = new List<SelectListItem>() { new SelectListItem { Value = "0", Text = "All" } },
+
+                CarModels = new List<SelectListItem>() { new SelectListItem { Value = "0", Text = "All" } },
+                SortCriterias = new List<SelectListItem>() {
+                     new SelectListItem { Value = "0", Text = "Published" },
+                     new SelectListItem { Value = "1", Text = "Price Ascending" },
+                     new SelectListItem { Value = "2", Text = "Price Descending" },
+                     }
+            };
+            //if (viewModel.Sort == 0 &&) { viewModel.Sort = -1; }
+            if (viewModel.SelectedBrandId == 0 && brandId != 0) { viewModel.SelectedBrandId = brandId; }
+            if (viewModel.SelectedModelId == 0 && modelId != 0) { viewModel.SelectedModelId = modelId; }
+            if (viewModel.Sort == 0 && sort != 0) { viewModel.Sort = sort; }
+
             var nPerPage = 5;
             var pageCount = 0;
-            var totalCount = this.carService.GetCarsCount();
+            var totalCount = this.carService.GetAllCarsCount();
             var reminder = totalCount % nPerPage;
             if (reminder != 0) { pageCount = (totalCount / nPerPage) + 1; }
             else { pageCount = totalCount / nPerPage; }
 
-            //Expression<Func<Car, bool>> searchCriteria = (Car car) => true;
-            //searchCriteria = x => x.Brand.Name.Contains("");
+            var skip = page * nPerPage;
+            var take = nPerPage;
 
-            var model = new BrowseViewModel()
+            Expression<Func<Car, bool>> filterCriteria = (Car car) => true;
+            IList<Car> cars = new List<Car>();
+
+            filterCriteria = brandId == 0 && modelId == 0
+                ? null
+                : modelId == 0
+                      ? (c => c.BrandId == (brandId))
+                      : (Expression<Func<Car, bool>>)(c => c.BrandId == (brandId) && c.CarModelId == modelId);
+
+            cars = filterCriteria == null ?
+                this.carService.GetCars(skip, take, sort) :
+                this.carService.GetCars(skip, take, filterCriteria, sort);
+
+            viewModel.Summaries = cars
+            .Select(c => new CarSummaryViewModel(c)
             {
-                Summaries = this.carService.GetCars(page * nPerPage, nPerPage)
-                .Select(c => new CarSummaryViewModel(c)
-                {
-                    Id = c.Id,
-                    Brand = c.Brand.Name,
-                    CarModel = c.CarModel.Name,
-                    Capacity = c.EngineCapacity,
-                    GearType = c.GearBox.GearType.Name,
-                    Fuel = c.FuelType.Name,
-                    Color = c.Color.Name,
-                    Price = $"{c.Price}$",
-                    Mileage = $"{c.Mileage} miles"
-                }),
-                Pages = pageCount,
-                CurrentPage = page
-            };
-            model.Brands
+                Id = c.Id,
+                Brand = c.Brand.Name,
+                CarModel = c.CarModel.Name,
+                Capacity = c.EngineCapacity,
+                GearType = c.GearBox.GearType.Name,
+                Fuel = c.FuelType.Name,
+                Color = c.Color.Name,
+                Price = $"{c.Price}$",
+                Mileage = $"{c.Mileage} miles"
+            });
+            viewModel.NumberOfPages = pageCount;
+            viewModel.CurrentPage = page;
+            viewModel.Brands
                 .AddRange(this.brandService.GetBrands()
                 .Select(b => new SelectListItem { Value = b.Id.ToString(), Text = b.Name }).ToList());
 
-
-            var imag = model.Summaries.First().ImageUrl;
-            return this.View(model);
+            if (brandId != 0)
+            {
+                viewModel.CarModels.AddRange(this.modelService.GetAllModelsByBrandId(brandId)
+                .Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Name }).ToList());
+            }
+            return viewModel;
         }
 
         [Authorize]

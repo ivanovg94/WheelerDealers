@@ -3,57 +3,86 @@
     ViewData["Title"] = "Browse";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <h2>Search Cars</h2>
 
-<div class="container">
+<form asp-controller="Car" asp-action="Browse" method="post">
+    <div class="container">
+        <div class="col-lg-12">
+            <label class="col-lg-1 col-lg-offset-1 control-label">Brand</label>
+            <div class="col-lg-2">
+                <select asp-for="@Model.SelectedBrandId" asp-items="@Model.Brands" class="form-control brand-scriptSelect"></select>
+            </div>
+            <label class="col-lg-1 control-label">Model</label>
+            <div class="col-lg-2">
+                <select asp-for="@Model.SelectedModelId" asp-items="@Model.CarModels" class="form-control model-scriptSelect"></select>
+            </div>
+            <label class="col-lg-1 control-label">Sort</label>
+            <div class="col-lg-2">
+                <select asp-for="@Model.Sort" asp-items="@Model.SortCriterias" class="form-control"></select>
+            </div>
+
+            <div class="col-lg-2 ">
+                @*<a asp-action="Browse"
+                       asp-route-brandId="@Model.SelectedBrandId"
+                       asp-route-modelId="@Model.SelectedModelId"
+                       asp-route-sort="@Model.Sort"
+                       asp-route-page="0">
+                        Search
+                    </a>*@
+                <input type="submit" name="search" value="Search" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+
+
     <div class="col-lg-12">
-        <label class="col-lg-1 col-lg-offset-1 control-label">Brand</label>
-        <div class="col-lg-2">
-            <select asp-for="@Model.SelectedBrandId" asp-items="@Model.Brands" class="form-control brand-scriptSelect"></select>
-        </div>
-        <label class="col-lg-1 col-lg-offset-1 control-label">Model</label>
-        <div class="col-lg-2">
-            <select asp-for="@Model.SelectedBrandId" asp-items="@Model.Brands" class="form-control model-scriptSelect"></select>
-        </div>
-        <label class="col-lg-1 col-lg-offset-1 control-label">Model</label>
-        <div class="col-lg-2">
-            <select asp-for="@Model.SelectedSort" asp-items="@Model.SortCriterias" class="form-control"></select>
-        </div>
+        <div class="list-group col-lg-offset-1 col-lg-10">
 
-        <div class="col-lg-2 ">
-            <a asp-action="Browse">Search</a>
+            @foreach (var car in Model.Summaries)
+            {
+                <partial name="_CarSummary" model="car" />
+            }
         </div>
     </div>
-</div>
 
+    <div class="col-lg-offset-1 col-lg-11">
+        <ul class="pagination pagination-sm">
 
-<div class="col-lg-12">
-    <div class="list-group col-lg-offset-1 col-lg-10">
+            @for (int i = 0; i < Model.NumberOfPages; i++)
+            {
+                if (Model.CurrentPage == i)
+                {
+                    <li class="active">
+                        @*<a asp-action="Browse"
+                               asp-route-brandId="@Model.SelectedBrandId"
+                               asp-route-modelId="@Model.SelectedModelId"
+                               asp-route-sort="@Model.Sort"
+                               asp-route-page="@i">
+                                @(i + 1)
+                            </a>*@
+                        <input type="submit" name="search" value=" @(i + 1)" />
 
-        @foreach (var car in Model.Summaries)
-        {
-            <partial name="_CarSummary" model="car" />
-        }
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        @*<a asp-action="Browse"
+                            asp-route-brandId="@Model.SelectedBrandId"
+                            asp-route-modelId="@Model.SelectedModelId"
+                            asp-route-sort="@Model.Sort"
+                            asp-route-page="@i">
+                            @(i + 1)
+                            </a>*@
+
+                        <input type="submit" name="search" value=" @(i + 1)" />
+
+                    </li>
+                }
+            }
+        </ul>
     </div>
-</div>
-
-<div class="col-lg-offset-1 col-lg-11">
-    <ul class="pagination pagination-sm">
-
-        @for (int i = 0; i < Model.Pages; i++)
-        {
-            if (Model.CurrentPage == i)
-            {
-                <li class="active"> <a asp-action="Browse" asp-route-page="@i">@(i + 1)</a></li>
-            }
-            else
-            {
-                <li> <a asp-action="Browse" asp-route-page="@i">@(i + 1)</a></li>
-            }
-        }
-    </ul>
-</div>
+</form>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

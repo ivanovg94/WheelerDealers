@@ -1,13 +1,15 @@
-﻿using Dealership.Data.Context;
+﻿using Dealership.Data.CompositeModels;
+using Dealership.Data.Context;
 using Dealership.Data.Models;
-using Dealership.Data.Models.Contracts;
 using Dealership.Services.Abstract;
 using Dealership.Services.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Dealership.Services
 {
@@ -98,24 +100,24 @@ namespace Dealership.Services
             this.context.SaveChanges();
         }
 
-        public IList<Car> GetCars(int skip, int take)
-        {
-            var querry = this.context.Cars
-                                            .Skip(skip)
-                                            .Take(take)
-                                            .Include(c => c.Brand)
-                                            .Include(c => c.CarsExtras)
-                                                 .ThenInclude(ce => ce.Extra)
-                                            .Include(c => c.BodyType)
-                                            .Include(c => c.Color)
-                                                .ThenInclude(co => co.ColorType)
-                                            .Include(c => c.FuelType)
-                                            .Include(c => c.GearBox)
-                                                .ThenInclude(gb => gb.GearType)
-                                            .Include(c => c.Images);
+        //public IList<Car> GetCars(int brandId, int modelId, int skip, int take)
+        //{
+        //    var querry = this.context.Cars
+        //                                    .Skip(skip)
+        //                                    .Take(take)
+        //                                    .Include(c => c.Brand)
+        //                                    .Include(c => c.CarsExtras)
+        //                                         .ThenInclude(ce => ce.Extra)
+        //                                    .Include(c => c.BodyType)
+        //                                    .Include(c => c.Color)
+        //                                        .ThenInclude(co => co.ColorType)
+        //                                    .Include(c => c.FuelType)
+        //                                    .Include(c => c.GearBox)
+        //                                        .ThenInclude(gb => gb.GearType)
+        //                                    .Include(c => c.Images);
 
-            return querry.ToList();
-        }
+        //    return querry.ToList();
+        //}
 
         public virtual Car GetCar(int id)
         {
@@ -164,9 +166,14 @@ namespace Dealership.Services
             return car;
         }
 
-        public int GetCarsCount()
+        public int GetAllCarsCount()
         {
             return this.context.Cars.Count();
+        }
+
+        public int GetCountWithCriteria(Expression<Func<Car, bool>> filterCriteria)
+        {
+            return this.context.Cars.Where(filterCriteria).Count();
         }
 
         public void Update(Car car)
@@ -204,6 +211,112 @@ namespace Dealership.Services
             }
 
             this.context.SaveChanges();
+        }
+
+        public CarSearchResult GetCarSearchResult(int brandId, int modelId, int sortKey, int page = 0)
+        {
+            var take = 5;
+            var skip = page * take;
+
+            //TODO: INCLUDABLE?
+            IQueryable<Car> totalCars = null;
+
+            if (brandId == 0)
+            {
+                totalCars = this.context.Cars.Where(c => c.IsSold == false
+                                                      && c.IsDeleted == false);
+            }
+            else if (brandId != 0 && modelId == 0)
+            {
+                totalCars = this.context.Cars.Where(c => c.BrandId == brandId
+                                                      && c.IsSold == false
+                                                      && c.IsDeleted == false);
+            }
+            else if (brandId != 0 && modelId != 0)
+            {
+                totalCars = this.context.Cars.Where(c => c.BrandId == brandId
+                                                      && c.CarModelId == modelId
+                                                      && c.IsSold == false
+                                                      && c.IsDeleted == false);
+            }
+
+            var totalCount = totalCars.Count();
+
+            if (sortKey == 1) { totalCars.OrderBy(c => c.Price); }
+            else if (sortKey == 2) { totalCars.OrderByDescending(c => c.Price); }
+
+            var cars = totalCars.Skip(skip).Take(take)
+                                           .Include(c => c.Brand)
+                                           .Include(c => c.CarModel)
+                                           .Include(c => c.GearBox)
+                                               .ThenInclude(gb => gb.GearType)
+                                           .Include(c => c.Color)
+                                               .ThenInclude(c => c.ColorType)
+                                           .Include(c => c.FuelType)
+                                           .Include(c => c.FuelType)
+                                           .Include(c => c.Images)
+                                            .Select(c => new CarSummary(c))
+                                            .ToList();
+
+            var result = new CarSearchResult
+            {
+                FoundCars = cars,
+                TotalCount = totalCount
+            };
+
+            return result;
+        }
+
+
+
+        public IList<Car> GetCars(int skip, int take, int sort)
+        {
+
+            var querry = this.context.Cars
+                                          .Skip(skip)
+                                          .Take(take)
+                                          .Include(c => c.Brand)
+                                          .Include(c => c.CarsExtras)
+                                               .ThenInclude(ce => ce.Extra)
+                                          .Include(c => c.BodyType)
+                                          .Include(c => c.Color)
+                                              .ThenInclude(co => co.ColorType)
+                                          .Include(c => c.FuelType)
+                                          .Include(c => c.GearBox)
+                                              .ThenInclude(gb => gb.GearType)
+                                          .Include(c => c.Images);
+
+            return SortByPrice(sort, querry);
+        }
+
+        public IList<Car> GetCars(int skip, int take, Expression<Func<Car, bool>> filterCriteria, int sort)
+        {
+            var querry = this.context.Cars
+                                            .Where(filterCriteria)
+                                            .Skip(skip)
+                                            .Take(take)
+                                            .Include(c => c.Brand)
+                                            .Include(c => c.CarsExtras)
+                                                 .ThenInclude(ce => ce.Extra)
+                                            .Include(c => c.BodyType)
+                                            .Include(c => c.Color)
+                                                .ThenInclude(co => co.ColorType)
+                                            .Include(c => c.FuelType)
+                                            .Include(c => c.GearBox)
+                                                .ThenInclude(gb => gb.GearType)
+                                            .Include(c => c.Images);
+
+
+            return SortByPrice(sort, querry);
+        }
+
+        private static IList<Car> SortByPrice(int sort, IIncludableQueryable<Car, ICollection<Image>> querry)
+        {
+            return sort == -1
+                ? querry.ToList()
+                : sort == 1
+                      ? querry.OrderBy(c => c.Price).ToList()
+                      : querry.OrderByDescending(c => c.Price).ToList();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Dealership.Data.Models;
+﻿using Dealership.Data.CompositeModels;
+using Dealership.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +15,7 @@ namespace Dealership.Web.Models.CarViewModels
 
         public CarSummaryViewModel(Car car)
         {
-            this.ImageUrl = car.Images.First().ImageName;
-            this.ImagesUrl = car.Images.Select(i => i.ImageName).ToList();
+            this.ImageUrl = car.Images.FirstOrDefault() == null ? "default.jpg" : car.Images.FirstOrDefault().ImageName;
         }
 
         public int Id { get; set; }
