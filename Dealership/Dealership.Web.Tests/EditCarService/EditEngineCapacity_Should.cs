@@ -7,6 +7,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Dealership.Web.Tests.EditCarService
 {
@@ -14,7 +15,7 @@ namespace Dealership.Web.Tests.EditCarService
     public class EditEngineCapacity_Should
     {
         [TestMethod]
-        public void ThrowArgumentException_WhenEmptyParametersArePassed()
+        public async Task ThrowArgumentException_WhenEmptyParametersArePassed()
         {
             var contextOptions = new DbContextOptionsBuilder<DealershipContext>()
                 .UseInMemoryDatabase(databaseName:
@@ -30,11 +31,11 @@ namespace Dealership.Web.Tests.EditCarService
             var invalidParameters = new string[0];
 
 
-            Assert.ThrowsException<ArgumentNullException>(() => sut.EditEngineCapacity(invalidParameters));
+            await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await sut.EditEngineCapacity(invalidParameters));
         }
 
         [TestMethod]
-        public void ThrowArgumentNullException_WhenNullValueIsPassed()
+        public async Task ThrowArgumentNullException_WhenNullValueIsPassed()
         {
             var contextOptions = new DbContextOptionsBuilder<DealershipContext>()
                 .UseInMemoryDatabase(databaseName:
@@ -48,11 +49,11 @@ namespace Dealership.Web.Tests.EditCarService
 
                 sut = new Services.EditCarService(dealershipContext, carServiceStub.Object);
             }
-            Assert.ThrowsException<ArgumentNullException>(() => sut.EditEngineCapacity(invalidParameters));
+            await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await sut.EditEngineCapacity(invalidParameters));
         }
 
         [TestMethod]
-        public void ThowArgumentException_WhenInvalidIDIsPassed()
+        public async Task ThowArgumentException_WhenInvalidIDIsPassed()
         {
             var contextOptions = new DbContextOptionsBuilder<DealershipContext>()
                             .UseInMemoryDatabase(databaseName:
@@ -69,10 +70,10 @@ namespace Dealership.Web.Tests.EditCarService
 
             }
 
-            Assert.ThrowsException<ArgumentException>(() => sut.EditEngineCapacity(validParameters));
+            await Assert.ThrowsExceptionAsync<ArgumentException>(async () => await sut.EditEngineCapacity(validParameters));
         }
         [TestMethod]
-        public void EditEngineCapacityValueCorrectly_WhenValidParametersArePassed()
+        public async Task EditEngineCapacityValueCorrectly_WhenValidParametersArePassed()
         {
             var testCar = new Car()
             {
@@ -93,14 +94,13 @@ namespace Dealership.Web.Tests.EditCarService
             IEditCarService sut;
             using (var dealershipContext = new DealershipContext(contextOptions))
             {
-                var carService = new Mock<ICarService>();
-                carService.Setup(x => x.GetCarAsync(1)).Returns(testCar);
+                var carService = new Services.CarService(dealershipContext);
 
                 dealershipContext.Cars.Add(testCar).Context.SaveChanges();
 
-                sut = new Services.EditCarService(dealershipContext, carService.Object);
+                sut = new Services.EditCarService(dealershipContext, carService);
 
-                result = sut.EditEngineCapacity(validParameters);
+                result = await sut.EditEngineCapacity(validParameters);
             }
             //assert    
             Assert.IsTrue(result.Contains("edited"));
