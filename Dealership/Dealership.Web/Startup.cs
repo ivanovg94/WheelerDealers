@@ -92,7 +92,6 @@ namespace Dealership.Web
             services.AddTransient<IExtraService, ExtraService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IModelService, ModelService>();
-
         }
 
         private void RegisterAuthentication(IServiceCollection services)
@@ -158,7 +157,6 @@ namespace Dealership.Web
                 var createPowerUser = await UserManager.CreateAsync(poweruser, userPassword);
                 if (createPowerUser.Succeeded)
                 {
-                    //here we tie the new user to the "Admin" role 
                     await UserManager.AddToRoleAsync(poweruser, "Admin");
                 }
             }
