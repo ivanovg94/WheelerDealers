@@ -181,9 +181,9 @@ namespace Dealership.Services
             return car;
         }
 
-        public async Task<Car> RemoveCar(int id)
+        public Car RemoveCar(int id)
         {
-            var car = await GetCarAsync(id);
+            var car = GetCarAsync(id).Result;
             this.context.Cars.Remove(car);
 
             var usersCars = this.context.UsersCars.Where(uc => uc.CarId == id).ToList();

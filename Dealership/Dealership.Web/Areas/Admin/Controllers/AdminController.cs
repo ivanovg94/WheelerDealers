@@ -256,11 +256,12 @@ namespace Dealership.Web.Areas.Admin.Controllers
         //method
         //TODO: Mileage doesn't change... Move this method to carService
 
-        public async Task<Car> EditCar(CarViewModel model, IEnumerable<ExtraCheckBox> extrasCB)
+        public Car EditCar(CarViewModel model, IEnumerable<ExtraCheckBox> extrasCB)
         {
             var realCar = carService.GetCarAsync(model.Id).Result;
 
-            var newBody = await bodyTypeService.GetBodyType(model.BodyTypeId);
+            var newBody = bodyTypeService.GetBodyType(model.BodyTypeId).Result;
+
             var newBrand = brandService.GetBrand(model.BrandId);
             var newModel = brandService.GetModeldOfBrand(model.BrandId, model.CarModelId);
 

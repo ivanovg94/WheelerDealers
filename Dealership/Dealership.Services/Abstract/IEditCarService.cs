@@ -4,28 +4,28 @@ namespace Dealership.Services.Abstract
 {
     public interface IEditCarService
     {
-        Task<string> EditBrand(string[] parameters);
+        string EditBrand(string[] parameters);
 
-        Task<string> EditModel(string[] parameters);
+        string EditModel(string[] parameters);
 
-        Task<string> EditHorsePower(string[] parameters);
+        string EditHorsePower(string[] parameters);
 
-        Task<string> EditEngineCapacity(string[] parameters);
+        string EditEngineCapacity(string[] parameters);
 
-        Task<string> EditIsSold(string[] parameters);
+        string EditIsSold(string[] parameters);
 
-        Task<string> EditPrice(string[] parameters);
+        string EditPrice(string[] parameters);
 
-        Task<string> EditProductionDate(string[] parameters);
+        string EditProductionDate(string[] parameters);
 
-        Task<string> EditBodyType(string[] parameters);
+        string EditBodyType(string[] parameters);
 
-        Task<string> EditColor(string[] parameters);
+        string EditColor(string[] parameters);
 
-        Task<string> EditColorType(string[] parameters);
+        string EditColorType(string[] parameters);
 
-        Task<string> EditFuelType(string[] parameters);
+        string EditFuelType(string[] parameters);
 
-        Task<string> EditGearbox(string[] parameters);
+        string EditGearbox(string[] parameters);
     }
 }

@@ -7,6 +7,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Dealership.Web.Tests.EditCarService
 {
@@ -74,7 +75,7 @@ namespace Dealership.Web.Tests.EditCarService
         }
 
         [TestMethod]
-        public async void EditBrandCorrectly_WhenValidParametersArePassed()
+        public async Task EditBrandCorrectly_WhenValidParametersArePassed()
         {
             //arrange
             var contextOptions = new DbContextOptionsBuilder<DealershipContext>()

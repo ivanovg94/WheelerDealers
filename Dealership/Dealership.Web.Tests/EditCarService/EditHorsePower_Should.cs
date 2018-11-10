@@ -73,7 +73,7 @@ namespace Dealership.Web.Tests.EditCarService
         }
 
         [TestMethod]
-        public async void EditHorsePowerValueCorrectly_WhenValidParametersArePassed()
+        public async Task EditHorsePowerValueCorrectly_WhenValidParametersArePassed()
         {
 
 

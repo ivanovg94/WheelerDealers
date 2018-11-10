@@ -66,7 +66,7 @@ namespace Dealership.Web
 
             });
 
-            CreateUserRoles(serviceProvider).Wait();
+            CreateRoles(serviceProvider).Wait();
         }
 
         private void RegisterData(IServiceCollection services)
@@ -125,28 +125,43 @@ namespace Dealership.Web
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
-        private async Task CreateUserRoles(IServiceProvider serviceProvider)
+        private async Task CreateRoles(IServiceProvider serviceProvider)
         {
-            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
-
+            //adding custom roles
+            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<User>>();
             string[] roleNames = { "Admin", "User" };
             IdentityResult roleResult;
 
             foreach (var roleName in roleNames)
             {
-                var roleExist = await roleManager.RoleExistsAsync(roleName);
+                //creating the roles and seeding them to the database
+                var roleExist = await RoleManager.RoleExistsAsync(roleName);
                 if (!roleExist)
                 {
-                    //create the roles and seed them to the database: Question 2
-                    roleResult = await roleManager.CreateAsync(new IdentityRole(roleName));
+                    roleResult = await RoleManager.CreateAsync(new IdentityRole(roleName));
                 }
             }
 
-            //Assign Admin role to the main User here we have given our newly registered 
-            //login id for Admin management
-            User user = await userManager.FindByEmailAsync("admin@admin.com");
-            await userManager.AddToRoleAsync(user, "Admin");
+            //creating a super user who could maintain the web app
+            var poweruser = new User
+            {
+                UserName = Configuration.GetSection("UserSettings")["UserEmail"],
+                Email = Configuration.GetSection("UserSettings")["UserEmail"]
+            };
+
+            string userPassword = Configuration.GetSection("UserSettings")["UserPassword"];
+            var user = await UserManager.FindByEmailAsync(Configuration.GetSection("UserSettings")["UserEmail"]);
+
+            if (user == null)
+            {
+                var createPowerUser = await UserManager.CreateAsync(poweruser, userPassword);
+                if (createPowerUser.Succeeded)
+                {
+                    //here we tie the new user to the "Admin" role 
+                    await UserManager.AddToRoleAsync(poweruser, "Admin");
+                }
+            }
         }
     }
 }

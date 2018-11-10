@@ -19,7 +19,7 @@ namespace Dealership.Services.Abstract
 
         Task<IList<Car>> GetCarsAsync(int skip, int take);
 
-        Task<Car> RemoveCar(int carId);
+        Car RemoveCar(int carId);
 
         int GetCarsCount();
 
