@@ -8,10 +8,4 @@
       <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.5" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DataProcessor\ExportResults\" />
-    <Folder Include="DataProcessor\ImportDatasets\" />
-    <Folder Include="DataProcessor\PdfReports\" />
-  </ItemGroup>
-
 </Project>
