@@ -97,9 +97,8 @@ namespace Dealership.Web.Tests.EditCarService
                 testCar = new Car() { Brand = testBrand, CarModel = carModel };
                 dealerShipContext.Cars.Add(testCar).Context.SaveChanges();
                 var carServiceStub = new Services.CarService(dealerShipContext);
+                var editCarService = new Services.EditCarService(dealerShipContext, carServiceStub);
                 
-
-                carServiceStub.Setup(cs => cs.GetCarAsync(1)).Returns(testCar);
 
                 result = await editCarService.EditBrand(validParameters);
             }
