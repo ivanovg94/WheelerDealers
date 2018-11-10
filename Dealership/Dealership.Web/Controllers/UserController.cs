@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Dealership.Data.Models;
+﻿using Dealership.Data.Models;
 using Dealership.Services.Abstract;
 using Dealership.Web.Models.CarViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Dealership.Web.Controllers
 {
@@ -30,10 +28,10 @@ namespace Dealership.Web.Controllers
 
         [Authorize]
         [HttpGet]
-        public IActionResult AddToFavorites(int id)
+        public async Task<IActionResult> AddToFavorites(int id)
         {
             var user = this.userManager.GetUserAsync(HttpContext.User).Result;
-            this.userService.AddCarToFavorites(id, user);
+            await this.userService.AddCarToFavoritesAsync(id, user);
 
             return RedirectToAction("Details", "Car", new { id });
         }
@@ -43,7 +41,7 @@ namespace Dealership.Web.Controllers
         public async Task<IActionResult> Favorites()
         {
             var user = this.userManager.GetUserAsync(HttpContext.User).Result;
-            var cars = await this.userService.GetFavorites(user);
+            var cars = await this.userService.GetFavoritesAsync(user);
 
             var model = cars.Select(c => new CarSummaryViewModel(c)
             {
@@ -63,10 +61,10 @@ namespace Dealership.Web.Controllers
 
         [Authorize]
         [HttpGet]
-        public IActionResult RemoveFromFavorites(int id)
+        public async Task<IActionResult> RemoveFromFavorites(int id)
         {
             var user = this.userManager.GetUserAsync(HttpContext.User).Result;
-            this.userService.RemoveCarFromFavorites(id, user);
+            await this.userService.RemoveCarFromFavoritesAsync(id, user);
 
             return RedirectToAction("Details", "Car", new { id });
         }

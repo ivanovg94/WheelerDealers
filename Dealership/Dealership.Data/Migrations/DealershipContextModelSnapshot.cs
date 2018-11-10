@@ -137,6 +137,14 @@ namespace Dealership.Data.Migrations
 
                     b.Property<int>("BrandId");
 
+                    b.Property<DateTime?>("CreatedOn");
+
+                    b.Property<DateTime?>("DeletedOn");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("ModifiedOn");
+
                     b.Property<string>("Name");
 
                     b.HasKey("Id");

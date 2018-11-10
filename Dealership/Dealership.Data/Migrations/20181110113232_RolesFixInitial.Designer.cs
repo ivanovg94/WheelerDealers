@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dealership.Data.Migrations
 {
     [DbContext(typeof(DealershipContext))]
-    [Migration("20181107105155_MultipleImages")]
-    partial class MultipleImages
+    [Migration("20181110113232_RolesFixInitial")]
+    partial class RolesFixInitial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -138,6 +138,14 @@ namespace Dealership.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("BrandId");
+
+                    b.Property<DateTime?>("CreatedOn");
+
+                    b.Property<DateTime?>("DeletedOn");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("ModifiedOn");
 
                     b.Property<string>("Name");
 

@@ -27,7 +27,7 @@ namespace Dealership.Services
             return users;
         }
 
-        public async Task<Car> AddCarToFavorites(int carId, User user)
+        public async Task<Car> AddCarToFavoritesAsync(int carId, User user)
         {
             Car car = await this.carService.GetCarAsync(carId);
 
@@ -44,7 +44,7 @@ namespace Dealership.Services
             return car;
         }
 
-        public async Task<Car> RemoveCarFromFavorites(int carId, User user)
+        public async Task<Car> RemoveCarFromFavoritesAsync(int carId, User user)
         {
             Car car = await this.carService.GetCarAsync(carId);
 
@@ -60,7 +60,7 @@ namespace Dealership.Services
             return car;
         }
 
-        public async Task<IList<Car>> GetFavorites(User user)
+        public async Task<IList<Car>> GetFavoritesAsync(User user)
         {
             var userCars = this.dealershipContext.Users
                                         .Include(u => u.UsersCars)
