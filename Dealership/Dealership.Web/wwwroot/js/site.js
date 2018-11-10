@@ -22,3 +22,5 @@ jQuery(document).ready(function ($) {
         $('#carousel-text').html($('#slide-content-' + id).html());
     });
 });
+
+$('select').selectpicker();

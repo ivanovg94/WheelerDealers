@@ -27,5 +27,15 @@ namespace Dealership.Services
             return this.context.CarModels.FirstOrDefault(m => m.Id == id);
         }
 
+        public void Add(int brandId, string modelName)
+        {
+            var newModel = new CarModel() { BrandId = brandId, Name = modelName };
+
+            this.context.CarModels.Add(newModel);
+            this.context.SaveChanges();
+        }
+
+
+
     }
 }

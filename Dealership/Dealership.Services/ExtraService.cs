@@ -25,8 +25,6 @@ namespace Dealership.Services
             }
 
             var extra = new Extra() { Name = name };
-            //this.context.Extras.Add(extra);
-            //this.context.SaveChanges();
             return extra;
         }
 
@@ -66,6 +64,31 @@ namespace Dealership.Services
 
             this.context.SaveChanges();
             return extra;
+        }
+
+        public void AddExtrasToCar(Car car, ICollection<int> extrasIds)
+        {
+            foreach (var id in extrasIds)
+            {
+                var newCarExtra = new CarsExtras() { CarId = car.Id, ExtraId = id };
+                this.context.CarsExtras.Add(newCarExtra);
+            }
+
+            this.context.SaveChanges();
+        }
+
+        public void DeleteExtrasFromCar(Car car, ICollection<int> extrasIds)
+        {
+            foreach (var id in extrasIds)
+            {
+                var carExtra = this.context.CarsExtras.FirstOrDefault(ce => ce.ExtraId == id && ce.Car == car);
+                if (carExtra != null)
+                {
+                    this.context.CarsExtras.Remove(carExtra);
+                }
+            }
+
+            this.context.SaveChanges();
         }
 
         public Extra GetExtraById(int id)

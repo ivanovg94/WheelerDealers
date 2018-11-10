@@ -10,21 +10,28 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Dealership.Services
 {
     public class CarService : ICarService
     {
         private readonly DealershipContext context;
+        private readonly IExtraService extraService;
 
-        public CarService(DealershipContext context)
+        public CarService(DealershipContext context, IExtraService extraService)
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException("Context cannot be null!");
+            }
             this.context = context;
+            this.extraService = extraService;
         }
 
-        public Car CreateCar(int brandId, int carModelId, int mileage, short horsePower,
+        public Car AddCar(int brandId, int carModelId, int mileage, short horsePower,
             short engineCapacity, DateTime productionDate, decimal price, int bodyTypeId,
-            string colorName, int colorTypeId, int fuelTypeId, int gearBoxTypeId, byte numberOfGears)
+            string colorName, int colorTypeId, int fuelTypeId, int gearBoxTypeId, byte numberOfGears, ICollection<int> extrasIds)
         {
 
             var color = this.context.Colors
@@ -68,84 +75,36 @@ namespace Dealership.Services
                 ColorId = color.Id,
                 FuelTypeId = fuelTypeId,
                 GearBox = gearbox,
-                GearBoxId = gearbox.Id
+                GearBoxId = gearbox.Id,
             };
 
+            this.context.Cars.Add(newCar);
+            this.extraService.AddExtrasToCar(newCar, extrasIds);
+
+            this.context.SaveChanges();
             return newCar;
         }
 
 
-        public Car AddCar(Car car)
+        public async Task<Car> GetCarAsync(int id)
         {
-            if (car == null)
-            {
-                throw new ServiceException("Car doesn't exist!");
-            }
-            car = this.context.Cars.Add(car).Entity;
-            this.context.SaveChanges();
-
-            return car;
-        }
-
-        public void AddCars(ICollection<Car> cars)
-        {
-            foreach (var car in cars)
-            {
-                if (car != null)
-
-                {
-                    this.context.Cars.Add(car);
-                }
-            }
-            this.context.SaveChanges();
-        }
-
-        //public IList<Car> GetCars(int brandId, int modelId, int skip, int take)
-        //{
-        //    var querry = this.context.Cars
-        //                                    .Skip(skip)
-        //                                    .Take(take)
-        //                                    .Include(c => c.Brand)
-        //                                    .Include(c => c.CarsExtras)
-        //                                         .ThenInclude(ce => ce.Extra)
-        //                                    .Include(c => c.BodyType)
-        //                                    .Include(c => c.Color)
-        //                                        .ThenInclude(co => co.ColorType)
-        //                                    .Include(c => c.FuelType)
-        //                                    .Include(c => c.GearBox)
-        //                                        .ThenInclude(gb => gb.GearType)
-        //                                    .Include(c => c.Images);
-
-        //    return querry.ToList();
-        //}
-
-        public virtual Car GetCar(int id)
-        {
-            var car = this.context.Cars
-                                  .Where(c => c.Id == id)
-                                  .Include(c => c.Brand)
-                                  .Include(c => c.CarModel)
-                                  .Include(c => c.CarsExtras)
-                                       .ThenInclude(ce => ce.Extra)
-                                  .Include(c => c.BodyType)
-                                  .Include(c => c.Color)
-                                      .ThenInclude(co => co.ColorType)
-                                  .Include(c => c.FuelType)
-                                  .Include(c => c.GearBox)
-                                      .ThenInclude(gb => gb.GearType)
-                                  .Include(c => c.Images)
-                                  .FirstOrDefault();
-
-            if (car == null)
-            {
-                throw new ServiceException($"There is no car with ID {id}.");
-            }
+            var car = await context.Cars.Include(c => c.Brand)
+                                .Include(c => c.CarModel)
+                                .Include(c => c.CarsExtras)
+                                     .ThenInclude(ce => ce.Extra)
+                                .Include(c => c.BodyType)
+                                .Include(c => c.Color)
+                                    .ThenInclude(co => co.ColorType)
+                                .Include(c => c.FuelType)
+                                .Include(c => c.GearBox)
+                                    .ThenInclude(gb => gb.GearType)
+                                .Include(c => c.Images).FirstOrDefaultAsync(x => x.Id == id);
             return car;
         }
 
         public Car RemoveCar(int id)
         {
-            var car = GetCar(id);
+            var car = GetCarAsync(id).Result;
             this.context.Cars.Remove(car);
 
             var usersCars = this.context.UsersCars.Where(uc => uc.CarId == id).ToList();
@@ -176,15 +135,17 @@ namespace Dealership.Services
             return this.context.Cars.Where(filterCriteria).Count();
         }
 
-        public void Update(Car car)
+        public Car Update(Car car)
         {
             this.context.Cars.Update(car);
             this.context.SaveChanges();
+
+            return car;
         }
 
         public void SaveImages(string root, IList<string> fileNames, IList<Stream> stream, int carId)
         {
-            var car = GetCar(carId);
+            var car = GetCarAsync(carId).Result;
 
             if (car == null)
             {
@@ -265,58 +226,6 @@ namespace Dealership.Services
             };
 
             return result;
-        }
-
-
-
-        public IList<Car> GetCars(int skip, int take, int sort)
-        {
-
-            var querry = this.context.Cars
-                                          .Skip(skip)
-                                          .Take(take)
-                                          .Include(c => c.Brand)
-                                          .Include(c => c.CarsExtras)
-                                               .ThenInclude(ce => ce.Extra)
-                                          .Include(c => c.BodyType)
-                                          .Include(c => c.Color)
-                                              .ThenInclude(co => co.ColorType)
-                                          .Include(c => c.FuelType)
-                                          .Include(c => c.GearBox)
-                                              .ThenInclude(gb => gb.GearType)
-                                          .Include(c => c.Images);
-
-            return SortByPrice(sort, querry);
-        }
-
-        public IList<Car> GetCars(int skip, int take, Expression<Func<Car, bool>> filterCriteria, int sort)
-        {
-            var querry = this.context.Cars
-                                            .Where(filterCriteria)
-                                            .Skip(skip)
-                                            .Take(take)
-                                            .Include(c => c.Brand)
-                                            .Include(c => c.CarsExtras)
-                                                 .ThenInclude(ce => ce.Extra)
-                                            .Include(c => c.BodyType)
-                                            .Include(c => c.Color)
-                                                .ThenInclude(co => co.ColorType)
-                                            .Include(c => c.FuelType)
-                                            .Include(c => c.GearBox)
-                                                .ThenInclude(gb => gb.GearType)
-                                            .Include(c => c.Images);
-
-
-            return SortByPrice(sort, querry);
-        }
-
-        private static IList<Car> SortByPrice(int sort, IIncludableQueryable<Car, ICollection<Image>> querry)
-        {
-            return sort == -1
-                ? querry.ToList()
-                : sort == 1
-                      ? querry.OrderBy(c => c.Price).ToList()
-                      : querry.OrderByDescending(c => c.Price).ToList();
         }
     }
 }

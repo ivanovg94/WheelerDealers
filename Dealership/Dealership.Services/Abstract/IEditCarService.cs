@@ -1,11 +1,13 @@
-﻿namespace Dealership.Services.Abstract
+﻿using System.Threading.Tasks;
+
+namespace Dealership.Services.Abstract
 {
     public interface IEditCarService
     {
         string EditBrand(string[] parameters);
-        
+
         string EditModel(string[] parameters);
-        
+
         string EditHorsePower(string[] parameters);
 
         string EditEngineCapacity(string[] parameters);

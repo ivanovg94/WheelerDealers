@@ -28,6 +28,5 @@ namespace Dealership.Web.Models.CarViewModels
         public string Price { get; set; }
         public string Mileage { get; set; }
         public string ImageUrl { get; set; }
-        public ICollection<string> ImagesUrl { get; set; }
     }
 }

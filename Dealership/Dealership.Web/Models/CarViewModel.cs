@@ -9,20 +9,16 @@ namespace Dealership.Web.Models
 {
     public class CarViewModel
     {
-      //  private readonly IModelService modelService;
-        private DateTime _productionDate;
+        private DateTime productionDate;
 
         public CarViewModel()
         {
         }
 
-        public CarViewModel(Car car/*, IModelService modelService*/)
+        public CarViewModel(Car car)
         {
-          //  this.modelService = modelService;
-
             this.Id = car.Id;
             this.CarModelId = car.CarModelId;
-         //   CarModel model = this.modelService.GetModel(CarModelId);
             this.CarModel = car.CarModel.Name;
             this.HorsePower = car.HorsePower;
             this.Mileage = car.Mileage;
@@ -42,6 +38,7 @@ namespace Dealership.Web.Models
             this.FuelTypeId = car.FuelTypeId;
             this.FuelType = car.FuelType.Name;
             this.ImagesUrl = car.Images.Select(i => i.ImageName).ToList();
+            this.CarsExtras = car.CarsExtras.Select(ce => ce.Extra.Name);
         }
 
         public int Id { get; set; }
@@ -70,11 +67,11 @@ namespace Dealership.Web.Models
         {
             get
             {
-                return this._productionDate == DateTime.MinValue ? DateTime.Now : _productionDate;
+                return this.productionDate == DateTime.MinValue ? DateTime.Now : productionDate;
             }
             set
             {
-                _productionDate = value;
+                productionDate = value;
             }
         }
 
@@ -108,8 +105,10 @@ namespace Dealership.Web.Models
 
         public ICollection<IFormFile> Images { get; set; }
 
-        public IList<string> ImagesUrl { get; set; }
+        public ICollection<string> ImagesUrl { get; set; }
 
         public string StatusMessage { get; set; }
+
+        public bool IsFavorite { get; set; }
     }
 }

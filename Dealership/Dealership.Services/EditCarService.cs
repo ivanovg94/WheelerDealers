@@ -4,6 +4,7 @@ using Dealership.Services.Abstract;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Dealership.Services
 {
@@ -18,11 +19,15 @@ namespace Dealership.Services
             {
                 throw new ArgumentNullException("CarService cannot be null!");
             }
+            if (context == null)
+            {
+                throw new ArgumentNullException("CarService cannot be null!");
+            }
             this.context = context;
             this.carService = carService;
         }
 
-        public virtual string EditBrand(string[] parameters)
+        public string EditBrand(string[] parameters)
         {
             if (parameters == null)
             {
@@ -47,15 +52,10 @@ namespace Dealership.Services
                 secondNewValue = parameters[2];
             }
 
-            var car = this.carService.GetCar(id);
+            var car = this.carService.GetCarAsync(id).Result;
 
             Brand newBrand = this.context.Brands.FirstOrDefault(b => b.Name == newValue);
-
-            if (newBrand == null)
-            {
-                newBrand = new Brand() { Name = newValue };
-            }
-            car.Brand = newBrand;
+            car.Brand = newBrand ?? throw new InvalidOperationException();
 
             this.context.Cars.Update(car);
             this.context.SaveChanges();
@@ -76,14 +76,14 @@ namespace Dealership.Services
             }
             var newValue = parameters[1];
 
-            var car = this.carService.GetCar(id);
+            var car = this.carService.GetCarAsync(id).Result;
 
             var model = car.Brand.CarModels.FirstOrDefault(m => m.Name == newValue);
             if (model == null)
             {
                 model = new CarModel() { Name = newValue, BrandId = car.Brand.Id };
                 this.context.CarModels.Add(model);
-              //  this.context.SaveChanges(); //TODO:TEST
+                //  this.context.SaveChanges(); //TODO:TEST
             }
             //id??
             car.CarModel = model;
@@ -107,7 +107,7 @@ namespace Dealership.Services
             }
             var newValue = parameters[1];
 
-            var car = this.carService.GetCar(id);
+            var car = this.carService.GetCarAsync(id).Result;
             car.HorsePower = short.Parse(newValue);
 
             this.context.Cars.Update(car);
@@ -130,7 +130,7 @@ namespace Dealership.Services
 
             var newValue = parameters[1];
 
-            var car = this.carService.GetCar(id);
+            var car = this.carService.GetCarAsync(id).Result;
             car.EngineCapacity = short.Parse(newValue);
 
             this.context.Cars.Update(car);
@@ -153,7 +153,7 @@ namespace Dealership.Services
 
             var newValue = parameters[1];
 
-            var car = this.carService.GetCar(id);
+            var car = this.carService.GetCarAsync(id).Result;
             car.IsSold = bool.Parse(newValue);
 
             this.context.Cars.Update(car);
@@ -175,7 +175,7 @@ namespace Dealership.Services
             }
             var newValue = parameters[1];
 
-            var car = this.carService.GetCar(id);
+            var car = this.carService.GetCarAsync(id).Result;
             car.Price = decimal.Parse(newValue);
 
             this.context.Cars.Update(car);
@@ -200,7 +200,7 @@ namespace Dealership.Services
             {
                 throw new ArgumentException("Invalid mileage value!");
             }
-            var car = this.carService.GetCar(id);
+            var car = this.carService.GetCarAsync(id).Result;
             car.Mileage = newValue;
 
             this.context.Cars.Update(car);
@@ -222,7 +222,7 @@ namespace Dealership.Services
             }
             var newValue = parameters[1];
 
-            var car = this.carService.GetCar(id);
+            var car = this.carService.GetCarAsync(id).Result;
             car.ProductionDate = DateTime.Parse(newValue);
 
             this.context.Cars.Update(car);
@@ -251,7 +251,7 @@ namespace Dealership.Services
                 throw new ArgumentException("Invalid body type!");
             }
 
-            var car = this.carService.GetCar(id);
+            var car = this.carService.GetCarAsync(id).Result;
             car.BodyType = newBodyType;
 
             this.context.Cars.Update(car);
@@ -282,7 +282,7 @@ namespace Dealership.Services
             {
                 newColorTypeName = parameters[2];
             }
-            var car = this.carService.GetCar(id);
+            var car = this.carService.GetCarAsync(id).Result;
 
             var newType = this.context.ColorTypes.FirstOrDefault(gt => gt.Name == newColorTypeName);
             if (newType == null)
@@ -328,7 +328,7 @@ namespace Dealership.Services
             }
             var newValue = parameters[1];
 
-            var car = this.carService.GetCar(id);
+            var car =  this.carService.GetCarAsync(id).Result;
             var colorName = car.Color.Name;
             var newColorType = this.context.ColorTypes.FirstOrDefault(ct => ct.Name == newValue);
             if (newColorType == null) { throw new ArgumentNullException("Color type not exist!"); }
@@ -370,7 +370,7 @@ namespace Dealership.Services
             }
             var newValue = parameters[1];
 
-            var car = this.carService.GetCar(id);
+            var car = this.carService.GetCarAsync(id).Result;
 
             var newFuelType = this.context.FuelTypes.FirstOrDefault(ft => ft.Name == newValue);
 
@@ -406,7 +406,7 @@ namespace Dealership.Services
             }
             var newValue = parameters[1];
 
-            var car = this.carService.GetCar(id);
+            var car =this.carService.GetCarAsync(id).Result;
 
             GearType newGearType = this.context.GearTypes.First(gt => gt.Name == newValue);
 

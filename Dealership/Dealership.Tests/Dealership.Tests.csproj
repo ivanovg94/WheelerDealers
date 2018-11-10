@@ -22,9 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dealership.Client\Dealership.Client.csproj" />
     <ProjectReference Include="..\Dealership.Data\Dealership.Data.csproj" />
-
     <ProjectReference Include="..\Dealership.Services\Dealership.Services.csproj" />
   </ItemGroup>
 
