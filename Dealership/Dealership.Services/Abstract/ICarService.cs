@@ -3,14 +3,12 @@ using Dealership.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Dealership.Services.Abstract
 {
     public interface ICarService
     {
-
         Car AddCar(int brandId, int carModelId, int mileage, short horsePower, short engineCapacity,
             DateTime productionDate, decimal price, int bodyTypeId, string colorName, int colorTypeId,
             int fuelTypeId, int gearBoxTypeId, byte numberOfGears, ICollection<int> extrasIds);

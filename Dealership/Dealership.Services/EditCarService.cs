@@ -61,7 +61,6 @@ namespace Dealership.Services
             this.context.SaveChanges();
 
             return $"Brand of {car.Brand.Name} {car.CarModel.Name} with ID:{car.Id} edited successfully!";
-
         }
 
         public string EditModel(string[] parameters)
@@ -83,9 +82,8 @@ namespace Dealership.Services
             {
                 model = new CarModel() { Name = newValue, BrandId = car.Brand.Id };
                 this.context.CarModels.Add(model);
-                //  this.context.SaveChanges(); //TODO:TEST
             }
-            //id??
+
             car.CarModel = model;
 
             this.context.Cars.Update(car);

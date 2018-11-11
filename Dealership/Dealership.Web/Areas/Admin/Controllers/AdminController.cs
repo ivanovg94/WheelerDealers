@@ -1,5 +1,4 @@
-﻿using Dealership.Data.Models;
-using Dealership.Services.Abstract;
+﻿using Dealership.Services.Abstract;
 using Dealership.Web.Areas.Admin.Models;
 using Dealership.Web.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -315,6 +314,22 @@ namespace Dealership.Web.Areas.Admin.Controllers
                 var removedCar = carService.RemoveCar(id);
             }
             return RedirectToAction("Browse", "Car", new { area = "" });
+        }
+
+        [AcceptVerbs("Get", "Post")]
+        public JsonResult DoesExtraExist(string extra)
+        {
+            var extraObj = extraService.GetExtraByName(extra);
+
+            return extraObj == null ? Json(true) : Json($"Extra {extraObj.Name} already exists.");
+        }
+
+        [AcceptVerbs("Get", "Post")]
+        public JsonResult DoesBrandExist(string brand)
+        {
+            var brandObj = brandService.GetBrand(brand);
+
+            return brandObj == null ? Json(true) : Json($"Brand {brandObj.Name} already exists.");
         }
 
         private string GetUploadsRoot()
