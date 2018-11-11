@@ -5,7 +5,7 @@ namespace Dealership.Services.Abstract
 {
     public interface IUserService
     {
-        Car AddCarToFavorites(int carId, User user)
+        Car AddCarToFavorites(int carId, User user);
 
         IList<Car> GetFavorites(User user);
 
