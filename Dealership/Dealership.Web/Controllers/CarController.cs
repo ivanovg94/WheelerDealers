@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -45,6 +46,12 @@ namespace Dealership.Web.Controllers
 
         public IActionResult LoadCars(int brandId, int modelId, int sort, int page)
         {
+
+            if (brandId<0 || modelId<0 || sort<0 || page<0)
+            {
+                throw new ArgumentException("Indalid Parameters.");
+            }
+
             var cars = this.carService
                .GetCarSearchResult(brandId, modelId, sort, page);
 
@@ -65,7 +72,6 @@ namespace Dealership.Web.Controllers
                 Sort = sort
             };
 
-            // var summaries = this.PopulateSummaries(cars.FoundCars);
             return this.PartialView("_SearchResultPartial", searchResultVm);
         }
 
@@ -138,7 +144,7 @@ namespace Dealership.Web.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var car = await this.carService.GetCarAsync(id);
-            var user = this.userManager.GetUserAsync(HttpContext.User).Result;
+            var user =  await this.userManager.GetUserAsync(HttpContext.User);
             CarViewModel model;
             if (user == null)
             {
@@ -155,7 +161,6 @@ namespace Dealership.Web.Controllers
                     StatusMessage = this.StatusMessage
                 };
             }
-
 
             return this.View(model);
         }

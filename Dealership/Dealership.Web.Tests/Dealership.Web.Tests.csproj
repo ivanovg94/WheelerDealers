@@ -14,10 +14,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Dealership.Services\Dealership.Services.csproj" />
+    <ProjectReference Include="..\Dealership.Web\Dealership.Web.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\CarControllerTests\" />
     <Folder Include="Controllers\AdminControllerTests\" />
     <Folder Include="Controllers\UserControllerTests\" />
   </ItemGroup>

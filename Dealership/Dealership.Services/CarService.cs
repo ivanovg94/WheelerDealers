@@ -176,6 +176,11 @@ namespace Dealership.Services
 
         public CarSearchResult GetCarSearchResult(int brandId, int modelId, int sortKey, int page = 0)
         {
+            if (brandId < 0 || modelId < 0 || sortKey < 0 || page < 0)
+            {
+                throw new ArgumentException("Indalid Parameters.");
+            }
+
             var take = 5;
             var skip = page * take;
 
