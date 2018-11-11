@@ -132,12 +132,13 @@ namespace Dealership.Web.Controllers
             });
         }
 
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
         public JsonResult GetModelsByBrandId(int brandId)
         {
             var list = this.modelService.GetAllModelsByBrandId(brandId);
             return Json(list);
         }
-
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
         public JsonResult GetGearsDependingOnGearBoxType(int id)
         {
             var list = (this.gearTypeService.GetGearboxesDependingOnGearType(id));
