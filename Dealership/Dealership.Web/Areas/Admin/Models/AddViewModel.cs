@@ -27,7 +27,7 @@ namespace Dealership.Web.Areas.Admin.Models
         [DataType(DataType.Text)]
         public string Model { get; set; }
 
-        [Required]        
+        [Required]
         [MinLength(2)]
         [DataType(DataType.Text)]
         [Remote(action: "DoesExtraExist", controller: "Admin", areaName: "Admin")]

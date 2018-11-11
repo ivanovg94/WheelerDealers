@@ -85,17 +85,6 @@ namespace Dealership.Web.Areas.Admin.Controllers
             return RedirectToAction("AddFeatures");
         }
 
-        //[HttpGet]
-        //public IActionResult AddModel()
-        //{
-        //    var model = new ModelViewModel()
-        //    {
-        //        Brands = this.brandService.GetBrands()
-        //       .Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList()
-        //    };
-        //    return RedirectToAction("AddFeatures");
-        //}
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult AddModel(string model, int brandId)
@@ -106,7 +95,6 @@ namespace Dealership.Web.Areas.Admin.Controllers
 
             return RedirectToAction("AddFeatures");
         }
-
 
         [HttpGet]
         public IActionResult CreateCar()
@@ -124,7 +112,6 @@ namespace Dealership.Web.Areas.Admin.Controllers
                     : new List<SelectListItem>();
             }
             else { carModelListItems = new List<SelectListItem>(); }
-
 
             var model = new EditCarViewModel
             {
@@ -253,9 +240,7 @@ namespace Dealership.Web.Areas.Admin.Controllers
         }
 
         //method
-        //TODO: Mileage doesn't change... Move this method to carService
-
-        public void EditCar(CarViewModel model, IEnumerable<ExtraCheckBox> extrasCB)
+        private void EditCar(CarViewModel model, IEnumerable<ExtraCheckBox> extrasCB)
         {
             var realCar = carService.GetCarAsync(model.Id).Result;
 

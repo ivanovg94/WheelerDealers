@@ -43,11 +43,10 @@ namespace Dealership.Web.Controllers
             return null;
         }
 
-
         public IActionResult LoadCars(int brandId, int modelId, int sort, int page)
         {
 
-            if (brandId<0 || modelId<0 || sort<0 || page<0)
+            if (brandId < 0 || modelId < 0 || sort < 0 || page < 0)
             {
                 throw new ArgumentException("Indalid Parameters.");
             }
@@ -133,6 +132,7 @@ namespace Dealership.Web.Controllers
             var list = this.modelService.GetAllModelsByBrandId(brandId);
             return Json(list);
         }
+
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
         public JsonResult GetGearsDependingOnGearBoxType(int id)
         {
@@ -144,7 +144,7 @@ namespace Dealership.Web.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var car = await this.carService.GetCarAsync(id);
-            var user =  await this.userManager.GetUserAsync(HttpContext.User);
+            var user = await this.userManager.GetUserAsync(HttpContext.User);
             CarViewModel model;
             if (user == null)
             {
