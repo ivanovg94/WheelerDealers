@@ -203,8 +203,8 @@ namespace Dealership.Services
 
             var totalCount = totalCars.Count();
 
-            if (sortKey == 1) { totalCars.OrderBy(c => c.Price); }
-            else if (sortKey == 2) { totalCars.OrderByDescending(c => c.Price); }
+            if (sortKey == 1) {totalCars= totalCars.OrderBy(c => c.Price); }
+            else if (sortKey == 2) {totalCars= totalCars.OrderByDescending(c => c.Price); }
 
             var cars = totalCars.Skip(skip).Take(take)
                                            .Include(c => c.Brand)
