@@ -43,17 +43,18 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                     <li><a asp-area="" asp-controller="Car" asp-action="Search">Search</a></li>
-                    <li><a asp-area="" asp-controller="User" asp-action="Favorites">Favorites</a></li>
 
                     @if (User.Identity.IsAuthenticated)
                     {
+                    <li><a asp-area="" asp-controller="User" asp-action="Favorites">Favorites</a></li>
+
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">Admin <span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a asp-area="admin" asp-controller="admin" asp-action="AddFeatures">Add Brands, Extras, Models</a></li>
-                                    <li><a asp-area="admin" asp-controller="admin" asp-action="CreateCar">Create car</a></li>
+                                    <li><a asp-area="admin" asp-controller="admin" asp-action="CreateCar">Add a car</a></li>
                                 </ul>
                             </li>
                         }

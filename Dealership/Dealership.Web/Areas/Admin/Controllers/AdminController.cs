@@ -298,7 +298,7 @@ namespace Dealership.Web.Areas.Admin.Controllers
             {
                 var removedCar = carService.RemoveCar(id);
             }
-            return RedirectToAction("Browse", "Car", new { area = "" });
+            return RedirectToAction("Search", "Car", new { area = "" });
         }
 
         [AcceptVerbs("Get", "Post")]
