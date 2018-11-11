@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Dealership.Services.Abstract
+﻿namespace Dealership.Services.Abstract
 {
     public interface IEditCarService
     {

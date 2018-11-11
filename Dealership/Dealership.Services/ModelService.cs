@@ -2,7 +2,6 @@
 using Dealership.Data.Models;
 using Dealership.Services.Abstract;
 using Dealership.Services.Exceptions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -39,7 +38,7 @@ namespace Dealership.Services
             }
 
             var newModel = new CarModel() { BrandId = brandId, Name = modelName };
-            
+
             this.context.CarModels.Add(newModel);
             this.context.SaveChanges();
         }
