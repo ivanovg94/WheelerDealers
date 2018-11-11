@@ -16,31 +16,20 @@ namespace Dealership.Web.Controllers
     public class CarController : Controller
     {
         private readonly ICarService carService;
-        private readonly IEditCarService editCarService;
         private readonly IBrandService brandService;
-        private readonly IBodyTypeService bodyTypeService;
-        private readonly IColorTypeService colorTypeService;
-        private readonly IFuelTypeService fuelTypeService;
         private readonly IGearTypeService gearTypeService;
         private readonly IModelService modelService;
-        private readonly IColorService colorService;
         private readonly IUserService userService;
         private readonly UserManager<User> userManager;
 
-        public CarController(ICarService carService, IEditCarService editCarService, IBrandService brandService,
-            IBodyTypeService bodyTypeService, IColorTypeService colorTypeService,
-            IFuelTypeService fuelTypeService, IGearTypeService gearTypeService,
-            IModelService modelService, IColorService colorService, IUserService userService, UserManager<User> userManager)
+        public CarController(ICarService carService, IBrandService brandService,
+            IGearTypeService gearTypeService, IModelService modelService,
+            IUserService userService, UserManager<User> userManager)
         {
             this.carService = carService;
-            this.editCarService = editCarService;
             this.brandService = brandService;
-            this.bodyTypeService = bodyTypeService;
-            this.colorTypeService = colorTypeService;
-            this.fuelTypeService = fuelTypeService;
             this.gearTypeService = gearTypeService;
             this.modelService = modelService;
-            this.colorService = colorService;
             this.userService = userService;
             this.userManager = userManager;
         }
