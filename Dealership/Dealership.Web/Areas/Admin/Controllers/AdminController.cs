@@ -260,7 +260,7 @@ namespace Dealership.Web.Areas.Admin.Controllers
         {
             var realCar = carService.GetCarAsync(model.Id).Result;
 
-            var newBody = bodyTypeService.GetBodyType(model.BodyTypeId).Result;
+            var newBody = bodyTypeService.GetBodyType(model.BodyTypeId);
 
             var newBrand = brandService.GetBrand(model.BrandId);
             var newModel = brandService.GetModeldOfBrand(model.BrandId, model.CarModelId);
@@ -312,7 +312,7 @@ namespace Dealership.Web.Areas.Admin.Controllers
         {
             if (confirm)
             {
-                var removedCar = carService.RemoveCar(id).Result;
+                var removedCar = carService.RemoveCar(id);
             }
             return RedirectToAction("Browse", "Car", new { area = "" });
         }
