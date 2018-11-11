@@ -1,10 +1,4 @@
-﻿using Dealership.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Dealership.Web.Areas.Admin.Models
+﻿namespace Dealership.Web.Areas.Admin.Models
 {
     public class UsersViewModel
     {

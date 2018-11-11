@@ -6,7 +6,6 @@ body {
 }
 
 .input-group-addon {
- 
     font-size: 16px;
 }
 
@@ -92,19 +91,30 @@ html {
     border: 1px solid #fff;
     font-weight: bold;
     background-color: dimgray;
-    color:white;
+    color: white;
 }
 
-.btn-over-homebox:hover {
-    background-color: white;
-    color: black;
+    .btn-over-homebox:hover {
+        background-color: white;
+        color: black;
+    }
+
+#extraList {
+    padding: 0;
+    margin: 0;
 }
 
-#extraList{
-    padding:0;
-    margin:0;
+.default-image {
+    width: 600px;
 }
 
-.default-image{
-    width:600px;
+#slogan {
+    text-align: center;
+    font: bold;
+    font-family: 'Gill Sans';
+    font-size: 40px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    color: #0c0c0c;
+    text-shadow: 1px 1px gray;    
 }
