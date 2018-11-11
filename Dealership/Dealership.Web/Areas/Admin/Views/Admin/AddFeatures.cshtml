@@ -57,8 +57,8 @@
                             <select asp-for="@Model.BrandId" asp-items="@Model.Brands" class="form-control model-scriptSelect"></select>
                         </div>
                         <div class="col-lg-3">
-                            <input asp-for="Brand" placeholder="Model" type="text" class="form-control" id="value" />
-                            <span asp-validation-for="Brand" class="text-danger"></span>
+                            <input asp-for="@Model.Model" placeholder="Model" type="text" class="form-control" id="value" />
+                            <span asp-validation-for="@Model.Model" class="text-danger"></span>
                         </div>
                         <div class="col-lg-3">
                             <span class="input-group-btn">
