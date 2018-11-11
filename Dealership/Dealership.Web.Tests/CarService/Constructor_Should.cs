@@ -1,4 +1,5 @@
 ﻿using Dealership.Data.Context;
+using Dealership.Services.Abstract;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -16,7 +17,7 @@ namespace Dealership.Web.Tests.CarService
         {
             //arrange
             //act&assert
-            Assert.ThrowsException<ArgumentNullException>(() => new Services.CarService(null));
+            Assert.ThrowsException<ArgumentNullException>(() => new Services.CarService(null,null));
         }
         [TestMethod]
         public void NotThrowException_WhenValidUnitOfWorkIsPassed()
@@ -24,11 +25,11 @@ namespace Dealership.Web.Tests.CarService
             //arrange 
             var contexOptions = new DbContextOptionsBuilder<DealershipContext>()
                 .UseInMemoryDatabase(databaseName: "AddCarToDatabase_WhenValidParametersArePassed").Options;
-
+            var extrasServiceMock = new Mock<IExtraService>();
             //act
             using (var dealershipContext = new DealershipContext(contexOptions))
             {
-                var carService = new Services.CarService(dealershipContext);
+                var carService = new Services.CarService(dealershipContext,extrasServiceMock.Object);
             }
         }
     }
