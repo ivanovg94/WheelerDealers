@@ -1,15 +1,15 @@
-@model IList<Car>
+@*@model IList<Car>*@
 
     @*@{
 
         ViewData["Title"] = "Index";
     }*@
 
-    <h1>Cars list</h1>
-    <a class="btn btn-success" asp-controller="Car" asp-action="Create">Create</a>
+    @*<h1>Cars list</h1>
+    <a class="btn btn-success" asp-controller="Car" asp-action="Create">Create</a>*@
 
 
-    <div class="row">
+    @*<div class="row">
         @foreach (var car in Model)
         {
             var currentId = car.Id;
@@ -44,4 +44,4 @@
                 </div>
             </div>
         }
-    </div>
+    </div>*@

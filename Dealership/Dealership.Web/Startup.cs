@@ -92,7 +92,6 @@ namespace Dealership.Web
             services.AddTransient<IExtraService, ExtraService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IModelService, ModelService>();
-
         }
 
         private void RegisterAuthentication(IServiceCollection services)
@@ -101,17 +100,24 @@ namespace Dealership.Web
                 .AddEntityFrameworkStores<DealershipContext>()
                 .AddDefaultTokenProviders();
 
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 3;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequiredUniqueChars = 0;
+            }); 
+
             if (this.Environment.IsDevelopment())
             {
                 services.Configure<IdentityOptions>(options =>
                 {
                     // Password settings
-                    options.Password.RequireDigit = false;
                     options.Password.RequiredLength = 3;
-                    options.Password.RequireNonAlphanumeric = false;
-                    options.Password.RequireUppercase = false;
-                    options.Password.RequireLowercase = false;
-                    options.Password.RequiredUniqueChars = 0;
+
 
                     // Lockout settings
                     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(1);
@@ -158,7 +164,6 @@ namespace Dealership.Web
                 var createPowerUser = await UserManager.CreateAsync(poweruser, userPassword);
                 if (createPowerUser.Succeeded)
                 {
-                    //here we tie the new user to the "Admin" role 
                     await UserManager.AddToRoleAsync(poweruser, "Admin");
                 }
             }

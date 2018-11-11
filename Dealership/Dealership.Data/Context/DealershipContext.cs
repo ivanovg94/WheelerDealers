@@ -89,7 +89,7 @@ namespace Dealership.Data.Context
             modelBuilder.Entity<BodyType>().HasData(new BodyType { Id = 2, Name = "Coupe" });
             modelBuilder.Entity<BodyType>().HasData(new BodyType { Id = 3, Name = "Cabrio" });
             modelBuilder.Entity<BodyType>().HasData(new BodyType { Id = 4, Name = "Touring" });
-            modelBuilder.Entity<BodyType>().HasData(new BodyType { Id = 5, Name = "Suv" });
+            modelBuilder.Entity<BodyType>().HasData(new BodyType { Id = 5, Name = "SUV" });
             modelBuilder.Entity<BodyType>().HasData(new BodyType { Id = 6, Name = "Hatchback" });
 
             modelBuilder.Entity<GearType>().HasData(new GearType { Id = 1, Name = "Automatic" });
@@ -116,8 +116,6 @@ namespace Dealership.Data.Context
             modelBuilder.Entity<ColorType>().HasData(new ColorType { Id = 3, Name = "Pearlescent" });
             modelBuilder.Entity<ColorType>().HasData(new ColorType { Id = 4, Name = "Matte" });
             modelBuilder.Entity<ColorType>().HasData(new ColorType { Id = 5, Name = "Xirallic" });
-
-            //      modelBuilder.Entity<User>().HasData(new User { Id = 1, Username = "admin", Password = "admin", Email = "wheelerDealer@gmail.com", UserType = Enum.Parse<UserType>("Admin") });
         }
     }
 }

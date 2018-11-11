@@ -26,6 +26,7 @@ namespace Dealership.Services
             }
             return type;
         }
+
         public IList<GearType> GetGearTypes()
         {
             return this.context.GearTypes.ToList();

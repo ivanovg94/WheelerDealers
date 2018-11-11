@@ -1,5 +1,4 @@
-﻿using Dealership.Data.Models;
-using Dealership.Services.Abstract;
+﻿using Dealership.Services.Abstract;
 using Dealership.Web.Areas.Admin.Models;
 using Dealership.Web.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -50,13 +49,6 @@ namespace Dealership.Web.Areas.Admin.Controllers
         public string StatusMessage { get; set; }
 
         [HttpGet]
-        public IActionResult Index()
-        {
-            var vm = new UsersViewModel();
-            return View(vm);
-        }
-
-        [HttpGet]
         public IActionResult AddFeatures()
         {
             var model = new AddViewModel()
@@ -93,16 +85,16 @@ namespace Dealership.Web.Areas.Admin.Controllers
             return RedirectToAction("AddFeatures");
         }
 
-        [HttpGet]
-        public IActionResult AddModel()
-        {
-            var model = new ModelViewModel()
-            {
-                Brands = this.brandService.GetBrands()
-               .Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList()
-            };
-            return RedirectToAction("AddFeatures");
-        }
+        //[HttpGet]
+        //public IActionResult AddModel()
+        //{
+        //    var model = new ModelViewModel()
+        //    {
+        //        Brands = this.brandService.GetBrands()
+        //       .Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList()
+        //    };
+        //    return RedirectToAction("AddFeatures");
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -115,25 +107,32 @@ namespace Dealership.Web.Areas.Admin.Controllers
             return RedirectToAction("AddFeatures");
         }
 
-        [HttpGet]
-        public IActionResult ManageCars()
-        {
-            return RedirectToAction("Browse", "Car", new { area = "" });
-        }
 
         [HttpGet]
         public IActionResult CreateCar()
         {
             var allExtras = this.extraService.GetAllExtras();
 
+            var brands = this.brandService.GetBrands();
+            List<SelectListItem> carModelListItems;
+
+            if (brands.Count != 0)
+            {
+                var models = this.modelService.GetAllModelsByBrandId(brands.First().Id).ToList();
+                carModelListItems = models.Count != 0
+                    ? models.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Name }).ToList()
+                    : new List<SelectListItem>();
+            }
+            else { carModelListItems = new List<SelectListItem>(); }
+
+
             var model = new EditCarViewModel
             {
-                Brands = this.brandService.GetBrands()
-                                    .Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList(),
+                Brands = brands.Count != 0
+               ? brands.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList()
+               : new List<SelectListItem>(),
 
-                CarModels = this.modelService.GetAllModelsByBrandId(this.brandService.GetBrands().FirstOrDefault().Id)
-                                    .Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Name }).ToList(),
-
+                CarModels = carModelListItems,
                 NumberOfGears = this.gearTypeService.GetGearboxesDependingOnGearType(this.gearTypeService.GetGearTypes().FirstOrDefault().Id)
                                     .Select(x => new SelectListItem { Value = x.NumberOfGears.ToString(), Text = x.NumberOfGears.ToString() }).ToList(),
 
@@ -315,6 +314,22 @@ namespace Dealership.Web.Areas.Admin.Controllers
                 var removedCar = carService.RemoveCar(id);
             }
             return RedirectToAction("Browse", "Car", new { area = "" });
+        }
+
+        [AcceptVerbs("Get", "Post")]
+        public JsonResult DoesExtraExist(string extra)
+        {
+            var extraObj = extraService.GetExtraByName(extra);
+
+            return extraObj == null ? Json(true) : Json($"Extra {extraObj.Name} already exists.");
+        }
+
+        [AcceptVerbs("Get", "Post")]
+        public JsonResult DoesBrandExist(string brand)
+        {
+            var brandObj = brandService.GetBrand(brand);
+
+            return brandObj == null ? Json(true) : Json($"Brand {brandObj.Name} already exists.");
         }
 
         private string GetUploadsRoot()

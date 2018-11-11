@@ -26,11 +26,11 @@ namespace Dealership.Services
             this.context.SaveChanges();
             return color;
         }
+
         public Color GetColor(string name, int colorTypeId)
         {
             //must return null if not found
             return this.context.Colors.FirstOrDefault(c => c.Name == name && c.ColorTypeId == colorTypeId);
         }
-
     }
 }

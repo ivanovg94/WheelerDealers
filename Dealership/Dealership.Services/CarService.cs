@@ -1,13 +1,15 @@
-﻿using Dealership.Data.Context;
+﻿using Dealership.Data.CompositeModels;
+using Dealership.Data.Context;
 using Dealership.Data.Models;
-using Dealership.Data.Models.Contracts;
 using Dealership.Services.Abstract;
 using Dealership.Services.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Dealership.Services
@@ -73,7 +75,7 @@ namespace Dealership.Services
                 ColorId = color.Id,
                 FuelTypeId = fuelTypeId,
                 GearBox = gearbox,
-                GearBoxId = gearbox.Id,               
+                GearBoxId = gearbox.Id,
             };
 
             this.context.Cars.Add(newCar);
@@ -83,39 +85,6 @@ namespace Dealership.Services
             return newCar;
         }
 
-        public async Task<IList<Car>> GetCarsAsync(int skip, int take)
-        {
-            return await this.context.Cars
-                                            .Skip(skip)
-                                            .Take(take)
-                                            .Include(c => c.Brand)
-                                            .Include(c => c.CarModel)
-                                            .Include(c => c.CarsExtras)
-                                                 .ThenInclude(ce => ce.Extra)
-                                            .Include(c => c.BodyType)
-                                            .Include(c => c.Color)
-                                                .ThenInclude(co => co.ColorType)
-                                            .Include(c => c.FuelType)
-                                            .Include(c => c.GearBox)
-                                                .ThenInclude(gb => gb.GearType)
-                                            .Include(c => c.Images).ToListAsync();
-        }
-
-        public async Task<IList<Car>> GetCarsAsync()
-        {
-            return await this.context.Cars
-                                 .Include(c => c.Brand)
-                                 .Include(c => c.CarModel)
-                                 .Include(c => c.CarsExtras)
-                                      .ThenInclude(ce => ce.Extra)
-                                 .Include(c => c.BodyType)
-                                 .Include(c => c.Color)
-                                     .ThenInclude(co => co.ColorType)
-                                 .Include(c => c.FuelType)
-                                 .Include(c => c.GearBox)
-                                     .ThenInclude(gb => gb.GearType)
-                                 .Include(c => c.Images).ToListAsync();
-        }
 
         public async Task<Car> GetCarAsync(int id)
         {
@@ -156,9 +125,14 @@ namespace Dealership.Services
             return car;
         }
 
-        public int GetCarsCount()
+        public int GetAllCarsCount()
         {
             return this.context.Cars.Count();
+        }
+
+        public int GetCountWithCriteria(Expression<Func<Car, bool>> filterCriteria)
+        {
+            return this.context.Cars.Where(filterCriteria).Count();
         }
 
         public Car Update(Car car)
@@ -198,6 +172,60 @@ namespace Dealership.Services
             }
 
             this.context.SaveChanges();
+        }
+
+        public CarSearchResult GetCarSearchResult(int brandId, int modelId, int sortKey, int page = 0)
+        {
+            var take = 5;
+            var skip = page * take;
+
+            //TODO: INCLUDABLE?
+            IQueryable<Car> totalCars = null;
+
+            if (brandId == 0)
+            {
+                totalCars = this.context.Cars.Where(c => c.IsSold == false
+                                                      && c.IsDeleted == false);
+            }
+            else if (brandId != 0 && modelId == 0)
+            {
+                totalCars = this.context.Cars.Where(c => c.BrandId == brandId
+                                                      && c.IsSold == false
+                                                      && c.IsDeleted == false);
+            }
+            else if (brandId != 0 && modelId != 0)
+            {
+                totalCars = this.context.Cars.Where(c => c.BrandId == brandId
+                                                      && c.CarModelId == modelId
+                                                      && c.IsSold == false
+                                                      && c.IsDeleted == false);
+            }
+
+            var totalCount = totalCars.Count();
+
+            if (sortKey == 1) {totalCars= totalCars.OrderBy(c => c.Price); }
+            else if (sortKey == 2) {totalCars= totalCars.OrderByDescending(c => c.Price); }
+
+            var cars = totalCars.Skip(skip).Take(take)
+                                           .Include(c => c.Brand)
+                                           .Include(c => c.CarModel)
+                                           .Include(c => c.GearBox)
+                                               .ThenInclude(gb => gb.GearType)
+                                           .Include(c => c.Color)
+                                               .ThenInclude(c => c.ColorType)
+                                           .Include(c => c.FuelType)
+                                           .Include(c => c.FuelType)
+                                           .Include(c => c.Images)
+                                            .Select(c => new CarSummary(c))
+                                            .ToList();
+
+            var result = new CarSearchResult
+            {
+                FoundCars = cars,
+                TotalCount = totalCount
+            };
+
+            return result;
         }
     }
 }

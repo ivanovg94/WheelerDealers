@@ -1,4 +1,5 @@
-﻿using Dealership.Data.Models;
+﻿using Dealership.Data.CompositeModels;
+using Dealership.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

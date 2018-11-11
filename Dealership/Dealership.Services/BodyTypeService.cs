@@ -16,7 +16,6 @@ namespace Dealership.Services
             this.context = context;
         }
 
-
         public BodyType GetBodyType(string bodyName)
         {
             var bodyType = this.context.BodyTypes.FirstOrDefault(b => b.Name.ToLower() == bodyName);

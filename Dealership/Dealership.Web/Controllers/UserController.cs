@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Dealership.Data.Models;
+﻿using Dealership.Data.Models;
 using Dealership.Services.Abstract;
 using Dealership.Web.Models.CarViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace Dealership.Web.Controllers
 {
@@ -40,10 +37,10 @@ namespace Dealership.Web.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> Favorites()
+        public IActionResult Favorites()
         {
             var user = this.userManager.GetUserAsync(HttpContext.User).Result;
-            var cars = await this.userService.GetFavorites(user);
+            var cars = this.userService.GetFavorites(user);
 
             var model = cars.Select(c => new CarSummaryViewModel(c)
             {

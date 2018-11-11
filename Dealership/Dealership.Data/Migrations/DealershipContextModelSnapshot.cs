@@ -46,7 +46,7 @@ namespace Dealership.Data.Migrations
                         new { Id = 2, IsDeleted = false, Name = "Coupe" },
                         new { Id = 3, IsDeleted = false, Name = "Cabrio" },
                         new { Id = 4, IsDeleted = false, Name = "Touring" },
-                        new { Id = 5, IsDeleted = false, Name = "Suv" },
+                        new { Id = 5, IsDeleted = false, Name = "SUV" },
                         new { Id = 6, IsDeleted = false, Name = "Hatchback" }
                     );
                 });
@@ -136,6 +136,14 @@ namespace Dealership.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("BrandId");
+
+                    b.Property<DateTime?>("CreatedOn");
+
+                    b.Property<DateTime?>("DeletedOn");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("ModifiedOn");
 
                     b.Property<string>("Name");
 

@@ -1,6 +1,7 @@
 ﻿using Dealership.Data.Context;
 using Dealership.Data.Models;
 using Dealership.Services.Abstract;
+using Dealership.Services.Exceptions;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -29,13 +30,17 @@ namespace Dealership.Services
 
         public void Add(int brandId, string modelName)
         {
+            var model = this.GetAllModelsByBrandId(brandId).FirstOrDefault(m => m.Name == modelName);
+
+            if (model != null)
+            {
+                throw new ServiceException($"Model {modelName} is already added!");
+            }
+
             var newModel = new CarModel() { BrandId = brandId, Name = modelName };
 
             this.context.CarModels.Add(newModel);
             this.context.SaveChanges();
         }
-
-
-
     }
 }

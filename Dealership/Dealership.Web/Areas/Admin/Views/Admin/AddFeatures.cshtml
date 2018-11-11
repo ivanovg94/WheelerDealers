@@ -2,47 +2,70 @@
 @{
     ViewData["Title"] = "AddFeatures";
 }
-
-<h2>Add Features</h2>
+<h3>Add...</h3>
 <div class="container">
     <partial name="_StatusMessage" model="@Model.StatusMessage" />
 
     <div asp-validation-summary="All" class="text-danger"></div>
-    <div class="row">
-        <div class="col-md-4">
-            <label>Extra</label>
+    <div class="container">
+        <div class="row">
             <form asp-area="Admin" asp-action="AddExtra" asp-controller="Admin" method="post">
-                <input asp-for="Extra" type="text" id="value" placeholder="new extra" />
-                <span asp-validation-for="Extra" class="text-danger"></span>
+                <div class="form-group">
+                    <div class="input-group">
+                        
+                        <span class="input-group-addon">Extra</span>
 
-                <div>
-                    <button type="submit" class="btn btn-success">Add</button>
-                </div>
-            </form>
-        </div>
-        <div class="col-md-4">
-            <label>Brand</label>
-            <form asp-area="Admin" asp-action="AddBrand" asp-controller="Admin" method="post">
-                <input type="text" placeholder="new brand" asp-for="Brand">
-                <span asp-validation-for="Brand" class="text-danger"></span>
-
-                <div>
-                    <button type="submit" class="btn btn-success">Add</button>
-                </div>
-            </form>
-        </div>
-        <div class="col-md-4">
-            <form asp-area="Admin" asp-action="AddModel" asp-controller="Admin" method="post">
-                <div>
-                    <div class="form-group">
-                        <label asp-for="@Model.Brands" class="control-label">Add Model</label>
-                        <select asp-for="@Model.BrandId" asp-items="@Model.Brands" class="form-control model-scriptSelect"></select>
-                        <span asp-validation-for="@Model.Brand" class="text-danger"></span>
+                        <div class="col-lg-3">
+                            <input asp-for="Extra" type="text" class="form-control" id="value" placeholder="New extra" />
+                            <span asp-validation-for="Extra" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-3">
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-success">Add</button>
+                            </span>
+                        </div>
                     </div>
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            <form asp-area="Admin" asp-action="AddBrand" asp-controller="Admin" method="post">
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon">Brand</span>
 
-                    <input asp-for="Model" type="text" placeholder="new model" />
-                    <span asp-validation-for="Model" class="text-danger"></span>
-                    <button type="submit" class="btn btn-success">Add</button>
+                        <div class="col-lg-3">
+                            <input asp-for="Brand" type="text" class="form-control" id="value" placeholder="New brand" />
+                            <span asp-validation-for="Brand" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-3">
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-success">Add</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="row">
+            <form asp-area="Admin" asp-action="AddModel" asp-controller="Admin" method="post">
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon">Brand Model</span>
+                        <div class="col-lg-3">
+                            <select asp-for="@Model.BrandId" asp-items="@Model.Brands" class="form-control model-scriptSelect" ></select>
+                        </div>
+                        <div class="col-lg-3">
+                            <input asp-for="@Model.Model" placeholder="New model" type="text" class="form-control" id="value" />
+                            <span asp-validation-for="@Model.Model" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-3">
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-success">Add</button>
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>

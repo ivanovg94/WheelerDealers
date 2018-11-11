@@ -97,7 +97,7 @@
                         <a asp-area="Admin" asp-controller="Admin" asp-action="Delete" asp-route-id="@Model.Id" asp-route-confirm="true"  onclick="return confirm('Do you really want to delete this product?')" class="btn btn-danger">Delete</a>
                     }
                 }
-                <a asp-controller="Car" asp-action="Browse" class="btn btn-info">Back to List</a>
+                <a asp-area="" asp-controller="Car" asp-action="Search" class="btn btn-info">Back to List</a>
             </div>
         </div>
     </div>

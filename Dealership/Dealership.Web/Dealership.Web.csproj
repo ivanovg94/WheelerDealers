@@ -5,6 +5,13 @@
     <UserSecretsId>aspnet-Dealership.Web-166E4DFC-FDF9-4EB5-8294-8FA440E61E80</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Areas\Admin\Data\**" />
+    <Content Remove="Areas\Admin\Data\**" />
+    <EmbeddedResource Remove="Areas\Admin\Data\**" />
+    <None Remove="Areas\Admin\Data\**" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.5" />
@@ -23,10 +30,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Dealership.Data\Dealership.Data.csproj" />
     <ProjectReference Include="..\Dealership.Services\Dealership.Services.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\Admin\Data\" />
   </ItemGroup>
 
   <ItemGroup>

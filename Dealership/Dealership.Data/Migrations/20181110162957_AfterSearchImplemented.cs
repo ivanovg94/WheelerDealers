@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Dealership.Data.Migrations
 {
-    public partial class RolesFixInitial : Migration
+    public partial class AfterSearchImplemented : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -265,6 +265,10 @@ namespace Dealership.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedOn = table.Column<DateTime>(nullable: true),
+                    CreatedOn = table.Column<DateTime>(nullable: true),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
                     Name = table.Column<string>(nullable: true),
                     BrandId = table.Column<int>(nullable: false)
                 },
@@ -480,7 +484,7 @@ namespace Dealership.Data.Migrations
                     { 2, null, null, false, null, "Coupe" },
                     { 3, null, null, false, null, "Cabrio" },
                     { 4, null, null, false, null, "Touring" },
-                    { 5, null, null, false, null, "Suv" },
+                    { 5, null, null, false, null, "SUV" },
                     { 6, null, null, false, null, "Hatchback" }
                 });
 

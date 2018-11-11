@@ -1,15 +1,13 @@
-﻿using Dealership.Data.Models;
+using Dealership.Data.CompositeModels;
+using Dealership.Data.Models;
 using Dealership.Services.Abstract;
 using Dealership.Web.Models;
 using Dealership.Web.Models.CarViewModels;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,31 +16,20 @@ namespace Dealership.Web.Controllers
     public class CarController : Controller
     {
         private readonly ICarService carService;
-        private readonly IEditCarService editCarService;
         private readonly IBrandService brandService;
-        private readonly IBodyTypeService bodyTypeService;
-        private readonly IColorTypeService colorTypeService;
-        private readonly IFuelTypeService fuelTypeService;
         private readonly IGearTypeService gearTypeService;
         private readonly IModelService modelService;
-        private readonly IColorService colorService;
         private readonly IUserService userService;
         private readonly UserManager<User> userManager;
 
-        public CarController(ICarService carService, IEditCarService editCarService, IBrandService brandService,
-            IBodyTypeService bodyTypeService, IColorTypeService colorTypeService,
-            IFuelTypeService fuelTypeService, IGearTypeService gearTypeService,
-            IModelService modelService, IColorService colorService, IUserService userService, UserManager<User> userManager)
+        public CarController(ICarService carService, IBrandService brandService,
+            IGearTypeService gearTypeService, IModelService modelService,
+            IUserService userService, UserManager<User> userManager)
         {
             this.carService = carService;
-            this.editCarService = editCarService;
             this.brandService = brandService;
-            this.bodyTypeService = bodyTypeService;
-            this.colorTypeService = colorTypeService;
-            this.fuelTypeService = fuelTypeService;
             this.gearTypeService = gearTypeService;
             this.modelService = modelService;
-            this.colorService = colorService;
             this.userService = userService;
             this.userManager = userManager;
         }
@@ -52,66 +39,95 @@ namespace Dealership.Web.Controllers
 
         public IActionResult Index()
         {
-            var list = this.carService.GetCarsAsync(0, 99);
-
-            return View(list);
-
+            return null;
         }
-        
-        [HttpGet]
-        public async Task<IActionResult> Browse(int page)
+
+
+        public IActionResult LoadCars(int brandId, int modelId, int sort, int page)
         {
+            var cars = this.carService
+               .GetCarSearchResult(brandId, modelId, sort, page);
+
             var nPerPage = 5;
-            var pageCount = 0;
-            var totalCount = this.carService.GetCarsCount();
+            var totalCount = cars.TotalCount;
             var reminder = totalCount % nPerPage;
+            var pageCount = reminder != 0 ? (totalCount / nPerPage) + 1 : totalCount / nPerPage;
 
-            if (reminder != 0)
+            var summaries = this.PopulateSummaries(cars.FoundCars);
+
+            var searchResultVm = new SearchResultViewModel()
             {
-                pageCount = (totalCount / nPerPage) + 1;
-            }
-            else
-            {
-                pageCount = totalCount / nPerPage;
-            }
-
-            //Expression<Func<Car, bool>> searchCriteria = (Car car) => true;
-            //searchCriteria = x => x.Brand.Name.Contains("");
-
-            var summarys = await this.carService.GetCarsAsync(page * nPerPage, nPerPage);
-            var model = new BrowseViewModel()
-            {
-                Summaries = summarys
-                .Select(c => new CarSummaryViewModel(c)
-                {
-                    Id = c.Id,
-                    Brand = c.Brand.Name,
-                    CarModel = c.CarModel.Name,
-                    Capacity = c.EngineCapacity,
-                    GearType = c.GearBox.GearType.Name,
-                    Fuel = c.FuelType.Name,
-                    Color = c.Color.Name,
-                    Price = $"{c.Price}$",
-                    Mileage = $"{c.Mileage} miles",
-
-                }),
-                Pages = page,
-                CurrentPage = pageCount
+                Summaries = summaries,
+                NumberOfPages = pageCount,
+                CurrentPage = page,
+                SelectedBrandId = brandId,
+                SelectedModelId = modelId,
+                Sort = sort
             };
 
-            model.Brands
-                .AddRange(this.brandService.GetBrands()
-                .Select(b => new SelectListItem { Value = b.Id.ToString(), Text = b.Name }).ToList());
-
-            return this.View(model);
+            // var summaries = this.PopulateSummaries(cars.FoundCars);
+            return this.PartialView("_SearchResultPartial", searchResultVm);
         }
 
+        public IActionResult Search(int brandId, int modelId, int sort, int page = 0)
+        {
+            var cars = this.carService.GetCarSearchResult(brandId, modelId, sort, page);
+
+            var nPerPage = 5;
+            var reminder = cars.TotalCount % nPerPage;
+            var pageCount = reminder != 0 ? (cars.TotalCount / nPerPage) + 1 : cars.TotalCount / nPerPage;
+
+            var searchVm = new SearchViewModel
+            {
+                SearchResult = new SearchResultViewModel()
+                {
+                    Summaries = this.PopulateSummaries(cars.FoundCars),
+                    NumberOfPages = pageCount,
+                    CurrentPage = 0,
+                    SelectedBrandId = brandId,
+                    SelectedModelId = modelId,
+                    Sort = sort
+                },
+
+                Brands = new List<SelectListItem>() { new SelectListItem { Value = "0", Text = "All" } },
+                CarModels = new List<SelectListItem>() { new SelectListItem { Value = "0", Text = "All" } },
+                SortCriterias = new List<SelectListItem>() {
+                     new SelectListItem { Value = "0", Text = "Published" },
+                     new SelectListItem { Value = "1", Text = "Price Ascending" },
+                     new SelectListItem { Value = "2", Text = "Price Descending" },
+                     },
+            };
+
+            searchVm.Brands.AddRange(this.brandService.GetBrands()
+                           .Select(b => new SelectListItem { Value = b.Id.ToString(), Text = b.Name }).ToList());
+
+            return this.View(searchVm);
+        }
+
+        private IEnumerable<CarSummaryViewModel> PopulateSummaries(IEnumerable<CarSummary> cars)
+        {
+            return cars.Select(c => new CarSummaryViewModel()
+            {
+                Id = c.Id,
+                Brand = c.Brand,
+                CarModel = c.CarModel,
+                Capacity = c.Capacity,
+                GearType = c.GearType,
+                Fuel = c.Fuel,
+                Color = c.Color,
+                Price = c.Price,
+                Mileage = c.Mileage,
+                ImageUrl = c.ImageUrl
+            });
+        }
+
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
         public JsonResult GetModelsByBrandId(int brandId)
         {
             var list = this.modelService.GetAllModelsByBrandId(brandId);
             return Json(list);
         }
-
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
         public JsonResult GetGearsDependingOnGearBoxType(int id)
         {
             var list = (this.gearTypeService.GetGearboxesDependingOnGearType(id));
@@ -121,7 +137,7 @@ namespace Dealership.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var car =await this.carService.GetCarAsync(id);
+            var car = await this.carService.GetCarAsync(id);
             var user = this.userManager.GetUserAsync(HttpContext.User).Result;
             CarViewModel model;
             if (user == null)
