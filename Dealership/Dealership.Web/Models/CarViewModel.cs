@@ -43,25 +43,16 @@ namespace Dealership.Web.Models
 
         public int Id { get; set; }
 
-        [Required]
-        [MaxLength(25)]
-        [MinLength(2)]
         public string CarModel { get; set; }
+
         public int CarModelId { get; set; }
 
-        [Required]
-        [Range(1, int.MaxValue)]
         public short HorsePower { get; set; }
 
-        [Required]
-        [Range(1, 100000)]
         public short EngineCapacity { get; set; }
 
-        [Required]
-        [Range(0, int.MaxValue)]
         public decimal Price { get; set; }
 
-        [Required]
         [DataType(DataType.Date)]
         public DateTime ProductionDate
         {
