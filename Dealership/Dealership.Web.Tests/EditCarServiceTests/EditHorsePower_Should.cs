@@ -1,15 +1,12 @@
 ﻿using Dealership.Data.Context;
-using Dealership.Data.Models;
+using Dealership.Services;
 using Dealership.Services.Abstract;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Dealership.Web.Tests.EditCarService
+namespace Dealership.Web.Tests.EditCarServiceTests
 {
     [TestClass]
     public class EditHorsePower_Should
@@ -67,7 +64,7 @@ namespace Dealership.Web.Tests.EditCarService
             {
                 var carServiceStub = new Mock<ICarService>();
 
-                sut = new Services.EditCarService(dealershipContext, carServiceStub.Object);
+                sut = new EditCarService(dealershipContext, carServiceStub.Object);
             }
             Assert.ThrowsException<ArgumentException>(() => sut.EditHorsePower(validParameters));
         }

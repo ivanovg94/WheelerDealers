@@ -1,14 +1,12 @@
 ﻿using Dealership.Data.Context;
-using Dealership.Data.Models;
+using Dealership.Services;
 using Dealership.Services.Abstract;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Dealership.Web.Tests.EditCarService
+namespace Dealership.Web.Tests.EditCarServiceTests
 {
     [TestClass]
     public class EditEngineCapacity_Should
@@ -46,7 +44,7 @@ namespace Dealership.Web.Tests.EditCarService
             {
                 var carServiceStub = new Mock<ICarService>();
 
-                sut = new Services.EditCarService(dealershipContext, carServiceStub.Object);
+                sut = new EditCarService(dealershipContext, carServiceStub.Object);
             }
             Assert.ThrowsException<ArgumentNullException>(() => sut.EditEngineCapacity(invalidParameters));
         }
@@ -65,7 +63,7 @@ namespace Dealership.Web.Tests.EditCarService
             {
                 var carServiceStub = new Mock<ICarService>();
 
-                sut = new Services.EditCarService(dealershipContext, carServiceStub.Object);
+                sut = new EditCarService(dealershipContext, carServiceStub.Object);
 
             }
 
