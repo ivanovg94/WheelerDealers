@@ -1,4 +1,5 @@
 ﻿using Dealership.Data.Context;
+using Dealership.Services;
 using Dealership.Services.Abstract;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -7,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Dealership.Web.Tests.CarService
+namespace Dealership.Web.Tests.CarServiceTests
 {
     [TestClass]
     public class Constructor_Should
@@ -17,7 +18,7 @@ namespace Dealership.Web.Tests.CarService
         {
             //arrange
             //act&assert
-            Assert.ThrowsException<ArgumentNullException>(() => new Services.CarService(null,null));
+            Assert.ThrowsException<ArgumentNullException>(() => new CarService(null,null));
         }
         [TestMethod]
         public void NotThrowException_WhenValidUnitOfWorkIsPassed()
@@ -29,7 +30,7 @@ namespace Dealership.Web.Tests.CarService
             //act
             using (var dealershipContext = new DealershipContext(contexOptions))
             {
-                var carService = new Services.CarService(dealershipContext,extrasServiceMock.Object);
+                var carService = new CarService(dealershipContext,extrasServiceMock.Object);
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Dealership.Data.Context;
 using Dealership.Data.Models;
+using Dealership.Services;
 using Dealership.Services.Abstract;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -9,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Dealership.Web.Tests.EditCarService
+namespace Dealership.Web.Tests.EditCarServiceTests
 {
     [TestClass]
     public class EditModel_Should
@@ -27,7 +28,7 @@ namespace Dealership.Web.Tests.EditCarService
             using (var dealershipContext = new DealershipContext(contextOptions))
             {
                 var carServiceStub = new Mock<ICarService>();
-                sut = new Services.EditCarService(dealershipContext, carServiceStub.Object);
+                sut = new EditCarService(dealershipContext, carServiceStub.Object);
             }
 
             //act&assert
@@ -46,7 +47,7 @@ namespace Dealership.Web.Tests.EditCarService
             using (var dealershipContext = new DealershipContext(contextOptions))
             {
                 var carServiceStub = new Mock<ICarService>();
-                sut = new Services.EditCarService(dealershipContext, carServiceStub.Object);
+                sut = new EditCarService(dealershipContext, carServiceStub.Object);
             }
 
             //act&assert

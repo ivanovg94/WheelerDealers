@@ -2,13 +2,9 @@
 using Dealership.Services.Abstract;
 using Dealership.Web.Controllers;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Dealership.Web.Tests.Controllers.CarControllerTests
 {
@@ -23,7 +19,7 @@ namespace Dealership.Web.Tests.Controllers.CarControllerTests
         private Mock<UserManager<User>> mgrMock;
 
         [TestInitialize]
-        private void Setup()
+        public void Setup()
         {
             this.carServiceMock = new Mock<ICarService>();
             this.brandServiceMock = new Mock<IBrandService>();

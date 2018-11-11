@@ -9,7 +9,7 @@
 //using System.Collections.Generic;
 //using System.Linq;
 
-//namespace Dealership.Web.Tests.CarService
+//namespace Dealership.Web.Tests.CarServiceTests
 //{
 //    [TestClass]
 //    public class RemoveCar_Should

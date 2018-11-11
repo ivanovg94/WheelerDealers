@@ -1,13 +1,12 @@
 ﻿using Dealership.Data.Context;
+using Dealership.Services;
 using Dealership.Services.Abstract;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Dealership.Web.Tests.EditCarService
+namespace Dealership.Web.Tests.EditCarServiceTests
 {
     [TestClass]
     public class Constructor_Should
@@ -18,7 +17,7 @@ namespace Dealership.Web.Tests.EditCarService
             //arrange
             var carServiceStub = new Mock<ICarService>();
             //act&assert
-            Assert.ThrowsException<ArgumentNullException>(() => new Services.EditCarService(null, carServiceStub.Object));
+            Assert.ThrowsException<ArgumentNullException>(() => new EditCarService(null, carServiceStub.Object));
         }
 
         [TestMethod]
@@ -31,7 +30,7 @@ namespace Dealership.Web.Tests.EditCarService
 
             var context = new DealershipContext(contextOptions);
             //act&assert
-            Assert.ThrowsException<ArgumentNullException>(() => new Services.EditCarService(context, null));
+            Assert.ThrowsException<ArgumentNullException>(() => new EditCarService(context, null));
         }
 
         [TestMethod]
@@ -44,7 +43,7 @@ namespace Dealership.Web.Tests.EditCarService
             var context = new DealershipContext(contextOptions);
             var carServiceStub = new Mock<ICarService>();
 
-            var sut = new Services.EditCarService(context, carServiceStub.Object);
+            var sut = new EditCarService(context, carServiceStub.Object);
 
             Assert.IsInstanceOfType(sut, typeof(IEditCarService));
         }

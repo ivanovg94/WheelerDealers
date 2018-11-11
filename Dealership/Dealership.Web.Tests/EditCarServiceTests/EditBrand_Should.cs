@@ -1,17 +1,12 @@
 ﻿using Dealership.Data.Context;
-using Dealership.Data.Models;
 using Dealership.Services;
 using Dealership.Services.Abstract;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Dealership.Web.Tests.EditCarService
+namespace Dealership.Web.Tests.EditCarServiceTests
 {
     [TestClass]
     public class EditBrand_Should
@@ -29,7 +24,7 @@ namespace Dealership.Web.Tests.EditCarService
             using (var dealerShipContext = new DealershipContext(contextOptions))
             {
                 var carServiceStub = new Mock<ICarService>();
-                sut = new Services.EditCarService(dealerShipContext, carServiceStub.Object);
+                sut = new EditCarService(dealerShipContext, carServiceStub.Object);
             }
 
 
@@ -50,7 +45,7 @@ namespace Dealership.Web.Tests.EditCarService
             {
                 var carServiceStub = new Mock<ICarService>();
 
-                sut = new Services.EditCarService(dealerShipContext, carServiceStub.Object);
+                sut = new EditCarService(dealerShipContext, carServiceStub.Object);
             }
 
             Assert.ThrowsException<ArgumentNullException>(() => sut.EditBrand(invalidParameters));
@@ -70,7 +65,7 @@ namespace Dealership.Web.Tests.EditCarService
             {
                 var carServiceStub = new Mock<ICarService>();
 
-                sut = new Services.EditCarService(dealerShipContext, carServiceStub.Object);
+                sut = new EditCarService(dealerShipContext, carServiceStub.Object);
             }
             //Act&assert
             Assert.ThrowsException<ArgumentException>(() => sut.EditBrand(invalidParameters));
