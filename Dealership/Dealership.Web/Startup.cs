@@ -100,17 +100,24 @@ namespace Dealership.Web
                 .AddEntityFrameworkStores<DealershipContext>()
                 .AddDefaultTokenProviders();
 
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 3;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequiredUniqueChars = 0;
+            }); 
+
             if (this.Environment.IsDevelopment())
             {
                 services.Configure<IdentityOptions>(options =>
                 {
                     // Password settings
-                    options.Password.RequireDigit = false;
                     options.Password.RequiredLength = 3;
-                    options.Password.RequireNonAlphanumeric = false;
-                    options.Password.RequireUppercase = false;
-                    options.Password.RequireLowercase = false;
-                    options.Password.RequiredUniqueChars = 0;
+
 
                     // Lockout settings
                     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(1);

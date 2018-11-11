@@ -26,22 +26,23 @@ namespace Dealership.Services
 
         public Brand Create(string brandName)
         {
+            var brand = this.GetBrand(brandName);
+
+            if (brand != null)
+            {
+                throw new ServiceException($"There is already brand with name {brandName}.");
+            }
+
             var newBrand = new Brand() { Name = brandName };
             return newBrand;
         }
 
         public Brand GetBrand(string brandName)
         {
-            //var brand = this.context.Brands.FirstOrDefault(b => b.Name == brandName);
-            var brand = this.context.Brands
+            return this.context.Brands
                                     .Include(b => b.Cars)
                                     .Include(b => b.CarModels)
                                     .FirstOrDefault(b => b.Name == brandName);
-            if (brand == null)
-            {
-                throw new ServiceException($"There is no brand with name {brandName}.");
-            }
-            return brand;
         }
 
         public Brand GetBrand(int brandId)

@@ -16,7 +16,7 @@
                         <span class="input-group-addon">Extra</span>
 
                         <div class="col-lg-3">
-                            <input asp-for="Extra" type="text" class="form-control" id="value" placeholder="new extra" />
+                            <input asp-for="Extra" type="text" class="form-control" id="value" placeholder="New extra" />
                             <span asp-validation-for="Extra" class="text-danger"></span>
                         </div>
                         <div class="col-lg-3">
@@ -35,7 +35,7 @@
                         <span class="input-group-addon">Brand</span>
 
                         <div class="col-lg-3">
-                            <input asp-for="Brand" type="text" class="form-control" id="value" />
+                            <input asp-for="Brand" type="text" class="form-control" id="value" placeholder="New brand" />
                             <span asp-validation-for="Brand" class="text-danger"></span>
                         </div>
                         <div class="col-lg-3">
@@ -54,10 +54,10 @@
                     <div class="input-group">
                         <span class="input-group-addon">Brand Model</span>
                         <div class="col-lg-3">
-                            <select asp-for="@Model.BrandId" asp-items="@Model.Brands" class="form-control model-scriptSelect"></select>
+                            <select asp-for="@Model.BrandId" asp-items="@Model.Brands" class="form-control model-scriptSelect" ></select>
                         </div>
                         <div class="col-lg-3">
-                            <input asp-for="@Model.Model" placeholder="Model" type="text" class="form-control" id="value" />
+                            <input asp-for="@Model.Model" placeholder="New model" type="text" class="form-control" id="value" />
                             <span asp-validation-for="@Model.Model" class="text-danger"></span>
                         </div>
                         <div class="col-lg-3">
