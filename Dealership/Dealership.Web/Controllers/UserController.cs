@@ -8,6 +8,7 @@ using System.Linq;
 
 namespace Dealership.Web.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IUserService userService;
