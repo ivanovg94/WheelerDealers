@@ -17,9 +17,6 @@ There is information about available and sold cars. The admin can manipulate the
 * Edit cars
 * List cars filtered by different parameters
 * Show car details
-* Generate PDF of available cars
-* Import cars from JSON
-* Export cars to JSON
 
-## [Kanban board](https://trello.com/b/1BDyADpf/team7)
+## Azure:[WheelerDealers](https://wheelerdealers.azurewebsites.net/)
 
