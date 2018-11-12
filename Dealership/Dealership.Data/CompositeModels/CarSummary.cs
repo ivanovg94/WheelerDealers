@@ -8,6 +8,10 @@ namespace Dealership.Data.CompositeModels
 {
     public class CarSummary
     {
+        public CarSummary()
+        {
+        }
+
         public CarSummary(Car car)
         {
             this.Id = car.Id;

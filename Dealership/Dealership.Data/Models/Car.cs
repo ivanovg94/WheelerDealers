@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Dealership.Data.Models
 {
-    public class Car : Entity, ICar
+    public class Car : Entity
     {
         public Car()
         {
