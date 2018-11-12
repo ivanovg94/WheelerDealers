@@ -63,24 +63,30 @@ namespace Dealership.Web.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddExtra(AddViewModel model)
+        public IActionResult AddExtra(AddExtraViewModel model)
         {
-            string extra = model.Extra;
-            var newExtra = this.extraService.CreateExtra(extra);
-            this.extraService.AddExtra(newExtra);
-            this.StatusMessage = "Extra added successfully!";
+            if (this.ModelState.IsValid)
+            {
+                string extra = model.Extra;
+                var newExtra = this.extraService.CreateExtra(extra);
+                this.extraService.AddExtra(newExtra);
+                this.StatusMessage = "Extra added successfully!";
+            }
 
             return RedirectToAction("AddFeatures");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddBrand(AddViewModel model)
+        public IActionResult AddBrand(AddBrandViewModel model)
         {
-            var brand = model.Brand;
-            var newBrand = this.brandService.Create(brand);
-            this.brandService.Add(newBrand);
-            this.StatusMessage = "Brand added successfully!";
+            if (this.ModelState.IsValid)
+            {
+                var brand = model.Brand;
+                var newBrand = this.brandService.Create(brand);
+                this.brandService.Add(newBrand);
+                this.StatusMessage = "Brand added successfully!";
+            }
 
             return RedirectToAction("AddFeatures");
         }
@@ -89,9 +95,11 @@ namespace Dealership.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult AddModel(string model, int brandId)
         {
-            //validation todo
-            this.modelService.Add(brandId, model);
-            this.StatusMessage = "Model added successfully!";
+            if (this.ModelState.IsValid)
+            {
+                this.modelService.Add(brandId, model);
+                this.StatusMessage = "Model added successfully!";
+            }
 
             return RedirectToAction("AddFeatures");
         }
@@ -155,6 +163,8 @@ namespace Dealership.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult CreateCar(EditCarViewModel model)
         {
+            if (this.ModelState.IsValid)
+            {
             var extrasIds = model.Extras.Where(e => e.Selected == true).Select(e => e.Id).ToList();
             var car = this.carService.AddCar(
                            model.Car.BrandId, model.Car.CarModelId, model.Car.Mileage, model.Car.HorsePower,
@@ -184,6 +194,10 @@ namespace Dealership.Web.Areas.Admin.Controllers
             this.StatusMessage = "Car registration is successful!";
 
             return RedirectToAction("Details", "Car", new { area = "", id = car.Id });
+            }
+
+            this.StatusMessage = "Error: the operation is not completed.";
+            return this.View(model);
         }
 
         [HttpGet]

@@ -36,11 +36,4 @@ namespace Dealership.Web.Models
 
         public ExtraCheckBox[] Extras { get; set; }
     }
-
-    public class ExtraCheckBox
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public bool Selected { get; set; }
-    }
 }

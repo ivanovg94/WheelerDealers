@@ -43,16 +43,25 @@ namespace Dealership.Web.Models
 
         public int Id { get; set; }
 
+        [MaxLength(25)]
+        [MinLength(2)]
         public string CarModel { get; set; }
-
+        [Required]
         public int CarModelId { get; set; }
 
+        [Required]
+        [Range(1, int.MaxValue)]
         public short HorsePower { get; set; }
 
+        [Required]
+        [Range(1, 100000)]
         public short EngineCapacity { get; set; }
 
+        [Required]
+        [Range(0, int.MaxValue)]
         public decimal Price { get; set; }
 
+        [Required]
         [DataType(DataType.Date)]
         public DateTime ProductionDate
         {
@@ -66,30 +75,36 @@ namespace Dealership.Web.Models
             }
         }
 
+        [Required]
         public int BrandId { get; set; }
 
         public string Brand { get; set; }
 
+        [Required]
         public int BodyTypeId { get; set; }
 
         public string BodyType { get; set; }
 
         public string Color { get; set; }
 
+        [Required]
         public int ColorTypeId { get; set; }
 
         public string ColorType { get; set; }
 
+        [Required]
         public int FuelTypeId { get; set; }
 
         public string FuelType { get; set; }
 
+        [Required]
         public int GearBoxTypeId { get; set; }
 
         public string GearBoxType { get; set; }
 
         public byte NumberOfGears { get; set; }
 
+        [Required]
         public int Mileage { get; set; }
 
         public IEnumerable<string> CarsExtras { get; set; }
