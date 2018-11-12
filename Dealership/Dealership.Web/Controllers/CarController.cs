@@ -38,11 +38,6 @@ namespace Dealership.Web.Controllers
         [TempData]
         public string StatusMessage { get; set; }
 
-        public IActionResult Index()
-        {
-            return null;
-        }
-
         public IActionResult LoadCars(int brandId, int modelId, int sort, int page)
         {
 
@@ -74,9 +69,9 @@ namespace Dealership.Web.Controllers
             return this.PartialView("_SearchResultPartial", searchResultVm);
         }
 
-        public IActionResult Search(int brandId, int modelId, int sort, int page = 0)
+        public IActionResult Search()
         {
-            var cars = this.carService.GetCarSearchResult(brandId, modelId, sort, page);
+            var cars = this.carService.GetCarSearchResult(0, 0, 0, 0);
 
             var nPerPage = 5;
             var reminder = cars.TotalCount % nPerPage;
@@ -89,9 +84,9 @@ namespace Dealership.Web.Controllers
                     Summaries = this.PopulateSummaries(cars.FoundCars),
                     NumberOfPages = pageCount,
                     CurrentPage = 0,
-                    SelectedBrandId = brandId,
-                    SelectedModelId = modelId,
-                    Sort = sort
+                    SelectedBrandId = 0,
+                    SelectedModelId = 0,
+                    Sort = 0
                 },
 
                 Brands = new List<SelectListItem>() { new SelectListItem { Value = "0", Text = "All" } },
